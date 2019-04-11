@@ -1,0 +1,16 @@
+dist/configs/*
+dist/images/*
+dist/css/*
+dist/fonts/*
+dist/html/*
+dist/js/*
+
+node_modules/*
+
+cordova_dist/www/*
+cordova_dist/platforms/browser/www/*
+cordova_dist/platforms/android/build
+cordova_dist/platforms/android/app/src/main/assets
+
+cordova_exchange_dist/www/*
+cordova_exchange_dist/platforms/browser/www/*
