@@ -1,0 +1,37 @@
+{
+  "prepare_queue": {
+    "installed": [],
+    "uninstalled": []
+  },
+  "config_munge": {
+    "files": {}
+  },
+  "installed_plugins": {
+    "cordova-plugin-console": {
+      "PACKAGE_NAME": "org.monnaieleman.bureau"
+    },
+    "cordova-plugin-device": {
+      "PACKAGE_NAME": "org.monnaieleman.bureau"
+    },
+    "cordova-plugin-file": {
+      "PACKAGE_NAME": "org.monnaieleman.bureau"
+    },
+    "cordova-plugin-inappbrowser": {
+      "PACKAGE_NAME": "org.monnaieleman.bureau"
+    },
+    "cordova-plugin-ionic-keyboard": {
+      "PACKAGE_NAME": "org.monnaieleman.bureau"
+    },
+    "cordova-plugin-whitelist": {
+      "PACKAGE_NAME": "org.monnaieleman.bureau"
+    },
+    "phonegap-plugin-barcodescanner": {
+      "PACKAGE_NAME": "org.monnaieleman.bureau"
+    }
+  },
+  "dependent_plugins": {
+    "cordova-plugin-compat": {
+      "PACKAGE_NAME": "org.monnaieleman.bureau"
+    }
+  }
+}

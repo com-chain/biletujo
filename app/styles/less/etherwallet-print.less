@@ -1,0 +1,78 @@
+/* Print Etherwallet Page */
+.print-container {
+  width: 1560px;
+  height: 840px;
+  border: 1px solid gray;
+  margin-bottom: 50px;
+  position: relative;
+}
+.print-title {
+  float: left;
+}
+.print-text {
+  color: #1a81a2;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  transform: rotate(-90deg);
+  position: absolute;
+  right: 20;
+  bottom: 0;
+  font-size: 13px;
+  font-weight: 600;
+}
+.print-qr-code-1 {
+  width: 40%;
+  float: left;
+  position: relative;
+  padding: 20px;
+}
+.print-qr-code-1 .print-text {
+  /*right: -35px;*/
+  bottom: 69px;
+}
+
+.print-qr-code-1 canvas,
+.print-qr-code-1 img,
+.print-qr-code-2 canvas,
+.print-qr-code-2 img{
+width: 512px;
+height: 512px;
+}
+.print-qr-code-2 {
+  width: 40%;
+  float: left;
+  position: relative;
+  padding: 20px;
+}
+.print-qr-code-2 .print-text {
+ /* right: -45px;*/
+  bottom: 69px;
+}
+.print-notes {
+  width: 28%;
+  float: left;
+  position: relative;
+  padding: 20px;
+}
+.print-notes .print-text {
+  right: -45px;
+  bottom: 69px;
+}
+.print-address-container {
+  float: left;
+  width: 85%;
+  padding: 0 25px;
+}
+.print-address-container p {
+  font-size: 14px;
+  font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
+}
+.ether-logo-1 {
+  position: absolute;
+  left: 100px;
+}
+.ether-logo-2 {
+  position: absolute;
+  right: 32px;
+  bottom: 64px;
+}
