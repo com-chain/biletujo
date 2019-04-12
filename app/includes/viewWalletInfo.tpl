@@ -56,7 +56,7 @@
                             </div>
                              <label translate="FILE_selectedFile" ng_hide="SelectedFileIndex==-1">Wallet File</label>
                            <p> {{SelectedFileName}}</p>
-                             
+                            <label translate="FILE_NoFile" ng_show="len==0">No File</label>  
                           </h4>
                       </div>
                       <div class="modal-footer text-center">
