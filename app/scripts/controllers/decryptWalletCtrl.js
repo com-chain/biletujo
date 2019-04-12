@@ -155,7 +155,7 @@ var decryptWalletCtrl = function($scope, $sce, $translate, walletService, contac
         if (!$scope.isApp){
 		    document.getElementById('fselector').click();
         } else {
-            globalFuncs.readCordovaDir($scope.success); 
+           globalFuncs.readCordovaDir($scope.success);  
        } 
 	};
     

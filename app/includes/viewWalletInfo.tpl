@@ -56,8 +56,11 @@
                             </div>
                              <label translate="FILE_selectedFile" ng_hide="SelectedFileIndex==-1">Wallet File</label>
                            <p> {{SelectedFileName}}</p>
-                             
+                           
                           </h4>
+                          <h6 align="center">
+                            <label translate="FILE_NoFile" ng_show="len==0">No File</label>  
+                          </h6>
                       </div>
                       <div class="modal-footer text-center">
                           <button type="button" class="btn btn-default" data-dismiss="modal" translate="CTC_editNameCancel">Annuler </button>

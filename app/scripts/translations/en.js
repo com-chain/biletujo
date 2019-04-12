@@ -27,6 +27,7 @@ FILE_pickContact: 'Select a contact file',
 FILE_pickMemo: 'Select a notes file',
 FILE_selectedFile: 'Selected file',
 FILE_open: 'Select',
+FILE_NoFile:'No file available',
 
 
 HELP_1: 'Wallet Management Help',

@@ -32,6 +32,7 @@ FILE_pickContact: 'Choisir un fichier de contacts',
 FILE_pickMemo: 'Choisir un fichier de mémos',
 FILE_selectedFile: 'Fichier sélectionné',
 FILE_open: 'Choisir',
+FILE_NoFile:'Aucun fichier disponible',
 
 
 HELP_1: 'Aide Gestion des portefeuilles',
