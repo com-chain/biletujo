@@ -8,9 +8,7 @@ var contactesCtrl = function($scope, $sce, walletService, contactservice, global
 	$scope.editNameModal = new Modal(document.getElementById('editName'));
 	$scope.deleteConatctModal = new Modal(document.getElementById('deleteContact'));
 	$scope.addNameModal = new Modal(document.getElementById('addName'));
-    $scope.importCtcModal = new Modal(document.getElementById('importCtcPop'));
-    $scope.pickContactFileModal = new Modal(document.getElementById('pickContactFile'));
-    
+
     $scope.pickAlrtCurr = new Modal(document.getElementById('alrtCurr'));
     $scope.ctt_filter="";
     
@@ -21,9 +19,6 @@ var contactesCtrl = function($scope, $sce, walletService, contactservice, global
     globalFuncs.showLoading($translate.instant("GP_Wait"));
     $scope.NoCtc=true;
     $scope.contacts=[];      
-    document.getElementById("importer").title=$translate.instant("CTC_Tooltip_Import").replace("\n","");
-    // document.getElementById("exporter").title=$translate.instant("CTC_Tooltip_Export").replace("\n","");
-    document.getElementById("ajouter").title=$translate.instant("CTC_Tooltip_Ajout").replace("\n","");
 
     // Load the wallet and the contacts in the scope
 	$scope.$watch(function() {
@@ -39,16 +34,7 @@ var contactesCtrl = function($scope, $sce, walletService, contactservice, global
     $scope.loadContacts= function(){
       // Load contacts stored in the local storage  
       $scope.contacts = contactservice.loadContacts();
-      
-     
-      
-     
-      
-      // If in the browser prepare the export of the contacts
-      if (! $scope.isApp){
-        $scope.blobCtc = contactservice.getContactsBlob($scope.contacts);
-      }
-      
+
       for (var id in $scope.contacts){
           try{
               $scope.contacts[id].logo = globalFuncs.getCurrencyLogoUrl( $scope.contacts[id].servername);
@@ -151,109 +137,6 @@ var contactesCtrl = function($scope, $sce, walletService, contactservice, global
       contactservice.storeIpfsContact($scope.wallet, walletService.password);
     }
     
-    // Import handling   
-    $scope.openImportCtc = function(){
-       document.getElementById("fctcselector").value = "";
-       $scope.current_file='';
-       $scope.loacl_number=$scope.contacts.length;
-       $scope.current_file='';
-       $scope.file_number=-1;
-       $scope.conflict_number=0;
-       
-       $scope.importCtcModal.open(); 
-    }
-    
-    $scope.selectCtcFile = function(){
-       if (!$scope.isApp){
-		    document.getElementById('fctcselector').click();
-        } else {
-            globalFuncs.readCordovaDir($scope.success); 
-       } 
-    }
-    
-    $scope.success = function(entries) {
-        $scope.dir_entries=[];
-        if (entries){
-            for (var entry_id in entries){
-                
-                if (entries[entry_id].isFile && entries[entry_id].name.endsWith('.dat') ){
-                    $scope.dir_entries.push(entries[entry_id]);
-                }  
-            }
-        }
-        $scope.len= $scope.dir_entries.length;
-        $scope.SelectedFileIndex=-1;
-        $scope.SelectedFileName='';
-        $scope.$apply();
-        $scope.pickContactFileModal.open();
-    }
-    
-    $scope.pickCtcFile = function(name,index){
-        $scope.SelectedFileIndex=index;
-        $scope.SelectedFileName=name;
-        
-    }
-    
-    $scope.cancelCtcPickedFile =function(){
-        $scope.importCtcModal.open();
-    }
-      
-    $scope.openCtcPickedFile =function(){
-        if ( $scope.SelectedFileIndex>=0){
-            var file_entry = $scope.dir_entries[ $scope.SelectedFileIndex];
-            file_entry.file(function(file){
-                var reader = new FileReader();
-                reader.onloadend = function(evt) {
-                   if(this.result) {
-                       $scope.importCtcModal.open();
-                       $scope.openCtcFile(this.result); 
-                       $scope.$apply(); 
-                   } 
-                 };
-                reader.onerror = function(evt) {};
-                reader.readAsText(file);
-            },function(){});   
-        }
-    }
-    
-    
-    $scope.openCtcFile = function($fileContent) {
-      if (document.getElementById('fctcselector').files[0] || $scope.SelectedFileIndex>=0){
-        try {
-          var parsed = contactservice.checkForContact($scope.contacts, $fileContent); 
-          if (parsed.error){
-            alert($translate.instant("CTC_no_valid_ctc"));
-          }  else { 
-            $scope.new_file_content = parsed.new_file_content;
-            if ($scope.SelectedFileIndex>=0){
-                $scope.current_file = $sce.trustAsHtml(globalFuncs.getSuccessText( $scope.SelectedFileName));
-            } else {
-                $scope.current_file = $sce.trustAsHtml(globalFuncs.getSuccessText(document.getElementById('fctcselector').files[0].name));
-            }
-            $scope.file_number = parsed.count;
-            $scope.conflict_number = parsed.conflict;
-          }
-        } catch (e) {
-          alert($translate.instant("CTC_no_valid_ctc"));    
-        }
-	  }
-	}
-    
-    $scope.importCtc = function(){
-      $scope.importCtcModal.close(); 
-      globalFuncs.showLoading($translate.instant("GP_Wait"));
-      
-      $scope.contacts = contactservice.mergeContacts($scope.contacts, $scope.new_file_content, $scope.merge_type); 
-      $scope.new_file_content=null;
-      $scope.loadContacts();
-      
-      contactservice.storeIpfsContact($scope.wallet, walletService.password);
-    }
-    
-    // (App) Export handling  
-    $scope.exportCtc = function(){
-      globalFuncs.dowloadAppFileWithName(globalFuncs.currencies.CUR_global+'_Contacts.dat', $scope.contacts);
-    }
 	
 };
 module.exports = contactesCtrl;

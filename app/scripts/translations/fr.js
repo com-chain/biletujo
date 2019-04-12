@@ -517,31 +517,13 @@ CTC_updateConfirm: 'Confirmer',
 
 
 CTC_add: '&#x271A;',
-CTC_export: '&#x1f4be;',
-CTC_import:  '&#x1f4c2;',
-CTC_Export: 'Exporter les contacts',
-CTC_Import_title: 'Importer des contacts',
-CTC_SelectFile: 'Choisir un fichier',
-CTC_Import_file: '',
-CTC_Import_FileNumber: ' Contacts dans le fichier',
-CTC_Import_localNumber:' Contacts locaux',
-CTC_Import_Conflict: ' Contacts communs',
-CTC_Import_merge: 'Import des contacts communs: ',
-CTC_Merge_their: 'Remplacer par ceux du fichier',
-CTC_Merge_mine: 'Conserver les locaux ',
-
-CTC_Import_save: 'Importer',
 
 CTC_Tooltip_Export: 'Exporter',
-CTC_Tooltip_Import: 'Importer',
 CTC_Tooltip_Ajout: 'Ajouter',
 CTC_Tooltip_Rafraichir:'Rafraichir',
 CTC_Tooltip_verify: 'Vérifier une transaction',
 CTC_Tooltip_notify: 'Avertir quand une nouvelle transaction arrive',
 
-
-
-CTC_no_valid_ctc: 'Ce fichier ne contient pas de contact valide.',
 CTC_Add_ctc: 'Ajouter un contact',
 CTC_chooseAddress: 'Choisir une adresse publique:',
 CTC_chooseName: 'Choisir un nom pour le contact:',
