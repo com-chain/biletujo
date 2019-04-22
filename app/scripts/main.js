@@ -48,6 +48,7 @@ var contactsCtrl = require('./controllers/contactsCtrl');
 var storageCtrl = require('./controllers/storageCtrl');
 var exchangeCtrl = require('./controllers/exchangeCtrl');
 var billingCtrl = require('./controllers/billingCtrl');
+var noteCtrl = require('./controllers/noteCtrl');
 var globalCtrl = require('./controllers/globalCtrl');
 
 
@@ -87,12 +88,13 @@ app.directive('waitingDrtv', waitingDrtv);
 
 app.controller('tabsCtrl', ['$scope','$attrs','globalService','contactService', '$translate','$compile', 'authenticationService',tabsCtrl]);
 app.controller('viewCtrl', ['$scope', 'globalService', '$translate', viewCtrl]);
-app.controller('walletGenCtrl', ['$scope', '$translate', 'walletService','contactService', walletGenCtrl]);
+app.controller('walletGenCtrl', ['$scope', 'globalService','$translate', 'walletService','contactService', walletGenCtrl]);
 app.controller('decryptWalletCtrl', ['$scope', '$sce', '$translate', 'walletService', 'contactService', 'memoService', 'authenticationService','globalService', decryptWalletCtrl]);
 app.controller('viewWalletCtrl', ['$scope', 'walletService','contactService', '$translate', viewWalletCtrl]);
 app.controller('lemanCtrl', ['$scope','$locale', '$sce', 'walletService','contactService','globalService', '$translate', lemanCtrl]);
 app.controller('balanceCtrl', ['$scope','$locale', '$sce', 'walletService','contactService', '$translate', balanceCtrl]);
 app.controller('billingCtrl', ['$scope','$locale', '$sce', 'walletService', '$translate', billingCtrl]);
+app.controller('noteCtrl', ['$scope','$locale', '$sce', 'walletService', '$translate', noteCtrl]);
 app.controller('exchangeCtrl', ['$scope','$locale', '$sce', 'walletService', '$translate', exchangeCtrl]);
 app.controller('globalCtrl', ['$scope','$locale', '$sce', 'walletService', '$translate', globalCtrl]);
 app.controller('transactionsCtrl', ['$scope','$locale', '$sce', 'walletService','contactService','memoService', '$translate','$filter', transactionsCtrl]);

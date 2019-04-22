@@ -19,6 +19,7 @@ NAV_Contacts: 'Contacts',
 NAV_Close: 'Close the wallet',
 NAV_OpenStorage: 'Open a wallet',
 NAV_Billing: 'Positions\' changes',
+NAV_Note: 'Bank Notes',
 NAV_Exchange: 'Wallet',
 NAV_Global: 'Overview',
 

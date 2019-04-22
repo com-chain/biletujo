@@ -109,8 +109,18 @@ var globalService = function($http, $httpParamSerializerJQLike) {
       exchangeOffice:true,
       cssClass: "exc"
     },
-    global: {
+    
+    note: {
       id: 7,
+      name: "NAV_Note",
+      url: "note",
+      mew: false,
+      readOnly: false,
+      exchangeOffice:true,
+      cssClass: "not"
+    },
+    global: {
+      id: 8,
       name: "NAV_Global",
       url: "global",
       mew: false,
@@ -119,7 +129,7 @@ var globalService = function($http, $httpParamSerializerJQLike) {
       cssClass: "glob"
     },
     close: {
-      id: 8,
+      id: 9,
       name: "NAV_Close",
       url: "close",
       mew: true,
@@ -128,7 +138,7 @@ var globalService = function($http, $httpParamSerializerJQLike) {
       cssClass: "cls"
     },
     help2: {
-      id: 9,
+      id: 10,
       name: "NAV_Help",
       url: "aide",
       mew: true,
@@ -166,6 +176,12 @@ var globalService = function($http, $httpParamSerializerJQLike) {
     
     return localStorage.getItem('ComChainPayRequest');
   }
+  
+  var configureNoteTab = function(show){
+       if (localStorage.getItem('ComChainWallet') != null) {
+         tabs['note'].exchangeOffice=show;  
+       }
+  }
     
     
   var currentTab = 0;
@@ -178,7 +194,8 @@ var globalService = function($http, $httpParamSerializerJQLike) {
     navigateToPay:navigateToPay,
     setCurrAddress:setCurrAddress,
     getCurrAddress:getCurrAddress,
-    clearCurrAddress:clearCurrAddress
+    clearCurrAddress:clearCurrAddress,
+    configureNoteTab:configureNoteTab
   };
   
   

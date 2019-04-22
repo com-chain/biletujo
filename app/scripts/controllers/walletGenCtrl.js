@@ -1,5 +1,5 @@
 'use strict';
-var walletGenCtrl = function($scope,$translate, walletService, contactService) {
+var walletGenCtrl = function($scope,$globalService, $translate, walletService, contactService) {
 
     $scope.showToken=true;
     $scope.showSecret=false;
@@ -79,6 +79,7 @@ var walletGenCtrl = function($scope,$translate, walletService, contactService) {
                                $scope.message_creation='';
                                
                                globalFuncs.configure();
+                               $globalService.configureNoteTab(globalFuncs.hasBn());
                                $scope.CUR=globalFuncs.currencies.CUR;
                            }  else {
                                   $scope.message_creation=globalFuncs.getDangerText($translate.instant("GEN_Token_validation_KO"));

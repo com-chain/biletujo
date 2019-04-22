@@ -24,6 +24,7 @@ NAV_Contacts: 'Contacts',
 NAV_Close: 'Verrouiller le compte',
 NAV_OpenStorage: 'Ouvrir un compte',
 NAV_Billing: 'Mouvements',
+NAV_Note: 'Billets',
 NAV_Exchange: 'Compte',
 NAV_Global: 'Général',
 

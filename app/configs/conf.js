@@ -12,4 +12,5 @@ var conf_locale ={"server":{"name":"comchain",
 "deleg":"True",
 "payReq": "True",
 "lang":[{"code":"en","name":"English"},{"code":"fr","name":"Français"}],
-"currencies":{"CUR":"CUR","CUR_global":"CUR","CUR_nanti":"CUR","CUR_credit_mut":"CUR"}}};
+"currencies":{"CUR":"CUR","CUR_global":"CUR","CUR_nanti":"CUR","CUR_credit_mut":"CUR"},
+"notes":[0.5,5,10,20]}};
