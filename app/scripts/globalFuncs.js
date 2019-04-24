@@ -1168,10 +1168,13 @@ globalFuncs.getNoteValues = function(){
     }
 }
 
+globalFuncs.hasBn = function(){
+    var notes = globalFuncs.getNoteValues();
+    return notes && notes.length>0;
+}
 
 globalFuncs.hasBnCheck = function(){
-    var notes = globalFuncs.getNoteValues();
-    return globalFuncs.isApp() && notes && notes.length>0;
+    return globalFuncs.isApp() && globalFuncs.hasBn();
 }
 
 globalFuncs.isValidBNValue= function(value){

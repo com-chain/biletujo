@@ -295,6 +295,8 @@ var tabsCtrl = function($scope, $attrs, globalService, contactservice, $translat
     
     if (globalFuncs.isMulti() && globalFuncs.hasConfig()){
        globalFuncs.configure();
+       
+       globalService.configureNoteTab(globalFuncs.hasBn());
        document.title=globalFuncs.currencies.CUR_global;
     }
    

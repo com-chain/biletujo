@@ -19,6 +19,7 @@ NAV_Contacts: 'Contacts',
 NAV_Close: 'Close the wallet',
 NAV_OpenStorage: 'Open a wallet',
 NAV_Billing: 'Positions\' changes',
+NAV_Note: 'Bank Notes',
 NAV_Exchange: 'Wallet',
 NAV_Global: 'Overview',
 
@@ -339,7 +340,26 @@ BIL_DelAllAddress_title: 'Do you want to empty the list of account?',
 BIL_RemoveAdd: 'Remove',
 BIL_NoValidAddress: 'Invalid file.',
 
-
+/* Bank Notes */
+NOT_Title: 'Adjust bank notes amount',
+NOT_Btn_getList:'Load list from a file...',
+NOT_amount:'Set note address value to ',
+NOT_Btn_charge:'Process',
+NOT_progress:'Processing in progress. Completed operations: ',
+NOT_Currently: ' Currently: ',
+NOT_Locking: 'Locking address ',
+NOT_Pledging: 'Crediting ',
+NOT_to: ' to address ',
+NOT_completed:'Processing completed',
+NOT_NoAdd:'No Note address',
+NOT_ConfirmTitle:'Processing Confirmation',
+NOT_confirm_text:'You are about to process the adress list setting the value to ',
+NOT_Cancel:'Cancel',
+NOT_btn_conf_run:'Process',
+NOT_NoValidAddress:'Error while reading the file',
+NOT_Locked:'Locked',
+NOT_Unlocked:'Unlocked',
+NOT_Processing_error:'Erroe ib the processing :',
 
 /* Balance */
 
