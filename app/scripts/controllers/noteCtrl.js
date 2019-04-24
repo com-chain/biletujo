@@ -14,6 +14,7 @@ var noteCtrl = function($scope, $locale, $sce, walletService, $translate) {
     $scope.info_list = [];
     $scope.value_options =[];
     $scope.target_amount_option = null;
+    $scope.curr_operation='';
      
     // Popups
 	$scope.conf_popup = new Modal(document.getElementById('pop_conf_run'));
@@ -68,18 +69,15 @@ var noteCtrl = function($scope, $locale, $sce, walletService, $translate) {
                     status_txt = "NOT_Unlocked";
                 }
                 var info = {"address":address, "amount":value, "st":status, "status":status_txt};
-                $scope.local_list.push(info);
+                $scope.info_list.push(info);
                 
-                if ($scope.local_list.length == length){
-                     $scope.info_list = $scope.local_list;
-                }
+              
              });
           });
   }
   
   $scope.prepareList = function(address_list) {
       $scope.info_list = [];
-      $scope.local_list = [];
       $scope.processed = false;
       for (var index in address_list){
         $scope.preparInfo(address_list[index], address_list.length);
@@ -111,7 +109,7 @@ var noteCtrl = function($scope, $locale, $sce, walletService, $translate) {
               if (info.st == 1){ 
                  $scope.total+=2; // wrong amount but not locked
               } else {
-                 $scope.total+=3; // wrong amount and locked
+                 $scope.total+=1; // wrong amount and locked
               }
           }
       }
@@ -121,17 +119,8 @@ var noteCtrl = function($scope, $locale, $sce, walletService, $translate) {
  
   }
   
-  $scope.unlock = function(address){
-      globalFuncs.SetAccountParam($scope.wallet, address, 1, 0, 0, 0, function(data){
-                                         if (data.isError){
-                                            alert($translate.instant("NOT_Processing_error") + data.error);
-                                         } else {
-                                            $scope.waitTransaction(data.data); 
-                                         }
-                                    });   
-    }
-  
   $scope.lock = function(address){
+       $scope.curr_operation=$translate.instant("NOT_Currently")+$translate.instant("NOT_Locking") + address;
        globalFuncs.SetAccountParam($scope.wallet, address, 0, 0, 0, 0, function(data){
                                          if (data.isError){
                                             alert($translate.instant("NOT_Processing_error") + data.error);
@@ -142,6 +131,7 @@ var noteCtrl = function($scope, $locale, $sce, walletService, $translate) {
   }
   
   $scope.adjustAmount = function(address, amount){
+       $scope.curr_operation=$translate.instant("NOT_Currently")+$translate.instant("NOT_Pledging") +  amount + $scope.CUR + $translate.instant("NOT_to")+ address;
        globalFuncs.PledgeAccount($scope.wallet, address, amount, function(data){
                                          if (data.isError){
                                              alert($translate.instant("NOT_Processing_error") + data.error);
@@ -153,6 +143,7 @@ var noteCtrl = function($scope, $locale, $sce, walletService, $translate) {
   
   // Processing coordinator
   $scope.processInfo = function(){
+      $scope.curr_operation='';
       if ($scope.curr_index == $scope.info_list.length){
            $scope.completed();
       } else {
@@ -172,18 +163,13 @@ var noteCtrl = function($scope, $locale, $sce, walletService, $translate) {
                           // right amount but not locked
                           $scope.lock(address);
                       } else {
-                          // right amount and locked
+                          // right amount and locked: next one
                           $scope.curr_index += 1;
                           $scope.processInfo();
                       }
                  } else {
-                      if (status == 1){ 
-                          // wrong amount but not locked
-                          $scope.adjustAmount(address, value - $scope.target_amount);
-                      } else {
-                          // wrong amount and locked
-                          $scope.unlock(address);
-                      }
+                      // wrong amount
+                      $scope.adjustAmount(address, $scope.target_amount - value);
                  }
                  
              });

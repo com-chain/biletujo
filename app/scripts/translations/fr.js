@@ -342,7 +342,26 @@ BIL_DelAllAddress_title: 'Voulez-vous vider la liste des comptes?',
 BIL_RemoveAdd: 'Supprimer',
 BIL_NoValidAddress: 'Ce fichier est invalide.',
 
-
+/* Bank Notes */
+NOT_Title: 'Charger des billets',
+NOT_Btn_getList:'Lire une liste depuis un fichier...',
+NOT_amount:'Charger les billets avec ',
+NOT_Btn_charge:'Charger la liste',
+NOT_progress:'En traitement. Opérations complétées: ',
+NOT_Currently: ' En cours: ',
+NOT_Locking: 'Verrouillage de ',
+NOT_Pledging: 'Crédit de ',
+NOT_to: ' sur ',
+NOT_completed:'Chargement terminé',
+NOT_NoAdd:'Pas d\'adresse à charger',
+NOT_ConfirmTitle:'Confirmer le chargement des billets',
+NOT_confirm_text:'Vous êtes sur le point de charger la liste des billets avec ',
+NOT_Cancel:'Annuler',
+NOT_btn_conf_run:'Charger',
+NOT_NoValidAddress:'Erreur dans la lecture du fichier',
+NOT_Locked:'Vérouillé',
+NOT_Unlocked:'Dévérouillé',
+NOT_Processing_error:'Erreur lors du chargement : ',
 
 /* Balance */
 

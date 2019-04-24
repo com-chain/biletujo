@@ -44,7 +44,7 @@
                          <div class="col-md-12 ">
                               <label translate="NOT_amount" >Charge with:</label>
                               
-                              <select ng-options="opt for opt in value_options" data-ng-model="target_amount_option" ng-readonly="processing"></select>
+                              <select ng-options="opt for opt in value_options" data-ng-model="target_amount_option" ng-readonly="processing"></select> {{CUR}}
                           </div>
                           <div class="col-md-12 ">
                             &nbsp;
@@ -64,7 +64,7 @@
                  <div class="col-md-12 " ng_show="processing">
                      <div class="row "> 
                          <div class="col-md-12">
-                              <label translate="NOT_progress" >Progress:</label>{{done}}/{{total}}
+                              <label translate="NOT_progress" >Progress:</label>{{done}}/{{total}} {{curr_operation}}
                          </div>
                      </div>  
                  </div>
