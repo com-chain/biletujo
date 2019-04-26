@@ -82,17 +82,13 @@
     <!-- view wallet info -->
   
     <div class="tab-pane active" ng-if="globalService.currentTab==globalService.tabs.viewWalletInfo.id">
-     @@if (site !== 'readOnly' ) {
+  
         <div>
             <wallet-decrypt-drtv></wallet-decrypt-drtv>
         </div>
         
-        <div  ng-show="wallet!=null" ng-controller='viewWalletCtrl' ng-controller='lemanCtrl'>
-     }
-     @@if (site === 'readOnly' ) { 
-        <div  ng-controller='viewWalletCtrl' ng-controller='lemanCtrl'>
-     }
-     
+        <div  ng-show="wallet!=null" ng-controller='viewWalletCtrl' >
+  
             <blocked-account-drtv> </blocked-account-drtv>
      
             <section class="row" >
@@ -120,13 +116,9 @@
                       <label translate="VIEW_QR" >QR Code de votre portefeuille :</label>
                    </div>
                    <div class="col-md-12 qr_wrap ">
-                    @@if (site === 'readOnly' ) { 
-                     <div id="qr_qdd" qr-code="{{currentAddress}}" watch-var="currentAddress" width="100%" style=" max-width: 250px; margin-right:auto; margin-left:auto;" id="adr_div"></div>
-                     }
-                     @@if (site !== 'readOnly' ) {
-                        <div id="qr_qdd" qr-code="{{currentAddressFromWallet}}" watch-var="currentAddressFromWallet" width="100%" style=" max-width: 250px; margin-right:auto; margin-left:auto;" id="adr_div"></div>
-             
-                     }
+                   
+                     <div id="qr_qdd" qr-code="{{currentAddress}}" watch-var="wallet" width="100%" style=" max-width: 250px; margin-right:auto; margin-left:auto;" ></div>
+                    
                      
                    </div>
                    <div class="col-md-12 ">

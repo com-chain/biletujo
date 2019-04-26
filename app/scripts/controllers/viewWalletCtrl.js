@@ -1,12 +1,26 @@
 'use strict';
 var viewWalletCtrl = function($scope, walletService, contactservice, $translate) {
+    // Environment variables
+    $scope.isApp = globalFuncs.isApp();
     
-    $scope.currentAddress=globalFuncs.getWalletAddress();
+    // Controler variables
+    //  Data
+    $scope.currentAddress = globalFuncs.getWalletAddress();
+    $scope.acc_name= $translate.instant("TRAN_Address");
     $scope.is_locked=false;
     
+    // Popup
 	$scope.prepareTagModal = new Modal(document.getElementById('pop_prepare_tag'));
 	$scope.popCheckBN = new Modal(document.getElementById('pop_check_bill'));
-    $scope.acc_name= $translate.instant("TRAN_Address");
+
+    // Helper function
+    $scope.getAccName = function(address){
+        $scope.contacts = contactservice.loadContacts();
+        var my_name = contactservice.getContactName($scope.contacts, address);
+        if (my_name!=''){
+            $scope.acc_name=my_name;
+        }
+    }
     
     // Load the wallet in the scope
 	$scope.$watch(function() {
@@ -15,39 +29,33 @@ var viewWalletCtrl = function($scope, walletService, contactservice, $translate)
 	}, function() {
 		if (walletService.wallet == null) return;
 		$scope.wallet = walletService.wallet;
-        $scope.currentAddressFromWallet=$scope.wallet.getAddressString();
         globalFuncs.getAccInfo(globalFuncs.slockitAccStatus, $scope.wallet.getAddressString(), function(status){
                     $scope.is_locked = status==0;
         });
-        globalFuncs.notifyApproval();
         
-        $scope.contacts = contactservice.loadContacts();
-        var my_name =  contactservice.getContactName($scope.contacts, $scope.wallet.getAddressString());
-        if (my_name!=''){
-            $scope.acc_name=my_name;
-        }
-        $scope.hasBnCheck=globalFuncs.hasBnCheck();
+        $scope.currentAddress = $scope.wallet.getAddressString();
+        $scope.getAccName($scope.wallet.getAddressString());
+        $scope.hasBnCheck=globalFuncs.hasBnCheck(); 
+        
+        globalFuncs.notifyApproval(); // Refresh the Payment notification
 	});
     
-    $scope.callback = function(pdf_doc){
-        var file_name = globalFuncs.cleanName($translate.instant("PDF_Pub_file")) +'_'+$scope.currentWalletAddress+'.pdf';
-        pdf_doc.save(file_name);
-    }
     
-    $scope.tagCallback = function(pdf_doc){
-        var file_name = globalFuncs.cleanName($translate.instant("PDF_Tag_file")) +'_'+$scope.currentWalletAddress+'.pdf';
-        pdf_doc.save(file_name);
-    }
-
-    // Generate and save the wallet Address pdf
+    // User interaction:
+    //  Generate the wallet Address pdf
 	$scope.printAdr = function() {
-       
        setTimeout(function(){
              globalFuncs.generateSaveAdrPDF($scope.currentAddress, $scope.callback);
        },100); 
 	}
     
+    //  Save the wallet Address pdf
+    $scope.callback = function(pdf_doc){
+        var file_name = globalFuncs.cleanName($translate.instant("PDF_Pub_file")) +'_'+$scope.currentWalletAddress+'.pdf';
+        pdf_doc.save(file_name);
+    }
     
+    //  Open the tag popup
     $scope.printPriceTag = function(){
         $scope.p_name_1=null;
         $scope.p_price_1=null;
@@ -60,18 +68,29 @@ var viewWalletCtrl = function($scope, walletService, contactservice, $translate)
         $scope.prepareTagModal.open();
     }
     
+    // Generate the tag pdf
     $scope.getTagsPdf = function(){
         var data_object = [{"name":$scope.p_name_1,"price":$scope.p_price_1},
-                                                               {"name":$scope.p_name_2,"price":$scope.p_price_2},
-                                                               {"name":$scope.p_name_3,"price":$scope.p_price_3},
-                                                               {"name":$scope.p_name_4,"price":$scope.p_price_4}];
+                           {"name":$scope.p_name_2,"price":$scope.p_price_2},
+                           {"name":$scope.p_name_3,"price":$scope.p_price_3},
+                           {"name":$scope.p_name_4,"price":$scope.p_price_4}];
         globalFuncs.generateTagQR($scope.currentAddress, data_object);
+        // Wait for the QR generation
         setTimeout(function(){
             globalFuncs.generateTagsPDF($scope.currentAddress, data_object, $scope.tagCallback);
             $scope.prepareTagModal.close();
         },200); 
     }
     
+    // Save the tag pdf
+    $scope.tagCallback = function(pdf_doc){
+        var file_name = globalFuncs.cleanName($translate.instant("PDF_Tag_file")) +'_'+$scope.currentWalletAddress+'.pdf';
+        pdf_doc.save(file_name);
+    }
+    
+
+    // App only: check bank note
+    //  Open the BN popup
     $scope.openCheckNote = function(){
         $scope.BN_Status='';
         $scope.bnaddress='';
@@ -79,8 +98,22 @@ var viewWalletCtrl = function($scope, walletService, contactservice, $translate)
     }
     
     
-     // Scan bank note
-     
+    // Initiate bank note scanning
+    $scope.startScanToBN = function(){
+        $scope.BN_Status='';
+        cordova.plugins.barcodeScanner.scan(
+		function (result) {
+		         $scope.helloToAddressBN(result.text);
+		        }, 
+		        function (error) {
+			        alert("Scanning failed: " + error);
+		        }, 
+                {'SCAN_MODE': 'QR_CODE_MODE'}
+	   );
+        
+    };
+    
+    // React to scanning
     $scope.helloToAddressBN = function(text){
       var add_obj = globalFuncs.parseAddress(text);  
       if (add_obj.address){
@@ -91,20 +124,7 @@ var viewWalletCtrl = function($scope, walletService, contactservice, $translate)
       $scope.$apply();
     }
     
-    $scope.startScanToBN = function(){
-        $scope.BN_Status='';
-        cordova.plugins.barcodeScanner.scan(
-		function (result) {
-		 $scope.helloToAddressBN(result.text);
-		}, 
-		function (error) {
-			alert("Scanning failed: " + error);
-		 }, {'SCAN_MODE': 'QR_CODE_MODE'}
-	   );
-        
-    };
-    
-    
+    // Perform the check
     $scope.do_check = function(){
         $scope.BN_Status=globalFuncs.getWarningText($translate.instant("BN_CheckingProgress"));
         globalFuncs.getAccInfo(globalFuncs.slockitAccStatus, $scope.bnaddress, function(status){
@@ -117,11 +137,8 @@ var viewWalletCtrl = function($scope, walletService, contactservice, $translate)
                     } else {
                        $scope.BN_Status=globalFuncs.getDangerText($translate.instant("BN_NotValid"));     
                     }
-                
-                });
-                
+                });   
             }
-            
         });
     }
      
