@@ -21,7 +21,7 @@
        </div>
        <div class="row" > 
         <div class="col-md-12 "> 
-         <input class="form-control" type="text" value={{token}} id="enr_tk"/><br/>
+         <input class="form-control" type="text" ng-model="token" /><br/>
         </div>
        </div>
        <div class="row" > 
