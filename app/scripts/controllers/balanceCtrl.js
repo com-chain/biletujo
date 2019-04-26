@@ -1,6 +1,6 @@
 'use strict';
 var balanceCtrl = function($scope, $locale, $sce, walletService,contactservice, $translate) {
-    // Check the environment
+    // Environment variables
     $scope.isApp =  globalFuncs.isApp();
     $scope.currentWalletAddress=globalFuncs.getWalletAddress();
     $scope.blobEnc = '';
@@ -13,15 +13,13 @@ var balanceCtrl = function($scope, $locale, $sce, walletService,contactservice, 
     $scope.has_autor=false;
     $scope.acc_name= $translate.instant("TRAN_Address");
     
-    
-    
+    // Popup 
 	$scope.qrModal = new Modal(document.getElementById('QR_pop'));
     
 	$scope.addDelegationModal = new Modal(document.getElementById('addDelegation'));
 	$scope.editDelegationModal = new Modal(document.getElementById('editDelegation'));
     $scope.deleteDelegationModal = new Modal(document.getElementById('deleteDelegation'));
 	$scope.delegationHelpPop = new Modal(document.getElementById('delegation_help_pop'), { keyboard: false, backdrop  : 'static'});
-    
     
 	$scope.addAllowanceModal = new Modal(document.getElementById('addAllowance'));
 	$scope.editAllowanceModal = new Modal(document.getElementById('editAllowance'));
@@ -33,12 +31,9 @@ var balanceCtrl = function($scope, $locale, $sce, walletService,contactservice, 
     
     $scope.trans_message = $translate.instant("GP_Wait_tran");
     
-    
-    
     // Controler variables 
     $locale.NUMBER_FORMATS.GROUP_SEP = "'";
 	$scope.showRaw = false;
-    globalFuncs.showLoading($translate.instant("GP_Wait"));
     $scope.contacts = [];
     $scope.showContactPop=false;
 
@@ -53,6 +48,9 @@ var balanceCtrl = function($scope, $locale, $sce, walletService,contactservice, 
     $scope.token.limitCMp = $translate.instant("TRAN_Wait");
 
     $scope.is_locked = false;
+    
+    
+    globalFuncs.showLoading($translate.instant("GP_Wait"));
     
 	$scope.$watch(function() {
 		if (walletService.wallet == null) return null;

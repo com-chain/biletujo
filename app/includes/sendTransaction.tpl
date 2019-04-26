@@ -1,17 +1,12 @@
 
 
-    <div class="tab-pane active" ng-if="globalService.currentTab==globalService.tabs.leman.id">
+    <div class="tab-pane active" ng-if="globalService.currentTab==globalService.tabs.send.id">
         <div>
             <wallet-decrypt-drtv></wallet-decrypt-drtv>
         </div>
 
-        <div  ng-show="wallet!=null" ng-controller='lemanCtrl'>
+        <div  ng-show="wallet!=null" ng-controller='sendCtrl'>
           <blocked-account-drtv> </blocked-account-drtv>
-        
-
-        
-        
-        
         
          <section class="row" >
           <div class="col-md-12 totBal grp" ng-show="showMyBalance">

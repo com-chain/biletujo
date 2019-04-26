@@ -54,7 +54,7 @@ var globalService = function($http, $httpParamSerializerJQLike) {
       exchangeOffice:false,
       cssClass: "recieve"
     },
-    leman: {
+    send: {
       id: 1,
       name: "NAV_Transaction",
       url: "send",

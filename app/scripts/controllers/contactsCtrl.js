@@ -2,23 +2,21 @@
 var contactesCtrl = function($scope, $sce, walletService, contactservice, globalService, $translate) {
     
     // Check the environment
-    $scope.isApp =  globalFuncs.isApp();
+    $scope.isApp = globalFuncs.isApp();
     
     // Create the modal popups
 	$scope.editNameModal = new Modal(document.getElementById('editName'));
 	$scope.deleteConatctModal = new Modal(document.getElementById('deleteContact'));
 	$scope.addNameModal = new Modal(document.getElementById('addName'));
-
     $scope.pickAlrtCurr = new Modal(document.getElementById('alrtCurr'));
-    $scope.ctt_filter="";
-    
-    
     
     // Controler variables 
-    $scope.merge_type=0;
+    $scope.merge_type = 0;
+    $scope.NoCtc = true;
+    $scope.ctt_filter = "";
+    $scope.contacts = [];  
+    
     globalFuncs.showLoading($translate.instant("GP_Wait"));
-    $scope.NoCtc=true;
-    $scope.contacts=[];      
 
     // Load the wallet and the contacts in the scope
 	$scope.$watch(function() {
@@ -27,6 +25,7 @@ var contactesCtrl = function($scope, $sce, walletService, contactservice, global
 	}, function() {
 		if (walletService.wallet == null) return;
 		$scope.wallet = walletService.wallet;
+        globalFuncs.notifyApproval(); // Refresh the Payment notification
 	});
     
     

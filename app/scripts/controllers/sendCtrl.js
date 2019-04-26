@@ -1,8 +1,9 @@
 'use strict';
-var lemanCtrl = function($scope, $locale, $sce, walletService, contactservice, globalService, $translate) {
+var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, globalService, $translate) {
     $locale.NUMBER_FORMATS.GROUP_SEP = "'";
     $scope.limitWithoutPass=0;
     
+    // Popup
 	$scope.sendTxModal = new Modal(document.getElementById('sendTransaction'));
 	$scope.executedTransModal = new Modal(document.getElementById('executedTrans'));
 	$scope.chooseOrigineModal = new Modal(document.getElementById('chooseOrigine'));
@@ -765,6 +766,6 @@ var lemanCtrl = function($scope, $locale, $sce, walletService, contactservice, g
     
 
 };
-module.exports = lemanCtrl;
+module.exports = sendCtrl;
 
 
