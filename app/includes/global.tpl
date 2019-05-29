@@ -30,10 +30,10 @@
           
               <div class="row grp"> 
                  <div class="col-md-6 col-xs-6">
-                     <label translate="GLB_Taxes" >Taxes :</label>
+                     <label >Fonte :</label>
                   </div>
                    <div  class="col-md-6 col-xs-6">
-                    <a class="btn btn-primary btn-block" ng-click="refresh()" translate="EXC_Refresh">Refresh </a>
+                    <a class="btn btn-primary btn-block" ng-click="melt()" >Fondre de {{fonte}} %</a>
                    </div>
                   <div class="col-md-12 ">
                   <br/>
@@ -41,54 +41,45 @@
                   </div>
                   
                   <div  class="col-md-12 " >
-                        <span translate="GLB_tax_amount"> </span>
+                        <span > Lors d\'un transfert depuis un partenaire vers un employ&eacute:</span>
 
                   </div> 
                   <div  class="col-md-6 col-xs-6 text-primary">
-                        {{taxes_amount}}<span translate="GLB_percent"> </span>
+                         Taux transf&eacute;r&eacute; :{{transfert_employe}} % </span>
+
+                  </div>
+                  <div   class="col-md-6 col-xs-6">
+                    <a class="btn btn-primary btn-block" ng-click="updateRateE()">Modifier le taux </a>
+                  </div>
+                  
+                    <div  class="col-md-12 " >
+                        <span > Lors d\'un transfert depuis un partenaire vers une association;</span>
+
+                  </div> 
+                  
+              
+                  <div  class="col-md-6 col-xs-6 text-primary">
+                         taux transf&eacute;r&eacute; :{{transfert_asso}} % </span>
 
                   </div>
                   <div  class="col-md-6 col-xs-6">
-                    <a class="btn btn-primary btn-block" ng-click="updateTax()" translate="GLB_update_tax">Update </a>
+                    <a class="btn btn-primary btn-block" ng-click="updateRateA()" >Modifier le taux </a>
                   </div>
                   
                  <br/>
           
-                  
-                  
-                   <div  class="col-md-12 " >
-                        <span translate="GLB_tax_amount_leg"> </span>
+                 <div  class="col-md-12 " >
+                        <span > Taux de fonte (mensuel):</span>
 
                   </div> 
-                  <div  class="col-md-6 col-xs-6 text-primary">
-                        {{taxes_amount_leg}}<span translate="GLB_percent"> </span>
+                    <div  class="col-md-6 col-xs-6 text-primary">
+                         {{fonte}} % </span>
 
                   </div>
-                  <div  class="col-md-6 col-xs-6">
-                    <a class="btn btn-primary btn-block" ng-click="updateTaxLeg()" translate="GLB_update_tax">Update </a>
-                  </div>  
-                  
-                 
-                 <br/>
-                 
-                  <div  class="col-md-12 ">
-                        <span translate="GLB_tax_account">  </span>
-                  </div>
-                  
-                  
                   <div   class="col-md-6 col-xs-6">
-                       <div class="identiconWrapper" style="max-width:100px;" >
-                                    <div id="addressIdenticon" title="Address Indenticon" img="1" blockie-address="{{tax_account}}"  
-                                        watch-var="tax_account" ">
-                                    </div>
-                         </div>
-                         <textarea cols="9" rows="5" class="adrtxt" disabled>{{tax_account}} </textarea>
+                    <a class="btn btn-primary btn-block" ng-click="updateRateF()">Modifier le taux </a>
                   </div>
-                   <div  class="col-md-6 col-xs-6">
-                    &nbsp;
-                    <br/>
-                    <a class="btn btn-primary btn-block" ng-click="updateTaxAcc()" translate="GLB_update_tax_acc">Refresh </a>
-                  </div>
+                
                                       
               </div>
               
@@ -114,8 +105,8 @@
           </div>
       </section> 
        
-     <!-- Confrim Taxes -->
-     <div class="modal fade" id="confTax" tabindex="-1" role="dialog" aria-labelledby="sendTransactionLabel">
+     <!-- Confrim Rate E -->
+     <div class="modal fade" id="confRateE" tabindex="-1" role="dialog" aria-labelledby="sendTransactionLabel">
               <div class="modal-dialog" role="document">
                   <div class="modal-content">
                       <div class="modal-header">
@@ -123,25 +114,24 @@
                       </div>
                       <div class="modal-body">
                           <h4 align="center">
-                           <p><label translate="GLB_Change_tax">Confirm Tax</label></p>
-                           <p> <span translate="GLB_NewTaxAmount" ></span> <span class="text-primary"> 
-                                   <input class="form-control" type="text" placeholder="0" ng-model="new_tax_amount"/>  
-                                   <span translate="GLB_percent"> </span>
-                               </span>  
+                           <p><label >Modifier le taux transf&eacute;r&eacute; transfert depuis un partenaire vers un employ&eacute; </label></p>
+                           <p> <span  >Nouveaux Taux</span> <span class="text-primary"> 
+                                   <input class="form-control" type="text" placeholder="0" ng-model="new_rate_E_amount"/>  
+                                   % </span>
                             </p>
                              
                           </h4>
                       </div>
                       <div class="modal-footer text-center">
                           <button type="button" class="btn btn-default" data-dismiss="modal" translate="GLB_cancel">Annuler </button>
-                          <button type="button" class="btn btn-primary" ng-click="confirmTax()" translate="GLB_confirm" ng-show="new_tax_amount >= 0" >Sauver</button>
+                          <button type="button" class="btn btn-primary" ng-click="confirmRateE()" translate="GLB_confirm" ng-show="new_rate_E_amount >= 0" >Sauver</button>
                       </div>
                   </div>
               </div>
        </div> 
        
-            <!-- Confrim Taxes -->
-     <div class="modal fade" id="confTaxLeg" tabindex="-1" role="dialog" aria-labelledby="sendTransactionLabel">
+       <!-- Confrim Rate A -->
+     <div class="modal fade" id="confRateA" tabindex="-1" role="dialog" aria-labelledby="sendTransactionLabel">
               <div class="modal-dialog" role="document">
                   <div class="modal-content">
                       <div class="modal-header">
@@ -149,25 +139,24 @@
                       </div>
                       <div class="modal-body">
                           <h4 align="center">
-                           <p><label translate="GLB_Change_tax_leg">Confirm Tax</label></p>
-                           <p> <span translate="GLB_NewTaxAmount" ></span> <span class="text-primary"> 
-                                   <input class="form-control" type="text" placeholder="0" ng-model="new_tax_amount_leg"/>  
-                                   <span translate="GLB_percent"> </span>
-                               </span>  
+                           <p><label >Modifier le taux transf&eacute;r&eacute; transfert depuis un partenaire vers une association </label></p>
+                           <p> <span  >Nouveaux Taux</span> <span class="text-primary"> 
+                                   <input class="form-control" type="text" placeholder="0" ng-model="new_rate_A_amount"/>  
+                                   % </span>
                             </p>
                              
                           </h4>
                       </div>
                       <div class="modal-footer text-center">
                           <button type="button" class="btn btn-default" data-dismiss="modal" translate="GLB_cancel">Annuler </button>
-                          <button type="button" class="btn btn-primary" ng-click="confirmTaxLeg()" translate="GLB_confirm" ng-show="new_tax_amount_leg >= 0" >Sauver</button>
+                          <button type="button" class="btn btn-primary" ng-click="confirmRateA()" translate="GLB_confirm" ng-show="new_rate_A_amount >= 0" >Sauver</button>
                       </div>
                   </div>
               </div>
        </div> 
        
-     <!-- Confrim Taxes Account       -->
-     <div class="modal fade" id="confTaxAccount" tabindex="-1" role="dialog" aria-labelledby="sendTransactionLabel">
+     <!-- Confrim Rate F -->
+     <div class="modal fade" id="confRateF" tabindex="-1" role="dialog" aria-labelledby="sendTransactionLabel">
               <div class="modal-dialog" role="document">
                   <div class="modal-content">
                       <div class="modal-header">
@@ -175,24 +164,46 @@
                       </div>
                       <div class="modal-body">
                           <h4 align="center">
-                           <p><label translate="GLB_Change_tax_Account">Confirm Tax_account</label></p>
-                           <div class="identiconWrapper" style="max-width:100px;" >
-                                    <div id="addressIdenticon" title="Address Indenticon" img="1" blockie-address="{{new_tax_account}}"   
-                                         ng-click="startScanToAddressTax()"  watch-var="new_tax_account" >
-                                    </div>
-                           </div>
-                           
-                           <textarea cols="9" rows="5" class="adrtxt" ng-model="new_tax_account" >{{new_tax_account}} </textarea>
+                           <p><label >Modifier le taux de fonte </label></p>
+                           <p> <span  >Nouveaux Taux</span> <span class="text-primary"> 
+                                   <input class="form-control" type="text" placeholder="0" ng-model="new_rate_F_amount"/>  
+                                   % </span>
+                            </p>
                              
                           </h4>
                       </div>
                       <div class="modal-footer text-center">
                           <button type="button" class="btn btn-default" data-dismiss="modal" translate="GLB_cancel">Annuler </button>
-                          <button type="button" class="btn btn-primary" ng-click="confirmTaxAccount()" translate="GLB_confirm"  >Sauver</button>
+                          <button type="button" class="btn btn-primary" ng-click="confirmRateF()" translate="GLB_confirm" ng-show="new_rate_F_amount >= 0" >Sauver</button>
                       </div>
                   </div>
               </div>
        </div> 
+       
+       <!-- Confrim Melting -->
+     <div class="modal fade" id="confMelt" tabindex="-1" role="dialog" aria-labelledby="sendTransactionLabel">
+              <div class="modal-dialog" role="document">
+                  <div class="modal-content">
+                      <div class="modal-header">
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                      </div>
+                      <div class="modal-body">
+                          <h4 align="center">
+                           <p><label >Appliquer la fonte </label></p>
+                           <p> <span >Avec un taux de {{fonte}}%</span> </p>
+                             
+                          </h4>
+                      </div>
+                      <div class="modal-footer text-center">
+                          <button type="button" class="btn btn-default" data-dismiss="modal" translate="GLB_cancel">Annuler </button>
+                          <button type="button" class="btn btn-primary" ng-click="doMelt()"  >Fondre!</button>
+                      </div>
+                  </div>
+              </div>
+       </div> 
+       
+      
+     
        
         <!-- Confrim Owner Account       -->
      <div class="modal fade" id="confOwnerAccount" tabindex="-1" role="dialog" aria-labelledby="sendTransactionLabel">

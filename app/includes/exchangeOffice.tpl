@@ -157,8 +157,9 @@
                            </p>
                            <p><label translate="EXC_AccType">Account type</label></p> 
                               <md-radio-group>
-                                 <input type="radio" ng-model="pop_acc_type" ng-change="typeChanged()" name="cb_type" value="0" id="cb_pers" ng-hide="acc_type_obj.is_admin"/> <span ng-hide="acc_type_obj.is_admin" > {{ 'EXC_Account_Type_physical' | translate }} </span> &nbsp;&nbsp;&nbsp;
-                                 <input type="radio" ng-model="pop_acc_type" ng-change="typeChanged()" name="cb_type" value="1"  id="cb_legal" ng-hide="acc_type_obj.is_admin"/> <span ng-hide="acc_type_obj.is_admin" > {{ 'EXC_Account_Type_legal' | translate }} </span> &nbsp;&nbsp;&nbsp;
+                              <input type="radio" ng-model="pop_acc_type" ng-change="typeChanged()" name="cb_type" value="3" id="cb_pers" ng-hide="acc_type_obj.is_admin"/> <span ng-hide="acc_type_obj.is_admin" > Association </span> &nbsp;&nbsp;&nbsp;
+                                 <input type="radio" ng-model="pop_acc_type" ng-change="typeChanged()" name="cb_type" value="0" id="cb_pers" ng-hide="acc_type_obj.is_admin"/> <span ng-hide="acc_type_obj.is_admin" > B&eacute;n&eacute;vole /Employ&eacute; </span> &nbsp;&nbsp;&nbsp;
+                                 <input type="radio" ng-model="pop_acc_type" ng-change="typeChanged()" name="cb_type" value="1"  id="cb_legal" ng-hide="acc_type_obj.is_admin"/> <span ng-hide="acc_type_obj.is_admin" > Partenaire </span> &nbsp;&nbsp;&nbsp;
                                  <input type="radio" ng-model="pop_acc_type"  ng-change="typeChanged()" name="cb_type" value="2"  id="cb_admin" ng-show="acc_type_obj.can_admin" />  <span ng-show="acc_type_obj.can_admin"> {{ 'EXC_Account_Type_admin' | translate }} </span>
                               </md-radio-group>
                            </p> 
