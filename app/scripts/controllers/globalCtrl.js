@@ -42,15 +42,15 @@ var globalCtrl = function($scope, $locale, $sce, walletService, $translate) {
         
         $scope.CUR_nanti=globalFuncs.currencies.CUR_nanti;
         // TO DO replace by the 3 rate
-        globalFuncs.getAccInfo(globalFuncs.slockitTaxAmount, $scope.wallet.getAddressString(), function(amount){
-          globalFuncs.getAccInfo(globalFuncs.slockitTaxLegAmount, $scope.wallet.getAddressString(), function(amountLeg){
-           globalFuncs.getGlobInfo(globalFuncs.slockitTaxAccount, function(acc){
+        globalFuncs.getGlobInfo(globalFuncs.AddCoeurGetRateE, function(rateE){
+          globalFuncs.getGlobInfo(globalFuncs.AddCoeurGetRateA, function(rateA){
+           globalFuncs.getGlobInfo(globalFuncs.AddCoeurGetRateF, function(rateF){
                 globalFuncs.getAccInfo(globalFuncs.slockitGetTotalAmount, $scope.wallet.getAddressString(), function(tot){
 
                    $scope.total_amount = tot/100.0;
-                   $scope.transfert_employe = 50;
-                   $scope.transfert_asso = 25;
-                   $scope.fonte = 0;
+                   $scope.transfert_employe = rateE;
+                   $scope.transfert_asso = rateA;
+                   $scope.fonte = rateF;
 
                    globalFuncs.hideLoadingWaiting();  
                  });
@@ -67,15 +67,15 @@ var globalCtrl = function($scope, $locale, $sce, walletService, $translate) {
     
     $scope.confirmRateE = function(){
          $scope.confRateEPop.close();
-         /*globalFuncs.SetTaxAmount($scope.wallet, $scope.new_tax_amount, function(res){
+         globalFuncs.CoeurSetRateE($scope.wallet, $scope.new_rate_E_amount, function(res){
             if (res.isError){
-                $scope.validateStatus= $sce.trustAsHtml(globalFuncs.getDangerText($translate.instant("GLB_Tax_amount_not_updated")));
+                $scope.validateStatus= $sce.trustAsHtml(globalFuncs.getDangerText("Echeque de la mise &agrave; jour du taux"));
             } else {
-                $scope.validateStatus= $sce.trustAsHtml(globalFuncs.getSuccessText($translate.instant("GLB_Tax_amount_updated")));
-                $scope.trans_message = $translate.instant("GLB_Tax_amount_updated");
+                $scope.validateStatus= $sce.trustAsHtml(globalFuncs.getSuccessText("Taux mis &agrave; jour."));
+                $scope.trans_message = "Taux mis &agrave; jour.";
                 $scope.waitTransaction(res.data); 
             }
-         }); */  
+         }); 
     }
     
     $scope.updateRateA = function(){
@@ -85,15 +85,15 @@ var globalCtrl = function($scope, $locale, $sce, walletService, $translate) {
     
     $scope.confirmRateA = function(){
          $scope.confRateAPop.close();
-         /*globalFuncs.SetTaxAmount($scope.wallet, $scope.new_tax_amount, function(res){
-            if (res.isError){
-                $scope.validateStatus= $sce.trustAsHtml(globalFuncs.getDangerText($translate.instant("GLB_Tax_amount_not_updated")));
+         globalFuncs.CoeurSetRateA($scope.wallet, $scope.new_rate_A_amount, function(res){
+             if (res.isError){
+                $scope.validateStatus= $sce.trustAsHtml(globalFuncs.getDangerText("Echeque de la mise &agrave; jour du taux"));
             } else {
-                $scope.validateStatus= $sce.trustAsHtml(globalFuncs.getSuccessText($translate.instant("GLB_Tax_amount_updated")));
-                $scope.trans_message = $translate.instant("GLB_Tax_amount_updated");
+                $scope.validateStatus= $sce.trustAsHtml(globalFuncs.getSuccessText("Taux mis &agrave; jour."));
+                $scope.trans_message = "Taux mis &agrave; jour.";
                 $scope.waitTransaction(res.data); 
             }
-         }); */  
+         }); 
     }
     
     $scope.updateRateF = function(){
@@ -103,53 +103,33 @@ var globalCtrl = function($scope, $locale, $sce, walletService, $translate) {
     
     $scope.confirmRateF = function(){
          $scope.confRateFPop.close();
-         /*globalFuncs.SetTaxAmount($scope.wallet, $scope.new_tax_amount, function(res){
+         globalFuncs.CoeurSetRateF($scope.wallet, $scope.new_rate_F_amount, function(res){
             if (res.isError){
-                $scope.validateStatus= $sce.trustAsHtml(globalFuncs.getDangerText($translate.instant("GLB_Tax_amount_not_updated")));
+                $scope.validateStatus= $sce.trustAsHtml(globalFuncs.getDangerText("Echeque de la mise &agrave; jour du taux"));
             } else {
-                $scope.validateStatus= $sce.trustAsHtml(globalFuncs.getSuccessText($translate.instant("GLB_Tax_amount_updated")));
-                $scope.trans_message = $translate.instant("GLB_Tax_amount_updated");
+                $scope.validateStatus= $sce.trustAsHtml(globalFuncs.getSuccessText("Taux mis &agrave; jour."));
+                $scope.trans_message = "Taux mis &agrave; jour.";
                 $scope.waitTransaction(res.data); 
             }
-         }); */  
+         }); 
     }
     
   
-    
-    
-     $scope.updateRateE = function(){
-        $scope.new_rate_E_amount =  $scope.transfert_employe;
-        $scope.confRateEPop.open();
-    }
-    
-    $scope.confirmRateE = function(){
-         $scope.confRateEPop.close();
-         /*globalFuncs.SetTaxAmount($scope.wallet, $scope.new_tax_amount, function(res){
-            if (res.isError){
-                $scope.validateStatus= $sce.trustAsHtml(globalFuncs.getDangerText($translate.instant("GLB_Tax_amount_not_updated")));
-            } else {
-                $scope.validateStatus= $sce.trustAsHtml(globalFuncs.getSuccessText($translate.instant("GLB_Tax_amount_updated")));
-                $scope.trans_message = $translate.instant("GLB_Tax_amount_updated");
-                $scope.waitTransaction(res.data); 
-            }
-         }); */  
-    }
-    
     $scope.melt = function(){
         $scope.confMeltPop.open();
     }
     
     $scope.doMelt = function(){
         $scope.confMeltPop.close();
-        /*globalFuncs.SetTaxAmount($scope.wallet, $scope.new_tax_amount, function(res){
+        globalFuncs.CoeurMelt($scope.wallet, function(res){
             if (res.isError){
-                $scope.validateStatus= $sce.trustAsHtml(globalFuncs.getDangerText($translate.instant("GLB_Tax_amount_not_updated")));
+                $scope.validateStatus= $sce.trustAsHtml(globalFuncs.getDangerText("La Fonte a &eacute;chou&eacute;"));
             } else {
-                $scope.validateStatus= $sce.trustAsHtml(globalFuncs.getSuccessText($translate.instant("GLB_Tax_amount_updated")));
-                $scope.trans_message = $translate.instant("GLB_Tax_amount_updated");
+                $scope.validateStatus= $sce.trustAsHtml(globalFuncs.getSuccessText("La fonte est d&eacute;clanch&eacute;e"));
+                $scope.trans_message = "La fonte est d&eacute;clanch&eacute;e";
                 $scope.waitTransaction(res.data); 
             }
-         }); */  
+         }); 
     }
     
     

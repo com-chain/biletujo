@@ -52,7 +52,6 @@ var globalFuncs = function() {}
  
  globalFuncs.transfertOnBehalfNant = "0x1b6b1ee5";
  globalFuncs.transfertOnBehalfCM = "0x74c421fe";
- 
 
  globalFuncs.myRequestCount = "0x418d0fd4";
  globalFuncs.myReqMap = "0x0becf93f";
@@ -502,6 +501,64 @@ globalFuncs.getRejectedRequestList = function(walletAddress, ind_min, ind_max, c
     });
 }
 
+
+
+  /****************** Coeur Specific ********************/
+  
+ globalFuncs.AddCoeurGetRateA = "0x2d7811fa"; 
+ globalFuncs.AddCoeurGetRateE = "0x9a0d87b6"; 
+ globalFuncs.AddCoeurGetRateF = "0xb9d22929"; 
+ 
+ globalFuncs.AddCoeurSetRateA = "0xad2b5716"; 
+ globalFuncs.AddCoeurSetRateE = "0x49ca1ed2"; 
+ globalFuncs.AddCoeurSetRateF = "0x735f79fc"; 
+ 
+ globalFuncs.AddCoeurMelt = "0x5220f510"; 
+ 
+ globalFuncs.CoeurSetRateA = function(wallet, rate, callback){
+     var rate_encoded = globalFuncs.encodeNumber(parseInt(rate,10));
+     globalFuncs.generateTx(globalFuncs.getContract1(),
+                            wallet, 
+                            globalFuncs.AddCoeurSetRateA, 
+                            [rate_encoded],
+                            {},
+                            callback);       
+ }
+ 
+  globalFuncs.CoeurSetRateE = function(wallet, rate, callback){
+     var rate_encoded = globalFuncs.encodeNumber(parseInt(rate,10));
+     globalFuncs.generateTx(globalFuncs.getContract1(),
+                            wallet, 
+                            globalFuncs.AddCoeurSetRateE, 
+                            [rate_encoded],
+                            {},
+                            callback);       
+ }
+ 
+ globalFuncs.CoeurSetRateF = function(wallet, rate, callback){
+     var rate_encoded = globalFuncs.encodeNumber(parseInt(rate,10));
+     globalFuncs.generateTx(globalFuncs.getContract1(),
+                            wallet, 
+                            globalFuncs.AddCoeurSetRateF, 
+                            [rate_encoded],
+                            {},
+                            callback);       
+ }
+ 
+  globalFuncs.CoeurMelt = function(wallet, callback){
+     globalFuncs.generateTx(globalFuncs.getContract1(),
+                            wallet, 
+                            globalFuncs.AddCoeurMelt, 
+                            [],
+                            {},
+                            callback);       
+ }
+ 
+  
+  
+  /****************** /Coeur Specific ********************/
+
+
  /*Action in contract 2*/
  
  
@@ -702,6 +759,8 @@ globalFuncs.RejectRequest = function (wallet, to_address, callback){
 		    }
 		});        
   }
+  
+
   
  
   
