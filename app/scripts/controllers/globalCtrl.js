@@ -48,9 +48,9 @@ var globalCtrl = function($scope, $locale, $sce, walletService, $translate) {
                 globalFuncs.getAccInfo(globalFuncs.slockitGetTotalAmount, $scope.wallet.getAddressString(), function(tot){
 
                    $scope.total_amount = tot/100.0;
-                   $scope.transfert_employe = rateE;
-                   $scope.transfert_asso = rateA;
-                   $scope.fonte = rateF;
+                   $scope.transfert_employe = globalFuncs.getNumber(rateE, 1.);
+                   $scope.transfert_asso = globalFuncs.getNumber(rateA, 1.);
+                   $scope.fonte = globalFuncs.getNumber(rateF, 1.);
 
                    globalFuncs.hideLoadingWaiting();  
                  });

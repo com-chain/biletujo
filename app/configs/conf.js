@@ -1,16 +1,1 @@
-var conf_locale ={"server":{"name":"comchain",
-"address":"",
-"contract_1":"0x123",
-"contract_2":"0x123",
-"contract_3":"0x123",
-"url_Css":"",
-"url_help": "http://com-chain.org/",
-"url_cond": "http://com-chain.org/",
-"nant":"True",
-"CM":"True",
-"autor":"True",
-"deleg":"True",
-"payReq": "True",
-"lang":[{"code":"en","name":"English"},{"code":"fr","name":"Français"}],
-"currencies":{"CUR":"CUR","CUR_global":"CUR","CUR_nanti":"CUR","CUR_credit_mut":"CUR"},
-"notes":[0.5,5,10,20]}};
+var conf_locale ={"server":{"name":"COEUR","address":"< TBD >","contract_1":"0x78B0E44759d8dc5090a55Cc7fFFD1E7A4b827425","contract_2":"0x78B0E44759d8dc5090a55Cc7fFFD1E7A4b827425","contract_3":"0xF931D0BF4139015D01C51b33A0C25D9C004Da977","url_Css":"< TBD >","url_help":"< TBD >","url_cond":"< TBD >","nant":true,"CM":false,"autor":false,"deleg":false,"lang":[{"code":"fr","name":"Français"},{"code":"en","name":"English"}],"currencies":{"CUR":"COR","CUR_global":"COEUR","CUR_nanti":"COEUR","CUR_credit_mut":""}}};
