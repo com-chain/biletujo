@@ -48,13 +48,17 @@ var exchangeCtrl = function($scope, $locale, $sce, walletService, $translate) {
        this.is_admin = type_val==2;
        this.is_legal= type_val==1;
        this.is_person= type_val==0;
+       this.is_asso= type_val==0;
+       this.can_nant = type_val==3
         if (type_val==0){
            this.tp_name = $translate.instant("EXC_Account_Type_physical");
         } else if (type_val==1){
            this.tp_name = $translate.instant("EXC_Account_Type_legal");
         } else if (type_val==2){
            this.tp_name = $translate.instant("EXC_Account_Type_admin");
-        } 
+        }  else if (type_val==3){
+            this.tp_name = "Association";
+        }
     };
     
     
@@ -174,7 +178,8 @@ var exchangeCtrl = function($scope, $locale, $sce, walletService, $translate) {
       $scope.pop_acc_type=$scope.acc_type_obj.tp;
       document.getElementById('cb_pers').checked=$scope.acc_type_obj.is_person;  
       document.getElementById('cb_legal').checked=$scope.acc_type_obj.is_legal;  
-      document.getElementById('cb_admin').checked=$scope.acc_type_obj.is_admin;
+      document.getElementById('cb_admin').checked=$scope.acc_type_obj.is_admin; 
+      document.getElementById('cb_asso').checked=$scope.acc_type_obj.is_asso;
 
       $scope.acc_type_obj.can_admin = false;
       if ( ($scope.balanceEL==0 && $scope.balanceCM==0) ||  $scope.acc_type_obj.is_admin){
