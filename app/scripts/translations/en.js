@@ -150,6 +150,7 @@ TRAN_Confirm_text_request: 'You are requesting the payment of',
 TRAN_From: 'from',
 TRAN_Enter_pass_request: 'Please enter your password and confirm your request',
 TRAN_executed_request_text: 'You have sent your payment request',
+TRAN_total: 'Total = ',
 
 TRAN_Done: 'The transaction has been sent and is being processed',
 TRAN_Wait: '(...)',
