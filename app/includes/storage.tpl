@@ -88,7 +88,7 @@
                              
                                <div><label translate="STR_Backup">Do a backup</label></div>
                       
-                               <a class="btn btn-info btn-block" href="{{blobEnc}}" download="LEM_0x{{currentAddress}}.dat" 
+                               <a class="btn btn-info btn-block" href="{{blobEnc}}" download="{{currentServer}}_0x{{currentAddress}}.dat" 
                                   translate="VIEW_Save" ng-if="!isApp"> Télécharger la Sauvegarde </a>
                                <a class="btn btn-info btn-block" ng-click="dowloadAppFile()"  translate="VIEW_Save" 
                                   ng-if="isApp"> Télécharger la Sauvegarde </a>
