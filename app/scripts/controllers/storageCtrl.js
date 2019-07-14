@@ -39,7 +39,8 @@ var storageCtrl = function($scope, $sce, walletService, contactservice, $transla
         $scope.currentAddress = address;
         for (var id in $scope.wallets){
            if ($scope.wallets[id].address==address){
-              $scope.blobEnc= globalFuncs.getBlob("text/json;charset=UTF-8",$scope.wallets[id]);
+              $scope.blobEnc= globalFuncs.getBlob("text/json;charset=UTF-8",$scope.wallets[id].file);
+              $scope.currentServer = $scope.wallets[id].file.server.name;
            }
         }
         $scope.deleteWalletModal.open();
@@ -48,7 +49,7 @@ var storageCtrl = function($scope, $sce, walletService, contactservice, $transla
     $scope.dowloadAppFile = function(){
        for (var id in $scope.wallets){
          if ($scope.wallets[id].address == $scope.currentAddress){
-           globalFuncs.dowloadAppFileWithName('LEM_0x'+$scope.currentAddress+'.dat', $scope.wallets[id].file);
+           globalFuncs.dowloadAppFileWithName($scope.wallets[id].file.server.name+'_0x'+$scope.currentAddress+'.dat', $scope.wallets[id].file);
          }
        }
     }
@@ -64,6 +65,7 @@ var storageCtrl = function($scope, $sce, walletService, contactservice, $transla
          }
       }
       $scope.currentAddress='';
+      $scope.currentServer = '';
       $scope.blobEnc='';
       $scope.deleteWalletModal.close();
     }
