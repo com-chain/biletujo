@@ -152,6 +152,7 @@ TRAN_Confirm_text_request: 'Vous êtes en train de demander le paiement de',
 TRAN_From: 'à',
 TRAN_Enter_pass_request: 'Veuillez entrer votre mot de passe et confirmer la demande',
 TRAN_executed_request_text:'Vous avez transmis la demande de paiement',
+TRAN_total: 'Total = ',
 
 TRAN_Done: 'La transaction a été transmise et est en traitement',
 TRAN_Wait: '(...)',

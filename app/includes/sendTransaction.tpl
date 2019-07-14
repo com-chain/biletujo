@@ -309,7 +309,12 @@
                                   <label translate="TRAN_executed_text" ng-hide="is_request_mode">Vous avez envoyé</label>
                                   <label translate="TRAN_executed_request_text" ng-show="is_request_mode" >Vous avez demandé</label>
                               </h4>
-                              <strong class="text-primary"><span ng-show="elemanAmmount>0"> {{elemanAmmount/100.| number : 2}} {{CUR_nanti}}  </span> <span ng-show="lemanexAmmount>0"> {{lemanexAmmount/100.| number : 2}} {{CUR_credit_mut}}   </span> </strong> 
+                              <strong class="text-primary">
+                                    <span ng-show="elemanAmmount>0"> {{elemanAmmount/100.| number : 2}} {{CUR_nanti}}  </span> 
+                                    <span ng-show="lemanexAmmount>0"> {{lemanexAmmount/100.| number : 2}} {{CUR_credit_mut}}   </span> 
+                                    <br ng-show="lemanexAmmount>0 && elemanAmmount>0" />
+                                    <span ng-show="lemanexAmmount>0 && elemanAmmount>0">( {{ 'TRAN_total' | translate }} {{(elemanAmmount+lemanexAmmount)/100.| number : 2}} {{CUR}}  ) </span>
+                               </strong> 
                               <div>
                                   <label translate="TRAN_To" ng-hide="is_request_mode">&agrave;</label>
                                   <label translate="TRAN_From" ng-show="is_request_mode">&agrave;</label>
