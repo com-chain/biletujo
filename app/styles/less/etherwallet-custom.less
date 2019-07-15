@@ -598,7 +598,7 @@ input[type="password"]+.eye {
     left: 5%;
     right: 5%;
     max-width: 1300px;
-    height: 175px;
+    height: 80%;
     overflow-x: hidden;
     
     background-color: @body-grp;
@@ -620,11 +620,14 @@ input[type="password"]+.eye {
 }
 
 .ctt_pop_scroll{
-     overflow-x: scroll;
+    height: calc(100% - 55px);
+    overflow-x: hidden;
+    overflow-y: scroll;
+    text-align: center;
 }
 .ctt_cent{
      display: table;
-     white-space:nowrap;
+     white-space: normal;
      margin: 0 auto;
 }
 
@@ -632,6 +635,7 @@ input[type="password"]+.eye {
     width: 60px;
     display: inline-block;
     margin-right: 5px;
+    vertical-align: top;
 }
 
 .ctt_txt{
