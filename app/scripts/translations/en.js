@@ -3,7 +3,7 @@
 var en = function() {}
 en.code = 'en';
 en.data = {
-Version:'&middot; v2.0.9 &middot;&nbsp;',
+Version:'&middot; v2.1.0 &middot;&nbsp;',
 GP_Wait: 'Please wait… If this message persists, check your connection and click here:',
 GP_Wait_tran: 'Your request is being processed (approx. 30 sec.). You may click on the arrow and continue using the app.',
 ID_placeholder: 'Type a public address here (ex..0x88b..)',
@@ -150,6 +150,7 @@ TRAN_Confirm_text_request: 'You are requesting the payment of',
 TRAN_From: 'from',
 TRAN_Enter_pass_request: 'Please enter your password and confirm your request',
 TRAN_executed_request_text: 'You have sent your payment request',
+TRAN_total: 'Total = ',
 
 TRAN_Done: 'The transaction has been sent and is being processed',
 TRAN_Wait: '(...)',
@@ -539,7 +540,6 @@ CTC_updateConfirm: 'Confirm',
 CTC_add: '&#x271A;',
 
 
-CTC_Tooltip_Export: 'Export',
 CTC_Tooltip_Ajout: 'Add',
 CTC_Tooltip_Rafraichir:'Refresh',
 CTC_Tooltip_verify: 'Check a transaction',
@@ -558,6 +558,25 @@ CTC_ConfirmChoose: 'Confirm',
 
 CTC_NotSameCurrTitle: 'Incompatible currency',
 CTC_NotSameCurrTxt: 'This contact is associated with a different currency from the one used in your wallet. This contact cannot be used as the recipient for a payment.',
+
+
+CTC_import:  '&#x1f4c2;',
+CTC_Tooltip_Import: 'Import',
+CTC_export: '&#x1f4be;',
+CTC_Tooltip_Export: 'Export',
+CTC_Import_title: 'Import contacts',
+CTC_SelectFile: 'Select a file',
+CTC_Import_file: '',
+CTC_Import_FileNumber: ' contacts in the file',
+CTC_Import_localNumber:' contacts in your list',
+CTC_Import_Conflict: ' contacts both in the file and your list',
+CTC_Import_merge: 'Import contacts both in the file and your list: ',
+CTC_Merge_their: 'By using thoses in the file',
+CTC_Merge_mine: 'By keeping mines ',
+
+CTC_Import_save: 'Importer',
+
+
 
 STR_yourWallets: 'Your Portfolio',
 STR_forget:'&#x2718;',
