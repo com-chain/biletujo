@@ -21,6 +21,13 @@
                 <div class="col-md-7 col-xs-7">
                   <button type="button" id="ajouter" class="btn btn-primary bellowmargin"  ng-click="addNamePop()" translate="CTC_add">Add </button>
                 
+                    <a type="button" class="btn btn-primary bellowmargin" id="exporter" href="{{blobCtc}}" download="Bilutejo_Contacts.dat"  ng-hide="isApp" translate="CTC_export" >&nbsp; </a>
+                    
+                  <button type="button" id="importer" class="btn btn-primary bellowmargin"  ng-click="openImportCtc()" translate="CTC_import" ng-hide="isApp" >Import </button>
+
+                
+                
+                
                </div>
              </div>
             
@@ -168,6 +175,69 @@
                   </div>
               </div>
          </div>
+         
+         
+               <!-- import Contact file -->
+         <div class="modal fade" id="importCtcPop" tabindex="-1" role="dialog" aria-labelledby="sendTransactionLabel">
+              <div class="modal-dialog" role="document">
+                  <div class="modal-content">
+                      <div class="modal-header">
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                      </div>
+                      <div class="modal-body">
+                          <div align="center">
+                              <h4><label translate="CTC_Import_title">Import</label></h4>
+                              <input style="display:none;" type="file" on-read-file="openCtcFile($fileContent)" id="fctcselector"/>
+                              <div>
+                                <button type="button" class="btn btn-primary"  ng-click="selectCtcFile()" translate="CTC_SelectFile">Import </button>
+                              </div>
+                              <div ng-hide="file_number==-1" ng-bind-html="current_file"> </div>
+                              
+                              <div ng-hide="file_number==-1"  >{{file_number}} <span translate="CTC_Import_FileNumber">Local </span></div> 
+                              <div>{{loacl_number}} <span translate="CTC_Import_localNumber">Local </span></div> 
+                              <span ng-show="conflict_number!=0" >
+                                 <br/>
+                                 <div>{{conflict_number}} <span translate="CTC_Import_Conflict">Conflict </span></div> <br/>
+                                 <label translate="CTC_Import_merge">Import</label>
+                                 <div><input type="radio" ng-model="merge_type" value="0" ng-value="0"> {{"CTC_Merge_their"| translate }}</div>
+                                 <div><input type="radio" ng-model="merge_type" value="1" ng-value="1"> {{"CTC_Merge_mine"| translate }}</div>
+                              </span>
+                             
+                          </div>
+                      </div>
+                      <div class="modal-footer text-center">
+                          <button type="button" class="btn btn-default" data-dismiss="modal" translate="CTC_editNameCancel">Annuler </button>
+                          <button type="button" ng-hide="file_number<1" class="btn btn-primary" ng-click="importCtc()" translate="CTC_Import_save">Sauver</button>
+                      </div>
+                  </div>
+              </div>
+        </div>
+        
+       <!-- select contact file -->
+       <div class="modal fade" id="pickContactFile" tabindex="-1" role="dialog" aria-labelledby="sendTransactionLabel">
+            <div class="modal-dialog" role="document">
+                 <div class="modal-content">
+                      <div class="modal-body">
+                           <div align="center">
+                               <h4><label translate="FILE_pickContact">Contact File</label></h4>
+                               <div style="height:350px;overflow-y:scroll;"> 
+                                   <table width="95%">
+                                       <tr  ng-repeat="entry in dir_entries track by $index" class="tr_trans">
+	                                     <td  ng-click="pickCtcFile(entry.name,$index)"  ><div hide="entry.hasAddress" class="file_small_img"></div>  &nbsp;{{entry.name}} </td>
+	                                   </tr>
+                                    </table>
+                                </div>
+                                <label translate="FILE_selectedFile" ng_hide="SelectedFileIndex==-1">Contact File</label>
+                                <div> {{SelectedFileName}}</div>    
+                          </div>
+                      </div>
+                      <div class="modal-footer text-center">
+                          <button type="button" class="btn btn-default" ng-click="cancelCtcPickedFile()" translate="CTC_editNameCancel">Annuler </button>
+                          <button type="button" class="btn btn-primary" ng-click="openCtcPickedFile()" translate="FILE_open" ng_hide="SelectedFileIndex==-1">open</button>
+                      </div>
+                  </div>
+              </div>
+        </div>
          
        </div>
    </div>

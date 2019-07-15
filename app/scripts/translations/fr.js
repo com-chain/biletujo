@@ -540,7 +540,6 @@ CTC_updateConfirm: 'Confirmer',
 
 CTC_add: '&#x271A;',
 
-CTC_Tooltip_Export: 'Exporter',
 CTC_Tooltip_Ajout: 'Ajouter',
 CTC_Tooltip_Rafraichir:'Rafraichir',
 CTC_Tooltip_verify: 'Vérifier une transaction',
@@ -559,6 +558,26 @@ CTC_ConfirmChoose: 'Confirmer',
 
 CTC_NotSameCurrTitle: 'Monnaie Incompatible',
 CTC_NotSameCurrTxt: 'Ce contact est associé à une autre monnaie que votre compte. Il ne peut donc pas être choisi comme destinataire d\'un payement.',
+
+
+CTC_import:  '&#x1f4c2;',
+CTC_Tooltip_Import: 'Importer',
+CTC_export: '&#x1f4be;',
+CTC_Tooltip_Export: 'Exporter',
+CTC_Import_title: 'Importer des contacts',
+CTC_SelectFile: 'Choisir un fichier',
+CTC_Import_file: '',
+CTC_Import_FileNumber: ' Contacts dans le fichier',
+CTC_Import_localNumber:' Contacts dans votre liste',
+CTC_Import_Conflict: ' Contacts à double ',
+CTC_Import_merge: 'Import des contacts à double: ',
+CTC_Merge_their: 'Remplacer par ceux du fichier',
+CTC_Merge_mine: 'Conserver les miens ',
+
+CTC_Import_save: 'Importer',
+
+
+
 
 STR_yourWallets: 'Vos comptes',
 STR_forget: '&#x2718;',
