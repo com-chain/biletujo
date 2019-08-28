@@ -46,6 +46,7 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, gl
     $scope.CUR_credit_mut='';
     
     $scope.ctt_filter="";
+    $scope.fingerprint=false;
  
 	
 	$scope.token = {
@@ -90,6 +91,10 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, gl
         $scope.CUR=globalFuncs.currencies.CUR;
         $scope.CUR_nanti=globalFuncs.currencies.CUR_nanti;
         $scope.CUR_credit_mut=globalFuncs.currencies.CUR_credit_mut;
+        
+        globalFuncs.canUseFingerprint(function(result){
+             $scope.fingerprint = result;
+        });
         
         ////////////////////////////////////////////
         // Check if an address is registered 
@@ -330,21 +335,16 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, gl
     
     
     
-    $scope.sendTx = function(){
-         if ($scope.tokenTx.value>$scope.limitWithoutPass && $scope.trPass.length==0){
-            globalFuncs.unlock(function(result){
+   $scope.fingetrprintUnlock = function(){
+        globalFuncs.unlock(function(result){
                 if (result) {
                     $scope.trPass=walletService.password;
-                }
-                $scope.sendTxOld();
-            });
-         } else {
-             $scope.sendTxOld();
          }
-    }
+        });
+   } 
     
-    
-	$scope.sendTxOld = function() {
+
+	$scope.sendTx = function() {
         if ($scope.tokenTx.value<$scope.limitWithoutPass || $scope.trPass==walletService.password){
            walletService.setUsed();
            $scope.sendTxModal.close();

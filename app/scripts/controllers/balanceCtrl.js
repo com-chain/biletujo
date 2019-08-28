@@ -12,6 +12,7 @@ var balanceCtrl = function($scope, $locale, $sce, walletService,contactservice, 
     $scope.has_deleg=false;
     $scope.has_autor=false;
     $scope.acc_name= $translate.instant("TRAN_Address");
+    $scope.fingerprint=false;
     
     // Popup 
 	$scope.qrModal = new Modal(document.getElementById('QR_pop'));
@@ -67,6 +68,9 @@ var balanceCtrl = function($scope, $locale, $sce, walletService,contactservice, 
         globalFuncs.getAccInfo(globalFuncs.slockitAccStatus, $scope.wallet.getAddressString(), function(status){
            $scope.is_locked = status==0;
         });
+        
+        
+                
         $scope.blobEnc = globalFuncs.getBlob("text/json;charset=UTF-8", $scope.wallet.toV3(walletService.password, {
 				kdf: globalFuncs.kdf,
                 n: globalFuncs.scrypt.n,
@@ -84,7 +88,9 @@ var balanceCtrl = function($scope, $locale, $sce, walletService,contactservice, 
         var qrcode = new QRCode(document.getElementById("qrcode_print_2"),localStorage.getItem('ComChainWallet'));
         setTimeout(function(){ document.getElementById("qrcode_print_2").getElementsByTagName('img')[0].style.display="inline";},100); 
         
-       
+        globalFuncs.canUseFingerprint(function(result){
+             $scope.fingerprint = result;
+        });
      
         
 	});
@@ -235,20 +241,16 @@ var balanceCtrl = function($scope, $locale, $sce, walletService,contactservice, 
       
     }
     
-   $scope.saveNewDeleg = function(){
-         if ($scope.trPass.length==0){
-            globalFuncs.unlock(function(result){
+    
+   $scope.fingetrprintUnlock = function(){
+        globalFuncs.unlock(function(result){
                 if (result) {
                     $scope.trPass=walletService.password;
-                }
-                $scope.saveNewDelegOld();
-            });
-         } else {
-             $scope.saveNewDelegOld();
          }
-    }
+        });
+   }  
     
-    $scope.saveNewDelegOld = function(){
+    $scope.saveNewDeleg = function(){
         if ($scope.trPass==walletService.password){
             walletService.setUsed();
           
@@ -342,22 +344,9 @@ var balanceCtrl = function($scope, $locale, $sce, walletService,contactservice, 
     }
     
     
-   $scope.saveEditDeleg = function(){
-         if ($scope.trPass.length==0){
-            globalFuncs.unlock(function(result){
-                if (result) {
-                    $scope.trPass=walletService.password;
-                }
-                $scope.saveEditDelegOld();
-            });
-         } else {
-             $scope.saveEditDelegOld();
-         }
-    }
+
     
-    
-    
-    $scope.saveEditDelegOld = function(){
+    $scope.saveEditDeleg = function(){
         if ($scope.trPass==walletService.password){
             walletService.setUsed();
           
@@ -391,21 +380,8 @@ var balanceCtrl = function($scope, $locale, $sce, walletService,contactservice, 
         $scope.deleteDelegationModal.open();
     }
     
-    $scope.saveDeleteDeleg = function(){
-         if ($scope.trPass.length==0){
-            globalFuncs.unlock(function(result){
-                if (result) {
-                    $scope.trPass=walletService.password;
-                }
-                $scope.saveDeleteDelegOld();
-            });
-         } else {
-             $scope.saveDeleteDelegOld();
-         }
-    }
     
-    
-     $scope.saveDeleteDelegOld = function(){
+     $scope.saveDeleteDeleg = function(){
         if ($scope.trPass==walletService.password){
               walletService.setUsed();
               globalFuncs.setDelegation($scope.wallet, $scope.curraddress,-1,function(res){
@@ -529,23 +505,8 @@ var balanceCtrl = function($scope, $locale, $sce, walletService,contactservice, 
         $scope.addAllowanceModal.open();
     }
     
+    
     $scope.saveNewAllow = function(){
-         if ($scope.trPass.length==0){
-            globalFuncs.unlock(function(result){
-                if (result) {
-                    $scope.trPass=walletService.password;
-                }
-                $scope.saveNewAllowOld();
-            });
-         } else {
-             $scope.saveNewAllowOld();
-         }
-    }
-    
-    
-    
-    
-    $scope.saveNewAllowOld = function(){
       if ($scope.trPass==walletService.password){
            walletService.setUsed();
            
@@ -586,21 +547,9 @@ var balanceCtrl = function($scope, $locale, $sce, walletService,contactservice, 
         $scope.editAllowanceModal.open();
     }
     
+
+    
     $scope.saveEditAllowance = function(){
-         if ($scope.trPass.length==0){
-            globalFuncs.unlock(function(result){
-                if (result) {
-                    $scope.trPass=walletService.password;
-                }
-                $scope.saveEditAllowanceOld();
-            });
-         } else {
-             $scope.saveEditAllowanceOld();
-         }
-    } 
-    
-    
-    $scope.saveEditAllowanceOld = function(){
         if ($scope.trPass==walletService.password){
             walletService.setUsed();
           
@@ -636,21 +585,8 @@ var balanceCtrl = function($scope, $locale, $sce, walletService,contactservice, 
         $scope.deleteAllowanceModal.open();
     }
     
-    $scope.saveDeleteAllowance = function(){
-         if ($scope.trPass.length==0){
-            globalFuncs.unlock(function(result){
-                if (result) {
-                    $scope.trPass=walletService.password;
-                }
-                $scope.saveDeleteAllowanceOld();
-            });
-         } else {
-             $scope.saveDeleteAllowanceOld();
-         }
-    }
-    
-    
-     $scope.saveDeleteAllowanceOld = function(){
+
+     $scope.saveDeleteAllowance = function(){
         if ($scope.trPass==walletService.password){
             walletService.setUsed();
                globalFuncs.setAllowance($scope.wallet, $scope.curraddress,-1,function(res){
@@ -682,21 +618,9 @@ var balanceCtrl = function($scope, $locale, $sce, walletService,contactservice, 
         $scope.optionPopModal.open();
     }
     
-     $scope.saveOption = function(){
-         if ($scope.trPass.length==0){
-            globalFuncs.unlock(function(result){
-                if (result) {
-                    $scope.trPass=walletService.password;
-                }
-                $scope.saveOptionOld();
-            });
-         } else {
-             $scope.saveOptionOld();
-         }
-    }
+
     
-    
-    $scope.saveOptionOld = function(){
+    $scope.saveOption = function(){
        if ($scope.trPass==walletService.password){
           walletService.setUsed();
           walletService.setDelay($scope.delay);
