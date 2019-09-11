@@ -1832,6 +1832,134 @@ globalFuncs.generateTagsPDF = function(walletAddress, tags, callback){
 
 
 
+
+globalFuncs.generateTransPDF = function(walletAddress, list, texts, callback){
+ var newImg = new Image();
+newImg.callback=callback;
+newImg.walletAddress=walletAddress;
+newImg.setAttribute('crossOrigin', 'anonymous');
+newImg.onload = function() {  
+    var height = this.naturalHeight;
+    var width = this.naturalWidth;
+   
+    var c = document.createElement('canvas');
+    c.height = height;
+    c.width = width;
+    var ctx = c.getContext("2d");
+    ctx.drawImage(newImg, 0, 0);
+    var logoData = c.toDataURL('image/png');
+    
+    
+    
+    
+    var today = new Date();    
+    var tran_on_page = 14;
+    var tran_row_height=12;
+    var margin_left=25;
+    var margin_right=185;
+    var col_2=50;
+    var col_25=120;
+    var col_3=140;
+    var col_35=150;
+    var col_4=170;
+    var vertical_start=94;
+    
+    var num_tot_page = Math.floor(list.length/tran_on_page)+1;
+    
+    var doc = new jsPDF();
+    var tot_in=0;
+    var tot_out=0;
+    for  (var page = 0; page < num_tot_page; ++page){
+        // header
+        doc.addImage(logoData, 'PNG', 125, 10, 60, 20);
+        doc.setFontSize(14);
+        
+        doc.text(margin_left, 40, texts.date);
+        doc.text(60, 40, today.toISOString().slice(0,10)+' '+today.toTimeString().slice(0,8));
+        doc.text(margin_left, 50, texts.requestAddress);
+        doc.text(60, 50, walletAddress);
+        
+        doc.setFontSize(18)
+        var title = texts.title;
+        if (page>0){
+            title = title+' '+texts.titleNext;
+        }
+        doc.text(margin_left, 70, title);
+        doc.setFontSize(10);
+        doc.setLineWidth(0.5);
+        doc.line(margin_left, 80, margin_right, 80);
+        doc.text(margin_left, 86, texts.dateCol);
+        doc.text(col_2, 86, texts.textCol);
+        doc.text(col_25, 86, texts.sendCol);
+        doc.text(col_35, 86, texts.recievedCol);
+        doc.line(margin_left, 88, margin_right, 88);
+        
+        doc.setLineWidth(0.3);
+        var row =0;
+        for (var index = (page*tran_on_page); index < Math.min(list.length,(page+1)*tran_on_page); ++index){
+            var tra=list[index].data;
+            var date = new Date(tra.time*1000);
+            doc.text(margin_left, vertical_start+tran_row_height*row, date.toISOString().slice(0,10));
+            doc.text(margin_left, vertical_start-1+tran_row_height*(row+0.5), ' '+date.toTimeString().slice(0,8));
+            if (tra.addr_from==walletAddress){
+                
+               doc.setFontSize(8);
+               doc.text(col_2, vertical_start+tran_row_height*row, tra.addr_to);
+               doc.setFontSize(10);
+               doc.text(col_2, vertical_start-1+tran_row_height*(row+0.5), tra.to_name); 
+               doc.text(col_25, vertical_start-1+(tran_row_height)*(row+0.5), tra.currency);
+               doc.text(col_3, vertical_start-1+(tran_row_height)*(row+0.5), (tra.sent/100.).toFixed(2));
+               tot_out+=tra.sent/100.;
+            } else {
+               doc.setFontSize(8);
+               doc.text(col_2, vertical_start+tran_row_height*row, tra.addr_from);
+               doc.setFontSize(10);
+               doc.text(col_2, vertical_start-1+tran_row_height*(row+0.5), tra.from_name); 
+               doc.text(col_35, vertical_start-1+(tran_row_height)*(row+0.5), tra.currency);
+               doc.text(col_4, vertical_start-1+(tran_row_height)*(row+0.5), (tra.recieved/100.).toFixed(2));
+               tot_in+=tra.recieved/100.;
+            }
+            
+            doc.line(margin_left, vertical_start+1+tran_row_height*(row+0.5), margin_right, vertical_start+1+tran_row_height*(row+0.5));
+            
+            row += 1;
+        }
+        
+        
+        
+        doc.setFontSize(10);
+        doc.text(100, 285, ''+(page+1) + '/'+num_tot_page);
+        
+        if (page<num_tot_page-1){
+               doc.addPage();
+        }
+    }
+    
+    
+   doc.setLineWidth(0.5);
+   doc.line(margin_left, vertical_start+1+tran_row_height*(row-0.5), margin_right, vertical_start+1+tran_row_height*(row-0.5));
+   doc.text(110, vertical_start+tran_row_height*row, texts.totals);
+   doc.text(col_3, vertical_start+tran_row_height*row, tot_out.toFixed(2));
+   doc.text(col_4, vertical_start+tran_row_height*row, tot_in.toFixed(2));
+
+   this.callback(doc);
+};
+
+ if (globalFuncs.isMulti()){
+               var the_arr = globalFuncs.getCssUrl().split('/');
+                the_arr.pop();
+                the_arr.pop();
+                newImg.src = the_arr.join('/')+"/images/etherwallet-logo.png";  
+            } else {
+                newImg.src = "images/etherwallet-logo.png";  
+            }
+    
+}
+
+/////////////////////////////////////////////////////////
+
+
+
  
 globalFuncs.loadWallets= function(with_check){
     try{

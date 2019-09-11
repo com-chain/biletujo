@@ -311,6 +311,23 @@ var transactionsCtrl = function($scope, $locale, $sce, walletService,contactserv
                   } 
             }
             
+            globalFuncs.generateTransPDF($scope.currentWalletAddress,
+                                         trans, 
+                                         { "date":$translate.instant("PDF_T_date").replace(/[\n\r]+/g, ''),
+                                           "requestAddress":$translate.instant("PDF_T_Address").replace(/[\n\r]+/g, ''),
+                                           "title":$translate.instant("PDF_T_title").replace(/[\n\r]+/g, ''),
+                                           "titleNext":$translate.instant("PDF_T_title_ext").replace(/[\n\r]+/g, ''),
+                                           "dateCol":$translate.instant("PDF_T_col_date").replace(/[\n\r]+/g, ''),
+                                           "textCol":$translate.instant("PDF_T_col_text").replace(/[\n\r]+/g, ''),
+                                           "sendCol":$translate.instant("PDF_T_col_send").replace(/[\n\r]+/g, ''),
+                                           "recievedCol":$translate.instant("PDF_T_col_recieve").replace(/[\n\r]+/g, ''),
+                                           "totals":$translate.instant("PDF_T_total").replace(/[\n\r]+/g, '')
+                                         }, 
+                                         function(doc){
+                                           var file_name = "Transactions_"+$scope.start_date.getFullYear()+'-'+($scope.start_date.getMonth()+1)+'-'+ ($scope.start_date.getDate())+"_"+$scope.end_date.getFullYear()+'-'+($scope.end_date.getMonth()+1)+'-'+ ($scope.end_date.getDate())+".pdf";
+                                            doc.save(file_name);
+                                         });
+            
             var cvs='"'+$translate.instant("CVS_COL_id").replace(/[\n\r]+/g, '')+'","'
                        +$translate.instant("CVS_COL_date").replace(/[\n\r]+/g, '')+'","'
                        +$translate.instant("CVS_COL_hour").replace(/[\n\r]+/g, '')+'","'

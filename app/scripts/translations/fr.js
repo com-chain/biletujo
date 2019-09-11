@@ -577,6 +577,15 @@ CTC_Merge_mine: 'Conserver les miens ',
 CTC_Import_save: 'Importer',
 
 
+PDF_T_date: 'Date :',
+PDF_T_Address: 'Compte :',
+PDF_T_title: 'Transactions individuelles',
+PDF_T_title_ext: '(suite)',
+PDF_T_col_date: 'Date',
+PDF_T_col_text: 'Text',
+PDF_T_col_send: 'Débit',
+PDF_T_col_recieve: 'Crédit',
+PDF_T_total: 'Total :',
 
 
 STR_yourWallets: 'Vos comptes',

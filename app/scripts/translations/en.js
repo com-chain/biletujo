@@ -576,7 +576,15 @@ CTC_Merge_mine: 'By keeping mines ',
 
 CTC_Import_save: 'Importer',
 
-
+PDF_T_date: 'Date :',
+PDF_T_Address: 'Account :',
+PDF_T_title: 'Individual transactions',
+PDF_T_title_ext: '(cont.)',
+PDF_T_col_date: 'Date',
+PDF_T_col_text: 'Text',
+PDF_T_col_send: 'Debit',
+PDF_T_col_recieve: 'Credit',
+PDF_T_total: 'Total :',
 
 STR_yourWallets: 'Your Portfolio',
 STR_forget:'&#x2718;',
