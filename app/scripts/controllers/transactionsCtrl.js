@@ -324,8 +324,8 @@ var transactionsCtrl = function($scope, $locale, $sce, walletService,contactserv
                                            "totals":$translate.instant("PDF_T_total").replace(/[\n\r]+/g, '')
                                          }, 
                                          function(doc){
-                                           var file_name = "Transactions_"+$scope.start_date.getFullYear()+'-'+($scope.start_date.getMonth()+1)+'-'+ ($scope.start_date.getDate())+"_"+$scope.end_date.getFullYear()+'-'+($scope.end_date.getMonth()+1)+'-'+ ($scope.end_date.getDate())+".pdf";
-                                            doc.save(file_name);
+                                                 var uri = doc.output('datauristring');
+                                                 window.open(uri, '_blank', 'location=no');
                                          });
             
             var cvs='"'+$translate.instant("CVS_COL_id").replace(/[\n\r]+/g, '')+'","'

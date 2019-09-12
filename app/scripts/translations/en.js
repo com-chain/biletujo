@@ -88,7 +88,7 @@ VIEW_QR: 'Public QRcode of your wallet:',
 VIEW_Save_title: 'Backup options for this wallet:',
 VIEW_Save: 'DAT private key file backup (example : LEMxxx.dat)',
 VIEW_print: 'PDF private key file backup (example : LEMxxx.pdf)',
-VIEW_print_adr: 'Create a PDF file for this wallet’s public address', 
+VIEW_print_adr: 'Public address (.pdf)', 
 VIEW_close_title: 'Close this wallet',
 VIEW_close: 'Close',
 

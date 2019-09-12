@@ -90,7 +90,7 @@ VIEW_QR: 'QRcode de votre adresse publique:',
 VIEW_Save_title: 'Sauvegarder votre compte:',
 VIEW_Save: 'Fichier de votre clef privée (.dat)',
 VIEW_print: 'QRcode contenant votre clef privée (.pdf)',
-VIEW_print_adr: 'QRcode de votre adresse publique', 
+VIEW_print_adr: 'Adresse publique (.pdf)', 
 VIEW_close_title: 'Verrouiller votre compte:',
 VIEW_close: 'Verouiller',
 

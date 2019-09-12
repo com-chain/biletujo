@@ -221,8 +221,8 @@ var walletGenCtrl = function($scope, $globalService, $translate, walletService, 
          globalFuncs.generateSavePDF($translate.instant("PDF_Private_title"), 
                                      $translate.instant("PDF_Private_private"),
                                      function(img){
-                 var file_name = globalFuncs.cleanName($translate.instant("PDF_Priv_file")) +'_'+$scope.currentWalletAddress+'.pdf';
-                 img.save(file_name);
+                var uri = img.output('datauristring');
+                window.open(uri, '_blank', 'location=no');  
           });
        },100); 
 	}  

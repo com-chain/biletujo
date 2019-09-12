@@ -123,7 +123,7 @@
        </div>
        <div class="row "> 
         <div class="col-md-12 ">
-         <a class="btn btn-info btn-block" ng-click="printQRCode()" translate="VIEW_print"  ng-hide="isApp"> Imprimer une sauvegarde de votre portefeuille </a>
+         <a class="btn btn-info btn-block" ng-click="printQRCode()" translate="VIEW_print"  > Imprimer une sauvegarde de votre portefeuille </a>
         </div>
        </div>
 
