@@ -265,9 +265,10 @@
                                <br/>
                                <div><label translate="DELEG_Enter_pass">Entrez votre mot de passe</label></div>
                                <div class="input-group">
-                                    <input  class="form-control" type="password" placeholder="{{ 'DCRY_Placeholder_psw' | translate }}" ng-model="trPass"/>
+                                    <input  class="form-control" type="password" Id="passFieldBal2" ng-change="passwordCheck('passFieldBal2')" placeholder="{{ 'DCRY_Placeholder_psw' | translate }}" ng-model="trPass"/>
                                     <span ng-show="fingerprint" class="input-group-addon finger" ng-click="fingetrprintUnlock()"></span>
-                                </div>
+                               </div>
+
                                <div id="delStatus" ></div>
                           </div>
                       </div>
@@ -302,7 +303,7 @@
                                <br/>
                                <div><label translate="DELEG_Enter_pass">Entrez votre mot de passe</label></div>
                                <div class="input-group">
-                                    <input  class="form-control" type="password" placeholder="{{ 'DCRY_Placeholder_psw' | translate }}" ng-model="trPass"/>
+                                    <input  class="form-control" type="password" Id="passFieldBal3" ng-change="passwordCheck('passFieldBal3')" placeholder="{{ 'DCRY_Placeholder_psw' | translate }}" ng-model="trPass"/>
                                     <span ng-show="fingerprint" class="input-group-addon finger" ng-click="fingetrprintUnlock()"></span>
                                 </div>
                                <div id="delEditStatus" ></div>
@@ -334,8 +335,9 @@
                                <div ng-bind-html="selectedName" style="overflow:hidden;text-align:center;max-height:21px"></div>
                                <br/>
                                <div><label translate="DELEG_Enter_pass">Entrez votre mot de passe</label></div>
+
                                <div class="input-group">
-                                    <input  class="form-control" type="password" placeholder="{{ 'DCRY_Placeholder_psw' | translate }}" ng-model="trPass"/>
+                                    <input  class="form-control" type="password" Id="passFieldBal4" ng-change="passwordCheck('passFieldBal4')" placeholder="{{ 'DCRY_Placeholder_psw' | translate }}" ng-model="trPass"/>
                                     <span ng-show="fingerprint" class="input-group-addon finger" ng-click="fingetrprintUnlock()"></span>
                                </div>
                                <div id="delDeleteStatus" ></div>
@@ -487,10 +489,11 @@
                                    <input class="form-control" type="text"  placeholder="0.00" ng-model="currAllowAmount" style="width:50%;" />
                                <br/>
                                <div><label translate="ALLOW_Enter_pass">Entrez votre mot de passe</label></div>
+
                                <div class="input-group">
-                                    <input  class="form-control" type="password" placeholder="{{ 'DCRY_Placeholder_psw' | translate }}" ng-model="trPass"/>
+                                    <input  class="form-control" type="password" Id="passFieldBal5" ng-change="passwordCheck('passFieldBal5')" placeholder="{{ 'DCRY_Placeholder_psw' | translate }}" ng-model="trPass"/>
                                     <span ng-show="fingerprint" class="input-group-addon finger" ng-click="fingetrprintUnlock()"></span>
-                                </div>
+                               </div>
                                <div id="allowStatus" ></div>
                           </div>
                       </div>
@@ -524,9 +527,9 @@
                                <br/>
                                <div><label translate="ALLOW_Enter_pass">Entrez votre mot de passe</label></div>
                                <div class="input-group">
-                                    <input  class="form-control" type="password" placeholder="{{ 'DCRY_Placeholder_psw' | translate }}" ng-model="trPass"/>
+                                    <input  class="form-control" type="password" Id="passFieldBal6" ng-change="passwordCheck('passFieldBal6')" placeholder="{{ 'DCRY_Placeholder_psw' | translate }}" ng-model="trPass"/>
                                     <span ng-show="fingerprint" class="input-group-addon finger" ng-click="fingetrprintUnlock()"></span>
-                                </div>
+                               </div>
                                <div id="allowEditStatus" ></div>
                           </div>
                       </div>
@@ -557,9 +560,9 @@
                                <br/>
                                <div><label translate="ALLOW_Enter_pass">Entrez votre mot de passe</label></div>
                                <div class="input-group">
-                                    <input  class="form-control" type="password" placeholder="{{ 'DCRY_Placeholder_psw' | translate }}" ng-model="trPass"/>
+                                    <input  class="form-control" type="password" Id="passFieldBal7" ng-change="passwordCheck('passFieldBal7')" placeholder="{{ 'DCRY_Placeholder_psw' | translate }}" ng-model="trPass"/>
                                     <span ng-show="fingerprint" class="input-group-addon finger" ng-click="fingetrprintUnlock()"></span>
-                                </div>
+                               </div>
                                <div id="allowDeleteStatus" ></div>
                           </div>
                       </div>
@@ -643,6 +646,7 @@
                              
                                 <br/>
                                 <div><label translate="OPT_Enter_pass">Entrez votre mot de passe</label></div>
+
                                 <div class="input-group">
                                     <input  class="form-control" type="password" placeholder="{{ 'DCRY_Placeholder_psw' | translate }}" ng-model="trPass"/>
                                     <span ng-show="fingerprint" class="input-group-addon finger" ng-click="fingetrprintUnlock()"></span>

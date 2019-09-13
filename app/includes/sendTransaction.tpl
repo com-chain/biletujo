@@ -283,7 +283,7 @@
                                   <div ng-hide="is_request_mode"><label translate="TRAN_Enter_pass"  >Entrez votre mot de passe</label></div>
                                   <div ng-show="is_request_mode"><label  translate="TRAN_Enter_pass_request"  >Entrez votre mot de passe</label></div>
                                    <div class="input-group">
-                                    <input  class="form-control" type="password" placeholder="{{ 'DCRY_Placeholder_psw' | translate }}"   ng-model="trPass"/>
+                                    <input  class="form-control" type="password" Id="passFieldSend" ng-change="passwordCheck('passFieldSend')" placeholder="{{ 'DCRY_Placeholder_psw' | translate }}"   ng-model="trPass"/>
                                     <span ng-show="fingerprint" class="input-group-addon finger" ng-click="fingetrprintUnlock()"></span>
                                    </div>
                                 </div>
