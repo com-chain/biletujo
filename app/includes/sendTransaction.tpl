@@ -282,7 +282,7 @@
                                 <div  ng-hide="tokenTx.value<limitWithoutPass">
                                   <div ng-hide="is_request_mode"><label translate="TRAN_Enter_pass"  >Entrez votre mot de passe</label></div>
                                   <div ng-show="is_request_mode"><label  translate="TRAN_Enter_pass_request"  >Entrez votre mot de passe</label></div>
-                                  <input  class="form-control" type="password" placeholder="{{ 'DCRY_Placeholder_psw' | translate }}"   ng-model="trPass" style="width:50%;"/>
+                                  <input  class="form-control" Id="passFieldSend" ng-change="passwordCheck('passFieldSend')" type="password" placeholder="{{ 'DCRY_Placeholder_psw' | translate }}"   ng-model="trPass" style="width:50%;"/>
                                 </div>
                               </div >   
                               <div id="trStatus" ></div>

@@ -1009,6 +1009,25 @@ globalFuncs.hasPayRequest = function(){
     }
 }
 
+globalFuncs.passwordAutocomplete = function(){
+    var number = 10000;
+    var config = conf_locale.server;
+    if (globalFuncs.isMulti()){
+        try{
+            config =  JSON.parse(localStorage.getItem('ComChainServerConf')).server;
+        } catch(e){
+            config = conf_locale.server;
+        }
+    } 
+    
+    if (config.passwordAutocomplete && config.passwordAutocomplete>2){
+        number = config.passwordAutocomplete;
+    }
+    
+    return number;
+    
+}
+
 
 
 
