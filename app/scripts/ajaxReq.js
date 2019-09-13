@@ -39,6 +39,10 @@
     ajaxReq.getEthCall = function(txobj, callback) {
 	    this.post({ethCall: txobj}, callback);
     }
+    
+     ajaxReq.getEthCallAt = function(txobj, block_nb, callback) {
+         this.post({ethCallAt: txobj, blockNb: block_nb}, callback);
+    }
     ajaxReq.queuePost = function() {
         var data = this.pendingPosts[0].data;
         var callback = this.pendingPosts[0].callback;

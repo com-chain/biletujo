@@ -256,6 +256,20 @@ globalFuncs.getAmmount = function(address,walletAddress,callback){
 		});        
   }
   
+  globalFuncs.getAmmountAt = function(address,walletAddress,block_nb,callback){
+        var userInfo = ethFuncs.getDataObj(globalFuncs.getContract1(),
+                                           address, 
+                                           [ethFuncs.getNakedAddress(walletAddress)]);
+		ajaxReq.getEthCallAt(userInfo,block_nb, function(data) {
+            if (!data.error && data.data) {
+			    callback(globalFuncs.getNumber(data.data, 100.).toString());
+                   
+		    } else {
+                callback("");
+		    }
+		});        
+  }
+  
 globalFuncs.getAccInfo = function(address,walletAddress,callback){
         var userInfo = ethFuncs.getDataObj(globalFuncs.getContract1(),
                                            address, 
@@ -1853,18 +1867,22 @@ newImg.onload = function() {
     
     
     var today = new Date();    
-    var tran_on_page = 14;
-    var tran_row_height=12;
+    var tran_on_page = 15;
+    var tran_row_height=10;
     var margin_left=25;
     var margin_right=185;
-    var col_2=50;
-    var col_25=120;
-    var col_3=140;
-    var col_35=150;
-    var col_4=170;
-    var vertical_start=94;
+    var col_2=45;
+    var col_25=113;
+    var col_3=128;
+    var col_35=143;
+    var col_4=158;
+    var col_5=170;
+    var vertical_start=92;
     
-    var num_tot_page = Math.floor(list.length/tran_on_page)+1;
+    var num_tot_page = Math.floor(list.length/tran_on_page);
+    if (list.length==0 || list.length%tran_on_page!=0){
+        num_tot_page+=1;
+    }
     
     var doc = new jsPDF();
     var tot_in=0;
@@ -1872,7 +1890,7 @@ newImg.onload = function() {
     for  (var page = 0; page < num_tot_page; ++page){
         // header
         doc.addImage(logoData, 'PNG', 125, 10, 60, 20);
-        doc.setFontSize(14);
+        doc.setFontSize(13);
         
         doc.text(margin_left, 40, texts.date);
         doc.text(60, 40, today.toISOString().slice(0,10)+' '+today.toTimeString().slice(0,8));
@@ -1884,14 +1902,38 @@ newImg.onload = function() {
         if (page>0){
             title = title+' '+texts.titleNext;
         }
-        doc.text(margin_left, 70, title);
-        doc.setFontSize(10);
+        doc.text(margin_left, 65, title);
+        
+        doc.setFontSize(8);
+        
+        if (list.length>0){
+            if ( list[0].data.balance!=''){
+                var date_init = new Date(list[0].data.time*1000);
+                doc.text(margin_left, 73, texts.initBal+date_init.toISOString().slice(0,10) +' '+date_init.toTimeString().slice(0,2)+':00 ');
+                doc.text(73, 73, globalFuncs.currencies.CUR);
+                if (list[0].data.addr_from==walletAddress){
+                    doc.text(83, 73, (parseFloat(list[0].data.balance) + list[0].data.sent/100.).toFixed(2));
+                } else {
+                   doc.text(83, 73, (parseFloat(list[0].data.balance) - list[0].data.recieved/100.).toFixed(2)); 
+                }
+            }
+            
+            if ( list[list.length-1].data.balance!=''){
+                var date_final = new Date(list[list.length-1].data.time*1000);
+                doc.text(margin_left, 77, texts.finalBal+date_final.toISOString().slice(0,10) +' '+date_final.toTimeString().slice(0,2)+':59');
+                doc.text(73, 77, globalFuncs.currencies.CUR);
+                doc.text(83, 77, list[list.length-1].data.balance);
+            }
+        }
+        
+        doc.setFontSize(8);
         doc.setLineWidth(0.5);
-        doc.line(margin_left, 80, margin_right, 80);
+        doc.line(margin_left, 82, margin_right, 82);
         doc.text(margin_left, 86, texts.dateCol);
         doc.text(col_2, 86, texts.textCol);
         doc.text(col_25, 86, texts.sendCol);
         doc.text(col_35, 86, texts.recievedCol);
+        doc.text(col_5, 86, texts.balanceCol +' '+globalFuncs.currencies.CUR);
         doc.line(margin_left, 88, margin_right, 88);
         
         doc.setLineWidth(0.3);
@@ -1905,19 +1947,24 @@ newImg.onload = function() {
                 
                doc.setFontSize(8);
                doc.text(col_2, vertical_start+tran_row_height*row, tra.addr_to);
-               doc.setFontSize(10);
+               doc.setFontSize(8);
                doc.text(col_2, vertical_start-1+tran_row_height*(row+0.5), tra.to_name); 
                doc.text(col_25, vertical_start-1+(tran_row_height)*(row+0.5), tra.currency);
                doc.text(col_3, vertical_start-1+(tran_row_height)*(row+0.5), (tra.sent/100.).toFixed(2));
+               
                tot_out+=tra.sent/100.;
             } else {
                doc.setFontSize(8);
                doc.text(col_2, vertical_start+tran_row_height*row, tra.addr_from);
-               doc.setFontSize(10);
+               doc.setFontSize(8);
                doc.text(col_2, vertical_start-1+tran_row_height*(row+0.5), tra.from_name); 
                doc.text(col_35, vertical_start-1+(tran_row_height)*(row+0.5), tra.currency);
                doc.text(col_4, vertical_start-1+(tran_row_height)*(row+0.5), (tra.recieved/100.).toFixed(2));
                tot_in+=tra.recieved/100.;
+            }
+            
+            if (tra.balance!=''){
+                doc.text(col_5, vertical_start-1+(tran_row_height)*(row+0.5), (parseFloat(tra.balance)).toFixed(2));
             }
             
             doc.line(margin_left, vertical_start+1+tran_row_height*(row+0.5), margin_right, vertical_start+1+tran_row_height*(row+0.5));
@@ -1927,7 +1974,7 @@ newImg.onload = function() {
         
         
         
-        doc.setFontSize(10);
+        doc.setFontSize(8);
         doc.text(100, 285, ''+(page+1) + '/'+num_tot_page);
         
         if (page<num_tot_page-1){
