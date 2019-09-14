@@ -133,7 +133,11 @@
 	    </div>
        </div>
        
-       <div id="qrcode_print"></div>
+      <div id="qrcode_print"></div>
+      <div id="qrcode_print0"></div>
+      <div id="qrcode_print1"></div>
+      <div id="qrcode_print2"></div>
+      <div id="qrcode_print3"></div>
        
        <div class="row "> 
         <div class="col-md-12 ">

@@ -4,18 +4,31 @@
      <div class="row grp" >
        <div class="col-md-12 ">
          <div class="row "> 
-           <div class="col-md-12 ">
+           <div class="col-md-12 " ng-hide="showFragements">
               <label translate="OPEN_Choose_bak" >Selectionner une sauvegarde:</label>
            </div>
          </div>
-         <div class="row "> 
+         <div class="row " ng-hide="showFragements"> 
            <div class="col-md-12 ">
               <input style="display:none;" type="file" on-read-file="showContent($fileContent)" id="fselector"/>
               <a class="file-input btn btn-block btn-default btn-file marg-v-sm btn-primary" ng-click="openFileDialog()" translate="OPEN_Choose_file" >Choisir un fichier... </a>
-              <a class="file-input btn btn-block btn-default btn-file marg-v-sm btn-primary" ng-click="startScanPaperWallet()" translate="OPEN_Scan_back" ng-if="isApp">Scan d'une sauvegarde papier... </a>
+              <a class="file-input btn btn-block btn-default btn-file marg-v-sm btn-primary" ng-click="startScanPaperWallet()" translate="OPEN_Scan_back" >Scan d'une sauvegarde papier... </a>
               <div id="fuploadStatus" ng-bind-html="fileStatus"></div>
            </div>
          </div>
+         <div class="row " ng-show="showFragements">
+           <div class="col-md-12 ">
+             <label translate="OPEN_partial_scan_title" >Scan Partiel:</label> <label  >{{partial_prog}}/4</label>
+             
+              <div ng-bind-html="fileStatusFrag"></div>
+              <a class="file-input btn btn-block btn-default btn-file marg-v-sm btn-primary" ng-click="startScanPaperWallet()" translate="OPEN_Scan_next_partial">Scan d'une sauvegarde papier... </a>
+               <a class="file-input btn btn-block btn-file marg-v-sm btn-primary" ng-click="cancelFragment()" translate="OPEN_cancel_partial" >cancel</a>
+           </div>
+         </div> 
+         
+         
+         
+         
          <div class="row " > 
            <div class="col-md-12 ">
               <label id="uploadbtntxt-wallet" ng-show="showFDecrypt" translate="OPEN_Access"> Acc&eacute;der &agrave; votre portefeuille:</label>

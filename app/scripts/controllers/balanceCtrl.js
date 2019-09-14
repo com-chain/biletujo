@@ -125,11 +125,12 @@ var balanceCtrl = function($scope, $locale, $sce, walletService,contactservice, 
 
 	$scope.printQRCode = function() {
        if (!$scope.isApp){ 
-         globalFuncs.generateSaveQR();
+         globalFuncs.generateSaveQR($scope.currentWalletAddress);
          setTimeout(function(){ 
              globalFuncs.generateSavePDF(
                 $translate.instant("PDF_Private_title"),
                 $translate.instant("PDF_Private_private"),
+                $scope.currentWalletAddress,
                 $scope.callback);
          },100); 
        }
