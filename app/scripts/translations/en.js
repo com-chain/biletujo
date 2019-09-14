@@ -80,6 +80,15 @@ OPEN_Placeholder_psw: 'Type the password',
 OPEN_Access: 'Access your wallet:',
 OPEN_Open: 'Open the wallet',
 
+
+OPEN_partial_scan_title:'Read wallet from partial QRs ',
+OPEN_Scan_next_partial:'Scan next QR',
+OPEN_cancel_partial:'Cancel',
+OPEN_Frag_Wrong_ID:'This QR do not belong to the same wallet',
+OPEN_Frag_Read:'The QR has been read',
+OPEN_Frag_Already_Know:'This QR has already been read',
+OPEN_Frag_Not_Frag:'This QR do not contains a wallet',
+
 Acc_locked: 'Caution: this wallet is currently blocked.',
 
 /* View Wallet*/

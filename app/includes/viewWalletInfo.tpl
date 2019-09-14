@@ -12,7 +12,7 @@
            <div class="col-md-12 ">
               <input style="display:none;" type="file" on-read-file="showContent($fileContent)" id="fselector"/>
               <a class="file-input btn btn-block btn-default btn-file marg-v-sm btn-primary" ng-click="openFileDialog()" translate="OPEN_Choose_file" >Choisir un fichier... </a>
-              <a class="file-input btn btn-block btn-default btn-file marg-v-sm btn-primary" ng-click="startScanPaperWallet()" translate="OPEN_Scan_back" >Scan d'une sauvegarde papier... </a>
+              <a class="file-input btn btn-block btn-default btn-file marg-v-sm btn-primary" ng-click="startScanPaperWallet()" translate="OPEN_Scan_back" ng-if="isApp" >Scan d'une sauvegarde papier... </a>
               <div id="fuploadStatus" ng-bind-html="fileStatus"></div>
            </div>
          </div>

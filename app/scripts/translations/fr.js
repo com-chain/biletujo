@@ -82,6 +82,15 @@ OPEN_Placeholder_psw: 'Mot de passe',
 OPEN_Access: 'Accéder à votre compte:',
 OPEN_Open: 'Ouvrir le compte',
 
+
+OPEN_partial_scan_title:'Lecture d\'un compte à partir des QRs ',
+OPEN_Scan_next_partial:'Scanner le prochain QR',
+OPEN_cancel_partial:'Annuler',
+OPEN_Frag_Wrong_ID:'Ce QR ne correspond pas au même compte',
+OPEN_Frag_Read:'Le QR a été lù',
+OPEN_Frag_Already_Know:'Ce QR a déjà été scanné',
+OPEN_Frag_Not_Frag:'Ce QR ne correspond pas à un compte',
+
 Acc_locked: 'Attention: ce compte est actuellement bloqué.',
 
 /* View Wallet*/
