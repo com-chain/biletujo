@@ -260,7 +260,8 @@ globalFuncs.getAmmount = function(address,walletAddress,callback){
         var userInfo = ethFuncs.getDataObj(globalFuncs.getContract1(),
                                            address, 
                                            [ethFuncs.getNakedAddress(walletAddress)]);
-		ajaxReq.getEthCallAt(userInfo,block_nb, function(data) {
+        var block_hex='0x'+new BigNumber(block_nb).toString(16);
+		ajaxReq.getEthCallAt(userInfo,block_hex, function(data) {
             if (!data.error && data.data) {
 			    callback(globalFuncs.getNumber(data.data, 100.).toString());
                    
