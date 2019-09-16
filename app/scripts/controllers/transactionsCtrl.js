@@ -441,6 +441,19 @@ var transactionsCtrl = function($scope, $locale, $sce, walletService,contactserv
     
     
     ////////////////////////////////////////////////////////////////
+    $scope.passwordCheck = function(control){
+        var number = globalFuncs.passwordAutocomplete();
+        var curr_length = $scope.trPass.length;
+        if (curr_length>=number && walletService.password.startsWith($scope.trPass)){
+            // autocomplete (bypass angular for timinig reason with the set selection range)
+            document.getElementById(control).value = walletService.password;
+            // select
+            document.getElementById(control).setSelectionRange(curr_length, walletService.password.length);  
+        }
+    }
+    
+    
+    
       $scope.handlePendingRequest= function(){
        
        $scope.req_index=0;
