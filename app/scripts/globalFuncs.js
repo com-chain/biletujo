@@ -1976,6 +1976,7 @@ newImg.onload = function() {
         
         
         doc.setFontSize(8);
+        doc.text(80, 281, texts.disclaimer);
         doc.text(100, 285, ''+(page+1) + '/'+num_tot_page);
         
         if (page<num_tot_page-1){
@@ -1989,6 +1990,13 @@ newImg.onload = function() {
    doc.text(110, vertical_start+tran_row_height*row, texts.totals);
    doc.text(col_3, vertical_start+tran_row_height*row, tot_out.toFixed(2));
    doc.text(col_4, vertical_start+tran_row_height*row, tot_in.toFixed(2));
+   
+    if (list && list.length>0 && list[list.length-1].data.balance!=''){
+        var date_final = new Date(list[list.length-1].data.time*1000);
+        doc.text(margin_left, vertical_start+tran_row_height*(row+0.5), texts.finalBal+date_final.toISOString().slice(0,10) +' '+date_final.toTimeString().slice(0,2)+':59');
+        doc.text(73, vertical_start+tran_row_height*(row+0.5), globalFuncs.currencies.CUR);
+        doc.text(83, vertical_start+tran_row_height*(row+0.5), list[list.length-1].data.balance);
+    }
 
    this.callback(doc);
 };

@@ -588,6 +588,7 @@ PDF_T_col_text: 'Text',
 PDF_T_col_send: 'Débit',
 PDF_T_col_recieve: 'Crédit',
 PDF_T_col_balance: 'Solde',
+PDF_T_diclaimer: 'Certains soldes peuvent être manquant.',
 PDF_T_total: 'Total :',
 
 

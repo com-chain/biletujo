@@ -587,6 +587,7 @@ PDF_T_col_text: 'Text',
 PDF_T_col_send: 'Debit',
 PDF_T_col_recieve: 'Credit',
 PDF_T_col_balance: 'Balance',
+PDF_T_diclaimer: '   Some balance may be missing.',
 PDF_T_total: 'Total :',
 
 STR_yourWallets: 'Your Portfolio',

@@ -280,6 +280,7 @@ var transactionsCtrl = function($scope, $locale, $sce, walletService,contactserv
                                            "sendCol":$translate.instant("PDF_T_col_send").replace(/[\n\r]+/g, ''),
                                            "recievedCol":$translate.instant("PDF_T_col_recieve").replace(/[\n\r]+/g, ''),
                                            "balanceCol":$translate.instant("PDF_T_col_balance").replace(/[\n\r]+/g, ''),
+                                           "disclaimer":$translate.instant("PDF_T_diclaimer").replace(/[\n\r]+/g, ''),
                                            "totals":$translate.instant("PDF_T_total").replace(/[\n\r]+/g, '')
                                          }, 
                                          function(doc){
