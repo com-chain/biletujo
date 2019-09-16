@@ -124,21 +124,20 @@ var balanceCtrl = function($scope, $locale, $sce, walletService,contactservice, 
     }
     
     $scope.callback = function(pdf_doc){
-        var file_name = globalFuncs.cleanName($translate.instant("PDF_Priv_file")) +'_'+$scope.currentWalletAddress+'.pdf';
-        pdf_doc.save(file_name);
-        
+        var uri = pdf_doc.output('datauristring');
+        window.open(uri, '_blank', 'location=no');  
     }
 
 	$scope.printQRCode = function() {
-       if (!$scope.isApp){ 
-         globalFuncs.generateSaveQR();
+         globalFuncs.generateSaveQR($scope.currentWalletAddress);
+
          setTimeout(function(){ 
              globalFuncs.generateSavePDF(
                 $translate.instant("PDF_Private_title"),
                 $translate.instant("PDF_Private_private"),
+                $scope.currentWalletAddress,
                 $scope.callback);
          },100); 
-       }
        
      
        $scope.qrModal.open();

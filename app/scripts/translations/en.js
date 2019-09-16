@@ -80,6 +80,15 @@ OPEN_Placeholder_psw: 'Type the password',
 OPEN_Access: 'Access your wallet:',
 OPEN_Open: 'Open the wallet',
 
+
+OPEN_partial_scan_title:'Read wallet from partial QRs ',
+OPEN_Scan_next_partial:'Scan next QR',
+OPEN_cancel_partial:'Cancel',
+OPEN_Frag_Wrong_ID:'This QR do not belong to the same wallet',
+OPEN_Frag_Read:'The QR has been read',
+OPEN_Frag_Already_Know:'This QR has already been read',
+OPEN_Frag_Not_Frag:'This QR do not contains a wallet',
+
 Acc_locked: 'Caution: this wallet is currently blocked.',
 
 /* View Wallet*/
@@ -88,7 +97,7 @@ VIEW_QR: 'Public QRcode of your wallet:',
 VIEW_Save_title: 'Backup options for this wallet:',
 VIEW_Save: 'DAT private key file backup (example : LEMxxx.dat)',
 VIEW_print: 'PDF private key file backup (example : LEMxxx.pdf)',
-VIEW_print_adr: 'Create a PDF file for this wallet’s public address', 
+VIEW_print_adr: 'Public address (.pdf)', 
 VIEW_close_title: 'Close this wallet',
 VIEW_close: 'Close',
 
@@ -576,7 +585,19 @@ CTC_Merge_mine: 'By keeping mines ',
 
 CTC_Import_save: 'Importer',
 
-
+PDF_T_date: 'Date :',
+PDF_T_Address: 'Account :',
+PDF_T_title: 'Individual transactions',
+PDF_T_title_ext: '(cont.)',
+PDF_T_initial_b: 'Initial balance ',
+PDF_T_final_b: 'Final balance ',
+PDF_T_col_date: 'Date',
+PDF_T_col_text: 'Text',
+PDF_T_col_send: 'Debit',
+PDF_T_col_recieve: 'Credit',
+PDF_T_col_balance: 'Balance',
+PDF_T_diclaimer: '   Some balance may be missing.',
+PDF_T_total: 'Total :',
 
 STR_yourWallets: 'Your Portfolio',
 STR_forget:'&#x2718;',

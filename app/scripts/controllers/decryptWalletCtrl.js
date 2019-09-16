@@ -12,6 +12,7 @@ var decryptWalletCtrl = function($scope, $sce, $translate, walletService, contac
 	$scope.requireFPass =false;
     $scope.showFDecrypt  = false;
 	$scope.hideWalletSelector = false;
+    $scope.showFragements = false;
     
     
     $scope.hasServerAddress = globalFuncs.hasConfig();
@@ -43,6 +44,69 @@ var decryptWalletCtrl = function($scope, $sce, $translate, walletService, contac
     }
     
     $scope.getCurrWallet();
+    
+    
+    $scope.fileStatusFrag="";
+    $scope.partial_content={};
+    $scope.partial_id="";
+    $scope.partial_prog=0;
+    $scope.checkForFragment = function(content){
+       if (content.startsWith('FRAGMENT')){
+           $scope.showFragements = true;
+           var id = content.substring(8,12);
+           if ( $scope.partial_id==""){
+                $scope.partial_id = id;
+           }
+           if (id!=$scope.partial_id){
+              $scope.fileStatusFrag = $sce.trustAsHtml(globalFuncs.getDangerText($translate.instant('OPEN_Frag_Wrong_ID'))); 
+             //error expecting fragement with same id  
+           } else {
+               var number = content.substring(12,13);
+               if (!(number in $scope.partial_content)){
+                  var cont= content.substring(13);
+                  $scope.partial_content[number]=cont;
+                  
+                  $scope.partial_prog+=1;
+                  
+                  if ($scope.partial_prog==4){
+                      //end of input
+                      var full="";
+                      for (var i=0;i<4;i++){
+                          full+=$scope.partial_content[i.toString()];
+                      }
+                      $scope.partial_content={};
+                      $scope.partial_id="";
+                      $scope.partial_prog=0;
+                      $scope.showFragements = false;
+                      $scope.fileStatusFrag="";
+                      $scope.showContent(full);
+                      
+                  } else {
+                      // ok need more input
+                      
+                        $scope.fileStatusFrag = $sce.trustAsHtml(globalFuncs.getSuccessText($translate.instant('OPEN_Frag_Read'))); 
+                  }
+               }else {
+                   // error fragment already know
+                   
+                    $scope.fileStatusFrag = $sce.trustAsHtml(globalFuncs.getWarningText($translate.instant('OPEN_Frag_Already_Know'))); 
+               }
+           }
+       } else if ( $scope.partial_id!="") {
+              $scope.fileStatusFrag = $sce.trustAsHtml(globalFuncs.getDangerText($translate.instant('OPEN_Frag_Not_Frag'))); 
+       } else {
+            $scope.showContent(content);
+       }
+    }
+    
+    
+    $scope.cancelFragment = function(){
+        $scope.partial_content={};
+        $scope.partial_id=""; 
+        $scope.partial_prog=0;
+        $scope.fileStatusFrag="";
+        $scope.showFragements = false;
+    }
   
 	$scope.showContent = function($fileContent) {
         if (document.getElementById('fselector').files[0]){
@@ -252,7 +316,7 @@ var decryptWalletCtrl = function($scope, $sce, $translate, walletService, contac
     
     
     $scope.helloPaperWallet = function(text){
-       $scope.showContent(text);
+       $scope.checkForFragment(text);
        $scope.$apply();
     }
     
