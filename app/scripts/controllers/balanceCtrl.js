@@ -118,21 +118,20 @@ var balanceCtrl = function($scope, $locale, $sce, walletService,contactservice, 
     }
     
     $scope.callback = function(pdf_doc){
-        var file_name = globalFuncs.cleanName($translate.instant("PDF_Priv_file")) +'_'+$scope.currentWalletAddress+'.pdf';
-        pdf_doc.save(file_name);
-        
+        var uri = pdf_doc.output('datauristring');
+        window.open(uri, '_blank', 'location=no');  
     }
 
 	$scope.printQRCode = function() {
-       if (!$scope.isApp){ 
-         globalFuncs.generateSaveQR();
+         globalFuncs.generateSaveQR($scope.currentWalletAddress);
+
          setTimeout(function(){ 
              globalFuncs.generateSavePDF(
                 $translate.instant("PDF_Private_title"),
                 $translate.instant("PDF_Private_private"),
+                $scope.currentWalletAddress,
                 $scope.callback);
          },100); 
-       }
        
      
        $scope.qrModal.open();
@@ -212,6 +211,17 @@ var balanceCtrl = function($scope, $locale, $sce, walletService,contactservice, 
         
     }
     
+    
+    $scope.passwordCheck = function(control){
+        var number = globalFuncs.passwordAutocomplete();
+        var curr_length = $scope.trPass.length;
+        if (curr_length>=number && walletService.password.startsWith($scope.trPass)){
+            // autocomplete (bypass angular for timinig reason with the set selection range)
+            document.getElementById(control).value = walletService.password;
+            // select
+            document.getElementById(control).setSelectionRange(curr_length, walletService.password.length);  
+        }
+    }
 
     
     $scope.addDelegPop = function(){

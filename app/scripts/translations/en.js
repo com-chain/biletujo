@@ -3,7 +3,7 @@
 var en = function() {}
 en.code = 'en';
 en.data = {
-Version:'&middot; v2.0.9 &middot;&nbsp;',
+Version:'&middot; v2.1.0 &middot;&nbsp;',
 GP_Wait: 'Please wait… If this message persists, check your connection and click here:',
 GP_Wait_tran: 'Your request is being processed (approx. 30 sec.). You may click on the arrow and continue using the app.',
 ID_placeholder: 'Type a public address here (ex..0x88b..)',
@@ -80,6 +80,15 @@ OPEN_Placeholder_psw: 'Type the password',
 OPEN_Access: 'Access your wallet:',
 OPEN_Open: 'Open the wallet',
 
+
+OPEN_partial_scan_title:'Read wallet from partial QRs ',
+OPEN_Scan_next_partial:'Scan next QR',
+OPEN_cancel_partial:'Cancel',
+OPEN_Frag_Wrong_ID:'This QR do not belong to the same wallet',
+OPEN_Frag_Read:'The QR has been read',
+OPEN_Frag_Already_Know:'This QR has already been read',
+OPEN_Frag_Not_Frag:'This QR do not contains a wallet',
+
 Acc_locked: 'Caution: this wallet is currently blocked.',
 
 /* View Wallet*/
@@ -88,7 +97,7 @@ VIEW_QR: 'Public QRcode of your wallet:',
 VIEW_Save_title: 'Backup options for this wallet:',
 VIEW_Save: 'DAT private key file backup (example : LEMxxx.dat)',
 VIEW_print: 'PDF private key file backup (example : LEMxxx.pdf)',
-VIEW_print_adr: 'Create a PDF file for this wallet’s public address', 
+VIEW_print_adr: 'Public address (.pdf)', 
 VIEW_close_title: 'Close this wallet',
 VIEW_close: 'Close',
 
@@ -150,6 +159,7 @@ TRAN_Confirm_text_request: 'You are requesting the payment of',
 TRAN_From: 'from',
 TRAN_Enter_pass_request: 'Please enter your password and confirm your request',
 TRAN_executed_request_text: 'You have sent your payment request',
+TRAN_total: 'Total = ',
 
 TRAN_Done: 'The transaction has been sent and is being processed',
 TRAN_Wait: '(...)',
@@ -539,7 +549,6 @@ CTC_updateConfirm: 'Confirm',
 CTC_add: '&#x271A;',
 
 
-CTC_Tooltip_Export: 'Export',
 CTC_Tooltip_Ajout: 'Add',
 CTC_Tooltip_Rafraichir:'Refresh',
 CTC_Tooltip_verify: 'Check a transaction',
@@ -558,6 +567,37 @@ CTC_ConfirmChoose: 'Confirm',
 
 CTC_NotSameCurrTitle: 'Incompatible currency',
 CTC_NotSameCurrTxt: 'This contact is associated with a different currency from the one used in your wallet. This contact cannot be used as the recipient for a payment.',
+
+
+CTC_import:  '&#x1f4c2;',
+CTC_Tooltip_Import: 'Import',
+CTC_export: '&#x1f4be;',
+CTC_Tooltip_Export: 'Export',
+CTC_Import_title: 'Import contacts',
+CTC_SelectFile: 'Select a file',
+CTC_Import_file: '',
+CTC_Import_FileNumber: ' contacts in the file',
+CTC_Import_localNumber:' contacts in your list',
+CTC_Import_Conflict: ' contacts both in the file and your list',
+CTC_Import_merge: 'Import contacts both in the file and your list: ',
+CTC_Merge_their: 'By using thoses in the file',
+CTC_Merge_mine: 'By keeping mines ',
+
+CTC_Import_save: 'Importer',
+
+PDF_T_date: 'Date :',
+PDF_T_Address: 'Account :',
+PDF_T_title: 'Individual transactions',
+PDF_T_title_ext: '(cont.)',
+PDF_T_initial_b: 'Initial balance ',
+PDF_T_final_b: 'Final balance ',
+PDF_T_col_date: 'Date',
+PDF_T_col_text: 'Text',
+PDF_T_col_send: 'Debit',
+PDF_T_col_recieve: 'Credit',
+PDF_T_col_balance: 'Balance',
+PDF_T_diclaimer: '   Some balance may be missing.',
+PDF_T_total: 'Total :',
 
 STR_yourWallets: 'Your Portfolio',
 STR_forget:'&#x2718;',

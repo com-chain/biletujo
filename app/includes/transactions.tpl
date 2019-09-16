@@ -409,7 +409,7 @@
                               <br/>
                               <div  ng-hide="typeTrans=='no'">
                                  <div><label translate="TRAN_Enter_pass" >Entrez votre mot de passe</label></div>
-                                 <input class="form-control" type="password" placeholder="{{ 'DCRY_Placeholder_psw' | translate }}" ng-model="trPass" style="width:50%;"/>
+                                 <input class="form-control" type="password" Id="passFieldTR1" ng-change="passwordCheck('passFieldTR1')" placeholder="{{ 'DCRY_Placeholder_psw' | translate }}" ng-model="trPass" style="width:50%;"/>
                                  <div ng-bind-html="trStatus" ></div>
                               </div>
                           </div>
@@ -444,7 +444,7 @@
                               <div ng-bind-html="selectedName" style="overflow:hidden;text-align:center;max-height:21px" ></div> 
                               <br/>
                               <div><label translate="TRAN_Enter_pass_reject" >Entrez votre mot de passe</label></div> 
-                              <input class="form-control" type="password" placeholder="{{ 'DCRY_Placeholder_psw' | translate }}" ng-model="trPass" style="width:50%;"/>
+                              <input class="form-control" type="password" Id="passFieldTR2" ng-change="passwordCheck('passFieldTR2')" placeholder="{{ 'DCRY_Placeholder_psw' | translate }}" ng-model="trPass" style="width:50%;"/>
                               <div ng-bind-html="trRejectStatus" ></div>
                           </div>
                       </div>

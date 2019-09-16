@@ -6,7 +6,7 @@ var fr = function() {}
 fr.code = 'fr';
 fr.data = {
 /****************************************/
-Version:'&middot; v2.0.9 &middot;&nbsp;',
+Version:'&middot; v2.1.0 &middot;&nbsp;',
 /****************************************/
 
 GP_Wait: 'En attente du serveur... Si ce message persiste vérifiez votre connexion puis cliquez ici:',
@@ -82,6 +82,15 @@ OPEN_Placeholder_psw: 'Mot de passe',
 OPEN_Access: 'Accéder à votre compte:',
 OPEN_Open: 'Ouvrir le compte',
 
+
+OPEN_partial_scan_title:'Lecture d\'un compte à partir des QRs ',
+OPEN_Scan_next_partial:'Scanner le prochain QR',
+OPEN_cancel_partial:'Annuler',
+OPEN_Frag_Wrong_ID:'Ce QR ne correspond pas au même compte',
+OPEN_Frag_Read:'Le QR a été lù',
+OPEN_Frag_Already_Know:'Ce QR a déjà été scanné',
+OPEN_Frag_Not_Frag:'Ce QR ne correspond pas à un compte',
+
 Acc_locked: 'Attention: ce compte est actuellement bloqué.',
 
 /* View Wallet*/
@@ -90,7 +99,7 @@ VIEW_QR: 'QRcode de votre adresse publique:',
 VIEW_Save_title: 'Sauvegarder votre compte:',
 VIEW_Save: 'Fichier de votre clef privée (.dat)',
 VIEW_print: 'QRcode contenant votre clef privée (.pdf)',
-VIEW_print_adr: 'QRcode de votre adresse publique', 
+VIEW_print_adr: 'Adresse publique (.pdf)', 
 VIEW_close_title: 'Verrouiller votre compte:',
 VIEW_close: 'Verouiller',
 
@@ -152,6 +161,7 @@ TRAN_Confirm_text_request: 'Vous êtes en train de demander le paiement de',
 TRAN_From: 'à',
 TRAN_Enter_pass_request: 'Veuillez entrer votre mot de passe et confirmer la demande',
 TRAN_executed_request_text:'Vous avez transmis la demande de paiement',
+TRAN_total: 'Total = ',
 
 TRAN_Done: 'La transaction a été transmise et est en traitement',
 TRAN_Wait: '(...)',
@@ -539,7 +549,6 @@ CTC_updateConfirm: 'Confirmer',
 
 CTC_add: '&#x271A;',
 
-CTC_Tooltip_Export: 'Exporter',
 CTC_Tooltip_Ajout: 'Ajouter',
 CTC_Tooltip_Rafraichir:'Rafraichir',
 CTC_Tooltip_verify: 'Vérifier une transaction',
@@ -558,6 +567,39 @@ CTC_ConfirmChoose: 'Confirmer',
 
 CTC_NotSameCurrTitle: 'Monnaie Incompatible',
 CTC_NotSameCurrTxt: 'Ce contact est associé à une autre monnaie que votre compte. Il ne peut donc pas être choisi comme destinataire d\'un payement.',
+
+
+CTC_import:  '&#x1f4c2;',
+CTC_Tooltip_Import: 'Importer',
+CTC_export: '&#x1f4be;',
+CTC_Tooltip_Export: 'Exporter',
+CTC_Import_title: 'Importer des contacts',
+CTC_SelectFile: 'Choisir un fichier',
+CTC_Import_file: '',
+CTC_Import_FileNumber: ' Contacts dans le fichier',
+CTC_Import_localNumber:' Contacts dans votre liste',
+CTC_Import_Conflict: ' Contacts à double ',
+CTC_Import_merge: 'Import des contacts à double: ',
+CTC_Merge_their: 'Remplacer par ceux du fichier',
+CTC_Merge_mine: 'Conserver les miens ',
+
+CTC_Import_save: 'Importer',
+
+
+PDF_T_date: 'Date :',
+PDF_T_Address: 'Compte :',
+PDF_T_title: 'Transactions individuelles',
+PDF_T_initial_b: 'Solde initial au ',
+PDF_T_final_b: 'Solde final au ',
+PDF_T_title_ext: '(suite)',
+PDF_T_col_date: 'Date',
+PDF_T_col_text: 'Text',
+PDF_T_col_send: 'Débit',
+PDF_T_col_recieve: 'Crédit',
+PDF_T_col_balance: 'Solde',
+PDF_T_diclaimer: 'Certains soldes peuvent être manquant.',
+PDF_T_total: 'Total :',
+
 
 STR_yourWallets: 'Vos comptes',
 STR_forget: '&#x2718;',

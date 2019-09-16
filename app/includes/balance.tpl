@@ -105,6 +105,10 @@
 	      </div>    
 }   
           <div id="qrcode_print"></div>
+          <div id="qrcode_print0"></div>
+          <div id="qrcode_print1"></div>
+          <div id="qrcode_print2"></div>
+          <div id="qrcode_print3"></div>
        </section>
        
        
@@ -264,7 +268,7 @@
                                <input class="form-control" type="text"  placeholder="0.00" ng-model="currDelLimit" style="width:50%;" />
                                <br/>
                                <div><label translate="DELEG_Enter_pass">Entrez votre mot de passe</label></div>
-                               <input class="form-control" type="password"  placeholder="{{ 'DCRY_Placeholder_psw' | translate }}" ng-model="trPass" style="width:50%;"/>
+                               <input class="form-control" type="password" Id="passFieldBal2" ng-change="passwordCheck('passFieldBal2')" placeholder="{{ 'DCRY_Placeholder_psw' | translate }}" ng-model="trPass" style="width:50%;"/>
                                <div id="delStatus" ></div>
                           </div>
                       </div>
@@ -298,7 +302,7 @@
                                    <input class="form-control" type="text"  placeholder="0.00" ng-model="currDelLimit" style="width:50%;" id="del_lim_ed_p"/>
                                <br/>
                                <div><label translate="DELEG_Enter_pass">Entrez votre mot de passe</label></div>
-                               <input class="form-control" type="password" placeholder="{{ 'DCRY_Placeholder_psw' | translate }}" ng-model="trPass" style="width:50%;"/>
+                               <input class="form-control" type="password" Id="passFieldBal3" ng-change="passwordCheck('passFieldBal3')" placeholder="{{ 'DCRY_Placeholder_psw' | translate }}" ng-model="trPass" style="width:50%;"/>
                                <div id="delEditStatus" ></div>
                           </div>
                       </div>
@@ -328,7 +332,7 @@
                                <div ng-bind-html="selectedName" style="overflow:hidden;text-align:center;max-height:21px"></div>
                                <br/>
                                <div><label translate="DELEG_Enter_pass">Entrez votre mot de passe</label></div>
-                               <input class="form-control" type="password" placeholder="{{ 'DCRY_Placeholder_psw' | translate }}" ng-model="trPass" style="width:50%;"/>
+                               <input class="form-control" type="password" Id="passFieldBal4" ng-change="passwordCheck('passFieldBal4')"placeholder="{{ 'DCRY_Placeholder_psw' | translate }}" ng-model="trPass" style="width:50%;"/>
                                <div id="delDeleteStatus" ></div>
                           </div>
                       </div>
@@ -478,7 +482,7 @@
                                    <input class="form-control" type="text"  placeholder="0.00" ng-model="currAllowAmount" style="width:50%;" />
                                <br/>
                                <div><label translate="ALLOW_Enter_pass">Entrez votre mot de passe</label></div>
-                               <input class="form-control" type="password" placeholder="{{ 'DCRY_Placeholder_psw' | translate }}" ng-model="trPass" style="width:50%;"/>
+                               <input class="form-control" type="password" Id="passFieldBal5" ng-change="passwordCheck('passFieldBal5')" placeholder="{{ 'DCRY_Placeholder_psw' | translate }}" ng-model="trPass" style="width:50%;"/>
                                <div id="allowStatus" ></div>
                           </div>
                       </div>
@@ -511,7 +515,7 @@
                                <input class="form-control" type="text"  placeholder="0.00" ng-model="currAllowAmount" style="width:50%;" id="all_amount_p"/>
                                <br/>
                                <div><label translate="ALLOW_Enter_pass">Entrez votre mot de passe</label></div>
-                               <input class="form-control" type="password" placeholder="{{ 'DCRY_Placeholder_psw' | translate }}" ng-model="trPass" style="width:50%;"/>
+                               <input class="form-control" type="password" Id="passFieldBal6" ng-change="passwordCheck('passFieldBal6')" placeholder="{{ 'DCRY_Placeholder_psw' | translate }}" ng-model="trPass" style="width:50%;"/>
                                <div id="allowEditStatus" ></div>
                           </div>
                       </div>
@@ -541,7 +545,7 @@
                                <div ng-bind-html="selectedName" style="overflow:hidden;text-align:center;max-height:21px"></div>
                                <br/>
                                <div><label translate="ALLOW_Enter_pass">Entrez votre mot de passe</label></div>
-                               <input class="form-control" type="password" placeholder="{{ 'DCRY_Placeholder_psw' | translate }}" ng-model="trPass" style="width:50%;"/>
+                               <input class="form-control" type="password" Id="passFieldBal7" ng-change="passwordCheck('passFieldBal7')" placeholder="{{ 'DCRY_Placeholder_psw' | translate }}" ng-model="trPass" style="width:50%;"/>
                                <div id="allowDeleteStatus" ></div>
                           </div>
                       </div>
@@ -625,7 +629,7 @@
                              
                                 <br/>
                                 <div><label translate="OPT_Enter_pass">Entrez votre mot de passe</label></div>
-                                <input class="form-control" type="password"  placeholder="{{ 'DCRY_Placeholder_psw' | translate }}" ng-model="trPass" style="width:50%;"/>
+                                <input class="form-control" type="password" placeholder="{{ 'DCRY_Placeholder_psw' | translate }}" ng-model="trPass" style="width:50%;"/>
                                 <div id="optStatus" ></div>
                           </div>
                       </div>
