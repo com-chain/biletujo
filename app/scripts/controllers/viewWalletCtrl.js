@@ -53,6 +53,7 @@ var viewWalletCtrl = function($scope, walletService, contactservice, $translate)
     $scope.callback = function(pdf_doc){
         var file_name = globalFuncs.cleanName($translate.instant("PDF_Pub_file")) +'_'+$scope.currentWalletAddress+'.pdf';
         pdf_doc.save(file_name);
+        
     }
     
     //  Open the tag popup
@@ -84,8 +85,8 @@ var viewWalletCtrl = function($scope, walletService, contactservice, $translate)
     
     // Save the tag pdf
     $scope.tagCallback = function(pdf_doc){
-        var file_name = globalFuncs.cleanName($translate.instant("PDF_Tag_file")) +'_'+$scope.currentWalletAddress+'.pdf';
-        pdf_doc.save(file_name);
+        var uri = pdf_doc.output('datauristring');
+        window.open(uri, '_blank', 'location=no');  
     }
     
 

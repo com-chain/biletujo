@@ -3,6 +3,7 @@ var transactionsCtrl = function($scope, $locale, $sce, walletService,contactserv
     // Check the environment
     $scope.isApp =  globalFuncs.isApp();
     $scope.currentWalletAddress=globalFuncs.getWalletAddress();
+    $scope.fingerprint=false;
     
     // Create the modal popups
 	$scope.addContact = new Modal(document.getElementById('addContact'));
@@ -74,6 +75,9 @@ var transactionsCtrl = function($scope, $locale, $sce, walletService,contactserv
            $scope.is_locked = status==0;
         });
         $scope.CUR=globalFuncs.currencies.CUR;
+        globalFuncs.canUseFingerprint(function(result){
+             $scope.fingerprint = result;
+        });
 	});
     
     $scope.loadTransactions= function(count,offset){
@@ -265,6 +269,40 @@ var transactionsCtrl = function($scope, $locale, $sce, walletService,contactserv
     $scope.start_time =  0;
     $scope.end_time = 24;
     
+    $scope.addBalance = function(walletAddress,list,index){
+        if (index>=list.length){
+            globalFuncs.generateTransPDF(walletAddress,
+                                         list, 
+                                         { "date":$translate.instant("PDF_T_date").replace(/[\n\r]+/g, ''),
+                                           "requestAddress":$translate.instant("PDF_T_Address").replace(/[\n\r]+/g, ''),
+                                           "title":$translate.instant("PDF_T_title").replace(/[\n\r]+/g, ''),
+                                           "titleNext":$translate.instant("PDF_T_title_ext").replace(/[\n\r]+/g, ''),
+                                           "initBal":$translate.instant("PDF_T_initial_b").replace(/[\n\r]+/g, ''),
+                                           "finalBal":$translate.instant("PDF_T_final_b").replace(/[\n\r]+/g, ''),
+                                           "dateCol":$translate.instant("PDF_T_col_date").replace(/[\n\r]+/g, ''),
+                                           "textCol":$translate.instant("PDF_T_col_text").replace(/[\n\r]+/g, ''),
+                                           "sendCol":$translate.instant("PDF_T_col_send").replace(/[\n\r]+/g, ''),
+                                           "recievedCol":$translate.instant("PDF_T_col_recieve").replace(/[\n\r]+/g, ''),
+                                           "balanceCol":$translate.instant("PDF_T_col_balance").replace(/[\n\r]+/g, ''),
+                                           "disclaimer":$translate.instant("PDF_T_diclaimer").replace(/[\n\r]+/g, ''),
+                                           "totals":$translate.instant("PDF_T_total").replace(/[\n\r]+/g, '')
+                                         }, 
+                                         function(doc){
+                                                 var uri = doc.output('datauristring');
+                                                 window.open(uri, '_blank', 'location=no');
+                                         });
+            
+            
+            
+            
+        } else {
+            globalFuncs.getAmmountAt(globalFuncs.slockitBalance, walletAddress, list[index].data.block, function(value){
+                list[index].data.balance = value;
+                $scope.addBalance(walletAddress,list,index+1);
+            });
+        }
+    }
+    
     $scope.ExportTra=function(){
         $scope.start_time=Math.round($scope.start_time);
         if ($scope.start_time <0){
@@ -310,6 +348,8 @@ var transactionsCtrl = function($scope, $locale, $sce, walletService,contactserv
                       trans[ind].data.currency=globalFuncs.currencies.CUR_credit_mut;
                   } 
             }
+            
+            $scope.addBalance($scope.currentWalletAddress,trans,0);
             
             var cvs='"'+$translate.instant("CVS_COL_id").replace(/[\n\r]+/g, '')+'","'
                        +$translate.instant("CVS_COL_date").replace(/[\n\r]+/g, '')+'","'
@@ -782,20 +822,17 @@ var transactionsCtrl = function($scope, $locale, $sce, walletService,contactserv
             
     }
     
-    $scope.sendTx = function(){
-         if ($scope.trPass.length==0){
-            globalFuncs.unlock(function(result){
+    $scope.fingetrprintUnlock = function(){
+        globalFuncs.unlock(function(result){
                 if (result) {
                     $scope.trPass=walletService.password;
-                }
-                $scope.sendTxOld();
-            });
-         } else {
-             $scope.sendTxOld();
          }
-    }
+        });
+   } 
     
-    $scope.sendTxOld = function(){
+
+    
+    $scope.sendTx = function(){
       if ($scope.trPass==walletService.password){
         walletService.setUsed();
         $scope.sendTransactionModal.close();
@@ -848,20 +885,8 @@ var transactionsCtrl = function($scope, $locale, $sce, walletService,contactserv
          $scope.rejectTransactionModal.open();
     }
     
+
     $scope.rejectTx = function(){
-         if ($scope.trPass.length==0){
-            globalFuncs.unlock(function(result){
-                if (result) {
-                    $scope.trPass=walletService.password;
-                }
-                $scope.rejectTxOld();
-            });
-         } else {
-             $scope.rejectTxOld();
-         }
-    }
-    
-    $scope.rejectTxOld = function(){
        if ($scope.trPass==walletService.password){
             walletService.setUsed();
             $scope.rejectTransactionModal.close();

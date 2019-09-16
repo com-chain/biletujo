@@ -226,6 +226,18 @@ input[type="password"]+.eye {
   }
 }
 
+input[type="password"]+.finger{
+  cursor: pointer;
+   &:before {
+    content: "";
+    width: 37px;
+    height: 37px;
+    display: inline-block;
+    vertical-align: middle;
+    background: url("../images/finger.png");
+  }
+}
+
 
 // collapsable containers
 .collapse-container {
