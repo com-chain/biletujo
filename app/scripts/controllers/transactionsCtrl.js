@@ -3,6 +3,7 @@ var transactionsCtrl = function($scope, $locale, $sce, walletService,contactserv
     // Check the environment
     $scope.isApp =  globalFuncs.isApp();
     $scope.currentWalletAddress=globalFuncs.getWalletAddress();
+    $scope.fingerprint=false;
     
     // Create the modal popups
 	$scope.addContact = new Modal(document.getElementById('addContact'));
@@ -74,6 +75,9 @@ var transactionsCtrl = function($scope, $locale, $sce, walletService,contactserv
            $scope.is_locked = status==0;
         });
         $scope.CUR=globalFuncs.currencies.CUR;
+        globalFuncs.canUseFingerprint(function(result){
+             $scope.fingerprint = result;
+        });
 	});
     
     $scope.loadTransactions= function(count,offset){
@@ -818,20 +822,17 @@ var transactionsCtrl = function($scope, $locale, $sce, walletService,contactserv
             
     }
     
-    $scope.sendTx = function(){
-         if ($scope.trPass.length==0){
-            globalFuncs.unlock(function(result){
+    $scope.fingetrprintUnlock = function(){
+        globalFuncs.unlock(function(result){
                 if (result) {
                     $scope.trPass=walletService.password;
-                }
-                $scope.sendTxOld();
-            });
-         } else {
-             $scope.sendTxOld();
          }
-    }
+        });
+   } 
     
-    $scope.sendTxOld = function(){
+
+    
+    $scope.sendTx = function(){
       if ($scope.trPass==walletService.password){
         walletService.setUsed();
         $scope.sendTransactionModal.close();
@@ -884,20 +885,8 @@ var transactionsCtrl = function($scope, $locale, $sce, walletService,contactserv
          $scope.rejectTransactionModal.open();
     }
     
+
     $scope.rejectTx = function(){
-         if ($scope.trPass.length==0){
-            globalFuncs.unlock(function(result){
-                if (result) {
-                    $scope.trPass=walletService.password;
-                }
-                $scope.rejectTxOld();
-            });
-         } else {
-             $scope.rejectTxOld();
-         }
-    }
-    
-    $scope.rejectTxOld = function(){
        if ($scope.trPass==walletService.password){
             walletService.setUsed();
             $scope.rejectTransactionModal.close();
