@@ -223,7 +223,7 @@ var walletGenCtrl = function($scope, $globalService, $translate, walletService, 
                                      $scope.currentWalletAddress,
                                      function(img){
                 var uri = img.output('datauristring');
-                window.open(uri, '_blank', 'location=no');  
+                cordova.InAppBrowser.open(uri, '_blank', 'location=yes');  
           });
        },100); 
 	}  

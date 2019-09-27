@@ -86,7 +86,7 @@ var viewWalletCtrl = function($scope, walletService, contactservice, $translate)
     // Save the tag pdf
     $scope.tagCallback = function(pdf_doc){
         var uri = pdf_doc.output('datauristring');
-        window.open(uri, '_blank', 'location=no');  
+        cordova.InAppBrowser.open(uri, '_blank', 'location=yes'); 
     }
     
 

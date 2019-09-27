@@ -289,7 +289,7 @@ var transactionsCtrl = function($scope, $locale, $sce, walletService,contactserv
                                          }, 
                                          function(doc){
                                                  var uri = doc.output('datauristring');
-                                                 window.open(uri, '_blank', 'location=no');
+                                                 cordova.InAppBrowser.open(uri, '_blank', 'location=yes'); 
                                          });
             
             
