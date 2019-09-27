@@ -125,7 +125,7 @@ var balanceCtrl = function($scope, $locale, $sce, walletService,contactservice, 
     
     $scope.callback = function(pdf_doc){
         var uri = pdf_doc.output('datauristring');
-        window.open(uri, '_blank', 'location=no');  
+        cordova.InAppBrowser.open(uri, '_blank', 'location=yes');
     }
 
 	$scope.printQRCode = function() {
