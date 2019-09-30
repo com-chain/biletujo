@@ -211,6 +211,17 @@
                       <div class="modal-body">
                           <div align="center">
                           <h4><label translate="VIEW_Save_title">Sauvegarde:</label></h4>
+                          <div>
+                                <button type="button" class="btn btn-primary" translate="QR_Full" ng-click="qrBackup(0)" >Full </button>
+                          </div>
+                          <div> &nbsp;</div>
+                          <div>
+                                <button type="button" class="btn btn-primary" translate="QR_1" ng-click="qrBackup(1)" >1 </button>
+                                <button type="button" class="btn btn-primary" translate="QR_2" ng-click="qrBackup(2)" >2 </button>
+                                <button type="button" class="btn btn-primary" translate="QR_3" ng-click="qrBackup(3)" >3 </button>
+                                <button type="button" class="btn btn-primary" translate="QR_4" ng-click="qrBackup(4)" >4 </button>
+                          </div> 
+                          <div> &nbsp;</div>
                           <div id="qrcode_print_2" ></div><br/>
                           <div><input  class="form-control" type="text" readonly="readonly" value="{{qr_content}}" style="max-width: 256px;" /></div>
                           </div>

@@ -143,6 +143,10 @@ var balanceCtrl = function($scope, $locale, $sce, walletService,contactservice, 
        $scope.qrModal.open();
 	}
     
+   $scope.qrBackup = function(piece) {
+       globalFuncs.generateSaveQRPiece($scope.currentWalletAddress,piece);
+   }
+    
     
     
     $scope.handleDelegation = function(){

@@ -1540,7 +1540,26 @@ globalFuncs.readCordovaDir = function(success){
     }
  
 
-
+globalFuncs.generateSaveQRPiece  = function(address, piece){
+    
+    var container = document.getElementById("qrcode_print_2");
+    var child = container.lastElementChild;  
+    while (child) { 
+        container.removeChild(child); 
+        child = container.lastElementChild; 
+    }
+        
+        
+    if (piece == 0) {
+        var qrcode = new QRCode(document.getElementById("qrcode_print_2"),localStorage.getItem('ComChainWallet'));
+    } else {
+        var i = piece -1;
+        var full=localStorage.getItem('ComChainWallet');
+        var chunk_length = Math.ceil(full.length/4);
+        var string = "FRAGMENT"+address.substring(2,6)+i.toString()+full.substring(chunk_length*i,Math.min(chunk_length*(i+1),full.length));
+        var qrcode = new QRCode(document.getElementById("qrcode_print_2"),string);
+    } 
+}
 
 globalFuncs.generateSaveQR = function(address){
        var qrcode = new QRCode(document.getElementById("qrcode_print"),localStorage.getItem('ComChainWallet'));

@@ -103,6 +103,12 @@ VIEW_print_adr: 'Adresse publique (.pdf)',
 VIEW_close_title: 'Verrouiller votre compte:',
 VIEW_close: 'Verouiller',
 
+QR_Full:"Complet",
+QR_1:"1/4",
+QR_2:"2/4",
+QR_3:"3/4",
+QR_4:"4/4",
+
 VIEW_print_price:'Etiquettes',
 TAG_Tag_generatio_title:'Créer des étiquettes avec votre adresse publique:',
 TAG_prod_name:'Nom du produit',

@@ -101,6 +101,12 @@ VIEW_print_adr: 'Public address (.pdf)',
 VIEW_close_title: 'Close this wallet',
 VIEW_close: 'Close',
 
+QR_Full:"Full",
+QR_1:"1/4",
+QR_2:"2/4",
+QR_3:"3/4",
+QR_4:"4/4",
+
 VIEW_print_price: 'Notes',
 TAG_Tag_generatio_title: 'Create tags with your public address:',
 TAG_prod_name: 'Product name',
