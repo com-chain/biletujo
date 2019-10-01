@@ -85,8 +85,8 @@ var viewWalletCtrl = function($scope, walletService, contactservice, $translate)
     
     // Save the tag pdf
     $scope.tagCallback = function(pdf_doc){
-        var uri = pdf_doc.output('datauristring');
-        cordova.InAppBrowser.open(uri, '_blank', 'location=yes'); 
+        var file_name = globalFuncs.cleanName($translate.instant("PDF_Tag_file")) +'_'+$scope.currentWalletAddress+'.pdf';
+        pdf_doc.save(file_name);
     }
     
 

@@ -222,8 +222,8 @@ var walletGenCtrl = function($scope, $globalService, $translate, walletService, 
                                      $translate.instant("PDF_Private_private"),
                                      $scope.currentWalletAddress,
                                      function(img){
-                var uri = img.output('datauristring');
-                cordova.InAppBrowser.open(uri, '_blank', 'location=yes');  
+                var file_name = globalFuncs.cleanName($translate.instant("PDF_Priv_file")) +'_'+$scope.currentWalletAddress+'.pdf';
+                pdf_doc.save(file_name); 
           });
        },100); 
 	}  

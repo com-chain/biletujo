@@ -124,11 +124,12 @@ var balanceCtrl = function($scope, $locale, $sce, walletService,contactservice, 
     }
     
     $scope.callback = function(pdf_doc){
-        var uri = pdf_doc.output('datauristring');
-        cordova.InAppBrowser.open(uri, '_blank', 'location=yes'); 
+        var file_name = globalFuncs.cleanName($translate.instant("PDF_Priv_file")) +'_'+$scope.currentWalletAddress+'.pdf';
+        pdf_doc.save(file_name);
     }
 
 	$scope.printQRCode = function() {
+        if (!$scope.isApp) {
          globalFuncs.generateSaveQR($scope.currentWalletAddress);
 
          setTimeout(function(){ 
@@ -139,7 +140,7 @@ var balanceCtrl = function($scope, $locale, $sce, walletService,contactservice, 
                 $scope.callback);
          },100); 
        
-     
+       }
        $scope.qrModal.open();
 	}
     
