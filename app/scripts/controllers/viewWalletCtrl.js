@@ -15,7 +15,6 @@ var viewWalletCtrl = function($scope, walletService, contactservice, $translate)
 
     // Helper function
     $scope.getAccName = function(address){
-        $scope.contacts = contactservice.loadContacts();
         var my_name = contactservice.getContactName($scope.contacts, address);
         if (my_name!=''){
             $scope.acc_name=my_name;
@@ -29,6 +28,12 @@ var viewWalletCtrl = function($scope, walletService, contactservice, $translate)
 	}, function() {
 		if (walletService.wallet == null) return;
 		$scope.wallet = walletService.wallet;
+        
+        contactservice.loadContacts($scope.wallet, walletService.password, function(contact_list){
+            $scope.contacts = contact_list;
+            
+        });
+        
         globalFuncs.getAccInfo(globalFuncs.slockitAccStatus, $scope.wallet.getAddressString(), function(status){
                     $scope.is_locked = status==0;
         });

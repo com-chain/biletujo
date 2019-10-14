@@ -1140,6 +1140,7 @@ globalFuncs.testNode = function(api_address,callback) {
 
 globalFuncs.loadWallet = function(wallet,callback){
     localStorage.removeItem("ComChainContacts");
+    localStorage.removeItem("ComChainContactsInfo");
     localStorage.removeItem("ComChainMemos");
     if (!wallet.server || !wallet.server.name){
         var new_name = globalFuncs.getServerName();
@@ -1179,6 +1180,7 @@ globalFuncs.loadWallet = function(wallet,callback){
 globalFuncs.removeWallet = function(){
     localStorage.removeItem('ComChainWallet');
     localStorage.removeItem("ComChainContacts");
+    localStorage.removeItem("ComChainContactsInfo");
     localStorage.removeItem("ComChainMemos");
     
     if (globalFuncs.isMulti()){

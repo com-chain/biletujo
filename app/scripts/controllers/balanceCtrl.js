@@ -59,12 +59,20 @@ var balanceCtrl = function($scope, $locale, $sce, walletService,contactservice, 
 	}, function() {
 		if (walletService.wallet == null) return;
 		$scope.wallet = walletService.wallet;
-        $scope.contacts = contactservice.loadContactsForCurr(globalFuncs.getServerName());
-        var my_name =  contactservice.getContactName($scope.contacts, $scope.wallet.getAddressString());
-        if (my_name!=''){
-            $scope.acc_name=my_name;
-        }
-        $scope.contacts = contactservice.hideContact($scope.contacts, $scope.wallet.getAddressString());
+        
+        contactservice.loadContacts($scope.wallet, walletService.password, function(contact_list){
+            var filtered_list = contactservice.filterContactForCurr(contact_list, globalFuncs.getServerName());
+            
+            var my_name =  contactservice.getContactName(filtered_list, $scope.wallet.getAddressString());
+            if (my_name!=''){
+                $scope.acc_name=my_name;
+            }
+            
+            $scope.contacts = contactservice.hideContact(filtered_list, $scope.wallet.getAddressString());
+            
+        });
+        
+       
         globalFuncs.getAccInfo(globalFuncs.slockitAccStatus, $scope.wallet.getAddressString(), function(status){
            $scope.is_locked = status==0;
         });

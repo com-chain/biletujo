@@ -1,11 +1,11 @@
 'use strict';
 var contactService = function() {
 
+ 
 
-   
-    // Load contacts stored in the local storage  
-	function loadContacts(){
-      
+    
+    function loadContacts(wallet, pass, callback){
+      // load local
       try{
           var contacts = JSON.parse(localStorage.getItem('ComChainContacts')); 
       } catch(e){}
@@ -13,20 +13,51 @@ var contactService = function() {
       if (!contacts){
           contacts=[]; 
       }
-      for (var i in contacts){
-         // for migration purpose
-         if (!contacts[i].servername){
-            contacts[i].servername=globalFuncs.getServerName();
-         }
+      
+      try{
+          var infos = JSON.parse(localStorage.getItem('ComChainContactsInfo')); 
+      } catch(e){}
+      
+      if (!infos){
+          infos = {"hash":"","length":"0"};
       }
       
-      return contacts;
+      //  get remote infos
+      globalFuncs.getContactHash(wallet.getAddressString(), function(hash){
+           // get the crypted data
+           var str_hash = hexa_to_ascii(hash);
+           
+           if (infos.hash == str_hash && infos.length>0 && contacts.length==infos.length){
+              callback(contacts);
+           } else {
+              globalFuncs.readFromIpfs(str_hash,function(crypted_list){
+               if (crypted_list && crypted_list.data){
+                   try{
+                       // decrypte
+                       var uncypher = wallet.decifer(crypted_list.data,pass);
+                       // json parse
+                       var ipfs_contacts = JSON.parse(decodeURIComponent(escape(window.atob( uncypher))));
+                       
+                       storeContacts(ipfs_contacts, str_hash);
+                       callback(ipfs_contacts);
+                   } catch(e){
+                    callback(contacts);
+                   }
+               } else {
+                callback(contacts);
+               }
+           }) 
+         }
+      });
     }
-   
-     
     
-    function loadContactsForCurr(server_name){
-      var contacts = loadContacts();
+    function storeContacts(contacts, hash){
+      localStorage.setItem('ComChainContacts',JSON.stringify(contacts));
+      var infos = {"hash":hash,"length":contacts.length};
+      localStorage.setItem('ComChainContactsInfo',JSON.stringify(infos));
+    }
+    
+    function filterContactForCurr(contacts, server_name){
       var result = [];
       for (var i in contacts){
         if (contacts[i].servername && contacts[i].servername.toUpperCase()== server_name.toUpperCase()){
@@ -35,6 +66,11 @@ var contactService = function() {
       } 
       return result;
     }
+    
+   
+     
+    
+
     
     function hideContact(contacts, address){
         for (var i in contacts){
@@ -62,12 +98,7 @@ var contactService = function() {
    }
     
     
-    // Persists contacts in the local storage  
-    function storeContacts(contacts){
-      localStorage.setItem('ComChainContacts',JSON.stringify(contacts));
-      
-      
-    }
+
     
     // Build a blob with the contacts  
     function getContactsBlob(contacts){
@@ -75,15 +106,13 @@ var contactService = function() {
     }
     
     // Ensure that a contact is present in the storage. If needed add it
-    function ensureContact(address){
-        var contacts = loadContacts();
-        upsertContact(contacts,address,'',false); 
+    function ensureContact(contacts, address){
+        return upsertContact(contacts, address, '', false); 
     }
     
     // Add a new contact /edit existing contact name
-    function addEditContact( address, name){ 
-         var contacts = loadContacts();
-         upsertContact(contacts, address, name,true);
+    function addEditContact(contacts, address, name){ 
+         return upsertContact(contacts, address, name,true);
     }
     function upsertContact(contacts, address, name,replace_name){     
       var index =-1;
@@ -107,8 +136,7 @@ var contactService = function() {
     }
     
     // Delete an existing contact
-    function deleteContact(address){
-      var contacts = loadContacts();
+    function deleteContact(contacts, address){
       for (var i in contacts){
         if (contacts[i].address.toUpperCase()== address.toUpperCase()){
           contacts.splice(i, 1);
@@ -198,34 +226,7 @@ var contactService = function() {
         }
         return str;
     }  
-    
-     function loadIpfsContacts(wallet,pass){
-       // get the hash storing the crypted data
-       globalFuncs.getContactHash(wallet.getAddressString(), function(hash){
-           // get the crypted data
-           var str_hash = hexa_to_ascii(hash);
-           globalFuncs.readFromIpfs(str_hash,function(crypted_list){
-               if (crypted_list && crypted_list.data){
-                   try{
-                       // decrypte
-                       var uncypher = wallet.decifer(crypted_list.data,pass);
-                       // json parse
-                       var ipfs_contacts = JSON.parse(decodeURIComponent(escape(window.atob( uncypher))));
-                       
-                       storeContacts(ipfs_contacts);
-                       
-                     /*  // merge & store
-                       var local_contacts=loadContacts();
-                       mergeContacts(local_contacts, ipfs_contacts, 0);
-                       storeIpfsContact(wallet,pass); */
-                   } catch(e){}
-               }
-              
-           })
-       });
-    }
-    
-    
+
    function ascii_to_hexa(str){
 	    var arr1 = [];
 	    for (var n = 0, l = str.length; n < l; n ++) 
@@ -236,8 +237,8 @@ var contactService = function() {
 	    return arr1.join('');
     }
     
-    function storeIpfsContact(wallet,pass){
-         var local_contacts=loadContacts();
+    function storeIpfsContact(contact_list, wallet, pass){
+         var local_contacts=contact_list;
          if (local_contacts && local_contacts.length>0){
          // encrypt the list 
           var b64 = window.btoa(unescape(encodeURIComponent(JSON.stringify(local_contacts))));
@@ -247,6 +248,8 @@ var contactService = function() {
                try{
                    var json_obj = JSON.parse(hash);
                     if (json_obj.hash){
+                       // Store locally 
+                       storeContacts(local_contacts, json_obj.hash);
                        // push the hash to the blockchain
                        var hex_hash  = ascii_to_hexa(json_obj.hash);
                        globalFuncs.setContactHash(wallet,hex_hash,function(){});
@@ -257,6 +260,10 @@ var contactService = function() {
          } 
     }
     
+    
+    
+    
+    ////////////////////////////////////////////////////////////////
     
     function loadLocalContacts(){
       
@@ -272,8 +279,7 @@ var contactService = function() {
     
     function storeLocalContacts(contacts){
       localStorage.setItem('ComChainLocalContacts',JSON.stringify(contacts));
-      
-      
+
     }
     
     function upsertLocalContact(contacts, address, name, server_name){     
@@ -295,12 +301,12 @@ var contactService = function() {
       return contacts;
     }
     
-    
+
     
     
     return {loadContacts:loadContacts,
-            loadContactsForCurr:loadContactsForCurr,
             storeContacts:storeContacts,
+            filterContactForCurr:filterContactForCurr,
             hideContact:hideContact,
             filterContact:filterContact,
             getContactsBlob:getContactsBlob,
@@ -310,7 +316,6 @@ var contactService = function() {
             getContactName:getContactName,
             checkForContact:checkForContact,
             mergeContacts:mergeContacts,
-            loadIpfsContacts:loadIpfsContacts,
             storeIpfsContact:storeIpfsContact,
             loadLocalContacts:loadLocalContacts,
             storeLocalContacts:storeLocalContacts,

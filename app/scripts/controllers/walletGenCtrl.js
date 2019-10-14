@@ -187,8 +187,10 @@ var walletGenCtrl = function($scope, $globalService, $translate, walletService, 
                                             
                                             $scope.$apply();
                                             // Add itself as a contact to the newly created wallet
-                                            contactService.ensureContact($scope.wallet.getChecksumAddressString());
-                                            contactService.storeIpfsContact($scope.wallet,$scope.password);
+                                            
+                                            var contacts = [];
+                                            contacts = contactService.ensureContact(contacts, $scope.wallet.getChecksumAddressString());
+                                            contactService.storeIpfsContact(contacts, $scope.wallet,$scope.password);
                                         });   
                         } 
                         else {

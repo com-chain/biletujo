@@ -144,7 +144,6 @@ var decryptWalletCtrl = function($scope, $sce, $translate, walletService, contac
                globalFuncs.loadWallets(true);
                try{
                     var current = JSON.parse($scope.fileContent);
-                    contactService.ensureContact('0x'+current.address);
                } catch(e){}
                location.reload();
            } else { 
@@ -285,7 +284,6 @@ var decryptWalletCtrl = function($scope, $sce, $translate, walletService, contac
         
         
         /****Load the contacts & memos *****/
-        contactService.loadIpfsContacts($scope.wallet, walletService.password);
         memoService.loadIpfsMemos($scope.wallet, walletService.password);
 	
 	    /**** Authenticate *****/
