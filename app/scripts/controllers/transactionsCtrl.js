@@ -70,7 +70,12 @@ var transactionsCtrl = function($scope, $locale, $sce, walletService,contactserv
 		return walletService.wallet.getAddressString();
 	}, function() {
 		if (walletService.wallet == null) return;
-		$scope.wallet = walletService.wallet; 
+		$scope.wallet = walletService.wallet;
+        
+        contactservice.loadContacts($scope.wallet, walletService.password, function(contact_list){
+            $scope.contacts = contact_list;
+        });
+        
         globalFuncs.getAccInfo(globalFuncs.slockitAccStatus, $scope.wallet.getAddressString(), function(status){
            $scope.is_locked = status==0;
         });
@@ -99,7 +104,6 @@ var transactionsCtrl = function($scope, $locale, $sce, walletService,contactserv
         
         
           ajaxReq.getTransList($scope.currentWalletAddress,count,offset,function(result){
-              $scope.contacts = contactservice.loadContacts();
               $scope.transactions= null;
               $scope.transactions= {};
               $scope.tot_in=0;
@@ -169,7 +173,6 @@ var transactionsCtrl = function($scope, $locale, $sce, walletService,contactserv
         });
     }
     
-    $scope.contacts = contactservice.loadContacts();
     $scope.index=0;
     $scope.loadTransactions($scope.tra_number,$scope.index*$scope.tra_number + $scope.tra_offset);
     $scope.loadPendingTransactions();
@@ -248,13 +251,12 @@ var transactionsCtrl = function($scope, $locale, $sce, walletService,contactserv
     
     $scope.saveContact = function(){
         $scope.addContact.close();
-        
         globalFuncs.showLoading($translate.instant("GP_Wait"));
-        $scope.contacts = contactservice.addEditContact($scope.curraddress,$scope.currName);
         
+        $scope.contacts = contactservice.addEditContact($scope.contacts, $scope.curraddress, $scope.currName);
+        contactService.storeIpfsContact($scope.contacts, $scope.wallet, walletService.password);
         
         $scope.loadTransactions($scope.tra_number,$scope.index*$scope.tra_number + $scope.tra_offset);
-        contactService.storeIpfsContact($scope.wallet, walletService.password);
 
         
     }
@@ -1013,7 +1015,6 @@ var transactionsCtrl = function($scope, $locale, $sce, walletService,contactserv
           }
           
           ajaxReq.getTransCheck(tran_hash.transactionHash,function(result){
-              $scope.contacts = contactservice.loadContacts();
              
               if (result.error){
                   if (result.msg.length>0){

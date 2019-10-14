@@ -35,6 +35,13 @@ var contactesCtrl = function($scope, $sce, walletService, contactservice, global
 	}, function() {
 		if (walletService.wallet == null) return;
 		$scope.wallet = walletService.wallet;
+        
+        contactservice.loadContacts($scope.wallet, walletService.password, function(contact_list){
+            $scope.contacts = contact_list; 
+            $scope.loadContacts();
+            //$scope.$apply();
+        });
+        
         globalFuncs.notifyApproval(); // Refresh the Payment notification
 	});
     
@@ -42,7 +49,6 @@ var contactesCtrl = function($scope, $sce, walletService, contactservice, global
     
     $scope.loadContacts= function(){
       // Load contacts stored in the local storage  
-      $scope.contacts = contactservice.loadContacts();
       $scope.blobCtc = contactservice.getContactsBlob($scope.contacts);
 
       for (var id in $scope.contacts){
@@ -52,9 +58,8 @@ var contactesCtrl = function($scope, $sce, walletService, contactservice, global
           } catch(e){}
       }
       
-      
-       $scope.filtered_contacts=$scope.contacts.slice();
-        $scope.NoCtc= $scope.filtered_contacts.length==0;
+      $scope.filtered_contacts=$scope.contacts.slice();
+      $scope.NoCtc= $scope.filtered_contacts.length==0;
       globalFuncs.hideLoadingWaiting();  
     }
     
@@ -66,7 +71,6 @@ var contactesCtrl = function($scope, $sce, walletService, contactservice, global
     
     
     
-    $scope.loadContacts();
     
     ///// Navigation to the send page
     $scope.navigateSend= function(address, different_currency){
@@ -87,9 +91,10 @@ var contactesCtrl = function($scope, $sce, walletService, contactservice, global
     $scope.deleteContact= function(){
       $scope.deleteConatctModal.close();
       globalFuncs.showLoading($translate.instant("GP_Wait"));
-      contactservice.deleteContact($scope.curraddress);
+      $scope.contacts = contactservice.deleteContact($scope.contacts, $scope.curraddress);
+      contactservice.storeIpfsContact($scope.contacts, $scope.wallet, walletService.password);
       $scope.loadContacts();
-      contactservice.storeIpfsContact($scope.wallet, walletService.password);
+      $scope.filter_ctt();
     }
     
     // Add handling    
@@ -124,10 +129,10 @@ var contactesCtrl = function($scope, $sce, walletService, contactservice, global
         if ($scope.curraddress.length==$scope.wallet.getAddressString().length){
           $scope.addNameModal.close();
           globalFuncs.showLoading($translate.instant("GP_Wait"));
-          $scope.contacts = contactservice.addEditContact( $scope.curraddress, $scope.currName);
+          $scope.contacts = contactservice.addEditContact($scope.contacts, $scope.curraddress, $scope.currName);
+          contactservice.storeIpfsContact($scope.contacts, $scope.wallet, walletService.password);
           $scope.loadContacts();
           
-          contactservice.storeIpfsContact($scope.wallet, walletService.password);
         }
     }
     
@@ -141,10 +146,10 @@ var contactesCtrl = function($scope, $sce, walletService, contactservice, global
     $scope.saveName = function(){
       $scope.editNameModal.close();
       globalFuncs.showLoading($translate.instant("GP_Wait"));
-      $scope.contacts = contactservice.addEditContact($scope.curraddress, $scope.currName);
+      $scope.contacts = contactservice.addEditContact($scope.contacts, $scope.curraddress, $scope.currName);
+      contactservice.storeIpfsContact($scope.contacts, $scope.wallet, walletService.password);
       $scope.loadContacts();
       
-      contactservice.storeIpfsContact($scope.wallet, walletService.password);
     }
     
       // Import handling   
@@ -224,7 +229,7 @@ var contactesCtrl = function($scope, $sce, walletService, contactservice, global
       $scope.new_file_content=null;
       $scope.loadContacts();
       
-      contactservice.storeIpfsContact($scope.wallet, walletService.password);
+      contactservice.storeIpfsContact($scope.contacts, $scope.wallet, walletService.password);
     }
     
 	

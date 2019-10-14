@@ -78,10 +78,16 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, gl
                 server_name: globalFuncs.getServerName(),     
                 server_address:globalFuncs.getServerAddress()  
 		}));
- 
-        $scope.contacts = contactservice.loadContactsForCurr(globalFuncs.getServerName()), $scope.wallet.getAddressString();
-        $scope.contacts_without_me = contactservice.hideContact( contactservice.loadContactsForCurr(globalFuncs.getServerName()), $scope.wallet.getAddressString(), $scope.wallet.getAddressString());
-        $scope.filtered_contacts=$scope.contacts_without_me.slice();
+        
+        
+        contactservice.loadContacts($scope.wallet, walletService.password, function(contact_list){
+            $scope.contacts = contactservice.filterContactForCurr(contact_list, globalFuncs.getServerName());
+            $scope.contacts_without_me = contactservice.hideContact($scope.contacts, $scope.wallet.getAddressString());
+            $scope.filtered_contacts=$scope.contacts_without_me.slice();
+            
+        });
+        
+
         $scope.setOrigineAddress($scope.wallet.getAddressString());
         $scope.lockDestinationAddress(false);
         globalFuncs.getAccInfo(globalFuncs.slockitAccStatus, $scope.wallet.getAddressString(), function(status){
