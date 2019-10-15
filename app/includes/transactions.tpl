@@ -30,7 +30,9 @@
            </div>
 	      </div>    
        </section>  
-                
+       <div style="display:none">
+            <div id="addressIdenticon" blockie-address="{{currentWalletAddress}}" watch-var="currentWalletAddress"></div>
+       </div>         
        
 
          <div class="row grp"> 
