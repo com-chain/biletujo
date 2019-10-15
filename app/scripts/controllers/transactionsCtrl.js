@@ -72,6 +72,8 @@ var transactionsCtrl = function($scope, $locale, $sce, walletService,contactserv
 		if (walletService.wallet == null) return;
 		$scope.wallet = walletService.wallet;
         
+        $scope.currentWalletAddress = globalFuncs.getWalletAddress();
+        
         contactservice.loadContacts($scope.wallet, walletService.password, function(contact_list){
             $scope.contacts = contact_list;
         });
@@ -254,7 +256,7 @@ var transactionsCtrl = function($scope, $locale, $sce, walletService,contactserv
         globalFuncs.showLoading($translate.instant("GP_Wait"));
         
         $scope.contacts = contactservice.addEditContact($scope.contacts, $scope.curraddress, $scope.currName);
-        contactService.storeIpfsContact($scope.contacts, $scope.wallet, walletService.password);
+        contactservice.storeIpfsContact($scope.contacts, $scope.wallet, walletService.password);
         
         $scope.loadTransactions($scope.tra_number,$scope.index*$scope.tra_number + $scope.tra_offset);
 
@@ -283,6 +285,7 @@ var transactionsCtrl = function($scope, $locale, $sce, walletService,contactserv
                                            "finalBal":$translate.instant("PDF_T_final_b").replace(/[\n\r]+/g, ''),
                                            "dateCol":$translate.instant("PDF_T_col_date").replace(/[\n\r]+/g, ''),
                                            "textCol":$translate.instant("PDF_T_col_text").replace(/[\n\r]+/g, ''),
+                                           "memoCol":$translate.instant("PDF_T_col_memo").replace(/[\n\r]+/g, ''),
                                            "sendCol":$translate.instant("PDF_T_col_send").replace(/[\n\r]+/g, ''),
                                            "recievedCol":$translate.instant("PDF_T_col_recieve").replace(/[\n\r]+/g, ''),
                                            "balanceCol":$translate.instant("PDF_T_col_balance").replace(/[\n\r]+/g, ''),
@@ -943,9 +946,10 @@ var transactionsCtrl = function($scope, $locale, $sce, walletService,contactserv
       
       $scope.interval_id = setInterval(function(){
           ajaxReq.getBlock(transaction_ash, function(block_json){
-              if (block_json.blockNumber && block_json.blockNumber.startsWith('0x')){
+              // CHANGE BEHAVIOR: HIDE DIRECTLY THE WEELS
+              // if (block_json.blockNumber && block_json.blockNumber.startsWith('0x')){
                  $scope.recievedTransaction();
-              }
+              // }
           });
       },5000);  
   }     
