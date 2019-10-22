@@ -1,0 +1,18 @@
+{
+  "background_color": "#FFF",
+  "display": "standalone",
+  "name": "Bureau Leman",
+  "short_name": "Bureau Leman",
+  "version": "org.monnaieleman.bureau",
+  "description": "An Apache Cordova wallet for Monnaie Leman",
+  "author": "Monnaie Leman",
+  "icons": [
+    {
+      "src": "lem.png",
+      "type": "image/png",
+      "sizes": "undefinedxundefined"
+    }
+  ],
+  "start_url": "index.html",
+  "theme_color": "#2e4868"
+}

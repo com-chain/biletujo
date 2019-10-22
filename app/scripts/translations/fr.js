@@ -6,7 +6,9 @@ var fr = function() {}
 fr.code = 'fr';
 fr.data = {
 /****************************************/
-Version:'&middot; v2.1.1 &middot;&nbsp;',
+
+Version:'&middot; v2.1.5 &middot;&nbsp;',
+
 /****************************************/
 
 GP_Wait: 'En attente du serveur... Si ce message persiste vérifiez votre connexion puis cliquez ici:',
@@ -102,6 +104,12 @@ VIEW_print: 'QRcode contenant votre clef privée (.pdf)',
 VIEW_print_adr: 'Adresse publique (.pdf)', 
 VIEW_close_title: 'Verrouiller votre compte:',
 VIEW_close: 'Verouiller',
+
+QR_Full:"Complet",
+QR_1:"1/4",
+QR_2:"2/4",
+QR_3:"3/4",
+QR_4:"4/4",
 
 VIEW_print_price:'Etiquettes',
 TAG_Tag_generatio_title:'Créer des étiquettes avec votre adresse publique:',
@@ -588,16 +596,17 @@ CTC_Import_save: 'Importer',
 
 PDF_T_date: 'Date :',
 PDF_T_Address: 'Compte :',
-PDF_T_title: 'Transactions individuelles',
+PDF_T_title: 'Transactions ',
 PDF_T_initial_b: 'Solde initial au ',
 PDF_T_final_b: 'Solde final au ',
 PDF_T_title_ext: '(suite)',
 PDF_T_col_date: 'Date',
-PDF_T_col_text: 'Text',
+PDF_T_col_text: 'Compte',
 PDF_T_col_send: 'Débit',
+PDF_T_col_memo: 'Mémo',
 PDF_T_col_recieve: 'Crédit',
 PDF_T_col_balance: 'Solde',
-PDF_T_diclaimer: 'Certains soldes peuvent être manquant.',
+PDF_T_diclaimer: '',
 PDF_T_total: 'Total :',
 
 

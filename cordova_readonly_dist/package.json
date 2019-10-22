@@ -1,0 +1,13 @@
+{
+  "name": "org.monnaieleman.bureau",
+  "version": "1.4.0",
+  "displayName": "Bureau Leman",
+  "cordova": {
+    "platforms": [
+      "browser"
+    ]
+  },
+  "dependencies": {
+    "cordova-browser": "~5.0.4"
+  }
+}

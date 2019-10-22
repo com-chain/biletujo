@@ -1,0 +1,18 @@
+{
+	"server": {
+		"name": "monnaie-leman",
+		"address": "//api.monnaie-leman.org",
+		"contract_1": "0x85291865Ac4b11b086EAf901E6116eba014244cE",
+		"contract_2": "0xE616BE14B489c33c8CC3D5974A5DeAad6E4A33c8",
+		"url_Css": "./css/etherwallet-master.min.css",
+		"nant": "True",
+		"CM": "True",
+		"autor": "True",
+		"deleg": "True",
+		"lang": "fr,Français",
+		"CUR": "LEM",
+		"CUR_global": "Léman",
+		"CUR_nanti": "e-leman",
+		"CUR_credit_mut": "lemanex"
+	}
+}

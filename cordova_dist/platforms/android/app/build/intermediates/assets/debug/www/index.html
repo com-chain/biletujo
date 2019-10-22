@@ -282,7 +282,7 @@
        </div>
        <div class="row" > 
         <div class="col-md-12 "> 
-         <input class="form-control" type="text" value={{token}} id="enr_tk"/><br/>
+         <input class="form-control" type="text" ng-model="token" /><br/>
         </div>
        </div>
        <div class="row" > 
@@ -384,7 +384,7 @@
        </div>
        <div class="row "> 
         <div class="col-md-12 ">
-         <a class="btn btn-info btn-block" ng-click="printQRCode()" translate="VIEW_print"  ng-hide="isApp"> Imprimer une sauvegarde de votre portefeuille </a>
+         <a class="btn btn-info btn-block" ng-click="printQRCode()" translate="VIEW_print"  > Imprimer une sauvegarde de votre portefeuille </a>
         </div>
        </div>
 
@@ -394,7 +394,11 @@
 	    </div>
        </div>
        
-       <div id="qrcode_print"></div>
+      <div id="qrcode_print"></div>
+      <div id="qrcode_print0"></div>
+      <div id="qrcode_print1"></div>
+      <div id="qrcode_print2"></div>
+      <div id="qrcode_print3"></div>
        
        <div class="row "> 
         <div class="col-md-12 ">
@@ -520,7 +524,7 @@
                              
                                <div><label translate="STR_Backup">Do a backup</label></div>
                       
-                               <a class="btn btn-info btn-block" href="{{blobEnc}}" download="LEM_0x{{currentAddress}}.dat" 
+                               <a class="btn btn-info btn-block" href="{{blobEnc}}" download="{{currentServer}}_0x{{currentAddress}}.dat" 
                                   translate="VIEW_Save" ng-if="!isApp"> Télécharger la Sauvegarde </a>
                                <a class="btn btn-info btn-block" ng-click="dowloadAppFile()"  translate="VIEW_Save" 
                                   ng-if="isApp"> Télécharger la Sauvegarde </a>
@@ -571,18 +575,31 @@
      <div class="row grp" >
        <div class="col-md-12 ">
          <div class="row "> 
-           <div class="col-md-12 ">
+           <div class="col-md-12 " ng-hide="showFragements">
               <label translate="OPEN_Choose_bak" >Selectionner une sauvegarde:</label>
            </div>
          </div>
-         <div class="row "> 
+         <div class="row " ng-hide="showFragements"> 
            <div class="col-md-12 ">
               <input style="display:none;" type="file" on-read-file="showContent($fileContent)" id="fselector"/>
               <a class="file-input btn btn-block btn-default btn-file marg-v-sm btn-primary" ng-click="openFileDialog()" translate="OPEN_Choose_file" >Choisir un fichier... </a>
-              <a class="file-input btn btn-block btn-default btn-file marg-v-sm btn-primary" ng-click="startScanPaperWallet()" translate="OPEN_Scan_back" ng-if="isApp">Scan d'une sauvegarde papier... </a>
+              <a class="file-input btn btn-block btn-default btn-file marg-v-sm btn-primary" ng-click="startScanPaperWallet()" translate="OPEN_Scan_back" ng-if="isApp" >Scan d'une sauvegarde papier... </a>
               <div id="fuploadStatus" ng-bind-html="fileStatus"></div>
            </div>
          </div>
+         <div class="row " ng-show="showFragements">
+           <div class="col-md-12 ">
+             <label translate="OPEN_partial_scan_title" >Scan Partiel:</label> <label  >{{partial_prog}}/4</label>
+             
+              <div ng-bind-html="fileStatusFrag"></div>
+              <a class="file-input btn btn-block btn-default btn-file marg-v-sm btn-primary" ng-click="startScanPaperWallet()" translate="OPEN_Scan_next_partial">Scan d'une sauvegarde papier... </a>
+               <a class="file-input btn btn-block btn-file marg-v-sm btn-primary" ng-click="cancelFragment()" translate="OPEN_cancel_partial" >cancel</a>
+           </div>
+         </div> 
+         
+         
+         
+         
          <div class="row " > 
            <div class="col-md-12 ">
               <label id="uploadbtntxt-wallet" ng-show="showFDecrypt" translate="OPEN_Access"> Acc&eacute;der &agrave; votre portefeuille:</label>
@@ -623,8 +640,11 @@
                             </div>
                              <label translate="FILE_selectedFile" ng_hide="SelectedFileIndex==-1">Wallet File</label>
                            <p> {{SelectedFileName}}</p>
-                             
+                           
                           </h4>
+                          <h6 align="center">
+                            <label translate="FILE_NoFile" ng_show="len==0">No File</label>  
+                          </h6>
                       </div>
                       <div class="modal-footer text-center">
                           <button type="button" class="btn btn-default" data-dismiss="modal" translate="CTC_editNameCancel">Annuler </button>
@@ -646,15 +666,13 @@
     <!-- view wallet info -->
   
     <div class="tab-pane active" ng-if="globalService.currentTab==globalService.tabs.viewWalletInfo.id">
-     
+  
         <div>
             <wallet-decrypt-drtv></wallet-decrypt-drtv>
         </div>
         
-        <div  ng-show="wallet!=null" ng-controller='viewWalletCtrl' ng-controller='lemanCtrl'>
-     
-     
-     
+        <div  ng-show="wallet!=null" ng-controller='viewWalletCtrl' >
+  
             <blocked-account-drtv> </blocked-account-drtv>
      
             <section class="row" >
@@ -682,11 +700,9 @@
                       <label translate="VIEW_QR" >QR Code de votre portefeuille :</label>
                    </div>
                    <div class="col-md-12 qr_wrap ">
+                   
+                     <div id="qr_qdd" qr-code="{{currentAddress}}" watch-var="wallet" width="100%" style=" max-width: 250px; margin-right:auto; margin-left:auto;" ></div>
                     
-                     
-                        <div id="qr_qdd" qr-code="{{currentAddressFromWallet}}" watch-var="currentAddressFromWallet" width="100%" style=" max-width: 250px; margin-right:auto; margin-left:auto;" id="adr_div"></div>
-             
-                     
                      
                    </div>
                    <div class="col-md-12 ">
@@ -796,18 +812,13 @@
 
     
 
-    <div class="tab-pane active" ng-if="globalService.currentTab==globalService.tabs.leman.id">
+    <div class="tab-pane active" ng-if="globalService.currentTab==globalService.tabs.send.id">
         <div>
             <wallet-decrypt-drtv></wallet-decrypt-drtv>
         </div>
 
-        <div  ng-show="wallet!=null" ng-controller='lemanCtrl'>
+        <div  ng-show="wallet!=null" ng-controller='sendCtrl'>
           <blocked-account-drtv> </blocked-account-drtv>
-        
-
-        
-        
-        
         
          <section class="row" >
           <div class="col-md-12 totBal grp" ng-show="showMyBalance">
@@ -1083,7 +1094,10 @@
                                 <div  ng-hide="tokenTx.value<limitWithoutPass">
                                   <div ng-hide="is_request_mode"><label translate="TRAN_Enter_pass"  >Entrez votre mot de passe</label></div>
                                   <div ng-show="is_request_mode"><label  translate="TRAN_Enter_pass_request"  >Entrez votre mot de passe</label></div>
-                                  <input  class="form-control" type="password" placeholder="{{ 'DCRY_Placeholder_psw' | translate }}"   ng-model="trPass" style="width:50%;"/>
+                                   <div class="input-group">
+                                    <input  class="form-control" type="password" Id="passFieldSend" ng-change="passwordCheck('passFieldSend')" placeholder="{{ 'DCRY_Placeholder_psw' | translate }}"   ng-model="trPass"/>
+                                    <span ng-show="fingerprint" class="input-group-addon finger" ng-click="fingetrprintUnlock()"></span>
+                                   </div>
                                 </div>
                               </div >   
                               <div id="trStatus" ></div>
@@ -1110,7 +1124,12 @@
                                   <label translate="TRAN_executed_text" ng-hide="is_request_mode">Vous avez envoyé</label>
                                   <label translate="TRAN_executed_request_text" ng-show="is_request_mode" >Vous avez demandé</label>
                               </h4>
-                              <strong class="text-primary"><span ng-show="elemanAmmount>0"> {{elemanAmmount/100.| number : 2}} {{CUR_nanti}}  </span> <span ng-show="lemanexAmmount>0"> {{lemanexAmmount/100.| number : 2}} {{CUR_credit_mut}}   </span> </strong> 
+                              <strong class="text-primary">
+                                    <span ng-show="elemanAmmount>0"> {{elemanAmmount/100.| number : 2}} {{CUR_nanti}}  </span> 
+                                    <span ng-show="lemanexAmmount>0"> {{lemanexAmmount/100.| number : 2}} {{CUR_credit_mut}}   </span> 
+                                    <br ng-show="lemanexAmmount>0 && elemanAmmount>0" />
+                                    <span ng-show="lemanexAmmount>0 && elemanAmmount>0">( {{ 'TRAN_total' | translate }} {{(elemanAmmount+lemanexAmmount)/100.| number : 2}} {{CUR}}  ) </span>
+                               </strong> 
                               <div>
                                   <label translate="TRAN_To" ng-hide="is_request_mode">&agrave;</label>
                                   <label translate="TRAN_From" ng-show="is_request_mode">&agrave;</label>
@@ -1294,6 +1313,10 @@
 	      </div>    
    
           <div id="qrcode_print"></div>
+          <div id="qrcode_print0"></div>
+          <div id="qrcode_print1"></div>
+          <div id="qrcode_print2"></div>
+          <div id="qrcode_print3"></div>
        </section>
        
        
@@ -1396,6 +1419,17 @@
                       <div class="modal-body">
                           <div align="center">
                           <h4><label translate="VIEW_Save_title">Sauvegarde:</label></h4>
+                          <div>
+                                <button type="button" class="btn btn-primary" translate="QR_Full" ng-click="qrBackup(0)" >Full </button>
+                          </div>
+                          <div> &nbsp;</div>
+                          <div>
+                                <button type="button" class="btn btn-primary" translate="QR_1" ng-click="qrBackup(1)" >1 </button>
+                                <button type="button" class="btn btn-primary" translate="QR_2" ng-click="qrBackup(2)" >2 </button>
+                                <button type="button" class="btn btn-primary" translate="QR_3" ng-click="qrBackup(3)" >3 </button>
+                                <button type="button" class="btn btn-primary" translate="QR_4" ng-click="qrBackup(4)" >4 </button>
+                          </div> 
+                          <div> &nbsp;</div>
                           <div id="qrcode_print_2" ></div><br/>
                           <div><input  class="form-control" type="text" readonly="readonly" value="{{qr_content}}" style="max-width: 256px;" /></div>
                           </div>
@@ -1453,7 +1487,11 @@
                                <input class="form-control" type="text"  placeholder="0.00" ng-model="currDelLimit" style="width:50%;" />
                                <br/>
                                <div><label translate="DELEG_Enter_pass">Entrez votre mot de passe</label></div>
-                               <input class="form-control" type="password"  placeholder="{{ 'DCRY_Placeholder_psw' | translate }}" ng-model="trPass" style="width:50%;"/>
+                               <div class="input-group">
+                                    <input  class="form-control" type="password" Id="passFieldBal2" ng-change="passwordCheck('passFieldBal2')" placeholder="{{ 'DCRY_Placeholder_psw' | translate }}" ng-model="trPass"/>
+                                    <span ng-show="fingerprint" class="input-group-addon finger" ng-click="fingetrprintUnlock()"></span>
+                               </div>
+
                                <div id="delStatus" ></div>
                           </div>
                       </div>
@@ -1487,7 +1525,10 @@
                                    <input class="form-control" type="text"  placeholder="0.00" ng-model="currDelLimit" style="width:50%;" id="del_lim_ed_p"/>
                                <br/>
                                <div><label translate="DELEG_Enter_pass">Entrez votre mot de passe</label></div>
-                               <input class="form-control" type="password" placeholder="{{ 'DCRY_Placeholder_psw' | translate }}" ng-model="trPass" style="width:50%;"/>
+                               <div class="input-group">
+                                    <input  class="form-control" type="password" Id="passFieldBal3" ng-change="passwordCheck('passFieldBal3')" placeholder="{{ 'DCRY_Placeholder_psw' | translate }}" ng-model="trPass"/>
+                                    <span ng-show="fingerprint" class="input-group-addon finger" ng-click="fingetrprintUnlock()"></span>
+                                </div>
                                <div id="delEditStatus" ></div>
                           </div>
                       </div>
@@ -1517,7 +1558,11 @@
                                <div ng-bind-html="selectedName" style="overflow:hidden;text-align:center;max-height:21px"></div>
                                <br/>
                                <div><label translate="DELEG_Enter_pass">Entrez votre mot de passe</label></div>
-                               <input class="form-control" type="password" placeholder="{{ 'DCRY_Placeholder_psw' | translate }}" ng-model="trPass" style="width:50%;"/>
+
+                               <div class="input-group">
+                                    <input  class="form-control" type="password" Id="passFieldBal4" ng-change="passwordCheck('passFieldBal4')" placeholder="{{ 'DCRY_Placeholder_psw' | translate }}" ng-model="trPass"/>
+                                    <span ng-show="fingerprint" class="input-group-addon finger" ng-click="fingetrprintUnlock()"></span>
+                               </div>
                                <div id="delDeleteStatus" ></div>
                           </div>
                       </div>
@@ -1667,7 +1712,11 @@
                                    <input class="form-control" type="text"  placeholder="0.00" ng-model="currAllowAmount" style="width:50%;" />
                                <br/>
                                <div><label translate="ALLOW_Enter_pass">Entrez votre mot de passe</label></div>
-                               <input class="form-control" type="password" placeholder="{{ 'DCRY_Placeholder_psw' | translate }}" ng-model="trPass" style="width:50%;"/>
+
+                               <div class="input-group">
+                                    <input  class="form-control" type="password" Id="passFieldBal5" ng-change="passwordCheck('passFieldBal5')" placeholder="{{ 'DCRY_Placeholder_psw' | translate }}" ng-model="trPass"/>
+                                    <span ng-show="fingerprint" class="input-group-addon finger" ng-click="fingetrprintUnlock()"></span>
+                               </div>
                                <div id="allowStatus" ></div>
                           </div>
                       </div>
@@ -1700,7 +1749,10 @@
                                <input class="form-control" type="text"  placeholder="0.00" ng-model="currAllowAmount" style="width:50%;" id="all_amount_p"/>
                                <br/>
                                <div><label translate="ALLOW_Enter_pass">Entrez votre mot de passe</label></div>
-                               <input class="form-control" type="password" placeholder="{{ 'DCRY_Placeholder_psw' | translate }}" ng-model="trPass" style="width:50%;"/>
+                               <div class="input-group">
+                                    <input  class="form-control" type="password" Id="passFieldBal6" ng-change="passwordCheck('passFieldBal6')" placeholder="{{ 'DCRY_Placeholder_psw' | translate }}" ng-model="trPass"/>
+                                    <span ng-show="fingerprint" class="input-group-addon finger" ng-click="fingetrprintUnlock()"></span>
+                               </div>
                                <div id="allowEditStatus" ></div>
                           </div>
                       </div>
@@ -1730,7 +1782,10 @@
                                <div ng-bind-html="selectedName" style="overflow:hidden;text-align:center;max-height:21px"></div>
                                <br/>
                                <div><label translate="ALLOW_Enter_pass">Entrez votre mot de passe</label></div>
-                               <input class="form-control" type="password" placeholder="{{ 'DCRY_Placeholder_psw' | translate }}" ng-model="trPass" style="width:50%;"/>
+                               <div class="input-group">
+                                    <input  class="form-control" type="password" Id="passFieldBal7" ng-change="passwordCheck('passFieldBal7')" placeholder="{{ 'DCRY_Placeholder_psw' | translate }}" ng-model="trPass"/>
+                                    <span ng-show="fingerprint" class="input-group-addon finger" ng-click="fingetrprintUnlock()"></span>
+                               </div>
                                <div id="allowDeleteStatus" ></div>
                           </div>
                       </div>
@@ -1814,7 +1869,11 @@
                              
                                 <br/>
                                 <div><label translate="OPT_Enter_pass">Entrez votre mot de passe</label></div>
-                                <input class="form-control" type="password"  placeholder="{{ 'DCRY_Placeholder_psw' | translate }}" ng-model="trPass" style="width:50%;"/>
+
+                                <div class="input-group">
+                                    <input  class="form-control" type="password" placeholder="{{ 'DCRY_Placeholder_psw' | translate }}" ng-model="trPass"/>
+                                    <span ng-show="fingerprint" class="input-group-addon finger" ng-click="fingetrprintUnlock()"></span>
+                                </div>
                                 <div id="optStatus" ></div>
                           </div>
                       </div>
@@ -2244,7 +2303,10 @@
                               <br/>
                               <div  ng-hide="typeTrans=='no'">
                                  <div><label translate="TRAN_Enter_pass" >Entrez votre mot de passe</label></div>
-                                 <input class="form-control" type="password" placeholder="{{ 'DCRY_Placeholder_psw' | translate }}" ng-model="trPass" style="width:50%;"/>
+                                 <div class="input-group">
+                                    <input  class="form-control" type="password" Id="passFieldTR1" ng-change="passwordCheck('passFieldTR1')" placeholder="{{ 'DCRY_Placeholder_psw' | translate }}"   ng-model="trPass"/>
+                                    <span ng-show="fingerprint" class="input-group-addon finger" ng-click="fingetrprintUnlock()"></span>
+                                 </div>
                                  <div ng-bind-html="trStatus" ></div>
                               </div>
                           </div>
@@ -2279,7 +2341,14 @@
                               <div ng-bind-html="selectedName" style="overflow:hidden;text-align:center;max-height:21px" ></div> 
                               <br/>
                               <div><label translate="TRAN_Enter_pass_reject" >Entrez votre mot de passe</label></div> 
-                              <input class="form-control" type="password" placeholder="{{ 'DCRY_Placeholder_psw' | translate }}" ng-model="trPass" style="width:50%;"/>
+<<<<<<< HEAD
+                              <div class="input-group">
+                                    <input  class="form-control" type="password" placeholder="{{ 'DCRY_Placeholder_psw' | translate }}"   ng-model="trPass"/>
+                                    <span ng-show="fingerprint" class="input-group-addon finger" ng-click="fingetrprintUnlock()"></span>
+                              </div>
+=======
+                              <input class="form-control" type="password" Id="passFieldTR2" ng-change="passwordCheck('passFieldTR2')" placeholder="{{ 'DCRY_Placeholder_psw' | translate }}" ng-model="trPass" style="width:50%;"/>
+>>>>>>> develop
                               <div ng-bind-html="trRejectStatus" ></div>
                           </div>
                       </div>
@@ -2574,11 +2643,14 @@
                </div>
                 <div class="col-md-7 col-xs-7">
                   <button type="button" id="ajouter" class="btn btn-primary bellowmargin"  ng-click="addNamePop()" translate="CTC_add">Add </button>
-                  <a type="button" id="exporter" title="Exporter" class="btn btn-primary bellowmargin" href="{{blobCtc}}" download="eLeman_Contacts.dat"  translate="CTC_export" ng-if="!isApp">Export </a>
-                  <button type="button" class="btn btn-primary bellowmargin"  ng-click="exportCtc()" translate="CTC_export" ng-if="isApp">Export </button>
-                  
-              
-                  <button type="button" id="importer" class="btn btn-primary bellowmargin"  ng-click="openImportCtc()" translate="CTC_import">Import </button>
+                
+                    <a type="button" class="btn btn-primary bellowmargin" id="exporter" href="{{blobCtc}}" download="Bilutejo_Contacts.dat"  ng-hide="isApp" translate="CTC_export" >&nbsp; </a>
+                    
+                  <button type="button" id="importer" class="btn btn-primary bellowmargin"  ng-click="openImportCtc()" translate="CTC_import" ng-hide="isApp" >Import </button>
+
+                
+                
+                
                </div>
              </div>
             
@@ -2727,7 +2799,8 @@
               </div>
          </div>
          
-         <!-- import Contact file -->
+         
+               <!-- import Contact file -->
          <div class="modal fade" id="importCtcPop" tabindex="-1" role="dialog" aria-labelledby="sendTransactionLabel">
               <div class="modal-dialog" role="document">
                   <div class="modal-content">
@@ -2746,6 +2819,7 @@
                               <div ng-hide="file_number==-1"  >{{file_number}} <span translate="CTC_Import_FileNumber">Local </span></div> 
                               <div>{{loacl_number}} <span translate="CTC_Import_localNumber">Local </span></div> 
                               <span ng-show="conflict_number!=0" >
+                                 <br/>
                                  <div>{{conflict_number}} <span translate="CTC_Import_Conflict">Conflict </span></div> <br/>
                                  <label translate="CTC_Import_merge">Import</label>
                                  <div><input type="radio" ng-model="merge_type" value="0" ng-value="0"> {{"CTC_Merge_their"| translate }}</div>
@@ -2789,7 +2863,6 @@
         </div>
          
        </div>
- 
    </div>
 
 

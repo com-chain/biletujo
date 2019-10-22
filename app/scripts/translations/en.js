@@ -3,7 +3,9 @@
 var en = function() {}
 en.code = 'en';
 en.data = {
-Version:'&middot; v2.1.1 &middot;&nbsp;',
+
+Version:'&middot; v2.1.5 &middot;&nbsp;',
+
 GP_Wait: 'Please wait… If this message persists, check your connection and click here:',
 GP_Wait_tran: 'Your request is being processed (approx. 30 sec.). You may click on the arrow and continue using the app.',
 ID_placeholder: 'Type a public address here (ex..0x88b..)',
@@ -101,6 +103,12 @@ VIEW_print_adr: 'Public address (.pdf)',
 VIEW_close_title: 'Close this wallet',
 VIEW_close: 'Close',
 
+QR_Full:"Full",
+QR_1:"1/4",
+QR_2:"2/4",
+QR_3:"3/4",
+QR_4:"4/4",
+
 VIEW_print_price: 'Notes',
 TAG_Tag_generatio_title: 'Create tags with your public address:',
 TAG_prod_name: 'Product name',
@@ -119,7 +127,7 @@ BN_Valid:'This address do match a valid note of ',
 
 
 VIEW_Delegation_Allowance: 'Power of Attorney and Authorizations:',
-VIEW_Delegate_btn: 'Power of Attorney',
+VIEW_Delegate_btn: 'Power of Att.',
 VIEW_Allowance_btn: 'Authorizations',
 WIEW_WrongPass: 'Wrong password!',
 
@@ -177,7 +185,7 @@ TRAN_choose_origine_btn: 'Change',
 TRAN_Choose_Origine: 'Pay from:',
 TRAN_MyAccount: 'This wallet',
 TRAN_MyDelegations: 'Another wallet',
-DELEG_pick: 'Power of Attorney',
+DELEG_pick: 'Power of Att.',
 DELEG_Lim: 'Limit: ',
 DELEG_delete:'&#x2718;',
 TRAN_Choose: 'Select',
@@ -587,16 +595,17 @@ CTC_Import_save: 'Importer',
 
 PDF_T_date: 'Date :',
 PDF_T_Address: 'Account :',
-PDF_T_title: 'Individual transactions',
+PDF_T_title: 'Transactions ',
 PDF_T_title_ext: '(cont.)',
 PDF_T_initial_b: 'Initial balance ',
 PDF_T_final_b: 'Final balance ',
 PDF_T_col_date: 'Date',
-PDF_T_col_text: 'Text',
+PDF_T_col_text: 'Account',
+PDF_T_col_memo: 'Memo',
 PDF_T_col_send: 'Debit',
 PDF_T_col_recieve: 'Credit',
 PDF_T_col_balance: 'Balance',
-PDF_T_diclaimer: '   Some balance may be missing.',
+PDF_T_diclaimer: '',
 PDF_T_total: 'Total :',
 
 STR_yourWallets: 'Your Portfolio',

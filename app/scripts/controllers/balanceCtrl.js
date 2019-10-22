@@ -59,12 +59,20 @@ var balanceCtrl = function($scope, $locale, $sce, walletService,contactservice, 
 	}, function() {
 		if (walletService.wallet == null) return;
 		$scope.wallet = walletService.wallet;
-        $scope.contacts = contactservice.loadContactsForCurr(globalFuncs.getServerName());
-        var my_name =  contactservice.getContactName($scope.contacts, $scope.wallet.getAddressString());
-        if (my_name!=''){
-            $scope.acc_name=my_name;
-        }
-        $scope.contacts = contactservice.hideContact($scope.contacts, $scope.wallet.getAddressString());
+        
+        contactservice.loadContacts($scope.wallet, walletService.password, function(contact_list){
+            var filtered_list = contactservice.filterContactForCurr(contact_list, globalFuncs.getServerName());
+            
+            var my_name =  contactservice.getContactName(filtered_list, $scope.wallet.getAddressString());
+            if (my_name!=''){
+                $scope.acc_name=my_name;
+            }
+            
+            $scope.contacts = contactservice.hideContact(filtered_list, $scope.wallet.getAddressString());
+            
+        });
+        
+       
         globalFuncs.getAccInfo(globalFuncs.slockitAccStatus, $scope.wallet.getAddressString(), function(status){
            $scope.is_locked = status==0;
         });
@@ -124,11 +132,13 @@ var balanceCtrl = function($scope, $locale, $sce, walletService,contactservice, 
     }
     
     $scope.callback = function(pdf_doc){
-        var uri = pdf_doc.output('datauristring');
-        cordova.InAppBrowser.open(uri, '_blank', 'location=yes');
+
+        var file_name = globalFuncs.cleanName($translate.instant("PDF_Priv_file")) +'_'+$scope.currentWalletAddress+'.pdf';
+        pdf_doc.save(file_name);
     }
 
 	$scope.printQRCode = function() {
+        if (!$scope.isApp) {
          globalFuncs.generateSaveQR($scope.currentWalletAddress);
 
          setTimeout(function(){ 
@@ -139,9 +149,13 @@ var balanceCtrl = function($scope, $locale, $sce, walletService,contactservice, 
                 $scope.callback);
          },100); 
        
-     
+       }
        $scope.qrModal.open();
 	}
+    
+   $scope.qrBackup = function(piece) {
+       globalFuncs.generateSaveQRPiece($scope.currentWalletAddress,piece);
+   }
     
     
     
@@ -661,9 +675,10 @@ var balanceCtrl = function($scope, $locale, $sce, walletService,contactservice, 
       
       $scope.interval_id = setInterval(function(){
           ajaxReq.getBlock(transaction_ash, function(block_json){
-              if (block_json.blockNumber && block_json.blockNumber.startsWith('0x')){
+              // CHANGE BEHAVIOR: HIDE DIRECTLY THE WEELS
+              // if (block_json.blockNumber && block_json.blockNumber.startsWith('0x')){
                  $scope.recievedTransaction();
-              }
+              //}
           });
       },5000);  
   }  

@@ -118,6 +118,9 @@ var decryptWalletCtrl = function($scope, $sce, $translate, walletService, contac
             $scope.fileStatus =  $sce.trustAsHtml(globalFuncs.getSuccessText($translate.instant('OPEN_Paper_selected'))); 
         }
 		try {
+            $fileContent = $fileContent.replace(/(\n|\r|\ )/gm, "");
+           
+            
             var current = JSON.parse($fileContent);
             if (typeof current === 'undefined' || typeof current.address === 'undefined' || 
                 (typeof current.Crypto === 'undefined' && current.crypto === 'undefined') ||  typeof current.id === 'undefined'||  
@@ -134,13 +137,13 @@ var decryptWalletCtrl = function($scope, $sce, $translate, walletService, contac
     
     $scope.openFile = function(){              
        globalFuncs.showLoading($translate.instant("GP_Wait"));
+       $scope.fileContent = $scope.fileContent.replace(/(\n|\r|\ )/gm, "");
        globalFuncs.loadWallet(JSON.parse($scope.fileContent),function(success){
            if (success){
 
                globalFuncs.loadWallets(true);
                try{
                     var current = JSON.parse($scope.fileContent);
-                    contactService.ensureContact('0x'+current.address);
                } catch(e){}
                location.reload();
            } else { 
@@ -281,7 +284,6 @@ var decryptWalletCtrl = function($scope, $sce, $translate, walletService, contac
         
         
         /****Load the contacts & memos *****/
-        contactService.loadIpfsContacts($scope.wallet, walletService.password);
         memoService.loadIpfsMemos($scope.wallet, walletService.password);
 	
 	    /**** Authenticate *****/
@@ -350,6 +352,7 @@ var decryptWalletCtrl = function($scope, $sce, $translate, walletService, contac
       $scope.validateToken =function(){
         var enr_txt=document.getElementById("enr_tk2").value;
         try {
+            enr_txt = enr_txt.replace(/(\n|\r|\ )/gm, "");
             var enrollmentLetter = JSON.parse(enr_txt);  
             if (enrollmentLetter.servername){
                 globalFuncs.getConfJSON(enrollmentLetter.servername,function(success){

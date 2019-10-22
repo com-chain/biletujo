@@ -21,7 +21,7 @@
                 <div class="col-md-7 col-xs-7">
                   <button type="button" id="ajouter" class="btn btn-primary bellowmargin"  ng-click="addNamePop()" translate="CTC_add">Add </button>
                 
-                    <a type="button" class="btn btn-primary bellowmargin" id="exporter" href="{{blobCtc}}" download="Bilutejo_Contacts.dat"  ng-hide="isApp" translate="CTC_export" >&nbsp; </a>
+                    <a type="button" class="btn btn-primary bellowmargin" id="exporter" href="{{blobCtc}}" download="Biletujo_Contacts.dat"  ng-hide="isApp" translate="CTC_export" >&nbsp; </a>
                     
                   <button type="button" id="importer" class="btn btn-primary bellowmargin"  ng-click="openImportCtc()" translate="CTC_import" ng-hide="isApp" >Import </button>
 

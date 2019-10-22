@@ -70,7 +70,14 @@ var transactionsCtrl = function($scope, $locale, $sce, walletService,contactserv
 		return walletService.wallet.getAddressString();
 	}, function() {
 		if (walletService.wallet == null) return;
-		$scope.wallet = walletService.wallet; 
+		$scope.wallet = walletService.wallet;
+        
+        $scope.currentWalletAddress = globalFuncs.getWalletAddress();
+        
+        contactservice.loadContacts($scope.wallet, walletService.password, function(contact_list){
+            $scope.contacts = contact_list;
+        });
+        
         globalFuncs.getAccInfo(globalFuncs.slockitAccStatus, $scope.wallet.getAddressString(), function(status){
            $scope.is_locked = status==0;
         });
@@ -99,7 +106,6 @@ var transactionsCtrl = function($scope, $locale, $sce, walletService,contactserv
         
         
           ajaxReq.getTransList($scope.currentWalletAddress,count,offset,function(result){
-              $scope.contacts = contactservice.loadContacts();
               $scope.transactions= null;
               $scope.transactions= {};
               $scope.tot_in=0;
@@ -169,7 +175,6 @@ var transactionsCtrl = function($scope, $locale, $sce, walletService,contactserv
         });
     }
     
-    $scope.contacts = contactservice.loadContacts();
     $scope.index=0;
     $scope.loadTransactions($scope.tra_number,$scope.index*$scope.tra_number + $scope.tra_offset);
     $scope.loadPendingTransactions();
@@ -248,13 +253,12 @@ var transactionsCtrl = function($scope, $locale, $sce, walletService,contactserv
     
     $scope.saveContact = function(){
         $scope.addContact.close();
-        
         globalFuncs.showLoading($translate.instant("GP_Wait"));
-        $scope.contacts = contactservice.addEditContact($scope.curraddress,$scope.currName);
         
+        $scope.contacts = contactservice.addEditContact($scope.contacts, $scope.curraddress, $scope.currName);
+        contactservice.storeIpfsContact($scope.contacts, $scope.wallet, walletService.password);
         
         $scope.loadTransactions($scope.tra_number,$scope.index*$scope.tra_number + $scope.tra_offset);
-        contactService.storeIpfsContact($scope.wallet, walletService.password);
 
         
     }
@@ -281,6 +285,7 @@ var transactionsCtrl = function($scope, $locale, $sce, walletService,contactserv
                                            "finalBal":$translate.instant("PDF_T_final_b").replace(/[\n\r]+/g, ''),
                                            "dateCol":$translate.instant("PDF_T_col_date").replace(/[\n\r]+/g, ''),
                                            "textCol":$translate.instant("PDF_T_col_text").replace(/[\n\r]+/g, ''),
+                                           "memoCol":$translate.instant("PDF_T_col_memo").replace(/[\n\r]+/g, ''),
                                            "sendCol":$translate.instant("PDF_T_col_send").replace(/[\n\r]+/g, ''),
                                            "recievedCol":$translate.instant("PDF_T_col_recieve").replace(/[\n\r]+/g, ''),
                                            "balanceCol":$translate.instant("PDF_T_col_balance").replace(/[\n\r]+/g, ''),
@@ -288,8 +293,9 @@ var transactionsCtrl = function($scope, $locale, $sce, walletService,contactserv
                                            "totals":$translate.instant("PDF_T_total").replace(/[\n\r]+/g, '')
                                          }, 
                                          function(doc){
-                                                 var uri = doc.output('datauristring');
-                                                 cordova.InAppBrowser.open(uri, '_blank', 'location=yes');
+
+                                              var name= "Transactions_"+$scope.start_date.getFullYear()+'-'+($scope.start_date.getMonth()+1)+'-'+ ($scope.start_date.getDate())+"_"+$scope.end_date.getFullYear()+'-'+($scope.end_date.getMonth()+1)+'-'+ ($scope.end_date.getDate())+".pdf";
+                                              doc.save(name);
                                          });
             
             
@@ -941,9 +947,10 @@ var transactionsCtrl = function($scope, $locale, $sce, walletService,contactserv
       
       $scope.interval_id = setInterval(function(){
           ajaxReq.getBlock(transaction_ash, function(block_json){
-              if (block_json.blockNumber && block_json.blockNumber.startsWith('0x')){
+              // CHANGE BEHAVIOR: HIDE DIRECTLY THE WEELS
+              // if (block_json.blockNumber && block_json.blockNumber.startsWith('0x')){
                  $scope.recievedTransaction();
-              }
+              // }
           });
       },5000);  
   }     
@@ -1013,7 +1020,6 @@ var transactionsCtrl = function($scope, $locale, $sce, walletService,contactserv
           }
           
           ajaxReq.getTransCheck(tran_hash.transactionHash,function(result){
-              $scope.contacts = contactservice.loadContacts();
              
               if (result.error){
                   if (result.msg.length>0){
