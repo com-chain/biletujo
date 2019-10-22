@@ -45,11 +45,10 @@ var exchangeCtrl = function($scope, $locale, $sce, walletService, $translate) {
     $scope.acc_type_obj.setType = function (type_val) {
        this.tp=type_val;
        $scope.acc_typ=type_val;
-       this.is_admin = type_val==2;
-       this.is_legal= type_val==1;
        this.is_person= type_val==0;
-       this.is_asso= type_val==0;
-       this.can_nant = type_val==3;
+       this.is_legal= type_val==1;
+       this.is_admin = type_val==2;
+       this.is_asso= type_val==3;
         if (type_val==0){
            this.tp_name = $translate.instant("EXC_Account_Type_physical");
         } else if (type_val==1){
