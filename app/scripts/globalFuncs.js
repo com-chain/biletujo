@@ -1979,7 +1979,7 @@ newImg.onload = function() {
     var tran_row_height=10;
     var margin_left=25;
     var margin_right=185;
-    var col_2=45;
+    var col_2=42;
     var col_21=80;
     var col_25=113;
     var col_3=128;
@@ -2029,7 +2029,7 @@ newImg.onload = function() {
                    if (list[i].data.addr_from==walletAddress){
                         last_block += list[i].data.sent/100.;
                     } else {
-                       last_block -= list[i].data.recieved/100.; 
+                       last_block -= (list[i].data.recieved - list[i].data.tax)/100.; 
                     } 
                     i++;
                 }
@@ -2106,7 +2106,7 @@ newImg.onload = function() {
                
                
                doc.text(col_35, vertical_start-1+(tran_row_height)*(row+0.5), tra.currency);
-               doc.text(col_4, vertical_start-1+(tran_row_height)*(row+0.5), (parseFloat(tra.recieved)/100.).toFixed(2));
+               doc.text(col_4, vertical_start-1+(tran_row_height)*(row+0.5), (parseFloat(tra.recieved - tra.tax)/100.).toFixed(2));
                tot_in+=tra.recieved/100.;
             }
             
