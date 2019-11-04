@@ -33,7 +33,7 @@
                      <label >Fonte :</label>
                   </div>
                    <div  class="col-md-6 col-xs-6">
-                    <a class="btn btn-primary btn-block" ng-click="melt()" >Fondre de {{fonte}} %</a>
+                    <a class="btn btn-primary btn-block" ng-click="melt()" >Fondre de {{fonte}}%</a>
                    </div>
                   <div class="col-md-12 ">
                   <br/>
@@ -41,11 +41,11 @@
                   </div>
                   
                   <div  class="col-md-12 " >
-                        <span > Lors d\'un transfert depuis un partenaire vers un employ&eacute:</span>
+                        <span > Lors d'un transfert depuis un partenaire vers un employ&eacute:</span>
 
                   </div> 
                   <div  class="col-md-6 col-xs-6 text-primary">
-                         Taux transf&eacute;r&eacute; :{{transfert_employe}} % </span>
+                         Taux transf&eacute;r&eacute;: {{transfert_employe}}% </span>
 
                   </div>
                   <div   class="col-md-6 col-xs-6">
@@ -53,13 +53,13 @@
                   </div>
                   
                     <div  class="col-md-12 " >
-                        <span > Lors d\'un transfert depuis un partenaire vers une association;</span>
+                        <span > Lors d'un transfert depuis un partenaire vers une association;</span>
 
                   </div> 
                   
               
                   <div  class="col-md-6 col-xs-6 text-primary">
-                         taux transf&eacute;r&eacute; :{{transfert_asso}} % </span>
+                         taux transf&eacute;r&eacute;: {{transfert_asso}}% </span>
 
                   </div>
                   <div  class="col-md-6 col-xs-6">
@@ -73,7 +73,7 @@
 
                   </div> 
                     <div  class="col-md-6 col-xs-6 text-primary">
-                         {{fonte}} % </span>
+                         {{fonte}}% </span>
 
                   </div>
                   <div   class="col-md-6 col-xs-6">

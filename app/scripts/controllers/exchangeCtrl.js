@@ -49,6 +49,7 @@ var exchangeCtrl = function($scope, $locale, $sce, walletService, $translate) {
        this.is_legal= type_val==1;
        this.is_admin = type_val==2;
        this.is_asso= type_val==3;
+       this.can_nant = this.is_asso;
         if (type_val==0){
            this.tp_name = $translate.instant("EXC_Account_Type_physical");
         } else if (type_val==1){
@@ -58,6 +59,7 @@ var exchangeCtrl = function($scope, $locale, $sce, walletService, $translate) {
         }  else if (type_val==3){
             this.tp_name = "Association";
         }
+        
     };
     
     
