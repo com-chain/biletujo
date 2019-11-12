@@ -232,6 +232,12 @@ var contactesCtrl = function($scope, $sce, walletService, contactservice, global
       contactservice.storeIpfsContact($scope.contacts, $scope.wallet, walletService.password);
     }
     
+        
+    // (App) Export handling  
+    $scope.exportCtc = function(){
+      globalFuncs.dowloadAppFileWithName($translate.instant('CUR_global')+'_Contacts.dat', $scope.contacts);
+    }
+    
 	
 };
 module.exports = contactesCtrl;

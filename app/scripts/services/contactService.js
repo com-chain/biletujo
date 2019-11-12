@@ -26,7 +26,7 @@ var contactService = function() {
       globalFuncs.getContactHash(wallet.getAddressString(), function(hash){
            // get the crypted data
            var str_hash = hexa_to_ascii(hash);
-           
+          // console.log("Contacts are locally stored with hash "+infos.hash+" and remotely with hash : "+ str_hash)
            if (infos.hash == str_hash && infos.length>0 && contacts.length==infos.length){
               callback(contacts);
            } else {
@@ -37,7 +37,7 @@ var contactService = function() {
                        var uncypher = wallet.decifer(crypted_list.data,pass);
                        // json parse
                        var ipfs_contacts = JSON.parse(decodeURIComponent(escape(window.atob( uncypher))));
-                       
+                       console.log("Retrieved "+ipfs_contacts.length+" contacts with hash  : "+ str_hash)
                        storeContacts(ipfs_contacts, str_hash);
                        callback(ipfs_contacts);
                    } catch(e){
@@ -248,6 +248,8 @@ var contactService = function() {
                try{
                    var json_obj = JSON.parse(hash);
                     if (json_obj.hash){
+                        
+                       console.log("Storing "+local_contacts.length+" contacts with hash  : "+ json_obj.hash)
                        // Store locally 
                        storeContacts(local_contacts, json_obj.hash);
                        // push the hash to the blockchain
