@@ -29,6 +29,45 @@ var consultService = function() {
     }
     
     
+    function loadRightFor(address){
+      var consult_list = loadConsults(address);
+      
+      
+      var result = {};
+      for (var consult of consult_list) {
+           try {
+       
+                // extract the signature
+                var v = consult.signature.v;
+                var r = consult.signature.r; 
+                var s = consult.signature.s; 
+
+                // get the hash
+                var str_content = JSON.stringify(consult.data);
+                var hash = ethUtil.sha3(str_content);
+                
+                // check the signature
+                var public_sign_key = ethUtil.ecrecover(hash, v, r, s);
+                var rec_address = ethUtil.bufferToHex(ethUtil.publicToAddress(public_sign_key));
+                
+                if (rec_address == consult.data.address && 
+                    consult.data.destinary == address && 
+                    (new Date(consult.data.end)).getTime() > (new Date()).getTime()  &&
+                    (new Date(consult.data.begin)).getTime() < (new Date()).getTime()) {   
+                
+                       result[consult.data.address] = {"begin":new Date(consult.data.begin), 
+                                                       "viewbalance":consult.data.viewbalance, 
+                                                       "viewoldtran": consult.data.viewoldtran };
+                }
+        
+    
+          } catch (e) {}
+      }
+      
+      return result;
+    }
+    
+    
    
     function storeConsults(consults){
       localStorage.setItem('ComChainConsultRights',JSON.stringify(consults));
@@ -77,7 +116,8 @@ var consultService = function() {
             loadConsults:loadConsults,
             storeConsults:storeConsults,
             addConsult:addConsult,
-            deleteConsult:deleteConsult
+            deleteConsult:deleteConsult,
+            loadRightFor:loadRightFor
     }
    
 };

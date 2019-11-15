@@ -1,4 +1,4 @@
-    <!-- Transactions-->
+    <!-- Contacts-->
     <div class="tab-pane active" ng-if="globalService.currentTab==globalService.tabs.contacts.id">
        @@if (site === 'mew' ) {
         <div>

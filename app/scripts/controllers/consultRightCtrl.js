@@ -67,7 +67,7 @@ var consultRightCtrl = function($scope, $sce, walletService, contactservice, con
           try{
               $scope.consult_rights[id].name = contactservice.getContactName($scope.contacts, $scope.consult_rights[id].data.address); 
               
-              $scope.consult_rights[id].valid = (new Date($scope.consult_rights[id].data.end)>= new Date());
+              $scope.consult_rights[id].valid = ((new Date($scope.consult_rights[id].data.end)).getTime() >= (new Date()).getTime());
               
           } catch(e){}
       }
@@ -205,7 +205,7 @@ var consultRightCtrl = function($scope, $sce, walletService, contactservice, con
     
     
     $scope.createConsultRight = function() {
-       if ($scope.start_date>=$scope.end_date) {
+       if ($scope.start_date.getTime()>=$scope.end_date.getTime()) {
            document.getElementById('createStatus').innerHTML = $sce.trustAsHtml(globalFuncs.getDangerText($translate.instant("CRI_wrongDates"))); 
        } else if ($scope.trPass==walletService.password){
            walletService.setUsed();
@@ -251,7 +251,7 @@ $scope.showContent = function(content) {
            // check the validity 
            if (obj.data.destinary!=$scope.currentAddress){
                $scope.openStatus = $sce.trustAsHtml(globalFuncs.getDangerText($translate.instant('OPEN_right_not_for_you'))); 
-           } else if (new Date(obj.data.end)< new Date()){   
+           } else if ((new Date(obj.data.end)).getTime()< (new Date()).getTime()){   
                 $scope.openStatus = $sce.trustAsHtml(globalFuncs.getDangerText($translate.instant('OPEN_too_old_right'))); 
            } else {    
                // OK we can close the popup

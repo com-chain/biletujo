@@ -44,6 +44,7 @@ var viewWalletCtrl = require('./controllers/viewWalletCtrl');
 var sendCtrl = require('./controllers/sendCtrl');
 var balanceCtrl = require('./controllers/balanceCtrl');
 var transactionsCtrl = require('./controllers/transactionsCtrl');
+var readonlytransactionsCtrl = require('./controllers/readonlytransactionsCtrl');
 var contactsCtrl = require('./controllers/contactsCtrl');
 var storageCtrl = require('./controllers/storageCtrl');
 var exchangeCtrl = require('./controllers/exchangeCtrl');
@@ -107,4 +108,5 @@ app.controller('contactsCtrl', ['$scope', '$sce', 'walletService','contactServic
 app.controller('storageCtrl', ['$scope', '$sce', 'walletService','contactService', '$translate', storageCtrl]);
 
 app.controller('consultRightCtrl', ['$scope', '$sce', 'walletService','contactService','consultService','globalService', '$translate', consultRightCtrl]);
+app.controller('readonlytransactionsCtrl', ['$scope','$locale', '$sce', 'walletService','contactService', 'consultService','memoService', '$translate','$filter', readonlytransactionsCtrl]);
 

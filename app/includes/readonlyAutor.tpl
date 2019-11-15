@@ -1,4 +1,4 @@
-    <!-- Transactions-->
+    <!-- Consultation rights -->
     <div class="tab-pane active" ng-if="globalService.currentTab==globalService.tabs.roAutorizations.id">
       
         <div>
@@ -281,6 +281,6 @@
               </div>
         </div> 
          
-         
+       </div>   
        </div>
    </div>

@@ -6,12 +6,75 @@
         </div>
        
        <div ng-show="wallet!=null" ng-controller='readonlytransactionsCtrl'>
-       
-  
-  
-  <!-- Missing header with autor selection-->
+
+
+        <section class="row " >
+          <div class="col-md-12 ">
+              <div class="row grp"> 
+               
+               <div class="col-md-6 col-xs-6">
+                 <label translate="CRI_selected_wallet" >selected account</label>
+               </div>
+               <div class="col-md-6 col-xs-6">
+                    <a class="btn btn-primary bellowmargin" ng-click="pickWallet()" translate="CRI_change" > </a>
+                    <div class="pop_pane"  ng-show="showSelectorPop" >
+                        <div class="ctt_pop" ng-show="showSelectorPop">
+                            <div class="CTC_Close" ng-click="closeSelectPop()" translate="TRA_Close"></div>
+                            <div class="ctt_tool">
+                                <div class="ctt_pop_scroll">
+                                    <div class="ctt_cent">
+                                        <div  ng-repeat="ct in possible_wallets_key" class="ctt_elm">
+                                            <div>
+                                                <div  ng-click="pickSel(ct)">
+                                                    <div class="identiconWrapper" style="max-width:60px;" >
+                                                            <div id="addressIdenticon" title="Address Indenticon" img="1" blockie-address="{{ct}}"  watch-var="possible_wallets" ></div>
+                                                    </div>
+                                                <div class="ctt_txt">{{ct}}</div>
+                                            </div> 
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>      
+                    </div>
+               </div>   
+              </div>    
+               <div  class="col-md-6 col-xs-6">
+                  <div class="identiconWrapper">
+                    <div id="addressIdenticon" title="Address Indenticon" blockie-address="{{watched_address}}" watch-var="watched_address"></div>
+                  </div>
+               </div>
+               <div  class="col-md-6 col-xs-6">
+                  <textarea cols="9" rows="5" class="adrtxt" readonly="readonly">{{watched_address}} </textarea>
+               </div>
+              </div>
+          </div>
+         </section>
+         
+         
+        <section class="row" ng-show="show_bal" >
+	      <div class="col-md-12 ">
+	       <div class="row grp"> 
+            <div  class="col-md-12"> 
+	             <label translate="ROTR_balances" >Votre balance :</label>
+            </div> 
+            <div  class="col-md-12" ng-show="has_nant">  
+                <div class="balance-item">{{CUR_nanti}}:</div>
+                <div class="balance-amount text-primary">{{balanceEL| number : 2}} {{CUR}}</div>
+            </div> 
+            <div  class="col-md-12" ng-show="has_credit_mut" >  
+                    <div class="balance-item">{{CUR_credit_mut}}:</div>
+                    <div class="balance-amount text-primary">{{balanceCM| number : 2}} {{CUR}}</div>
+            </div> 
+           </div>
+          </div>
+         </section>
+
+
+
+
        <div style="display:none">
-            <div id="addressIdenticon" blockie-address="{{currentWalletAddress}}" watch-var="currentWalletAddress"></div>
+            <div id="addressIdenticon" blockie-address="{{watched_address}}" watch-var="watched_address"></div>
        </div>         
        
 
@@ -40,21 +103,21 @@
                      </td>
 	               </tr>
 	                <tr  ng-repeat="tran in transactions track by $index" class="tr_trans">
-	                     <td ng-show="tran.data.addr_from==currentWalletAddress">
+	                     <td ng-show="tran.data.addr_from==watched_address">
 	                     <a ng-click="openDetails(tran.id)" style="color:black;">
                             <span translate="TRA_Paid" class="paid"></span> {{ tran.data.sent/100. | number : 2}} {{CUR}}
 	                        <span translate="TRA_InDateOf"></span>   {{tran.data.time*1000 | date : 'yyyy-MM-dd HH:mm' }}
 	                        <span translate="TRA_To"></span> 
 	                      </a>
                          </td>
-                         <td ng-show="tran.data.addr_to==currentWalletAddress">
+                         <td ng-show="tran.data.addr_to==watched_address">
                          <a ng-click="openDetails(tran.id)" style="color:black;">
 	                        <span translate="TRA_Got" class="get"></span> {{ tran.data.recieved/100. | number : 2}} {{CUR}}
 	                        <span translate="TRA_InDateOf"></span>   {{tran.data.time*1000 | date : 'yyyy-MM-dd HH:mm' }}
 	                        <span translate="TRA_From"></span> 
 	                      </a>  
                          </td>
-                         <td ng-show="tran.data.addr_from==currentWalletAddress" width="100px">
+                         <td ng-show="tran.data.addr_from==watched_address" width="100px">
                             <a ng-click="addCtc(tran.data.addr_to)"> 
                              <div class="identiconWrapper without_text_tr" ng-class="{'with_text_tr': tran.data.to_name!=''}">
                                  <div id="addressIdenticon" title="Address Indenticon" img="1" blockie-address="{{tran.data.addr_to }}"  watch-var="transactions" ></div>
@@ -62,7 +125,7 @@
                              <div style="color:black; max-height:21px; overflow:hidden; text-align:center;">{{tran.data.to_name }}</div>
                              </a>
                          </td>
-                         <td ng-show="tran.data.addr_to==currentWalletAddress" width="100px">
+                         <td ng-show="tran.data.addr_to==watched_address" width="100px">
                           <a ng-click="addCtc(tran.data.addr_from)"> 
 	                        <div class="identiconWrapper without_text_tr" ng-class="{'with_text_tr': tran.data.from_name!=''}" >
                                  <div id="addressIdenticon" title="Address Indenticon"  img="1" blockie-address="{{tran.data.addr_from }}"  watch-var="transactions"></div>
@@ -70,10 +133,10 @@
                              <div style="color:black; max-height:21px; overflow:hidden; text-align:center;">{{tran.data.from_name }}</div>
                           </a>
                          </td>
-                          <td ng-show="tran.data.addr_from==currentWalletAddress" class="tdPlus500">
+                          <td ng-show="tran.data.addr_from==watched_address" class="tdPlus500">
                             <textarea cols="9" rows="5" class="adrtxtSml" readonly="readonly">{{tran.data.addr_to }} </textarea>
                          </td>
-                         <td ng-show="tran.data.addr_to==currentWalletAddress" class="tdPlus500">
+                         <td ng-show="tran.data.addr_to==watched_address" class="tdPlus500">
 	                        <textarea cols="9" rows="5" class="adrtxtSml" readonly="readonly">{{tran.data.addr_from }} </textarea>
                        </td>
                         <td >
@@ -142,27 +205,27 @@
 
                             <div><label translate="TRA_details_date">date</label> {{selectedTrans.time*1000 | date : 'yyyy-MM-dd HH:mm' }}</div>
                             
-                            <div ng-show="selectedTrans.addr_from==currentWalletAddress"> 
+                            <div ng-show="selectedTrans.addr_from==watched_address"> 
                                 <div><strong><span translate="TRA_Paid" class="paid"></span> &nbsp;{{selectedTrans.sent/100. | number : 2}}  {{selectedTrans.currency}}</strong></div>
                                 <div><strong translate="TRA_To"></strong> {{selectedTrans.to_name }}</div>
                                 <span> 
-                                     <div ng-show="selectedTrans.addr_from==currentWalletAddress" class="identiconWrapper without_text_tr">
+                                     <div ng-show="selectedTrans.addr_from==watched_address" class="identiconWrapper without_text_tr">
                                         <div id="addressIdenticon" title="Address Indenticon" img="1" blockie-address="{{selectedTrans.addr_to }}"  watch-var="selectedTrans" ></div>
                                      </div>
                                  </span>
-                                <textarea cols="9" rows="5" class="adrtxtSml" readonly="readonly" ng-show="selectedTrans.addr_from==currentWalletAddress" >{{selectedTrans.addr_to }} </textarea>
+                                <textarea cols="9" rows="5" class="adrtxtSml" readonly="readonly" ng-show="selectedTrans.addr_from==watched_address" >{{selectedTrans.addr_to }} </textarea>
                                  
                             </div>
                             
-                            <div ng-show="selectedTrans.addr_to==currentWalletAddress">
+                            <div ng-show="selectedTrans.addr_to==watched_address">
                                 <div><strong><span translate="TRA_Got" class="get"></span> &nbsp;{{selectedTrans.recieved/100. | number : 2}}  {{selectedTrans.currency}}</strong></div>
                                 <div><strong translate="TRA_From"></strong> {{selectedTrans.from_name }}</div>
                                 <span> 
-                                      <div  ng-show="selectedTrans.addr_to==currentWalletAddress" class="identiconWrapper without_text_tr"  >
+                                      <div  ng-show="selectedTrans.addr_to==watched_address" class="identiconWrapper without_text_tr"  >
                                         <div id="addressIdenticon" title="Address Indenticon"  img="1" blockie-address="{{selectedTrans.addr_from }}"  watch-var="selectedTrans"></div>
                                       </div>
                                 </span>
-                                <textarea cols="9" rows="5" class="adrtxtSml" readonly="readonly" ng-show="selectedTrans.addr_to==currentWalletAddress">{{selectedTrans.addr_from }} </textarea>
+                                <textarea cols="9" rows="5" class="adrtxtSml" readonly="readonly" ng-show="selectedTrans.addr_to==watched_address">{{selectedTrans.addr_from }} </textarea>
                             </div>
                             <div><label translate="TRA_memo_title">Memo</label></div>
                             <textarea cols="21" rows="4" id="current_trans_memo" ng-model="current_trans_memo" ></textarea>
@@ -171,6 +234,56 @@
                       </div>
                       <div class="modal-footer text-center">
                           <button type="button" class="btn btn-primary" ng-click="closeDetails()" translate="TRA_Close">Fermer </button>
+                         
+                      </div>
+                  </div>
+              </div>
+        </div>
+        
+           <div class="modal fade" id="transVerify" tabindex="-1" role="dialog" aria-labelledby="sendTransactionLabel">
+              <div class="modal-dialog" role="document">
+                  <div class="modal-content">
+                      <div class="modal-body">
+                          <div align="center">
+                            <h4><label ng-show="tr_found" translate="TRA_details_title">Transaction details</label></h4>
+                            <div ng-hide="tr_found">
+                              <label translate="TRA_not_found"> Not Found </label>
+                            </div>
+                            
+                            <div ng-show="tr_found">
+                               <br/>
+                               <div style="width:44%;display:inline-block;vertical-align:top;">
+                                     <div class="identiconWrapper" >
+                                         <div id="addressIdenticon" title="Address Indenticon"  blockie-address="{{selectedTrans.addr_from}}" 
+                                                  watch-var="selectedTrans.addr_from" style="opacity:0.9;"></div>
+                                      </div>
+                                      <textarea cols="9" rows="5" class="adrtxt" readonly="readonly" ng-model="selectedTrans.addr_from"> </textarea>
+                                      <div ng-bind-html="from_name" style="overflow:hidden;text-align:center;max-height:21px"></div><br/>
+
+                              </div>
+                              <div style="width:20px;display:inline-block;vertical-align:top; padding-top:50px;"  > <strong  class="text-primary"  style="font-size: xx-large;font-weight: bolder;" >&rArr;</strong></div>
+                              
+                              <div style="width:44%;display:inline-block;vertical-align:top;">
+                                    <div class="identiconWrapper" >
+                                    <div id="addressIdenticon" title="Address Indenticon"  blockie-address="{{selectedTrans.addr_to}}" 
+                                         watch-var="selectedTrans.addr_to" style="opacity:0.9;"></div>
+                                    </div>
+                                    <textarea cols="9" rows="5" class="adrtxt" readonly="readonly" ng-model="selectedTrans.addr_to" > </textarea>
+                                    <div ng-bind-html="to_name" style="overflow:hidden;text-align:center;max-height:21px" ></div> 
+                              </div>
+                              
+                              <div><label translate="TRA_details_amount"></label> </div>
+                              <div><strong><span translate="TRA_Paid" class="paid"></span> &nbsp;{{selectedTrans.sent/100. | number : 2}}  {{selectedTrans.currency}}</strong></div>
+                              <div><strong><span translate="TRA_Got" class="get"></span>&nbsp;{{selectedTrans.recieved/100. | number : 2}}  {{selectedTrans.currency}}</strong></div>
+                            
+                              <div><label translate="TRA_details_date">date</label> {{selectedTrans.time*1000 | date : 'yyyy-MM-dd HH:mm' }}</div>
+                
+                            </div>
+                            
+                          </div>
+                      </div>
+                      <div class="modal-footer text-center">
+                          <button type="button" class="btn btn-primary" data-dismiss="modal" translate="TRA_Close">Fermer </button>
                          
                       </div>
                   </div>
