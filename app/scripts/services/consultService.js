@@ -97,17 +97,18 @@ var consultService = function() {
     // Delete an existing contact
     function deleteConsult(consult){
         var list = loadConsults();
-        var index=-1;
+        var index=-5;
         for (var i=list.length-1;i>=0;i--){
             if (list[i].signature.r == consult.signature.r){
                 index = i;
+                break;
             }
         }
         
         if (index >=0) {
-            list.splice(i,1);
+            list.splice(index,1);
+            storeConsults(list);
         }
-        storeConsults(list);
     }
     
     

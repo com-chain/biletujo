@@ -358,7 +358,18 @@ $scope.cancelFragment = function(){
     $scope.openStatus="";
 }
 
-$scope.deleteCR = function(right_obj){
+$scope.deleteCR = function(r){
+    var index=-1;
+    for (var i=$scope.consult_rights.length-1;i>=0;i--){
+        if ($scope.consult_rights[i].signature.r == r){
+            index = i;
+        }
+    }
+        
+    var right_obj = $scope.consult_rights[index];    
+    
+    
+    
     $scope.del_address = right_obj.data.address;
     $scope.del_start_date = new Date(right_obj.data.begin);
     $scope.del_end_date = new Date(right_obj.data.end);

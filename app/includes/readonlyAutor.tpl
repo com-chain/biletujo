@@ -75,7 +75,7 @@
                         
                         
                         <td width="50px;">
-                             <a class="btn btn-info btn-block" ng-click="deleteCR(cr)"  translate="CRI_delete"> delete </a>
+                             <a class="btn btn-info btn-block" ng-click="deleteCR(cr.signature.r)"  translate="CRI_delete"> delete </a>
                         </td>  
 	               </tr>
                  </table>
