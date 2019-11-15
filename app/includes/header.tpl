@@ -104,8 +104,9 @@
 </head>
 
 <body>
-  @@if (site === 'exchangeOffice' ) { <header ng-controller='tabsCtrl' model="5">}
-  @@if (site !== 'exchangeOffice' ) { <header ng-controller='tabsCtrl' model="0">}
+  @@if (site === 'exchangeOffice' ) { <header ng-controller='tabsCtrl' model="7">}
+  @@if (site === 'mew' ) { <header ng-controller='tabsCtrl' model="0">}
+  @@if (site === 'readOnly' ) { <header ng-controller='tabsCtrl' model="0">}
 
  
      <a class="glassPaneMenu" ng-show="dropdown" ng-click="dropdown = !dropdown"> </a>

@@ -50,12 +50,16 @@ var exchangeCtrl = require('./controllers/exchangeCtrl');
 var billingCtrl = require('./controllers/billingCtrl');
 var noteCtrl = require('./controllers/noteCtrl');
 var globalCtrl = require('./controllers/globalCtrl');
+var consultRightCtrl = require('./controllers/consultRightCtrl');
+
+
 
 
 var globalService = require('./services/globalService');
 var walletService = require('./services/walletService');
 var contactService = require('./services/contactService');
 var memoService = require('./services/memoService');
+var consultService = require('./services/consultService');
 var authenticationService = require('./services/authenticationService');
 
 var walletDecryptDrtv = require('./directives/walletDecryptDrtv');
@@ -77,6 +81,7 @@ app.factory('globalService', ['$http', '$httpParamSerializerJQLike', globalServi
 app.factory('walletService', walletService);
 app.factory('contactService', contactService);
 app.factory('memoService', memoService);
+app.factory('consultService', consultService);
 app.factory('authenticationService', authenticationService);
 
 app.directive('blockieAddress', blockiesDrtv);
@@ -100,4 +105,6 @@ app.controller('globalCtrl', ['$scope','$locale', '$sce', 'walletService', '$tra
 app.controller('transactionsCtrl', ['$scope','$locale', '$sce', 'walletService','contactService','memoService', '$translate','$filter', transactionsCtrl]);
 app.controller('contactsCtrl', ['$scope', '$sce', 'walletService','contactService','globalService', '$translate', contactsCtrl]);
 app.controller('storageCtrl', ['$scope', '$sce', 'walletService','contactService', '$translate', storageCtrl]);
+
+app.controller('consultRightCtrl', ['$scope', '$sce', 'walletService','contactService','consultService','globalService', '$translate', consultRightCtrl]);
 
