@@ -68,11 +68,13 @@ var globalService = function($http, $httpParamSerializerJQLike) {
       name: "NAV_Limites",
       url: "info",
       mew: true,
-      readOnly: true,
+      readOnly: false,
       exchangeOffice:false,
       cssClass: "cmpt"
     },
-    transactions: {
+
+    
+    rotransactions: {
       id: 3,
       name: "NAV_Transactions",
       url: "transactions",
@@ -81,6 +83,7 @@ var globalService = function($http, $httpParamSerializerJQLike) {
       exchangeOffice:false,
       cssClass: "trans"
     },
+    
     contacts: {
       id: 4,
       name: "NAV_Contacts",
@@ -90,8 +93,19 @@ var globalService = function($http, $httpParamSerializerJQLike) {
       exchangeOffice:false,
       cssClass: "ctc"
     },
+    
+    roAutorizations: {
+      id: 5, 
+      name: "NAV_roAutor",
+      url: "info",
+      mew: true,
+      readOnly: true,
+      exchangeOffice:false,
+      cssClass: "glob"
+    },
+    
      billing: {
-      id: 5,
+      id: 6,
       name: "NAV_Billing",
       url: "billing",
       mew: false,
@@ -101,7 +115,7 @@ var globalService = function($http, $httpParamSerializerJQLike) {
     },
     
     exchange: {
-      id: 6,
+      id: 7,
       name: "NAV_Exchange",
       url: "exchange",
       mew: false,
@@ -111,7 +125,7 @@ var globalService = function($http, $httpParamSerializerJQLike) {
     },
     
     note: {
-      id: 7,
+      id: 8,
       name: "NAV_Note",
       url: "note",
       mew: false,
@@ -120,7 +134,7 @@ var globalService = function($http, $httpParamSerializerJQLike) {
       cssClass: "not"
     },
     global: {
-      id: 8,
+      id: 9,
       name: "NAV_Global",
       url: "global",
       mew: false,
@@ -129,7 +143,7 @@ var globalService = function($http, $httpParamSerializerJQLike) {
       cssClass: "glob"
     },
     close: {
-      id: 9,
+      id: 10,
       name: "NAV_Close",
       url: "close",
       mew: true,
@@ -138,7 +152,7 @@ var globalService = function($http, $httpParamSerializerJQLike) {
       cssClass: "cls"
     },
     help2: {
-      id: 10,
+      id: 11,
       name: "NAV_Help",
       url: "aide",
       mew: true,
