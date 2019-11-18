@@ -17,13 +17,15 @@
                 <div class="col-md-6 col-xs-6">
                 
                   <a class="btn btn-primary bellowmargin" ng-click="createRight()" translate="CRI_CreateBtn" >&nbsp; </a>
+                  <a type="button" style="display:none" Id="dwonloadBtn"  href="{{blobEnc}}" download="CONSULT_{{currentAddress}}_for_{{dest}}.dat" > </a>
+          
 
                 </div>
                 
                 
                <div  class="col-md-6 col-xs-6">
                   <div class="identiconWrapper">
-                    <div id="addressIdenticon" title="Address Indenticon" blockie-address="{{currentAddress}}" watch-var="currentAddress"></div>
+                    <div id="addressIdenticon" name="addressIdenticon" title="Address Indenticon" blockie-address="{{currentAddress}}" watch-var="currentAddress"></div>
                   </div>
                </div>
                <div  class="col-md-6 col-xs-6">
@@ -31,6 +33,12 @@
                </div>
               </div>
           </div>
+          
+          <div id="qrCR_print"></div>
+          <div id="qrCR_print0"></div>
+          <div id="qrCR_print1"></div>
+          <div id="qrCR_print2"></div>
+          <div id="qrCR_print3"></div>
          </section>
         
          <section class="row grp" >
@@ -165,7 +173,7 @@
                                </div>
                                <div>
                                  <div class="identiconWrapper">
-                                     <div id="addressIdenticon" title="Address Indenticon" ng-click="startScanAddress()" blockie-address="{{dest}}" watch-var="dest" style="opacity:0.9;"></div>
+                                     <div id="addressIdenticon" name="addressIdenticonDest" title="Address Indenticon" ng-click="startScanAddress()" blockie-address="{{dest}}" watch-var="dest" style="opacity:0.9;"></div>
                                  </div>
                                  <textarea id="toField"  cols="9" rows="5" class="adrtxt" placeholder="{{'ID_placeholder' | translate}}" ng-model="dest"> </textarea>
                                </div> 
@@ -265,7 +273,9 @@
                           <div align="center">
                           <h4><label translate="CRI_Import">Import Consultation Right:</label></h4>
                           <div>
-                            <button type="button" class="btn btn-primary" translate="CRI_open_file" ng-click="selectFile()" ng-show="partial_prog==0" >file</button>
+                          
+                            <input style="display:none;" type="file" on-read-file="fileContent($fileContent)" id="fileSelector"/>
+                            <button type="button" class="btn btn-primary" translate="CRI_open_file" ng-click="selectFile()" ng-show="partial_prog==0" ng-if="!isApp" >file</button>
                             <button type="button" class="btn btn-primary" translate="CRI_scan_qr" ng-click="scanQR()" >scan </button>
                           
                            

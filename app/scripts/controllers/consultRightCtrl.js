@@ -185,15 +185,23 @@ var consultRightCtrl = function($scope, $sce, walletService, contactservice, con
     
     
     
+    var full= $scope.qr_content;
+    var chunk_length = Math.ceil(full.length/4);
         
-        
-    if (piece == 0) {
+    if (piece <0){
+        var qrcode = new QRCode(document.getElementById("qrCR_print"), $scope.qr_content);
+        document.getElementById("qrCR_print").style.display = "none";
+        for (var i=0; i<4;i++) {
+            var string = "FRAG_CR"+signature.s.toString('hex').substring(2,6)+i.toString()+full.substring(chunk_length*i,Math.min(chunk_length*(i+1),full.length));
+            var qrcode = new QRCode(document.getElementById("qrCR_print" + i.toString()),string);
+            document.getElementById("qrCR_print" + i.toString()).style.display = "none";
+        } 
+    } else if (piece == 0) {
         var qrcode = new QRCode(document.getElementById("qrcode_consultRight"), $scope.qr_content);
     } else {
         var i = piece -1;
-        var full= $scope.qr_content;
-        var chunk_length = Math.ceil(full.length/4);
-        var string = "FRAGMENT_CR"+signature.s.toString('hex').substring(2,6)+i.toString()+full.substring(chunk_length*i,Math.min(chunk_length*(i+1),full.length));
+       
+        var string = "FRAG_CR"+signature.s.toString('hex').substring(2,6)+i.toString()+full.substring(chunk_length*i,Math.min(chunk_length*(i+1),full.length));
         var qrcode = new QRCode(document.getElementById("qrcode_consultRight"),string);
     } 
     
@@ -201,7 +209,10 @@ var consultRightCtrl = function($scope, $sce, walletService, contactservice, con
 }
    
    
-    
+    $scope.callback = function(pdf_doc){
+        var file_name = "CONSULT_"+ $scope.currentAddress+"_for_"+$scope.dest+'.pdf';
+        pdf_doc.save(file_name);
+    }
     
     
     $scope.createConsultRight = function() {
@@ -212,11 +223,32 @@ var consultRightCtrl = function($scope, $sce, walletService, contactservice, con
            $scope.createRightModal.close();
            $scope.trPass="";
            // processing
+           $scope.generateSaveQRPiece(-1);
            $scope.generateSaveQRPiece(0);
            $scope.dislayQRModal.open();
+
+           if (!$scope.isApp) {
+               // export .dat file
+               $scope.blobEnc = globalFuncs.getBlob("text/json;charset=UTF-8", $scope.qr_content);
+               document.getElementById('dwonloadBtn').click();
+                   
+               // todo export pdf 
+        
+               setTimeout(function(){ 
+                     globalFuncs.generateCrPDF(
+                        $translate.instant("PDF_CR_Title"),
+                        $translate.instant("PDF_CR_On"),
+                        $translate.instant("PDF_CR_Assigned"),
+                        globalFuncs.cleanName($translate.instant("PDF_CR_Validity")) + " " + $scope.start_date.getFullYear()+ "/" + $scope.start_date.getMonth()+"/" + $scope.start_date.getDate() +"-"+
+                        $scope.end_date.getFullYear()+ "/" + $scope.end_date.getMonth()+"/" + $scope.end_date.getDate(), 
+                        $scope.currentWalletAddress,
+                        $scope.dest,
+                        $scope.qr_content,                       
+                        $scope.callback);
+                 },100); 
+           }
           
            
-           // todo export pdf & .dat file
            
            
            
@@ -280,6 +312,26 @@ $scope.importRightPop = function() {
     $scope.openRightModal.open();
 }
 
+$scope.selectFile = function() {
+	    document.getElementById('fileSelector').click();
+};
+
+
+
+$scope.fileContent = function($fileContent) {
+    if (document.getElementById('fileSelector').files[0]){
+        $scope.openStatus = $sce.trustAsHtml(globalFuncs.getSuccessText(document.getElementById('fileSelector').files[0].name));    
+    }
+    
+	try {
+        $fileContent = $fileContent.replace(/(\n|\r|\ )/gm, "");
+        $scope.checkForFragment($fileContent);
+        
+	} catch (e) {
+		$scope.openStatus = $sce.trustAsHtml(globalFuncs.getDangerText($translate.instant('CRI_ERROR_FILE')));
+	}
+};
+
 
 $scope.scanQR = function() {
     cordova.plugins.barcodeScanner.scan(
@@ -302,7 +354,7 @@ $scope.helloPaperWallet = function(text){
     
     
  $scope.checkForFragment = function(content){
-   if (content.startsWith('FRAGMENT_CR')){
+   if (content.startsWith('FRAG_CR')){
        $scope.showFragements = true;
        var id = content.substring(11,15);
        if ( $scope.partial_id==""){

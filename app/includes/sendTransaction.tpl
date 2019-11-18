@@ -21,6 +21,29 @@
           </div>
          </section>
          
+        <section class="row" ng-show="pendingApproval.length>0 || pendingRequest.length>0 || acceptedRequest.length>0 || rejectedRequest.length>0 ">  
+          <div class="col-md-12 ">
+	       <div class="row grp"> 
+	          <div  class="col-md-12">  
+	            <label translate="TRAN_PAY_ASKED"></label>
+	          </div>
+	          <div class="col-md-12 ">
+	          <div class="row">
+	            <div  class="col-md-6 col-xs-6">
+           <a type="button" class="btn btn-info btn-block" translate="TRA_ToApprove"   ng-show="pendingApproval.length>0"  ng-click="handlePendingApproval()">A traiter </a>
+          </div>
+                <div  class="col-md-6 col-xs-6">
+               <a type="button" class="btn btn-info btn-block" translate="TRA_PendingRequest"  ng-show="pendingRequest.length>0 || acceptedRequest.length>0 || rejectedRequest.length>0 "     ng-click="handlePendingRequest()" >Mes demandes</a>
+ 
+                </div>
+              </div>
+              </div>
+              
+              
+           </div>
+	      </div>    
+       </section>  
+         
          <section class="row grp" >
           <div class="col-md-12 ">
              <div class="row "> 
@@ -392,5 +415,460 @@
               </div>
           </div>      
       </div>
+      
+      
+      
+      
+          
+         
+       
+       <div class="over_tab" id="approval_tab"> 
+          <div class="col-md-12 ">
+         <section class="row" >  
+          <div class="col-md-12 ">
+	       <div class="row grp"> 
+	         <div  class="col-md-12">  
+	            <label translate="TRA_Approval_Tab_Title"></label>
+	            <button type="button" class="btn btn-primary" ng-click="closeApproval()" style="float:right;" translate="TRA_CloseTab">Close</button>
+	           <!--  <button type="button" class="btn btn-primary" style="float:right; margin-right:10px;"   ng-click="refreshApproval()" translate="TRA_Refresh">Refresh </button>-->
+	   
+	          </div>
+	          <div  class="col-md-12">  
+	          
+	          <br/> 
+	           <div class="row "> 
+	            <div  class="col-md-12"> 
+	             <div ng-bind-html="transApprovalStatus" ></div>
+	            </div>
+               <div class="col-md-5 col-xs-5">
+                 &nbsp;
+               </div>
+                <div class="col-md-7 col-xs-7">
+                  <button type="button" class="btn btn-primary bellowmargin" ng-click="approvalHelp()" translate="DELEG_help">?</button>
+               </div>
+               </div>
+	              
+	           <div class="row "> 
+               <div class="col-md-12 ">
+                  <table width="100%" >
+                  
+	                <tr  ng-repeat="pa in pendingApproval track by $index" class="tr_trans">
+	                  
+                         <td  width="100px">
+                             <div class="identiconWrapper without_text_tr" ng-class="{'with_text_tr': pa.name!=''}">
+                                 <div id="addressIdenticon" title="Address Indenticon" img="1" blockie-address="{{pa.address}}"  watch-var="pendingApproval" ></div>
+                             </div>
+                             <div style="color:black; max-height:21px; overflow:hidden; text-align:center;">{{pa.name}}</div>
+                         </td>
+                         
+                        <td >
+                            <textarea cols="9" rows="5" class="adrtxtSml" readonly="readonly" style="overflow:hidden;">{{pa.address}}</textarea>
+                        </td>
+                       
+                        <td >
+                            {{pa.amount}} {{CUR}}
+                        </td>
+                       <td >
+                              <button type="button" class="btn btn-primary" translate="TRA_pay" style="margin: 4px;" ng-click="payRequest(pa)">Payer </button>
+	                          <button type="button" class="btn btn-primary" translate="TRA_reject" style="margin: 4px;" ng-click="rejectRequest(pa)">refuser </button>
+                        </td>
+                       
+                        
+	               </tr>
+	                 <tr ng-show="noMoreApproval" class="tr_trans">
+                     <td colspan="4">
+                        <p translate="TRA_NoMoreApproval" >Pas Plus</p>
+                     </td>
+	               </tr>
+                 </table>
+               </div>
+             </div>
+	             
+	         <div class="row "> 
+               <div class="col-md-col-md-6 col-xs-6 ">
+                  <a class="btn btn-info btn-block" id="prevApproval" ng-click="prevApproval()"  translate="TRA_prev" > Ajouter </a>
+               </div>
+               <div class="col-md-col-md-6 col-xs-6 ">
+                  <a class="btn btn-info btn-block" id="nextApproval" ng-click="nextApproval()"  translate="TRA_next" > Ajouter </a>
+               </div>
+             </div>     
+	             
+	             
+	             
+	             
+	          </div>
+	        </div>
+	      </div>       
+        </section> 
+	      </div>        
+       </div>
+       
+         
+      <!-- Approval Help -->
+     <div class="modal fade" id="approval_help_pop" tabindex="-1" role="dialog" aria-labelledby="sendTransactionLabel" data-backdrop="static" data-keyboard="false">
+              <div class="modal-dialog" role="document">
+                  <div class="modal-content"> 
+                      <div class="modal-header">
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                      </div>
+                      <div class="modal-body">
+                          <div align="center">
+                               <div><label translate="TRA_Approval_Help_title">Delegate:</label></div>
+                               <div translate="TRA_Approval_Help_text"></div>   
+                          </div>
+                      </div>
+                      <div class="modal-footer text-center">
+                          <button type="button" class="btn btn-primary" data-dismiss="modal" translate="DELEG_Close">CLose </button>
+                      </div>
+                  </div>
+              </div>
+        </div>  
+        
+         
+         
+ <!-- Send Modal -->
+         <div class="modal fade" id="acceptRequestPay" tabindex="-1" role="dialog" aria-labelledby="sendTransactionLabel">
+              <div class="modal-dialog" role="document">
+                  <div class="modal-content">
+                      <div class="modal-body">
+                          <div align="center">
+                              <h4><label translate="TRAN_Confirm_text"  >Vous êtes en train d'envoyer</label></h4>
+                              <strong id="confirmAmount" class="text-primary"> {{transaction_amount| number : 2}} </strong>
+                              <strong id="confirmCurrancy" class="text-primary"> {{CUR}} </strong><br/>
+                              <strong ng-hide="typeTrans=='no'" class="text-primary"> {{typeTrans}}</strong>
+                              <br/> <br/>
+                              <div><label translate="TRAN_To" >&agrave;</label></div>
+                              <br/>
+                              
+                              <div class="identiconWrapper" >
+                                <div id="addressIdenticon" title="Address Indenticon"  
+                                     blockie-address="{{transaction_to}}" watch-var="transaction_to" style="opacity:0.9;"></div>
+                              </div>
+                              <textarea cols="9" rows="5" class="adrtxt" readonly="readonly" ng-model="transaction_to" > </textarea>
+                              <div ng-bind-html="selectedName" style="overflow:hidden;text-align:center;max-height:21px" ></div> 
+                              <br/>
+                              <div  ng-hide="typeTrans=='no'">
+                                 <div><label translate="TRAN_Enter_pass" >Entrez votre mot de passe</label></div>
+                                 <div class="input-group">
+                                    <input  class="form-control" type="password" Id="passFieldTR1" ng-change="passwordCheck('passFieldTR1')" placeholder="{{ 'DCRY_Placeholder_psw' | translate }}"   ng-model="trPass"/>
+                                    <span ng-show="fingerprint" class="input-group-addon finger" ng-click="fingetrprintUnlock()"></span>
+                                 </div>
+                                 <div ng-bind-html="trStatus" ></div>
+                              </div>
+                          </div>
+                      </div>
+                      <div ng-bind-html="tr_err_message"> </div>
+                      <div class="modal-footer text-center">
+                          <button type="button" class="btn btn-default" data-dismiss="modal" translate="TRAN_Cancel">Annuler la Payement</button>
+                          <button type="button" class="btn btn-primary" ng-click="sendReqTx()" ng-hide="typeTrans=='no'" translate="TRAN_Confirm">Confirmer le Payement</button>
+                      </div>
+                  </div>
+              </div>
+        </div>
+      
+         <div class="modal fade" id="reject_Request" tabindex="-1" role="dialog" aria-labelledby="sendTransactionLabel">
+              <div class="modal-dialog" role="document">
+                  <div class="modal-content">
+                      <div class="modal-body">
+                          <div align="center">
+                               <h4><label translate="TRAN_reject_text"  >Vous êtes en train de refuser une damande de payement de</label> </h4> 
+              
+                              <strong  class="text-primary"> {{transaction_amount| number : 2}} </strong>
+                              <strong  class="text-primary"> {{CUR}} </strong>
+                              <br/> <br/>
+                              <div><label translate="TRAN_asked_by" >&agrave;</label></div> 
+                              <br/>
+                              
+                               <div class="identiconWrapper" >
+                                <div id="addressIdenticon" title="Address Indenticon"  
+                                     blockie-address="{{transaction_to}}" watch-var="transaction_to" style="opacity:0.9;"></div>
+                              </div>
+                              <textarea cols="9" rows="5" class="adrtxt" readonly="readonly" ng-model="transaction_to" > </textarea>
+                              <div ng-bind-html="selectedName" style="overflow:hidden;text-align:center;max-height:21px" ></div> 
+                              <br/>
+                              <div><label translate="TRAN_Enter_pass_reject" >Entrez votre mot de passe</label></div> 
+
+                              <div class="input-group">
+                                    <input  class="form-control" type="password" placeholder="{{ 'DCRY_Placeholder_psw' | translate }}"  Id="passFieldTR2" ng-change="passwordCheck('passFieldTR2')"  ng-model="trPass"/>
+                                    <span ng-show="fingerprint" class="input-group-addon finger" ng-click="fingetrprintUnlock()"></span>
+                              </div>
+
+
+                              <div ng-bind-html="trRejectStatus" ></div>
+                          </div>
+                      </div>
+                      <p ng-bind-html="err_reject_message"> </p>
+                      <div class="modal-footer text-center">
+                          <button type="button" class="btn btn-default" data-dismiss="modal" translate="TRAN_Keep">Annuler la refus</button>
+                          <button type="button" class="btn btn-primary" ng-click="rejectTx()"  translate="TRAN_Reject">Confirmer le refus</button>
+                      </div>
+                  </div>
+              </div>
+        </div>  
+      
+       <div class="modal fade" id="conf_request"  style="z-index:400;" tabindex="-1" role="dialog" aria-labelledby="sendTransactionLabel">
+              <div class="modal-dialog" role="document">
+                  <div class="modal-content">
+                      <div class="modal-body">
+                          <div align="center">
+                              <div ng-hide="typeTrans=='no'" ><div class="coche"></div></div>
+                              <h4><label translate="TRAN_executed_text"  ng-hide="typeTrans=='no'">Vous avez envoyé</label></h4>
+                              <h4><label translate="TRAN_rejected_request_text" ng-show="typeTrans=='no'"  >Vous avez refusé</label></h4>
+                              <strong class="text-primary"> <span> 
+                                    {{transaction_amount| number : 2}} 
+                                    <span ng-hide="typeTrans=='no'">{{typeTrans}} </span> 
+                                    <span ng-show="typeTrans=='no'" >{{CUR}} </span> 
+                                   </span> </strong> 
+                              <div><label translate="TRAN_To" >&agrave;</label></div> 
+                              <div class="identiconWrapper">
+                                 <div id="addressIdenticon" title="Address Indenticon"  blockie-address="{{transaction_to}}" watch-var="transaction_to" style="opacity:0.9;"></div>
+                              </div>
+                              <textarea cols="9" rows="5" class="adrtxt" readonly="readonly" ng-model="transaction_to" > </textarea>
+                              <div ng-bind-html="selectedName" style="overflow:hidden;text-align:center;max-height:21px" ></div> 
+                          </div>
+                      </div>
+                      <div class="modal-footer text-center">
+                          <button type="button" class="btn btn-primary" data-dismiss="modal" translate="TRAN_OK">Fermer</button>
+                          
+                      </div>
+                  </div>
+              </div>
+        </div>     
+         
+         
+         
+         
+         
+         
+           
+       <div class="over_tab" id="pending_tab"> 
+          <div class="col-md-12 ">
+         <section class="row" >  
+          <div class="col-md-12 ">
+	       <div class="row grp"> 
+	         <div  class="col-md-12">  
+	            <label translate="TRA_Pending_Tab_Title"></label>
+	            <button type="button" class="btn btn-primary" ng-click="closePending()" style="float:right;" translate="TRA_CloseTab">Close</button>
+	            <!-- <button type="button" class="btn btn-primary" style="float:right; margin-right:10px;"   ng-click="refreshPending()" translate="TRA_Refresh">Refresh </button> -->
+	   
+	          </div>
+	          <div  class="col-md-12">  
+	          
+	          <br/> 
+	           <div class="row "> 
+	            <div  class="col-md-12"> 
+	              <div ng-bind-html="transPendingStatus" ></div>
+	            </div>
+               <div class="col-md-5 col-xs-5">
+                 &nbsp;
+               </div>
+                <div class="col-md-7 col-xs-7">
+                  <button type="button" class="btn btn-primary bellowmargin" ng-click="pendingHelp()" translate="DELEG_help">?</button>
+               </div>
+               </div>
+	             
+	              
+	           <div class="row "> 
+	           <div class="col-md-12">
+	               <button type="button" class="tab_btn"  ng-click="request_tab=0" ng-class="{tab_sel:request_tab===0}  "  ng-show="acceptedRequest.length>0  "  >Accept&eacute;es</button>
+	        
+	               <button type="button" class="tab_btn"  ng-click="request_tab=1" ng-class="{tab_sel:request_tab===1} " ng-show=" rejectedRequest.length>0 " >Rejet&eacute;es</button>
+
+	               <button type="button" class="tab_btn"  ng-click="request_tab=2" ng-class="{tab_sel:request_tab===2} " ng-show="pendingRequest.length>0  "  >En attente</button>
+	           </div>
+               <div class="col-md-12 " ng-show="request_tab==2">
+                  <table width="100%" >
+                 
+	                <tr  ng-repeat="pa in pendingRequest track by $index" class="tr_trans">
+	                  
+                         <td  width="100px">
+                             <div class="identiconWrapper without_text_tr" ng-class="{'with_text_tr': pa.name!=''}">
+                                 <div id="addressIdenticon" title="Address Indenticon" img="1" blockie-address="{{pa.address}}"  watch-var="pendingRequest" ></div>
+                             </div>
+                             <div style="color:black; max-height:21px; overflow:hidden; text-align:center;">{{pa.name}}</div>
+                         </td>
+                         
+                        <td >
+                            <textarea cols="9" rows="5" class="adrtxtSml" readonly="readonly" style="overflow:hidden;">{{pa.address}}</textarea>
+                        </td>
+                       
+                        <td >
+                            {{pa.amount}} {{CUR}}
+                        </td>
+                       <td >
+                             
+                        </td>
+                       
+                        
+	               </tr>
+	                 <tr ng-show="noMorePending" class="tr_trans">
+                     <td colspan="4">
+                        <p translate="TRA_NoMorePending" >Pas Plus</p>
+                     </td>
+	               </tr>
+                 </table>
+               </div>
+               
+                <div class="col-md-12 " ng-show="request_tab==1">
+                  <table width="100%" >
+                 
+	                <tr  ng-repeat="pa in rejectedRequest track by $index" class="tr_trans">
+	                  
+                         <td  width="100px">
+                             <div class="identiconWrapper without_text_tr" ng-class="{'with_text_tr': pa.name!=''}">
+                                 <div id="addressIdenticon" title="Address Indenticon" img="1" blockie-address="{{pa.address}}"  watch-var="rejectedRequest" ></div>
+                             </div>
+                             <div style="color:black; max-height:21px; overflow:hidden; text-align:center;">{{pa.name}}</div>
+                         </td>
+                         
+                        <td >
+                            <textarea cols="9" rows="5" class="adrtxtSml" readonly="readonly" style="overflow:hidden;">{{pa.address}}</textarea>
+                        </td>
+                       
+                        <td >
+                            {{pa.amount}} {{CUR}}
+                        </td>
+                       <td >
+                           <button type="button" class="btn btn-primary bellowmargin" ng-click="dissmissRejected(pa.address)" translate="DELEG_delete">x</button>  
+                        </td>
+                       
+                        
+	               </tr>
+	                 <tr ng-show="noMoreRejected" class="tr_trans">
+                     <td colspan="4">
+                        <p translate="TRA_NoMoreRejected" >Pas Plus</p>
+                     </td>
+	               </tr>
+                 </table>
+               </div>
+               
+                <div class="col-md-12 " ng-show="request_tab==0">
+                  <table width="100%" >
+                 
+	                <tr  ng-repeat="pa in acceptedRequest track by $index" class="tr_trans">
+	                  
+                         <td  width="100px">
+                             <div class="identiconWrapper without_text_tr" ng-class="{'with_text_tr': pa.name!=''}">
+                                 <div id="addressIdenticon" title="Address Indenticon" img="1" blockie-address="{{pa.address}}"  watch-var="acceptedRequest" ></div>
+                             </div>
+                             <div style="color:black; max-height:21px; overflow:hidden; text-align:center;">{{pa.name}}</div>
+                         </td>
+                         
+                        <td >
+                            <textarea cols="9" rows="5" class="adrtxtSml" readonly="readonly" style="overflow:hidden;">{{pa.address}}</textarea>
+                        </td>
+                       
+                        <td >
+                            {{pa.amount}} {{CUR}}
+                        </td>
+                       <td >
+                           <button type="button" class="btn btn-primary bellowmargin" ng-click="dissmissAccepted(pa.address)" translate="DELEG_delete">x</button>  
+                        </td>
+                       
+                        
+	               </tr>
+	                 <tr ng-show="noMoreAccepted" class="tr_trans">
+                     <td colspan="4">
+                        <p translate="TRA_NoMoreAccepted" >Pas Plus</p>
+                     </td>
+	               </tr>
+                 </table>
+               </div>
+               
+             </div>
+	             
+	             
+	         <div class="row " ng-show="request_tab==2"> 
+               <div class="col-md-col-md-6 col-xs-6 ">
+                  <a class="btn btn-info btn-block" id="prevPending" ng-click="prevPending()"  translate="TRA_prev" > Ajouter </a>
+               </div>
+               <div class="col-md-col-md-6 col-xs-6 ">
+                  <a class="btn btn-info btn-block" id="nextPending" ng-click="nextPending()"  translate="TRA_next" > Ajouter </a>
+               </div>
+             </div>     
+             
+             <div class="row " ng-show="request_tab==1"> 
+               <div class="col-md-col-md-6 col-xs-6 ">
+                  <a class="btn btn-info btn-block" id="prevRejected" ng-click="prevRejected()"  translate="TRA_prev" > Ajouter </a>
+               </div>
+               <div class="col-md-col-md-6 col-xs-6 ">
+                  <a class="btn btn-info btn-block" id="nextRejected" ng-click="nextRejected()"  translate="TRA_next" > Ajouter </a>
+               </div>
+             </div>     
+             
+             <div class="row " ng-show="request_tab==0"> 
+               <div class="col-md-col-md-6 col-xs-6 ">
+                  <a class="btn btn-info btn-block" id="prevAccepted" ng-click="prevAccepted()"  translate="TRA_prev" > Ajouter </a>
+               </div>
+               <div class="col-md-col-md-6 col-xs-6 ">
+                  <a class="btn btn-info btn-block" id="nextAccepted" ng-click="nextAccepted()"  translate="TRA_next" > Ajouter </a>
+               </div>
+             </div>     
+	             
+	             
+	             
+	             
+	          </div>
+	        </div>
+	      </div>       
+        </section> 
+	      </div>        
+       </div>
+       
+       
+       
+       
+        <!-- confirm dismiss -->
+        <div class="modal fade" id="conf_diss"  style="z-index:400;" tabindex="-1" role="dialog" aria-labelledby="sendTransactionLabel">
+              <div class="modal-dialog" role="document">
+                  <div class="modal-content">
+                      <div class="modal-body">
+                          <div align="center">
+                              
+                              <h4><label ng-bind-html="transPendingStatus"</label></h4>
+                          
+                          </div>
+                      </div>
+                      <div class="modal-footer text-center">
+                          <button type="button" class="btn btn-primary" data-dismiss="modal" translate="TRAN_OK">Fermer</button>
+                          
+                      </div>
+                  </div>
+              </div>
+        </div>     
+       
+       
+       
+       
+       
+         
+      <!-- Pending Help -->
+     <div class="modal fade" id="pending_help_pop" tabindex="-1" role="dialog" aria-labelledby="sendTransactionLabel" data-backdrop="static" data-keyboard="false">
+              <div class="modal-dialog" role="document">
+                  <div class="modal-content"> 
+                      <div class="modal-header">
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                      </div>
+                      <div class="modal-body">
+                          <div align="center">
+                           <h4><label translate="TRA_Pending_Help_title">Delegate:</label></h4>
+                           <div translate="TRA_Pending_Help_text"></div>
+                             
+                          </div>
+                      </div>
+                      <div class="modal-footer text-center">
+                          <button type="button" class="btn btn-primary" data-dismiss="modal" translate="DELEG_Close">CLose </button>
+                      </div>
+                  </div>
+              </div>
+        </div> 
+      
+      
+      
+      
+      
+      
+      
+      
   </div>
 </div>

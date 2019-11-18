@@ -1337,7 +1337,7 @@ globalFuncs.notify = function(title, text){
 
 
 globalFuncs.notifyApproval = function(){
-    if (document.getElementsByClassName('trans')[0]){
+   /* if (document.getElementsByClassName('trans')[0]){
             if (JSON.parse(localStorage.getItem('ComChainWallet'))){
                 var addresss = JSON.parse(localStorage.getItem('ComChainWallet')).address;
                 globalFuncs.getInfo(globalFuncs.getContract1(), globalFuncs.requestCount,addresss,function(count){
@@ -1351,7 +1351,7 @@ globalFuncs.notifyApproval = function(){
             } else {
                 document.getElementsByClassName('trans')[0].className = "trans"; 
             }
-        }
+        }*/
 }
 
 
@@ -1786,6 +1786,110 @@ globalFuncs.generateSavePDF = function(title, key, address, callback){
                 doc.text(53, 238, "3");
                 
                 imgData = document.getElementById("qrcode_print3").getElementsByTagName('img')[0].src;
+                doc.addImage(imgData, 'PNG', 115, 195, 80, 80);
+                doc.addImage(imgAddData, 'PNG', 150, 230, 10, 10);
+                doc.text(153, 238, "4");
+                
+                
+                newImg.callback(doc);
+            }
+
+            if (globalFuncs.isMulti()){
+               var the_arr = globalFuncs.getCssUrl().split('/');
+                the_arr.pop();
+                the_arr.pop();
+                newImg.src = the_arr.join('/')+"/images/lem.png";  
+            } else {
+                newImg.src = "images/lem.png";  
+            }
+                
+}
+
+globalFuncs.generateCrPDF = function(title, on,assigned,validity,address,dest,content, callback){
+            title = title.trim();
+            on = on.trim();
+            assigned = assigned.trim();
+            validity = validity.trim();
+            var newImg = new Image();
+            newImg.callback=callback;
+            newImg.setAttribute('crossOrigin', 'anonymous');
+            newImg.onload = function() {
+                var height = this.naturalHeight;
+                var width = this.naturalWidth;
+               
+                var c = document.createElement('canvas');
+                c.height = height;
+                c.width = width;
+                var ctx = c.getContext("2d");
+                ctx.drawImage(newImg, 0, 0);
+                var logoData = c.toDataURL('image/png');
+          
+                var imgData = document.getElementById("qrCR_print").getElementsByTagName('img')[0].src;
+                var imgAddData = globalFuncs.wrapImgData(document.getElementsByName("addressIdenticon")[0].style.backgroundImage);
+                var imgDestData = globalFuncs.wrapImgData(document.getElementsByName("addressIdenticonDest")[0].style.backgroundImage);
+            
+                var doc = new jsPDF();
+                doc.setFontSize(28);
+                
+                var textWidth = doc.getStringUnitWidth(title) * doc.internal.getFontSize() / doc.internal.scaleFactor;
+                var textOffset = (doc.internal.pageSize.width - textWidth) / 2;
+                doc.text(textOffset, 21, title);
+                doc.setLineWidth(1.0);
+                doc.line(textOffset, 22, textOffset+textWidth+3, 22);
+                
+                doc.setFontSize(15);
+                doc.text(90, 30, on);
+                doc.addImage(imgAddData, 'PNG', 90, 32, 30, 30);
+                doc.text(130, 30, assigned);
+                doc.addImage(imgDestData, 'PNG', 130, 32, 30, 30);
+                
+                doc.addImage(logoData, 'PNG', 50, 32, 30, 30);
+                
+                doc.setFontSize(15);
+                var keytextWidth = doc.getStringUnitWidth(validity) * doc.internal.getFontSize() / doc.internal.scaleFactor;
+                var keytextOffset = (doc.internal.pageSize.width - keytextWidth) / 2;
+                doc.text(keytextOffset, 71, validity);
+                doc.addImage(imgData, 'PNG', 15, 75, 180, 180);
+                
+                doc.setFontSize(12);
+                var lines = doc.splitTextToSize(content, 180, {});
+                doc.text(15, 265, lines);
+                
+                doc.addPage();
+                
+                doc.setFontSize(28);
+                doc.text(textOffset, 21, title);
+                doc.setLineWidth(1.0);
+                doc.line(textOffset, 22, textOffset+textWidth+3, 22);
+                
+                doc.setFontSize(15);
+                doc.text(90, 30, on);
+                doc.addImage(imgAddData, 'PNG', 90, 32, 30, 30);
+                doc.text(130, 30, assigned);
+                doc.addImage(imgDestData, 'PNG', 130, 32, 30, 30);
+                doc.addImage(logoData, 'PNG', 50, 32, 30, 30);
+                
+                doc.setFontSize(15);
+                var keytextWidth = doc.getStringUnitWidth(validity) * doc.internal.getFontSize() / doc.internal.scaleFactor;
+                var keytextOffset = (doc.internal.pageSize.width - keytextWidth) / 2;
+                doc.text(keytextOffset, 71, validity);
+                
+                imgData = document.getElementById("qrCR_print0").getElementsByTagName('img')[0].src;
+                doc.addImage(imgData, 'PNG', 15, 95, 80, 80);
+                doc.addImage(imgAddData, 'PNG', 50, 130, 10, 10);
+                doc.text(53, 138, "1");
+                
+                imgData = document.getElementById("qrCR_print1").getElementsByTagName('img')[0].src;
+                doc.addImage(imgData, 'PNG', 115, 95, 80, 80);
+                doc.addImage(imgAddData, 'PNG', 150, 130, 10, 10);
+                doc.text(153, 138, "2");
+                                
+                imgData = document.getElementById("qrCR_print2").getElementsByTagName('img')[0].src;
+                doc.addImage(imgData, 'PNG', 15, 195, 80, 80);
+                doc.addImage(imgAddData, 'PNG', 50, 230, 10, 10);
+                doc.text(53, 238, "3");
+                
+                imgData = document.getElementById("qrCR_print3").getElementsByTagName('img')[0].src;
                 doc.addImage(imgData, 'PNG', 115, 195, 80, 80);
                 doc.addImage(imgAddData, 'PNG', 150, 230, 10, 10);
                 doc.text(153, 238, "4");

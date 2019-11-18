@@ -165,10 +165,39 @@ var contactesCtrl = function($scope, $sce, walletService, contactservice, global
     }
     
     $scope.selectCtcFile = function(){
-      
+      if ($scope.isApp) {
+           globalFuncs.readCordovaDir($scope.success);  
+      } else {
 		    document.getElementById('fctcselector').click();
+      }
        
     }
+    
+    
+     $scope.success = function(entries) {
+
+        $scope.dir_entries=[];
+        if (entries){
+            for (var entry_id in entries){
+                
+                if (entries[entry_id].isFile && entries[entry_id].name.endsWith('Contacts.dat') ){
+                    $scope.dir_entries.push(entries[entry_id]);
+                }  
+            }
+        }
+        $scope.len= $scope.dir_entries.length;
+        $scope.SelectedFileIndex=-1;
+        $scope.SelectedFileName='';
+        $scope.$apply();
+        $scope.pickContactFileModal.open();
+    }
+    
+    
+    
+    
+    
+    
+    
     
     $scope.pickCtcFile = function(name,index){
         $scope.SelectedFileIndex=index;
@@ -182,7 +211,7 @@ var contactesCtrl = function($scope, $sce, walletService, contactservice, global
       
     $scope.openCtcPickedFile =function(){
         if ( $scope.SelectedFileIndex>=0){
-            var file_entry = $scope.dir_entries[ $scope.SelectedFileIndex];
+            var file_entry = $scope.dir_entries[$scope.SelectedFileIndex];
             file_entry.file(function(file){
                 var reader = new FileReader();
                 reader.onloadend = function(evt) {

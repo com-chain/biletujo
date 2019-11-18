@@ -43,7 +43,6 @@ var decryptWalletCtrl = require('./controllers/decryptWalletCtrl');
 var viewWalletCtrl = require('./controllers/viewWalletCtrl');
 var sendCtrl = require('./controllers/sendCtrl');
 var balanceCtrl = require('./controllers/balanceCtrl');
-var transactionsCtrl = require('./controllers/transactionsCtrl');
 var readonlytransactionsCtrl = require('./controllers/readonlytransactionsCtrl');
 var contactsCtrl = require('./controllers/contactsCtrl');
 var storageCtrl = require('./controllers/storageCtrl');
@@ -103,7 +102,6 @@ app.controller('billingCtrl', ['$scope','$locale', '$sce', 'walletService', '$tr
 app.controller('noteCtrl', ['$scope','$locale', '$sce', 'walletService', '$translate', noteCtrl]);
 app.controller('exchangeCtrl', ['$scope','$locale', '$sce', 'walletService', '$translate', exchangeCtrl]);
 app.controller('globalCtrl', ['$scope','$locale', '$sce', 'walletService', '$translate', globalCtrl]);
-app.controller('transactionsCtrl', ['$scope','$locale', '$sce', 'walletService','contactService','memoService', '$translate','$filter', transactionsCtrl]);
 app.controller('contactsCtrl', ['$scope', '$sce', 'walletService','contactService','globalService', '$translate', contactsCtrl]);
 app.controller('storageCtrl', ['$scope', '$sce', 'walletService','contactService', '$translate', storageCtrl]);
 

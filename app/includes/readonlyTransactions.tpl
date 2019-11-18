@@ -37,7 +37,8 @@
                             </div>
                         </div>      
                     </div>
-               </div>   
+               </div>
+               <button type="button" class="btn btn-primary bellowmargin" ng-click="crHelpModal.open()" translate="CRI_help">?</button>   
               </div>    
                <div  class="col-md-6 col-xs-6">
                   <div class="identiconWrapper">
@@ -322,7 +323,26 @@
               </div>
         </div>
         
-            
+         <!-- Consultation Right Help -->
+         <div class="modal fade" id="cr_help_pop" tabindex="-1" role="dialog" aria-labelledby="sendTransactionLabel" data-backdrop="static" data-keyboard="false">
+              <div class="modal-dialog" role="document">
+                  <div class="modal-content"> 
+                      <div class="modal-header">
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                      </div>
+                      <div class="modal-body">
+                          <div align="center">
+                           <h4><label translate="CRI_Help_title">Delegate:</label></h4>
+                           <div translate="CRI_Help_text"></div>
+                             
+                          </div>
+                      </div>
+                      <div class="modal-footer text-center">
+                          <button type="button" class="btn btn-primary" data-dismiss="modal" translate="CRI_close">CLose </button>
+                      </div>
+                  </div>
+              </div>
+        </div>   
     
          
          

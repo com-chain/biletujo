@@ -20,7 +20,6 @@ var babel = require("gulp-babel");
 
 var output_android =  './cordova_dist/';
 var output_exchange_office =  './cordova_exchange_dist/';
-var output_readonly =  './cordova_readonly_dist/';
 
 // Compile and Minify Less / CSS Files
 var lessWatchFolder = './app/styles/less/**/*.less';
@@ -61,7 +60,6 @@ gulp.task('copiedJS', function () {
     .src(copiedjsFiles)
       .pipe(gulp.dest(output_android+jsOutputFolder))
       .pipe(gulp.dest(output_exchange_office+jsOutputFolder))
-      .pipe(gulp.dest(output_readonly+jsOutputFolder))
       .pipe(notify('Cordova Copied JS Complete'));
 });
 
@@ -72,7 +70,6 @@ gulp.task('staticJS', function () {
       .pipe(uglify())
       .pipe(gulp.dest(output_android+jsOutputFolder))
       .pipe(gulp.dest(output_exchange_office+jsOutputFolder))
-      .pipe(gulp.dest(output_readonly+jsOutputFolder))
       .pipe(notify('Cordova StaticJS Complete'));
 });
 
@@ -83,7 +80,6 @@ gulp.task('minJS',['browserify'],function () {
       .pipe(concat('etherwallet-master-min.js'))
       .pipe(gulp.dest(output_android+jsOutputFolder))
       .pipe(gulp.dest(output_exchange_office+jsOutputFolder))
-      .pipe(gulp.dest(output_readonly+jsOutputFolder))
       .pipe(notify('Cordova MinJS Complete'));
 });
 
@@ -104,7 +100,6 @@ gulp.task('copy-images', function() {
 
        .pipe(gulp.dest(output_android+imagesOutputFolder))
       .pipe(gulp.dest(output_exchange_office+imagesOutputFolder))
-      .pipe(gulp.dest(output_readonly+imagesOutputFolder))
    .pipe(notify({message:'Cordova Images Complete', onLast:true}));
 });
 
@@ -118,7 +113,6 @@ gulp.task('copy-fonts', function() {
           .pipe(gulp.dest("./dist/fonts"))
    .pipe(gulp.dest(output_android+fontsOutputFolder))
    .pipe(gulp.dest(output_exchange_office+fontsOutputFolder))
-   .pipe(gulp.dest(output_readonly+fontsOutputFolder))
    .pipe(notify({message:'Cordova Fonts Complete', onLast:true}));
 });
 
@@ -131,7 +125,6 @@ gulp.task('copy-conf', function() {
           .pipe(gulp.dest("./dist/configs"))
           .pipe(gulp.dest(output_android+confOutputFolder))
           .pipe(gulp.dest(output_exchange_office+confOutputFolder))
-          .pipe(gulp.dest(output_readonly+confOutputFolder))
           .pipe(notify({message:'Cordova Conf Complete', onLast:true}));
           });
 
@@ -141,7 +134,6 @@ gulp.task('css',['less','copy-images'], function () {
          // .pipe(base64())
           .pipe(gulp.dest(output_android+lessOutputFolder))
           .pipe(gulp.dest(output_exchange_office+lessOutputFolder))
-          .pipe(gulp.dest(output_readonly+lessOutputFolder))
 
           });
 
@@ -166,11 +158,6 @@ gulp.task('buildHTML', function () {
     .pipe(concat('index.html'))
     .pipe(gulp.dest(output_exchange_office+'www/')) 
     .pipe(notify({message:'Cordova Exchange Office HTML Pages Complete', onLast:true}));
-    
-    gulp.src('./dist/html/readonly.html')
-    .pipe(concat('index.html'))
-    .pipe(gulp.dest(output_readonly+'www/')) 
-    .pipe(notify({message:'Cordova ReadOnly HTML Pages Complete', onLast:true}));
     
    
    

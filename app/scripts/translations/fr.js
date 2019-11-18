@@ -6,7 +6,7 @@ var fr = function() {}
 fr.code = 'fr';
 fr.data = {
 /****************************************/
-Version:'&middot; v2.1.2 &middot;&nbsp;',
+Version:'&middot; v2.1.7 &middot;&nbsp;',
 /****************************************/
 
 GP_Wait: 'En attente du serveur... Si ce message persiste vérifiez votre connexion puis cliquez ici:',
@@ -21,6 +21,7 @@ NAV_Limites: 'Compte',
 NAV_Help: 'Aide',
 NAV_Transactions: 'Transactions',
 NAV_Contacts: 'Contacts',
+NAV_roAutor: 'Droits de consultation',
 NAV_Close: 'Verrouiller le compte',
 NAV_OpenStorage: 'Ouvrir un compte',
 NAV_Billing: 'Mouvements',
@@ -172,11 +173,18 @@ CRI_close : 'Fermer',
 CRI_Import : 'Importer un droit de consultation',
 CRI_open_file : 'Fichier',
 CRI_scan_qr : 'Scan QR',
-CRI_selected_wallet : 'Compte selectionné',
+CRI_selected_wallet : 'Compte',
 CRI_change : 'Changer',
 ROTR_balances : 'Balances',
 TRA_roTransactions : 'Transactions',
-
+CRI_help:'?',
+CRI_ERROR_FILE:'Ceci n\'est pas un fichier de droit de consultation.',
+CRI_Help_title:'Consultation des transcations d\'un autre compte',
+CRI_Help_text:'Pour pouvoir consulter les transaction d\'un autre compte vous devez recevoir et enregistrer un droit de consultation dans la page qui leur est consacrée. Seul votre compte et les comptes pour lesquels vous avez un droit de délégation valid sont disponible dans le pop-up de selection.',
+PDF_CR_Title:'Droit de consultation',
+PDF_CR_Validity:'Valide pour la période',
+PDF_CR_On:'Sur le compte:',
+PDF_CR_Assigned:'Accordé à:',
 
 /*Transaction*/
 TRAN_Address: 'Votre compte',
@@ -587,6 +595,7 @@ CTC_AlreadyAdded: 'Cette adresse publique fait déjà partie de vos contacts',
 CTC_updateName: 'Voulez-vous modifier son nom?',
 CTC_addCancel: 'Annuler',
 CTC_updateConfirm: 'Confirmer',
+CTC_no_valid_ctc:'Ceci n\'est pas un fichier de contact valide.',
 
 
 CTC_add: '&#x271A;',
