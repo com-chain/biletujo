@@ -127,9 +127,10 @@ BN_NotValid:'Cette addresse ne correspond pas à un billet valide.',
 BN_Valid:'Cette addresse correspond à un billet valide de ',
 
 
-VIEW_Delegation_Allowance: 'Procurations et Autorisations:',
+VIEW_Delegation_Allowance: 'Relations aux tiers:',
 VIEW_Delegate_btn: 'Procurations',
 VIEW_Allowance_btn: 'Autorisations',
+VIEW_CR_btn:        'Consultations',
 WIEW_WrongPass: 'Mot de passe erroné!',
 
 /* Decrypt */
@@ -149,10 +150,11 @@ DCRY_Missing_server: 'Il n\'y a pas de server associé à ce compte. Veuillez en
 CRI_wrongDates : 'Les dates ne sont pas compatibles',
 OPEN_not_right_sign : 'La signature n\'est pas valide',
 OPEN_right_not_for_you : 'Ce droit ne vous est pas destiné',
-OPEN_too_old_right : 'Droit échus',
-OPEN_not_right_format : 'Format incorrecte',
+OPEN_too_old_right : 'Droit échu',
+OPEN_not_right_format : 'Format incorrect',
 CRI_CreateBtn : 'Créer',
-CRI_ConsultRight_List : 'Droits de consultation',
+CRI_ConsultRight_List : '',
+CRI_Tab_Title:'Vos droits de consultation:',
 CRI_NoCR : 'Pas de droits',
 CRI_ValidityStart : 'Du ',
 CRI_ValidityEnd : ' Au ',
@@ -179,12 +181,17 @@ ROTR_balances : 'Balances',
 TRA_roTransactions : 'Transactions',
 CRI_help:'?',
 CRI_ERROR_FILE:'Ceci n\'est pas un fichier de droit de consultation.',
+OPEN_right_not_right_server:'Ces droits ne correspondent pas au server',
 CRI_Help_title:'Consultation des transcations d\'un autre compte',
-CRI_Help_text:'Pour pouvoir consulter les transaction d\'un autre compte vous devez recevoir et enregistrer un droit de consultation dans la page qui leur est consacrée. Seul votre compte et les comptes pour lesquels vous avez un droit de délégation valid sont disponible dans le pop-up de selection.',
+CRI_Help_text:'Pour pouvoir consulter les transaction d\'un autre compte vous devez recevoir et enregistrer un droit de consultation dans la page dédiée. Seul votre compte et les comptes pour lesquels vous avez un droit de consultation valid sont disponiblent dans le pop-up de selection.',
 PDF_CR_Title:'Droit de consultation',
 PDF_CR_Validity:'Valide pour la période',
 PDF_CR_On:'Sur le compte:',
 PDF_CR_Assigned:'Accordé à:',
+CRI_Consult_Help_title:'A propos des droits de consultation:',
+CRI_Consult_Help_text:'Un droit de consultation donne la possibilité à un tiers de consulter l\'historique de vos transactions pour une période donnée, voire le solde de votre compte. En enclenchant le "mode cafetier" (cloche), il peut également être informé lorsque vous recevez un paiement. Pour donner un droit de consultation, il vous faut le créer sur cette page puis transmettre le fichier au tiers en question. Pour recevoir un droit de consultation, il faut obtenir le fichier de création de la part du tiers et l\'importer sur cette page à travers le bouton +.',
+
+
 
 /*Transaction*/
 TRAN_Address: 'Votre compte',

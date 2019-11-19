@@ -22,7 +22,8 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, gl
 	$scope.showRaw = false;
     $scope.isApp =  globalFuncs.isApp();
     
-    globalFuncs.showLoading($translate.instant("GP_Wait"));
+    //globalFuncs.showLoading($translate.instant("GP_Wait"));
+    globalFuncs.hideLoadingWaiting();  
     
     $scope.showContactPop=false;
     $scope.showContactPopOrigine=false;

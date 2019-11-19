@@ -10,7 +10,7 @@ var readonlytransactionsCtrl = function($scope, $locale, $sce, walletService,con
   	$scope.transDetails = new Modal(document.getElementById('transDetails'));
     $scope.exportTraModal = new Modal(document.getElementById('exportTraPop'));
     $scope.verifyModal = new Modal(document.getElementById('transVerify'));
-    $scope.crHelpModal = new Modal(document.getElementById('cr_help_pop'));
+    $scope.crHelpModal = new Modal(document.getElementById('cr_help_pop'), { keyboard: false, backdrop  : 'static'});
     
     
     $scope.watching=false;

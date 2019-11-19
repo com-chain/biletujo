@@ -85,6 +85,7 @@ var decryptWalletCtrl = function($scope, $sce, $translate, walletService, contac
                       // ok need more input
                       
                         $scope.fileStatusFrag = $sce.trustAsHtml(globalFuncs.getSuccessText($translate.instant('OPEN_Frag_Read'))); 
+                        $scope.startScanPaperWallet();
                   }
                }else {
                    // error fragment already know

@@ -45,17 +45,8 @@ var globalService = function($http, $httpParamSerializerJQLike) {
   };
     } else {
   var tabs = {
-    viewWalletInfo: {
+   send: {
       id: 0,
-      name: "NAV_ViewWallet",
-      url: "recieve",
-      mew: true,
-      readOnly: true,
-      exchangeOffice:false,
-      cssClass: "recieve"
-    },
-    send: {
-      id: 1,
       name: "NAV_Transaction",
       url: "send",
       mew: true,
@@ -63,6 +54,17 @@ var globalService = function($http, $httpParamSerializerJQLike) {
       exchangeOffice:false,
       cssClass: "send"
     },
+    
+    viewWalletInfo: {
+      id: 1,
+      name: "NAV_ViewWallet",
+      url: "recieve",
+      mew: true,
+      readOnly: true,
+      exchangeOffice:false,
+      cssClass: "recieve"
+    },
+
     limites: {
       id: 2, 
       name: "NAV_Limites",
@@ -94,18 +96,8 @@ var globalService = function($http, $httpParamSerializerJQLike) {
       cssClass: "ctc"
     },
     
-    roAutorizations: {
-      id: 5, 
-      name: "NAV_roAutor",
-      url: "info",
-      mew: true,
-      readOnly: true,
-      exchangeOffice:false,
-      cssClass: "glob"
-    },
-    
      billing: {
-      id: 6,
+      id: 5,
       name: "NAV_Billing",
       url: "billing",
       mew: false,
@@ -115,7 +107,7 @@ var globalService = function($http, $httpParamSerializerJQLike) {
     },
     
     exchange: {
-      id: 7,
+      id: 6,
       name: "NAV_Exchange",
       url: "exchange",
       mew: false,
@@ -125,7 +117,7 @@ var globalService = function($http, $httpParamSerializerJQLike) {
     },
     
     note: {
-      id: 8,
+      id: 7,
       name: "NAV_Note",
       url: "note",
       mew: false,
@@ -134,7 +126,7 @@ var globalService = function($http, $httpParamSerializerJQLike) {
       cssClass: "not"
     },
     global: {
-      id: 9,
+      id: 8,
       name: "NAV_Global",
       url: "global",
       mew: false,
@@ -143,7 +135,7 @@ var globalService = function($http, $httpParamSerializerJQLike) {
       cssClass: "glob"
     },
     close: {
-      id: 10,
+      id: 9,
       name: "NAV_Close",
       url: "close",
       mew: true,
@@ -152,7 +144,7 @@ var globalService = function($http, $httpParamSerializerJQLike) {
       cssClass: "cls"
     },
     help2: {
-      id: 11,
+      id: 10,
       name: "NAV_Help",
       url: "aide",
       mew: true,

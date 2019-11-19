@@ -97,7 +97,7 @@ app.controller('walletGenCtrl', ['$scope', 'globalService','$translate', 'wallet
 app.controller('decryptWalletCtrl', ['$scope', '$sce', '$translate', 'walletService', 'contactService', 'memoService', 'authenticationService','globalService', decryptWalletCtrl]);
 app.controller('viewWalletCtrl', ['$scope', 'walletService','contactService', '$translate', viewWalletCtrl]);
 app.controller('sendCtrl', ['$scope','$locale', '$sce', 'walletService','contactService','globalService', '$translate', sendCtrl]);
-app.controller('balanceCtrl', ['$scope','$locale', '$sce', 'walletService','contactService', '$translate', balanceCtrl]);
+app.controller('balanceCtrl', ['$scope','$locale', '$sce', 'walletService','contactService','consultService', '$translate', balanceCtrl]);
 app.controller('billingCtrl', ['$scope','$locale', '$sce', 'walletService', '$translate', billingCtrl]);
 app.controller('noteCtrl', ['$scope','$locale', '$sce', 'walletService', '$translate', noteCtrl]);
 app.controller('exchangeCtrl', ['$scope','$locale', '$sce', 'walletService', '$translate', exchangeCtrl]);
@@ -105,6 +105,5 @@ app.controller('globalCtrl', ['$scope','$locale', '$sce', 'walletService', '$tra
 app.controller('contactsCtrl', ['$scope', '$sce', 'walletService','contactService','globalService', '$translate', contactsCtrl]);
 app.controller('storageCtrl', ['$scope', '$sce', 'walletService','contactService', '$translate', storageCtrl]);
 
-app.controller('consultRightCtrl', ['$scope', '$sce', 'walletService','contactService','consultService','globalService', '$translate', consultRightCtrl]);
 app.controller('readonlytransactionsCtrl', ['$scope','$locale', '$sce', 'walletService','contactService', 'consultService','memoService', '$translate','$filter', readonlytransactionsCtrl]);
 
