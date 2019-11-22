@@ -1189,6 +1189,7 @@ globalFuncs.removeWallet = function(){
 }
 
 
+
 //////////////////////////////////////////////
 /// Note checking 
 

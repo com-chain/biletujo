@@ -1,5 +1,5 @@
 'use strict';
-var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, globalService, $translate) {
+var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, messageService, globalService, $translate) {
     $locale.NUMBER_FORMATS.GROUP_SEP = "'";
     $scope.limitWithoutPass=0;
     
@@ -494,6 +494,14 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, gl
      
     // contacts
     $scope.contactPop = function() {
+     /*  //DBG
+       var crypted = messageService.cipherMessage($scope.wallet.getPublicKey(),"message");
+       var recovered = messageService.decipherMessage($scope.wallet.getPrivateKey(),crypted);
+        
+     //*/
+        
+        
+        
       $scope.filter_ctt();
       $scope.showContactPop=true;
     }
