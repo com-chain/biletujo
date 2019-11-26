@@ -150,7 +150,7 @@
     
     
     ajaxReq.getMessageKey = function(address, with_private, callback) {
-        var query_string = '?addr='+encodeURIComponent('address');
+        var query_string = '?addr='+encodeURIComponent(address);
         if (with_private) {
            query_string = query_string + "&private=1" ;
         }

@@ -191,6 +191,7 @@ PDF_CR_Assigned:'Accordé à:',
 CRI_Consult_Help_title:'A propos des droits de consultation:',
 CRI_Consult_Help_text:'Un droit de consultation donne la possibilité à un tiers de consulter l\'historique de vos transactions pour une période donnée, voire le solde de votre compte. En enclenchant le "mode cafetier" (cloche), il peut également être informé lorsque vous recevez un paiement. Pour donner un droit de consultation, il vous faut le créer sur cette page puis transmettre le fichier au tiers en question. Pour recevoir un droit de consultation, il faut obtenir le fichier de création de la part du tiers et l\'importer sur cette page à travers le bouton +.',
 
+WALL_missing_message_key:'La sauvegarde de ce compte est dans une ancienne version. Veuillez en faire une nouvelle sauvegarde.',
 
 
 /*Transaction*/

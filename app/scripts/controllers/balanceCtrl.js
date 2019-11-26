@@ -93,12 +93,7 @@ var balanceCtrl = function($scope, $locale, $sce, walletService,contactservice, 
         
         
                 
-        $scope.blobEnc = globalFuncs.getBlob("text/json;charset=UTF-8", $scope.wallet.toV3(walletService.password, {
-				kdf: globalFuncs.kdf,
-                n: globalFuncs.scrypt.n,
-                server_name:globalFuncs.getServerName(),     
-                server_address:globalFuncs.getServerAddress()                                                                                
-			}));
+        $scope.blobEnc = globalFuncs.getBlob("text/json;charset=UTF-8", localStorage.getItem('ComChainWallet'));
         $scope.CUR=globalFuncs.currencies.CUR;
         $scope.CUR_nanti=globalFuncs.currencies.CUR_nanti;
         $scope.CUR_credit_mut=globalFuncs.currencies.CUR_credit_mut;
@@ -107,7 +102,7 @@ var balanceCtrl = function($scope, $locale, $sce, walletService,contactservice, 
         $scope.has_deleg=globalFuncs.hasDeleg();
         $scope.has_autor=globalFuncs.hasAutor();
         $scope.qr_content = localStorage.getItem('ComChainWallet');
-        var qrcode = new QRCode(document.getElementById("qrcode_print_2"),localStorage.getItem('ComChainWallet'));
+        var qrcode = new QRCode(document.getElementById("qrcode_print_2"),$scope.qr_content);
         setTimeout(function(){ document.getElementById("qrcode_print_2").getElementsByTagName('img')[0].style.display="inline";},100); 
         
         globalFuncs.canUseFingerprint(function(result){

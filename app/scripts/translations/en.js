@@ -190,6 +190,7 @@ PDF_CR_Assigned:'Granted to:',
 CRI_Consult_Help_title:'Concerning Consultation Rights:',
 CRI_Consult_Help_text:'A Consultation Right gives the possibility to a third party to consult the history of your transactions for a given period, even the balance of your account. By engaging the "coffee mode" (bell), he can also be informed when you receive a payment. To give a Consultation Right, you must create it on this page and then send the file to the third party concerned. To receive a Consultation Right, it is necessary to obtain the file of creation from the third party and to import it on this page through the + button.',
 
+WALL_missing_message_key:'The backup of this wallet is in an outdated format. Please save a new backup.',
 
 /*Transaction*/
 TRAN_Address: 'Your wallet',

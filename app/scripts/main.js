@@ -97,8 +97,8 @@ app.directive('waitingDrtv', waitingDrtv);
 
 app.controller('tabsCtrl', ['$scope','$attrs','globalService','contactService', '$translate','$compile', 'authenticationService',tabsCtrl]);
 app.controller('viewCtrl', ['$scope', 'globalService', '$translate', viewCtrl]);
-app.controller('walletGenCtrl', ['$scope', 'globalService','$translate', 'walletService','contactService', walletGenCtrl]);
-app.controller('decryptWalletCtrl', ['$scope', '$sce', '$translate', 'walletService', 'contactService', 'memoService', 'authenticationService','globalService', decryptWalletCtrl]);
+app.controller('walletGenCtrl', ['$scope', 'globalService','$translate', 'walletService','contactService','messageService', walletGenCtrl]);
+app.controller('decryptWalletCtrl', ['$scope', '$sce', '$translate', 'walletService', 'contactService', 'memoService', 'authenticationService','messageService','globalService', decryptWalletCtrl]);
 app.controller('viewWalletCtrl', ['$scope', 'walletService','contactService', '$translate', viewWalletCtrl]);
 app.controller('sendCtrl', ['$scope','$locale', '$sce', 'walletService','contactService','messageService','globalService', '$translate', sendCtrl]);
 app.controller('balanceCtrl', ['$scope','$locale', '$sce', 'walletService','contactService','consultService', '$translate', balanceCtrl]);

@@ -101,28 +101,16 @@ const Decrypt = function(privKey, encrypted) {
 //////////////////////////////////////////////////////////////    
     
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    function getMessageKey(address, with_private, callback) {
-       ajaxReq.getMessageKey(address, with_private, callback); 
-    } 
-    
+// NOT EXPOSED 
+    function newMessageKey(wallet) {
+        var new_key = Wallet.generate(false); 
+        var m_pub = new_key.getPublicKeyString();
+        var m_priv = new_key.getPrivateKeyString();
+        return {"pub": m_pub, "priv": Encrypt(wallet.getPublicKey(), m_priv)};
+    }
+
     function publishMessageKey(wallet, pass, callback) {
-        var data_obj = {"address":wallet.getAddressString(),
+        var data_obj = {"address": wallet.getAddressString(),
         "public_message_key": wallet.message_key.pub,
         "private_message_key": wallet.message_key.priv
         }
@@ -133,19 +121,56 @@ const Decrypt = function(privKey, encrypted) {
 	    var signature = ethUtil.ecsign(msgHash, wallet.getPrivateKey());
         var sign = ethUtil.bufferToHex(Buffer.concat([ signature.r, signature.s, ethUtil.toBuffer(signature.v) ]))
             
-        ajaxReq.publishMessageKey(data_str, sign, function(data) {} ); 
+        ajaxReq.publishMessageKey(data_str, sign, function(data) {callback(data);} ); 
     }
     
-    function messageKeysFromWallet(wallet, pass) {
-        var priv = wallet.decifer(wallet.message_key.priv, pass);
-        var pub = ethUtil.privateToPublic(priv)
-        return {"pub": pub, "priv": priv};
+//////////////////////////////////////////////////////////////    
+    function getMessageKey(address, with_private, callback) {
+       ajaxReq.getMessageKey(address, with_private, callback); 
+    } 
+    
+    function ensureWalletMessageKey(wallet, pass, message, callback) {
+       getMessageKey(wallet.getAddressString(), true, function(remote_key) {
+           if (remote_key.pub !== undefined) {
+              if (message!=''){
+                    if (wallet.message_key === undefined || wallet.message_key.pub === undefined || wallet.message_key.pub != remote_key.pub) {
+                         alert(message);
+                    } 
+                    
+                    // Remote but no matching local 
+              }
+               
+           } else {
+              
+                if (wallet.message_key === undefined || wallet.message_key.pub === undefined || wallet.message_key.priv === undefined) {
+                     if (message!=''){
+                         alert(message);
+                     } 
+                     wallet.message_key = newMessageKey(wallet);
+                }  
+              
+              // No remote: publish the local key
+              remote_key = wallet.message_key;
+              publishMessageKey(wallet, pass, function(data){
+              if (data!== undefined ) {
+                  
+              }
+              })       
+          }
+          
+          wallet.message_key = remote_key;
+          callback(wallet); 
+       });
+    }
+    
+    function messageKeysFromWallet(wallet) {
+        return messageKeysFromCrypted(wallet, wallet.message_key.priv)
     }
     
     function messageKeysFromCrypted(wallet, ciphered) {
         var priv = ethUtil.crypto.privateDecrypt(wallet.getPrivateKey(), ciphered)
         var pub = ethUtil.privateToPublic(priv)
-        return {"pub": pub, "priv": priv};
+        return {"pub": pub, "clear_priv": priv};
     }
     
     function cipherMessage(public_key, message) {
@@ -156,15 +181,13 @@ const Decrypt = function(privKey, encrypted) {
         return Decrypt(private_key, ciphered);
     }
     
-
-    
-    return {getMessageKey:getMessageKey,
-            publishMessageKey:publishMessageKey,
+    return {
+            getMessageKey:getMessageKey,
+            ensureWalletMessageKey:ensureWalletMessageKey,
             messageKeysFromWallet:messageKeysFromWallet,
             messageKeysFromCrypted:messageKeysFromCrypted,
             cipherMessage:cipherMessage,
-            decipherMessage:decipherMessage,
-            
+            decipherMessage:decipherMessage, 
     }
    
 };

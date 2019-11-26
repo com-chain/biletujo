@@ -1,5 +1,5 @@
 'use strict';
-var walletGenCtrl = function($scope, $globalService, $translate, walletService, contactService) {
+var walletGenCtrl = function($scope, $globalService, $translate, walletService, contactService, messageService) {
     // Environment variables
     $scope.isApp = globalFuncs.isApp();
     $scope.trans_message = $translate.instant("GP_Wait");
@@ -161,11 +161,7 @@ var walletGenCtrl = function($scope, $globalService, $translate, walletService, 
             
             // local wallet generation & encryption with the provided password
 			$scope.wallet = Wallet.generate(false); 
-			$scope.blobEnc = globalFuncs.getBlob("text/json;charset=UTF-8", $scope.wallet.toV3($scope.password, {
-				kdf: globalFuncs.kdf,
-                n: globalFuncs.scrypt.n,
-                server_name: globalFuncs.getServerName()                                                                            
-			}));
+			
             
             //Send (public) address to API (enroll the wallet)
             try {
@@ -175,23 +171,29 @@ var walletGenCtrl = function($scope, $globalService, $translate, walletService, 
                                        $scope.enrollmentToken,
                                        function(data){
                        if (data.result=="OK"){
-                           globalFuncs.loadWallet($scope.wallet.toV3($scope.password, {
-                                        kdf: globalFuncs.kdf, n: globalFuncs.scrypt.n,
-                                        server_name: globalFuncs.getServerName() }),function(success){
-                                            globalFuncs.loadWallets(true);
-                                            
-                                            // Enable next step 
-                                            $scope.showWallet = true;
-                                            $scope.showSecret = false; 
-                                            $scope.message_creation=""; 
-                                            
-                                            $scope.$apply();
-                                            // Add itself as a contact to the newly created wallet
-                                            
-                                            var contacts = [];
-                                            contacts = contactService.ensureContact(contacts, $scope.wallet.getChecksumAddressString());
-                                            contactService.storeIpfsContact(contacts, $scope.wallet,$scope.password);
-                                        });   
+                           messageService.ensureWalletMessageKey($scope.wallet, $scope.password,"", function(complete_wall) {
+                               $scope.wallet = complete_wall;
+
+                               globalFuncs.loadWallet($scope.wallet.toV3($scope.password, {
+                                            kdf: globalFuncs.kdf, n: globalFuncs.scrypt.n,
+                                            server_name: globalFuncs.getServerName(),
+                                            message_key: complete_wall.message_key}),function(success){
+                                                globalFuncs.loadWallets(true);
+                                                
+                                                // Enable next step 
+                                                $scope.showWallet = true;
+                                                $scope.showSecret = false; 
+                                                $scope.message_creation=""; 
+                                                $scope.blobEnc = globalFuncs.getBlob("text/json;charset=UTF-8", localStorage.getItem('ComChainWallet'));
+                                                
+                                                $scope.$apply();
+                                                // Add itself as a contact to the newly created wallet
+                                                
+                                                var contacts = [];
+                                                contacts = contactService.ensureContact(contacts, $scope.wallet.getChecksumAddressString());
+                                                contactService.storeIpfsContact(contacts, $scope.wallet,$scope.password);
+                                            }); 
+                           });
                         } 
                         else {
                             $scope.message_creation=globalFuncs.getDangerText($translate.instant("GEN_Enrollment_KO"));
@@ -208,11 +210,7 @@ var walletGenCtrl = function($scope, $globalService, $translate, walletService, 
     
     // Save the (encrypted) wallet as a json file
     $scope.dowloadAppFile = function(){
-        globalFuncs.dowloadAppFile($scope.wallet, $scope.wallet.toV3($scope.password, {
-		        kdf: globalFuncs.kdf,
-                n: globalFuncs.scrypt.n,
-                server_name: globalFuncs.getServerName()
-        }));
+        globalFuncs.dowloadAppFile($scope.wallet, localStorage.getItem('ComChainWallet'));
     }
     
     // Save the (encrypted) wallet as a pdf with QR

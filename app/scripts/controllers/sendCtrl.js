@@ -88,14 +88,6 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, me
 		if (walletService.wallet == null) return;
 		$scope.wallet = walletService.wallet;
        
-        $scope.blobEnc = globalFuncs.getBlob("text/json;charset=UTF-8", $scope.wallet.toV3(walletService.password, {
-				kdf: globalFuncs.kdf,
-                n: globalFuncs.scrypt.n,
-                server_name: globalFuncs.getServerName(),     
-                server_address:globalFuncs.getServerAddress()  
-		}));
-        
-        
         contactservice.loadContacts($scope.wallet, walletService.password, function(contact_list){
             $scope.contacts = contactservice.filterContactForCurr(contact_list, globalFuncs.getServerName());
             $scope.contacts_without_me = contactservice.hideContact($scope.contacts, $scope.wallet.getAddressString());
@@ -497,8 +489,17 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, me
      /*  //DBG
        var crypted = messageService.cipherMessage($scope.wallet.getPublicKey(),"message");
        var recovered = messageService.decipherMessage($scope.wallet.getPrivateKey(),crypted);
-        
-     //*/
+            
+    
+     
+      messageService.ensureWalletMessageKey($scope.wallet, $scope.filePassword, 'Message',  function(complete_wall) {
+         if (complete_wall===undefined) {
+             
+         } 
+          
+      });
+      
+     */  //DBG
         
         
         
