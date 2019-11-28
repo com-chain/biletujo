@@ -1,5 +1,5 @@
 'use strict';
-var balanceCtrl = function($scope, $locale, $sce, walletService,contactservice, consultService, $translate) {
+var balanceCtrl = function($scope, $locale, $sce, walletService,contactservice, consultService, messageService, $translate) {
     // Environment variables
     $scope.isApp =  globalFuncs.isApp();
     $scope.currentWalletAddress=globalFuncs.getWalletAddress();
@@ -13,6 +13,7 @@ var balanceCtrl = function($scope, $locale, $sce, walletService,contactservice, 
     $scope.has_autor=false;
     $scope.acc_name= $translate.instant("TRAN_Address");
     $scope.fingerprint=false;
+    $scope.CR_frag_number = 5;
     
     // Popup 
 	$scope.qrModal = new Modal(document.getElementById('QR_pop'));
@@ -73,7 +74,7 @@ var balanceCtrl = function($scope, $locale, $sce, walletService,contactservice, 
 	}, function() {
 		if (walletService.wallet == null) return;
 		$scope.wallet = walletService.wallet;
-        
+        $scope.wallet.message_key = JSON.parse(localStorage.getItem('ComChainWallet')).message_key;
         contactservice.loadContacts($scope.wallet, walletService.password, function(contact_list){
             var filtered_list = contactservice.filterContactForCurr(contact_list, globalFuncs.getServerName());
             
@@ -755,6 +756,7 @@ var balanceCtrl = function($scope, $locale, $sce, walletService,contactservice, 
         child = container.lastElementChild; 
     }
     
+    var mess_keys = messageService.messageKeysFromWallet($scope.wallet);
     
     var obj_content = {"address":$scope.wallet.getAddressString(), 
               "server":globalFuncs.getServerName(), 
@@ -764,7 +766,15 @@ var balanceCtrl = function($scope, $locale, $sce, walletService,contactservice, 
               "viewbalance": ($scope.balanceView == 1),
               "viewoldtran": ($scope.oldTran == 1)
     };
-
+    
+   
+    if ($scope.dest_keys.public_key !== undefined) {
+        var dest_public_key = Buffer.from($scope.dest_keys.public_key, 'hex');
+        var crypted_m_key = messageService.cipherMessage(dest_public_key, mess_keys.clear_priv);
+        obj_content.message_key = crypted_m_key;
+    }
+    
+    
     var str_content = JSON.stringify(obj_content);
     var hash = ethUtil.sha3(str_content);
     var signature = ethUtil.ecsign(hash, $scope.wallet.privKey);
@@ -777,14 +787,14 @@ var balanceCtrl = function($scope, $locale, $sce, walletService,contactservice, 
     
     
     var full= $scope.qr_cr_content;
-    var chunk_length = Math.ceil(full.length/4);
+    var chunk_length = Math.ceil(full.length/$scope.CR_frag_number);
         
     if (piece <0){
         var qrcode = new QRCode(document.getElementById("qrCR_print"), $scope.qr_cr_content);
         document.getElementById("qrCR_print").style.display = "none";
-        for (var i=0; i<4;i++) {
+        for (var i=0; i<$scope.CR_frag_number;i++) {
             var string = "FRAG_CR"+signature.s.toString('hex').substring(2,6)+i.toString()+full.substring(chunk_length*i,Math.min(chunk_length*(i+1),full.length));
-            var qrcode = new QRCode(document.getElementById("qrCR_print" + i.toString()),string);
+            var qrcode = new QRCode(document.getElementById("qrCR_print" + i.toString()),string); 
             document.getElementById("qrCR_print" + i.toString()).style.display = "none";
         } 
     } else if (piece == 0) {
@@ -794,9 +804,8 @@ var balanceCtrl = function($scope, $locale, $sce, walletService,contactservice, 
        
         var string = "FRAG_CR"+signature.s.toString('hex').substring(2,6)+i.toString()+full.substring(chunk_length*i,Math.min(chunk_length*(i+1),full.length));
         var qrcode = new QRCode(document.getElementById("qrcode_consultRight"),string);
-    } 
-    
-    return $scope.qr_cr_content;
+    }  
+ 
 }
    
    
@@ -810,35 +819,37 @@ var balanceCtrl = function($scope, $locale, $sce, walletService,contactservice, 
        if ($scope.start_date.getTime()>=$scope.end_date.getTime()) {
            document.getElementById('createStatus').innerHTML = $sce.trustAsHtml(globalFuncs.getDangerText($translate.instant("CRI_wrongDates"))); 
        } else if ($scope.trPass==walletService.password){
-           walletService.setUsed();
+           walletService.setUsed();       
            $scope.createRightModal.close();
            $scope.trPass="";
-           // processing
-           $scope.generateSaveQRPiece(-1);
-           $scope.generateSaveQRPiece(0);
-           $scope.dislayQRModal.open();
+           messageService.getMessageKey($scope.dest, false, function(dest_keys) {
+               $scope.dest_keys = dest_keys;
+               // processing
+               $scope.generateSaveQRPiece(-1);
+               $scope.generateSaveQRPiece(0);
+               $scope.dislayQRModal.open();
 
-           if (!$scope.isApp) {
-               // export .dat file
-               $scope.blobCrEnc = globalFuncs.getBlob("text/json;charset=UTF-8", $scope.qr_cr_content);
-               document.getElementById('dwonloadBtn').click();
-                   
-               // export pdf 
-               setTimeout(function(){ 
-                     globalFuncs.generateCrPDF(
-                        $translate.instant("PDF_CR_Title"),
-                        $translate.instant("PDF_CR_On"),
-                        $translate.instant("PDF_CR_Assigned"),
-                        globalFuncs.cleanName($translate.instant("PDF_CR_Validity")) + " " + $scope.start_date.getFullYear()+ "/" + $scope.start_date.getMonth()+"/" + $scope.start_date.getDate() +"-"+
-                        $scope.end_date.getFullYear()+ "/" + $scope.end_date.getMonth()+"/" + $scope.end_date.getDate(), 
-                        $scope.currentWalletAddress,
-                        $scope.dest,
-                        $scope.qr_cr_content,                       
-                        $scope.callback_consult);
-                 },100); 
-           }
+               if (!$scope.isApp) {
+                   // export .dat file
+                   $scope.blobCrEnc = globalFuncs.getBlob("text/json;charset=UTF-8", $scope.qr_cr_content);
+                   document.getElementById('dwonloadBtn').click();
+                       
+                   // export pdf 
+                   setTimeout(function(){ 
+                         globalFuncs.generateCrPDF(
+                            $translate.instant("PDF_CR_Title"),
+                            $translate.instant("PDF_CR_On"),
+                            $translate.instant("PDF_CR_Assigned"),
+                            globalFuncs.cleanName($translate.instant("PDF_CR_Validity")) + " " + $scope.start_date.getFullYear()+ "/" + $scope.start_date.getMonth()+"/" + $scope.start_date.getDate() +"-"+
+                            $scope.end_date.getFullYear()+ "/" + $scope.end_date.getMonth()+"/" + $scope.end_date.getDate(), 
+                            $scope.currentWalletAddress,
+                            $scope.dest,
+                            $scope.qr_cr_content,                       
+                            $scope.callback_consult);
+                     },100); 
+               }
           
-           
+          });
            
            
            
@@ -963,10 +974,10 @@ $scope.helloPaperWallet = function(text){
               
               $scope.partial_prog+=1;
               
-              if ($scope.partial_prog==4){
+              if ($scope.partial_prog==$scope.CR_frag_number){
                   //end of input
                   var full="";
-                  for (var i=0;i<4;i++){
+                  for (var i=0;i<$scope.CR_frag_number;i++){
                       full+=$scope.partial_content[i.toString()];
                   }
                   $scope.partial_content={};

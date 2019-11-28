@@ -486,11 +486,11 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, me
      
     // contacts
     $scope.contactPop = function() {
-     /*  //DBG
+    //DBG
        var crypted = messageService.cipherMessage($scope.wallet.getPublicKey(),"message");
        var recovered = messageService.decipherMessage($scope.wallet.getPrivateKey(),crypted);
             
-    
+      /* 
      
       messageService.ensureWalletMessageKey($scope.wallet, $scope.filePassword, 'Message',  function(complete_wall) {
          if (complete_wall===undefined) {

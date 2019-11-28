@@ -1,5 +1,5 @@
 'use strict';
-var readonlytransactionsCtrl = function($scope, $locale, $sce, walletService,contactservice,consultService,memoService, $translate, $filter) {
+var readonlytransactionsCtrl = function($scope, $locale, $sce, walletService,contactservice,consultService, memoService, messageService, $translate, $filter) {
     // Check the environment
     $scope.isApp =  globalFuncs.isApp();
     $scope.currentWalletAddress=globalFuncs.getWalletAddress();
@@ -96,7 +96,10 @@ var readonlytransactionsCtrl = function($scope, $locale, $sce, walletService,con
         $scope.has_credit_mut=globalFuncs.hasCM();
         
         $scope.possible_wallets = consultService.loadRightFor($scope.currentWalletAddress);
-        $scope.possible_wallets[$scope.currentWalletAddress]  = {"viewbalance":true, "viewoldtran": true};
+        
+        var local_message_key = JSON.parse(localStorage.getItem('ComChainWallet')).message_key.priv;
+        
+        $scope.possible_wallets[$scope.currentWalletAddress]  = {"viewbalance":true, "viewoldtran": true, "message_key":local_message_key};
      
         $scope.possible_wallets_key = []
         for(var key in $scope.possible_wallets) $scope.possible_wallets_key.push( key );
@@ -116,6 +119,7 @@ var readonlytransactionsCtrl = function($scope, $locale, $sce, walletService,con
         globalFuncs.getAmmount(globalFuncs.slockitElBlance, $scope.watched_address, function(value){$scope.balanceEL = value;});
         globalFuncs.getAmmount(globalFuncs.slockitCmBlance, $scope.watched_address, function(value){$scope.balanceCM = value;});
         
+        $scope.current_message_key = messageService.messageKeysFromCrypted($scope.wallet, $scope.possible_wallets[$scope.currentWalletAddress].message_key);
         
         $scope.index=0;
         $scope.loadTransactions($scope.tra_number,$scope.index*$scope.tra_number + $scope.tra_offset);
@@ -126,6 +130,8 @@ var readonlytransactionsCtrl = function($scope, $locale, $sce, walletService,con
         if ($scope.watching != stored) {
             $scope.watch_click();
         }
+        
+
    
         
     }
