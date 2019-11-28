@@ -800,7 +800,7 @@ var balanceCtrl = function($scope, $locale, $sce, walletService,contactservice, 
 }
    
    
-    $scope.callback = function(pdf_doc){
+    $scope.callback_consult = function(pdf_doc){
         var file_name = "CONSULT_"+ $scope.wallet.getAddressString()+"_for_"+$scope.dest+'.pdf';
         pdf_doc.save(file_name);
     }
@@ -834,7 +834,7 @@ var balanceCtrl = function($scope, $locale, $sce, walletService,contactservice, 
                         $scope.currentWalletAddress,
                         $scope.dest,
                         $scope.qr_cr_content,                       
-                        $scope.callback);
+                        $scope.callback_consult);
                  },100); 
            }
           

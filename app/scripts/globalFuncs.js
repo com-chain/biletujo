@@ -1726,7 +1726,7 @@ globalFuncs.generateSavePDF = function(title, key, address, callback){
                 ctx.drawImage(newImg, 0, 0);
                 var logoData = c.toDataURL('image/png');
           
-                var imgData = document.getElementById("qrcode_print").getElementsByTagName('img')[0].src;
+                // var imgData = document.getElementById("qrcode_print").getElementsByTagName('img')[0].src;
                 var imgAddData = globalFuncs.wrapImgData(document.getElementById("addressIdenticon").style.backgroundImage);
             
                 var doc = new jsPDF();
@@ -1751,10 +1751,10 @@ globalFuncs.generateSavePDF = function(title, key, address, callback){
                 var keytextOffset = (doc.internal.pageSize.width - keytextWidth) / 2;
          
                 doc.text(keytextOffset, 71, key);
-                doc.addImage(imgData, 'PNG', 15, 75, 180, 180);
+                //doc.addImage(imgData, 'PNG', 15, 75, 180, 180);
                 doc.setFontSize(12);
                 var lines = doc.splitTextToSize(localStorage.getItem('ComChainWallet'), 180, {});
-                doc.text(15, 265, lines);
+                doc.text(15, 80, lines);
                 
                 doc.addPage();
                 
@@ -1771,7 +1771,7 @@ globalFuncs.generateSavePDF = function(title, key, address, callback){
                 doc.setFontSize(22);
                 
                 doc.text(keytextOffset, 81, key);
-                imgData = document.getElementById("qrcode_print0").getElementsByTagName('img')[0].src;
+                var imgData = document.getElementById("qrcode_print0").getElementsByTagName('img')[0].src;
                 doc.addImage(imgData, 'PNG', 15, 95, 80, 80);
                 doc.addImage(imgAddData, 'PNG', 50, 130, 10, 10);
                 doc.text(53, 138, "1");
