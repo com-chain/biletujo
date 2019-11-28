@@ -8,8 +8,10 @@ var viewWalletCtrl = function($scope, walletService, contactservice, $translate)
     $scope.currentAddress = globalFuncs.getWalletAddress();
     $scope.acc_name= $translate.instant("TRAN_Address");
     $scope.is_locked=false;
+    $scope.qr_reference="";
     
     // Popup
+    $scope.popSetupQR = new Modal(document.getElementById('pop_setupQR'));
 	$scope.prepareTagModal = new Modal(document.getElementById('pop_prepare_tag'));
 	$scope.popCheckBN = new Modal(document.getElementById('pop_check_bill'));
 
@@ -39,11 +41,31 @@ var viewWalletCtrl = function($scope, walletService, contactservice, $translate)
         });
         
         $scope.currentAddress = $scope.wallet.getAddressString();
+        $scope.current_QR_content = $scope.currentAddress;
         $scope.getAccName($scope.wallet.getAddressString());
         $scope.hasBnCheck=globalFuncs.hasBnCheck(); 
         
+        
         globalFuncs.notifyApproval(); // Refresh the Payment notification
 	});
+    
+    
+    $scope.configureQR = function() {
+        $scope.popSetupQR.open();
+    }
+    
+    $scope.do_setupQR = function() {
+        var obj = {"address":$scope.currentAddress};
+        if ($scope.qr_price!= undefined && $scope.qr_price >0) {
+            obj["amount"] = $scope.qr_price;
+        }
+        if ($scope.qr_reference!="" ) {
+            obj["ref"] = $scope.qr_reference;
+        }
+        var content = JSON.stringify(obj);
+        $scope.current_QR_content = content;
+        $scope.popSetupQR.close();
+    }
     
     
     // User interaction:

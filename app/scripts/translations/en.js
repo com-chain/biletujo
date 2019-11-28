@@ -102,6 +102,15 @@ VIEW_print_adr: 'Public address (.pdf)',
 VIEW_close_title: 'Close this wallet',
 VIEW_close: 'Close',
 
+
+QRS_title:'QR with reference and amount',
+QRS_Description:'Reference:',
+QRS_Description_holder:'Your reference',
+QRS_amount:'Amount:',
+QRS_Cancel:'Cancel',
+QRS_Apply:'Apply',
+
+
 QR_Full:"Full",
 QR_1:"1/4",
 QR_2:"2/4",

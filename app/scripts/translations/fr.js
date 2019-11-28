@@ -104,6 +104,15 @@ VIEW_print_adr: 'Adresse publique (.pdf)',
 VIEW_close_title: 'Verrouiller votre compte:',
 VIEW_close: 'Verouiller',
 
+
+
+QRS_title:'QR avec référence et montant',
+QRS_Description:'Référence:',
+QRS_Description_holder:'Votre référence',
+QRS_amount:'Montant:',
+QRS_Cancel:'Annuler',
+QRS_Apply:'Appliquer',
+
 QR_Full:"Complet",
 QR_1:"1/4",
 QR_2:"2/4",
