@@ -233,6 +233,12 @@ TRAN_Enter_pass_request: 'Please enter your password and confirm your request',
 TRAN_executed_request_text: 'You have sent your payment request',
 TRAN_total: 'Total = ',
 
+TRAN_Message_to:'Reference/Message',
+TRAN_Message_to_Placeholder:'For the recipient',
+TRAN_Message_from:'Note/Memo',
+TRAN_Message_from_Placeholder:'For the sender',
+TRAN_Message_copy:'Copy',
+
 TRAN_Done: 'The transaction has been sent and is being processed',
 TRAN_Wait: '(...)',
 TRAN_Ongoing: 'Processing transaction  -',

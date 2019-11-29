@@ -279,7 +279,7 @@
                                          <div id="addressIdenticon" title="Address Indenticon"  blockie-address="{{origine_address}}" 
                                                   watch-var="origine_address" style="opacity:0.9;"></div>
                                       </div>
-                                      <textarea cols="9" rows="5" class="adrtxt" readonly="readonly" ng-model="origine_address"> </textarea>
+                                      <!--<textarea cols="9" rows="5" class="adrtxt" readonly="readonly" ng-model="origine_address"> </textarea>-->
                                       <div ng-bind-html="from_name" style="overflow:hidden;text-align:center;max-height:21px"></div><br/>
 
                               </div>
@@ -292,12 +292,20 @@
                                     <div id="addressIdenticon" title="Address Indenticon"  blockie-address="{{tokenTx.to}}" 
                                          watch-var="tokenTx.to" style="opacity:0.9;"></div>
                                     </div>
-                                    <textarea cols="9" rows="5" class="adrtxt" readonly="readonly" ng-model="tokenTx.to" > </textarea>
+                                    <!--<textarea cols="9" rows="5" class="adrtxt" readonly="readonly" ng-model="tokenTx.to" > </textarea>-->
                                     <div ng-bind-html="selectedName" style="overflow:hidden;text-align:center;max-height:21px" ></div> 
                               </div>
-                              
-                           
-                  
+                              <div ng-hide="is_request_mode">
+                                  <div ng-show="to_message_key.length>0">
+                                    <div><label translate="TRAN_Message_to"  >Message</label><label>&nbsp;({{message_to.length}}/50)</label></div>
+                                    <input class="form-control" type="text" ng-change="messageChanged()" placeholder="{{ 'TRAN_Message_to_Placeholder' | translate }}" ng-model="message_to"  maxlength="50"/> </br>
+                                  </div>
+                                  <div ng-show="from_message_key.length>0">
+                                    <div><label translate="TRAN_Message_from"  >Message</label><label>&nbsp;({{message_from.length}}/50) &nbsp;</label> <input type="checkbox" ng-model="cp_mess" /><label translate="TRAN_Message_copy"  >Message</label></div>
+                                    <input class="form-control" type="text"  placeholder="{{ 'TRAN_Message_from_Placeholder' | translate }}" ng-model="message_from"  maxlength="50" ng-readonly="cp_mess" />
+                                    </br>
+                                  </div>
+                              </div>
                    
                   
                               
@@ -547,6 +555,17 @@
                               <textarea cols="9" rows="5" class="adrtxt" readonly="readonly" ng-model="transaction_to" > </textarea>
                               <div ng-bind-html="selectedName" style="overflow:hidden;text-align:center;max-height:21px" ></div> 
                               <br/>
+                              <div >
+                                  <div ng-show="to_message_key.length>0">
+                                    <div><label translate="TRAN_Message_to"  >Message</label><label>&nbsp;({{message_to.length}}/50)</label></div>
+                                    <input class="form-control" type="text" ng-change="messageChanged()" placeholder="{{ 'TRAN_Message_to_Placeholder' | translate }}" ng-model="message_to"  maxlength="50"/> </br>
+                                  </div>
+                                  <div ng-show="from_message_key.length>0">
+                                    <div><label translate="TRAN_Message_from"  >Message</label><label>&nbsp;({{message_from.length}}/50) &nbsp;</label> <input type="checkbox" ng-model="cp_mess" /><label translate="TRAN_Message_copy"  >Message</label></div>
+                                    <input class="form-control" type="text"  placeholder="{{ 'TRAN_Message_from_Placeholder' | translate }}" ng-model="message_from"  maxlength="50" ng-readonly="cp_mess" />
+                                    </br>
+                                  </div>
+                              </div>
                               <div  ng-hide="typeTrans=='no'">
                                  <div><label translate="TRAN_Enter_pass" >Entrez votre mot de passe</label></div>
                                  <div class="input-group">

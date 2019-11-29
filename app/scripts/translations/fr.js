@@ -235,6 +235,13 @@ TRAN_Enter_pass_request: 'Veuillez entrer votre mot de passe et confirmer la dem
 TRAN_executed_request_text:'Vous avez transmis la demande de paiement',
 TRAN_total: 'Total = ',
 
+TRAN_Message_to:'Référence/Message',
+TRAN_Message_to_Placeholder:'Pour le destinataire',
+TRAN_Message_from:'Note/Mémo',
+TRAN_Message_from_Placeholder:'Pour celui qui envoie',
+TRAN_Message_copy:'Copier',
+
+
 TRAN_Done: 'La transaction a été transmise et est en traitement',
 TRAN_Wait: '(...)',
 TRAN_Ongoing: 'Transaction en cours de traitement -',

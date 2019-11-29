@@ -601,23 +601,23 @@ globalFuncs.askTransfertCMFrom = function (wallet,account_address, from_address,
 
 
 
-globalFuncs.PayRequestNant = function (wallet, to_address, amount, callback){
+globalFuncs.PayRequestNant = function (wallet, to_address, amount, additional_data, callback){
       var to_Add = ethFuncs.padLeft(ethFuncs.getNakedAddress(to_address), 64);
       globalFuncs.generateTx(globalFuncs.getContract2(),
                              wallet, 
                              globalFuncs.payRequestNant, 
                              [to_Add, globalFuncs.encodeNumber(amount)], 
-                             {}, 
+                             additional_data, 
                              callback);
 }
 
-globalFuncs.PayRequestCM = function (wallet, to_address, amount, callback){
+globalFuncs.PayRequestCM = function (wallet, to_address, amount, additional_data, callback){
       var to_Add = ethFuncs.padLeft(ethFuncs.getNakedAddress(to_address), 64);
       globalFuncs.generateTx(globalFuncs.getContract2(),
                              wallet, 
                              globalFuncs.payRequestCM, 
                              [to_Add, globalFuncs.encodeNumber(amount)],
-                             {}, 
+                             additional_data, 
                              callback);
 }
 
