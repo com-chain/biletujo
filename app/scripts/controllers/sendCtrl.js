@@ -250,11 +250,11 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, me
         }
         
         if ($scope.from_message_key.length>0 && $scope.message_from.length>0) {
-            data['memo_from']= messageService.cipherMessage($scope.from_message_key, $scope.message_from);
+            data['memo_from']= messageService.cipherMessage(Buffer.from($scope.from_message_key.substring(2),'hex'), $scope.message_from);
         }
         
         if ($scope.to_message_key.length>0 && $scope.message_to.length>0) {
-            data['memo_to']= messageService.cipherMessage($scope.to_message_key, $scope.message_to);
+            data['memo_to']= messageService.cipherMessage(Buffer.from($scope.to_message_key.substring(2),'hex'), $scope.message_to);
         }
     
         globalFuncs.TransfertNant($scope.wallet, $scope.tokenTx.to, $scope.elemanAmmount, data,  function(res){
@@ -285,11 +285,11 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, me
         }
         
         if ($scope.from_message_key.length>0 && $scope.message_from.length>0) {
-            data['memo_from']= messageService.cipherMessage($scope.from_message_key, $scope.message_from);
+            data['memo_from']= messageService.cipherMessage(Buffer.from($scope.from_message_key.substring(2),'hex'), $scope.message_from);
         }
         
         if ($scope.to_message_key.length>0 && $scope.message_to.length>0) {
-            data['memo_to']= messageService.cipherMessage($scope.to_message_key, $scope.message_to);
+            data['memo_to']= messageService.cipherMessage(Buffer.from($scope.to_message_key.substring(2),'hex'), $scope.message_to);
         }
         
         globalFuncs.TransfertCM($scope.wallet, $scope.tokenTx.to, $scope.lemanexAmmount,incr, data, function(res){
@@ -356,14 +356,20 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, me
        $scope.to_message_key = "";
        messageService.getMessageKey($scope.tokenTx.to, false, function(keys) {
           $scope.to_message_key = keys.public_message_key;
-          if ( $scope.to_message_key !== undefined && $scope.to_message_key .length>0) {
+          if ( $scope.to_message_key === undefined) {
+            $scope.to_message_key = "";
+          } 
+          if ( $scope.to_message_key .length>0) {
               $scope.cp_mess = $scope.reference.length==0;
           }   
        });
        
        $scope.from_message_key = "";
        messageService.getMessageKey($scope.origine_address, false, function(keys) {
-          $scope.from_message_key = keys.public_message_key;  
+          $scope.from_message_key = keys.public_message_key; 
+          if ($scope.from_message_key===undefined) {  
+            $scope.from_message_key = "";
+          }
        });
                            
        $scope.sendTxModal.open();
@@ -440,6 +446,14 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, me
                       var data={};
                       if ($scope.isShopTx){
                             data = $scope.shopTxInfo;
+                      }
+                      
+                      if ($scope.from_message_key.length>0 && $scope.message_from.length>0) {
+                        data['memo_from']= messageService.cipherMessage(Buffer.from($scope.from_message_key.substring(2),'hex'), $scope.message_from);
+                      }
+
+                      if ($scope.to_message_key.length>0 && $scope.message_to.length>0) {
+                        data['memo_to']= messageService.cipherMessage(Buffer.from($scope.to_message_key.substring(2),'hex'), $scope.message_to);
                       }
                       
                       if (cur_tran_type=='nant'){
@@ -1248,14 +1262,20 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, me
                            $scope.to_message_key = "";
                            messageService.getMessageKey($scope.transaction_to, false, function(keys) {
                               $scope.to_message_key = keys.public_message_key;
-                              if ( $scope.to_message_key !== undefined && $scope.to_message_key .length>0) {
+                              if ( $scope.to_message_key === undefined) {
+                                $scope.to_message_key = "";
+                              }
+                              if ($scope.to_message_key .length>0) {
                                   $scope.cp_mess = true;
                               }   
                            });
                            
                            $scope.from_message_key = "";
                            messageService.getMessageKey($scope.wallet.getAddressString(), false, function(keys) {
-                              $scope.from_message_key = keys.public_message_key;  
+                              $scope.from_message_key = keys.public_message_key;
+                              if ($scope.from_message_key===undefined) {
+                                 $scope.from_message_key = "";
+                              }
                            });
                            
                            
@@ -1274,11 +1294,11 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, me
   $scope.sendReqTx = function(){
         var data= {};
         if ($scope.from_message_key.length>0 && $scope.message_from.length>0) {
-            data['memo_from']= messageService.cipherMessage($scope.from_message_key, $scope.message_from);
+            data['memo_from']= messageService.cipherMessage(Buffer.from($scope.from_message_key.substring(2),'hex'), $scope.message_from);
         }
 
         if ($scope.to_message_key.length>0 && $scope.message_to.length>0) {
-            data['memo_to']= messageService.cipherMessage($scope.to_message_key, $scope.message_to);
+            data['memo_to']= messageService.cipherMessage(Buffer.from($scope.to_message_key.substring(2),'hex'), $scope.message_to);
         }
 
       
