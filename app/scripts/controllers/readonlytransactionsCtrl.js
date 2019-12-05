@@ -101,8 +101,7 @@ var readonlytransactionsCtrl = function($scope, $locale, $sce, walletService,con
         
         $scope.possible_wallets[$scope.currentWalletAddress]  = {"viewbalance":true, "viewoldtran": true, "message_key":local_message_key};
      
-        $scope.possible_wallets_key = []
-        for(var key in $scope.possible_wallets) $scope.possible_wallets_key.push( key );
+       
         
         $scope.loadWatchedWallet();
         
@@ -129,11 +128,26 @@ var readonlytransactionsCtrl = function($scope, $locale, $sce, walletService,con
    
         if ($scope.watching != stored) {
             $scope.watch_click();
-        }
+        } 
+    }
+    
+    
+    $scope.getTransactionMessage = function(transaction_data) {
+        var memo = memoService.getMemo($scope.memos,transaction_data.hash);
+        try {
+            var key = Buffer.from($scope.current_message_key.clear_priv.substring(2),'hex')
+            if (memo=="") {
+              if (transaction_data.addr_to == $scope.watched_address && transaction_data.message_to != '') {
+                  memo = messageService.decipherMessage(key, transaction_data.message_to);
+              }
+              
+              if (transaction_data.addr_from == $scope.watched_address && transaction_data.message_from != '') {
+                  memo = messageService.decipherMessage(key, transaction_data.message_from);
+              }
+            }
+        } catch (e) {}
         
-
-   
-        
+        return memo;
     }
     
     $scope.loadTransactions= function(count,offset){
@@ -169,7 +183,7 @@ var readonlytransactionsCtrl = function($scope, $locale, $sce, walletService,con
                       $scope.transactions[ind]={'id': (ind), 'data':data};
                       $scope.transactions[ind].data.to_name = contactservice.getContactName($scope.contacts, $scope.transactions[ind].data.addr_to);
                       $scope.transactions[ind].data.from_name = contactservice.getContactName($scope.contacts, $scope.transactions[ind].data.addr_from);
-                      $scope.transactions[ind].data.memo = memoService.getMemo($scope.memos,$scope.transactions[ind].data.hash);
+                      $scope.transactions[ind].data.memo = $scope.getTransactionMessage($scope.transactions[ind].data);
                       $scope.transactions[ind].data.currency='';
                       if ($scope.transactions[ind].data.type=='Transfer' || $scope.transactions[ind].data.type=='Pledge'){
                           $scope.transactions[ind].data.currency=globalFuncs.currencies.CUR_nanti;
@@ -247,7 +261,7 @@ var readonlytransactionsCtrl = function($scope, $locale, $sce, walletService,con
         }
         
         if ($scope.selectedTrans){
-          $scope.current_trans_memo =  memoService.getMemo($scope.memos, $scope.selectedTrans.hash);
+          $scope.current_trans_memo =   $scope.getTransactionMessage($scope.selectedTrans); 
           $scope.current_tran_hash_info='{"transactionHash":"'+$scope.selectedTrans.hash+'","block":"'+$scope.selectedTrans.BLOCK+'"}';
           $scope.transDetails.open();
         }
@@ -378,7 +392,7 @@ var readonlytransactionsCtrl = function($scope, $locale, $sce, walletService,con
                   trans[ind]={'id': (ind), 'data':JSON.parse(result[ind])};
                   trans[ind].data.to_name = contactservice.getContactName($scope.contacts, trans[ind].data.addr_to);
                   trans[ind].data.from_name = contactservice.getContactName($scope.contacts, trans[ind].data.addr_from);
-                  trans[ind].data.memo = memoService.getMemo($scope.memos,trans[ind].data.hash);
+                  trans[ind].data.memo = $scope.getTransactionMessage(trans[ind].data);
                   trans[ind].data.currency='';
                   if (trans[ind].data.type=='Transfer' || trans[ind].data.type=='Pledge' ){
                       trans[ind].data.currency=globalFuncs.currencies.CUR_nanti;
@@ -434,7 +448,7 @@ var readonlytransactionsCtrl = function($scope, $locale, $sce, walletService,con
                cvs=cvs+'"'+tra.tax/100.+'",';
                cvs=cvs+'"'+tra.currency.replace(/[\n\r]+/g, '')+'",';
                cvs=cvs+'"'+tra.memo.replace('"', '""')+'",';
-               if ('delegate' in tra){
+               if ('delegate' in tra && tra.delegate){
                     cvs=cvs+'"'+tra.delegate.replace('"', '""')+'",';
                } else {
                     cvs=cvs+'"",';
@@ -482,104 +496,6 @@ var readonlytransactionsCtrl = function($scope, $locale, $sce, walletService,con
   
     
 
-    
-    
-    ////////////////////////////////////////////////////////////////
-    $scope.passwordCheck = function(control){
-        var number = globalFuncs.passwordAutocomplete();
-        var curr_length = $scope.trPass.length;
-        if (curr_length>=number && walletService.password.startsWith($scope.trPass)){
-            // autocomplete (bypass angular for timinig reason with the set selection range)
-            document.getElementById(control).value = walletService.password;
-            // select
-            document.getElementById(control).setSelectionRange(curr_length, walletService.password.length);  
-        }
-    }
-    
-    
-    
-  
-    
-      
-    $scope.loadPendingRequests= function(count,offset){
-
-         $scope.noMorePending = true;
-         if (offset>0){
-              document.getElementById("prevPending").style.display = 'block';
-       
-          } else {
-               document.getElementById("prevPending").style.display = 'none';
-          
-          }
-          
-          document.getElementById("nextPending").style.display = 'none';
-        
-          
-         globalFuncs.getPendingRequestList($scope.wallet.getAddressString(),offset,offset+count-1 ,
-                                     function(list){
-                                         $scope.pendingRequest = list;
-                                         $scope.noMorePending = $scope.pendingRequest.length<count;
-                                         
-                                         if (!$scope.noMorePending){
-                                              document.getElementById("nextPending").style.display = 'block';
-                                         }
-                                         
-                                       
-                                         for(var ind =0;ind<$scope.pendingRequest.length;ind++){
-                                            $scope.pendingRequest[ind].name =  contactservice.getContactName($scope.contacts, $scope.pendingRequest[ind].address); 
-                                         }
-                                          // $scope.$apply();
-                                         $scope.transPendingStatus='';
-                                         globalFuncs.hideLoadingWaiting();  
-                                     });
-        
-    }
-    
-    
-    
-    $scope.fingetrprintUnlock = function(){
-        globalFuncs.unlock(function(result){
-                if (result) {
-                    $scope.trPass=walletService.password;
-         }
-        });
-   } 
-    
-
-    
-  $scope.refresh = function(){
-       $scope.refreshApproval();
-  }
-    
-  $scope.interval_id=null;
-  
-   
-  
-  
-  $scope.recievedTransaction = function(){
-        clearInterval($scope.interval_id);
-        $scope.refresh();
-        $scope.$apply();
-  }
-  
-  $scope.waitTransaction = function(transaction_ash){
-      if ($scope.interval_id){
-          clearInterval($scope.interval_id);
-          $scope.interval_id=null;
-      }
-      
-      globalFuncs.showWaiting($scope.trans_message);
-      
-      $scope.interval_id = setInterval(function(){
-          ajaxReq.getBlock(transaction_ash, function(block_json){
-              // CHANGE BEHAVIOR: HIDE DIRECTLY THE WEELS
-              // if (block_json.blockNumber && block_json.blockNumber.startsWith('0x')){
-                 $scope.recievedTransaction();
-              // }
-          });
-      },5000);  
-  }     
-    
   
   //////////////////////////// notification
   
@@ -697,6 +613,8 @@ var readonlytransactionsCtrl = function($scope, $locale, $sce, walletService,con
 		}, {'SCAN_MODE': 'QR_CODE_MODE'});
     }
     
+ 
+    //// wallet selection
     
     $scope.pickWallet = function() {
         $scope.showSelectorPop = true;
@@ -712,6 +630,7 @@ var readonlytransactionsCtrl = function($scope, $locale, $sce, walletService,con
         $scope.show_bal = new_selection.viewbalance;
         $scope.lock_date = !new_selection.viewoldtran;
         $scope.lock_date_begin = new_selection.begin;
+        
 
         $scope.showSelectorPop = false;
         globalFuncs.showLoading($translate.instant("GP_Wait"));
