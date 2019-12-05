@@ -683,6 +683,7 @@
               <div id="qrCR_print1"></div>
               <div id="qrCR_print2"></div>
               <div id="qrCR_print3"></div>
+              <div id="qrCR_print4"></div>
            
             <div class="row"> 
               <div class="col-md-5 col-xs-5">
@@ -863,10 +864,11 @@
                           </div>
                           <div> &nbsp;</div>
                           <div>
-                                <button type="button" class="btn btn-primary" translate="QR_1" ng-click="qrRight(1)" >1 </button>
-                                <button type="button" class="btn btn-primary" translate="QR_2" ng-click="qrRight(2)" >2 </button>
-                                <button type="button" class="btn btn-primary" translate="QR_3" ng-click="qrRight(3)" >3 </button>
-                                <button type="button" class="btn btn-primary" translate="QR_4" ng-click="qrRight(4)" >4 </button>
+                                <button type="button" class="btn btn-primary" translate="QR_1_5" ng-click="qrRight(1)" >1 </button>
+                                <button type="button" class="btn btn-primary" translate="QR_2_5" ng-click="qrRight(2)" >2 </button>
+                                <button type="button" class="btn btn-primary" translate="QR_3_5" ng-click="qrRight(3)" >3 </button>
+                                <button type="button" class="btn btn-primary" translate="QR_4_5" ng-click="qrRight(4)" >4 </button>
+                                <button type="button" class="btn btn-primary" translate="QR_5_5" ng-click="qrRight(5)" >5 </button>
                           </div> 
                           <div> &nbsp;</div>
                           <div id="qrcode_consultRight" ></div><br/>

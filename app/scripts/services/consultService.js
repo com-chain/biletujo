@@ -57,7 +57,8 @@ var consultService = function() {
                 
                        result[consult.data.address] = {"begin":new Date(consult.data.begin), 
                                                        "viewbalance":consult.data.viewbalance, 
-                                                       "viewoldtran": consult.data.viewoldtran };
+                                                       "viewoldtran": consult.data.viewoldtran,
+                                                       "messageKey": consult.data.message_key};
                 }
         
     

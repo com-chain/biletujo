@@ -15,6 +15,7 @@ ethUtil.crypto = require('crypto');
 ethUtil.Tx = require('ethereumjs-tx');
 ethUtil.scrypt = require('scryptsy');
 ethUtil.uuid = require('uuid');
+ethUtil.EC = require('elliptic').ec;
 window.ethUtil = ethUtil;
 var Wallet = require('./myetherwallet');
 window.Wallet = Wallet;
@@ -61,6 +62,7 @@ var contactService = require('./services/contactService');
 var memoService = require('./services/memoService');
 var consultService = require('./services/consultService');
 var authenticationService = require('./services/authenticationService');
+var messageService = require('./services/messageService');
 
 var walletDecryptDrtv = require('./directives/walletDecryptDrtv');
 var blockiesDrtv = require('./directives/blockiesDrtv');
@@ -83,6 +85,8 @@ app.factory('contactService', contactService);
 app.factory('memoService', memoService);
 app.factory('consultService', consultService);
 app.factory('authenticationService', authenticationService);
+app.factory('messageService', messageService);
+
 
 app.directive('blockieAddress', blockiesDrtv);
 app.directive('qrCode', QRCodeDrtv);
@@ -93,11 +97,11 @@ app.directive('waitingDrtv', waitingDrtv);
 
 app.controller('tabsCtrl', ['$scope','$attrs','globalService','contactService', '$translate','$compile', 'authenticationService',tabsCtrl]);
 app.controller('viewCtrl', ['$scope', 'globalService', '$translate', viewCtrl]);
-app.controller('walletGenCtrl', ['$scope', 'globalService','$translate', 'walletService','contactService', walletGenCtrl]);
-app.controller('decryptWalletCtrl', ['$scope', '$sce', '$translate', 'walletService', 'contactService', 'memoService', 'authenticationService','globalService', decryptWalletCtrl]);
+app.controller('walletGenCtrl', ['$scope', 'globalService','$translate', 'walletService','contactService','messageService', walletGenCtrl]);
+app.controller('decryptWalletCtrl', ['$scope', '$sce', '$translate', 'walletService', 'contactService', 'memoService', 'authenticationService','messageService','globalService', decryptWalletCtrl]);
 app.controller('viewWalletCtrl', ['$scope', 'walletService','contactService', '$translate', viewWalletCtrl]);
-app.controller('sendCtrl', ['$scope','$locale', '$sce', 'walletService','contactService','globalService', '$translate', sendCtrl]);
-app.controller('balanceCtrl', ['$scope','$locale', '$sce', 'walletService','contactService','consultService', '$translate', balanceCtrl]);
+app.controller('sendCtrl', ['$scope','$locale', '$sce', 'walletService','contactService','messageService','globalService', '$translate', sendCtrl]);
+app.controller('balanceCtrl', ['$scope','$locale', '$sce', 'walletService','contactService','consultService','messageService', '$translate', balanceCtrl]);
 app.controller('billingCtrl', ['$scope','$locale', '$sce', 'walletService', '$translate', billingCtrl]);
 app.controller('noteCtrl', ['$scope','$locale', '$sce', 'walletService', '$translate', noteCtrl]);
 app.controller('exchangeCtrl', ['$scope','$locale', '$sce', 'walletService', '$translate', exchangeCtrl]);
@@ -105,5 +109,5 @@ app.controller('globalCtrl', ['$scope','$locale', '$sce', 'walletService', '$tra
 app.controller('contactsCtrl', ['$scope', '$sce', 'walletService','contactService','globalService', '$translate', contactsCtrl]);
 app.controller('storageCtrl', ['$scope', '$sce', 'walletService','contactService', '$translate', storageCtrl]);
 
-app.controller('readonlytransactionsCtrl', ['$scope','$locale', '$sce', 'walletService','contactService', 'consultService','memoService', '$translate','$filter', readonlytransactionsCtrl]);
+app.controller('readonlytransactionsCtrl', ['$scope','$locale', '$sce', 'walletService','contactService', 'consultService','memoService','messageService', '$translate','$filter', readonlytransactionsCtrl]);
 

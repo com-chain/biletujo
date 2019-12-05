@@ -104,11 +104,25 @@ VIEW_print_adr: 'Adresse publique (.pdf)',
 VIEW_close_title: 'Verrouiller votre compte:',
 VIEW_close: 'Verouiller',
 
+
+
+QRS_title:'QR avec référence et montant',
+QRS_Description:'Référence:',
+QRS_Description_holder:'Votre référence',
+QRS_amount:'Montant:',
+QRS_Cancel:'Annuler',
+QRS_Apply:'Appliquer',
+
 QR_Full:"Complet",
 QR_1:"1/4",
 QR_2:"2/4",
 QR_3:"3/4",
 QR_4:"4/4",
+QR_1_5:"1/5",
+QR_2_5:"2/5",
+QR_3_5:"3/5",
+QR_4_5:"4/5",
+QR_5_5:"5/5",
 
 VIEW_print_price:'Etiquettes',
 TAG_Tag_generatio_title:'Créer des étiquettes avec votre adresse publique:',
@@ -191,6 +205,7 @@ PDF_CR_Assigned:'Accordé à:',
 CRI_Consult_Help_title:'A propos des droits de consultation:',
 CRI_Consult_Help_text:'Un droit de consultation donne la possibilité à un tiers de consulter l\'historique de vos transactions pour une période donnée, voire le solde de votre compte. En enclenchant le "mode cafetier" (cloche), il peut également être informé lorsque vous recevez un paiement. Pour donner un droit de consultation, il vous faut le créer sur cette page puis transmettre le fichier au tiers en question. Pour recevoir un droit de consultation, il faut obtenir le fichier de création de la part du tiers et l\'importer sur cette page à travers le bouton +.',
 
+WALL_missing_message_key:'La sauvegarde de ce compte est dans une ancienne version. Veuillez en faire une nouvelle sauvegarde.',
 
 
 /*Transaction*/
@@ -219,6 +234,13 @@ TRAN_From: 'à',
 TRAN_Enter_pass_request: 'Veuillez entrer votre mot de passe et confirmer la demande',
 TRAN_executed_request_text:'Vous avez transmis la demande de paiement',
 TRAN_total: 'Total = ',
+
+TRAN_Message_to:'Référence/Message',
+TRAN_Message_to_Placeholder:'Pour le destinataire',
+TRAN_Message_from:'Note/Mémo',
+TRAN_Message_from_Placeholder:'Pour celui qui envoie',
+TRAN_Message_copy:'Copier',
+
 
 TRAN_Done: 'La transaction a été transmise et est en traitement',
 TRAN_Wait: '(...)',

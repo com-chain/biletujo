@@ -1,5 +1,5 @@
 'use strict';
-var decryptWalletCtrl = function($scope, $sce, $translate, walletService, contactService, memoService, authenticationService, globalService) {
+var decryptWalletCtrl = function($scope, $sce, $translate, walletService, contactService, memoService, authenticationService, messageService, globalService) {
     $scope.isApp =  globalFuncs.isApp();
     globalFuncs.hideLoadingWaiting();
     
@@ -263,20 +263,30 @@ var decryptWalletCtrl = function($scope, $sce, $translate, walletService, contac
             // toujours dans le cas d'un file dans le storage local
 			$scope.fileContent = localStorage.getItem('ComChainWallet');
 		    $scope.wallet = Wallet.getWalletFromPrivKeyFile($scope.fileContent, document.getElementById('passwdField').value);
+            var parsed =  JSON.parse($scope.fileContent);
+            if (parsed.message_key !== undefined) {
+                 $scope.wallet.message_key = parsed.message_key;
+            }
+            
             walletService.password = $scope.filePassword;
             walletService.wallet = $scope.wallet;
+            
+            messageService.ensureWalletMessageKey($scope.wallet, $scope.filePassword, $translate.instant('WALL_missing_message_key'),  function(complete_wall) {
+                $scope.wallet = complete_wall;
+                walletService.wallet = complete_wall;
+                
+                localStorage.setItem('ComChainWallet',JSON.stringify($scope.wallet.toV3($scope.filePassword, {
+                              kdf: globalFuncs.kdf, n: globalFuncs.scrypt.n,
+                              server_name: globalFuncs.getServerName(),
+                              message_key: $scope.wallet.message_key                                                        
+                })));  
+                globalFuncs.loadWallets(true);
+            });
+            
             walletService.setUsed();
             walletService.next_ok=true;
             
             $scope.hideWalletSelector = true;
-            
-         /*   localStorage.setItem('ComChainWallet',JSON.stringify($scope.wallet.toV3($scope.filePassword, {
-                              kdf: globalFuncs.kdf, n: globalFuncs.scrypt.n,
-                              server_name: globalFuncs.getServerName() })));  
-            globalFuncs.loadWallets(true);*/
-            
-        
-            
             
 		} catch (e) {
             $scope.decryptStatus = $sce.trustAsHtml(globalFuncs.getDangerText($translate.instant('ERROR_7')));

@@ -601,23 +601,23 @@ globalFuncs.askTransfertCMFrom = function (wallet,account_address, from_address,
 
 
 
-globalFuncs.PayRequestNant = function (wallet, to_address, amount, callback){
+globalFuncs.PayRequestNant = function (wallet, to_address, amount, additional_data, callback){
       var to_Add = ethFuncs.padLeft(ethFuncs.getNakedAddress(to_address), 64);
       globalFuncs.generateTx(globalFuncs.getContract2(),
                              wallet, 
                              globalFuncs.payRequestNant, 
                              [to_Add, globalFuncs.encodeNumber(amount)], 
-                             {}, 
+                             additional_data, 
                              callback);
 }
 
-globalFuncs.PayRequestCM = function (wallet, to_address, amount, callback){
+globalFuncs.PayRequestCM = function (wallet, to_address, amount, additional_data, callback){
       var to_Add = ethFuncs.padLeft(ethFuncs.getNakedAddress(to_address), 64);
       globalFuncs.generateTx(globalFuncs.getContract2(),
                              wallet, 
                              globalFuncs.payRequestCM, 
                              [to_Add, globalFuncs.encodeNumber(amount)],
-                             {}, 
+                             additional_data, 
                              callback);
 }
 
@@ -1189,6 +1189,7 @@ globalFuncs.removeWallet = function(){
 }
 
 
+
 //////////////////////////////////////////////
 /// Note checking 
 
@@ -1725,7 +1726,7 @@ globalFuncs.generateSavePDF = function(title, key, address, callback){
                 ctx.drawImage(newImg, 0, 0);
                 var logoData = c.toDataURL('image/png');
           
-                var imgData = document.getElementById("qrcode_print").getElementsByTagName('img')[0].src;
+                // var imgData = document.getElementById("qrcode_print").getElementsByTagName('img')[0].src;
                 var imgAddData = globalFuncs.wrapImgData(document.getElementById("addressIdenticon").style.backgroundImage);
             
                 var doc = new jsPDF();
@@ -1750,10 +1751,10 @@ globalFuncs.generateSavePDF = function(title, key, address, callback){
                 var keytextOffset = (doc.internal.pageSize.width - keytextWidth) / 2;
          
                 doc.text(keytextOffset, 71, key);
-                doc.addImage(imgData, 'PNG', 15, 75, 180, 180);
+                //doc.addImage(imgData, 'PNG', 15, 75, 180, 180);
                 doc.setFontSize(12);
                 var lines = doc.splitTextToSize(localStorage.getItem('ComChainWallet'), 180, {});
-                doc.text(15, 265, lines);
+                doc.text(15, 80, lines);
                 
                 doc.addPage();
                 
@@ -1770,7 +1771,7 @@ globalFuncs.generateSavePDF = function(title, key, address, callback){
                 doc.setFontSize(22);
                 
                 doc.text(keytextOffset, 81, key);
-                imgData = document.getElementById("qrcode_print0").getElementsByTagName('img')[0].src;
+                var imgData = document.getElementById("qrcode_print0").getElementsByTagName('img')[0].src;
                 doc.addImage(imgData, 'PNG', 15, 95, 80, 80);
                 doc.addImage(imgAddData, 'PNG', 50, 130, 10, 10);
                 doc.text(53, 138, "1");
@@ -1824,75 +1825,59 @@ globalFuncs.generateCrPDF = function(title, on,assigned,validity,address,dest,co
                 ctx.drawImage(newImg, 0, 0);
                 var logoData = c.toDataURL('image/png');
           
-                var imgData = document.getElementById("qrCR_print").getElementsByTagName('img')[0].src;
                 var imgAddData = globalFuncs.wrapImgData(document.getElementsByName("addressIdenticon")[0].style.backgroundImage);
                 var imgDestData = globalFuncs.wrapImgData(document.getElementsByName("addressIdenticonDest")[0].style.backgroundImage);
             
                 var doc = new jsPDF();
-                doc.setFontSize(28);
+                doc.setFontSize(22);
                 
                 var textWidth = doc.getStringUnitWidth(title) * doc.internal.getFontSize() / doc.internal.scaleFactor;
-                var textOffset = (doc.internal.pageSize.width - textWidth) / 2;
+                var textOffset = 15+(80 - textWidth) / 2;
                 doc.text(textOffset, 21, title);
                 doc.setLineWidth(1.0);
-                doc.line(textOffset, 22, textOffset+textWidth+3, 22);
+                doc.line(textOffset, 22, textOffset+textWidth+2, 22);
+                
+     
+                
+                
+                doc.addImage(logoData, 'PNG', 15, 32, 20, 20);
+                doc.setFontSize(10);
+                doc.text(45, 30, on);
+                doc.addImage(imgAddData, 'PNG', 45, 32, 20, 20);
+                doc.text(75, 30, assigned);
+                doc.addImage(imgDestData, 'PNG', 75, 32, 20, 20);
                 
                 doc.setFontSize(15);
-                doc.text(90, 30, on);
-                doc.addImage(imgAddData, 'PNG', 90, 32, 30, 30);
-                doc.text(130, 30, assigned);
-                doc.addImage(imgDestData, 'PNG', 130, 32, 30, 30);
+                var lines_val = doc.splitTextToSize(validity, 80, {});
+                doc.text(15, 71, lines_val);
+
+                var imgData = document.getElementById("qrCR_print0").getElementsByTagName('img')[0].src;
+                doc.addImage(imgData, 'PNG', 115, 10, 80, 80);
+                doc.addImage(imgAddData, 'PNG', 150, 45, 10, 10);
+                doc.text(153, 53, "1");
                 
-                doc.addImage(logoData, 'PNG', 50, 32, 30, 30);
-                
-                doc.setFontSize(15);
-                var keytextWidth = doc.getStringUnitWidth(validity) * doc.internal.getFontSize() / doc.internal.scaleFactor;
-                var keytextOffset = (doc.internal.pageSize.width - keytextWidth) / 2;
-                doc.text(keytextOffset, 71, validity);
-                doc.addImage(imgData, 'PNG', 15, 75, 180, 180);
-                
-                doc.setFontSize(12);
-                var lines = doc.splitTextToSize(content, 180, {});
-                doc.text(15, 265, lines);
-                
-                doc.addPage();
-                
-                doc.setFontSize(28);
-                doc.text(textOffset, 21, title);
-                doc.setLineWidth(1.0);
-                doc.line(textOffset, 22, textOffset+textWidth+3, 22);
-                
-                doc.setFontSize(15);
-                doc.text(90, 30, on);
-                doc.addImage(imgAddData, 'PNG', 90, 32, 30, 30);
-                doc.text(130, 30, assigned);
-                doc.addImage(imgDestData, 'PNG', 130, 32, 30, 30);
-                doc.addImage(logoData, 'PNG', 50, 32, 30, 30);
-                
-                doc.setFontSize(15);
-                var keytextWidth = doc.getStringUnitWidth(validity) * doc.internal.getFontSize() / doc.internal.scaleFactor;
-                var keytextOffset = (doc.internal.pageSize.width - keytextWidth) / 2;
-                doc.text(keytextOffset, 71, validity);
-                
-                imgData = document.getElementById("qrCR_print0").getElementsByTagName('img')[0].src;
-                doc.addImage(imgData, 'PNG', 15, 95, 80, 80);
-                doc.addImage(imgAddData, 'PNG', 50, 130, 10, 10);
-                doc.text(53, 138, "1");
                 
                 imgData = document.getElementById("qrCR_print1").getElementsByTagName('img')[0].src;
-                doc.addImage(imgData, 'PNG', 115, 95, 80, 80);
-                doc.addImage(imgAddData, 'PNG', 150, 130, 10, 10);
-                doc.text(153, 138, "2");
-                                
-                imgData = document.getElementById("qrCR_print2").getElementsByTagName('img')[0].src;
-                doc.addImage(imgData, 'PNG', 15, 195, 80, 80);
-                doc.addImage(imgAddData, 'PNG', 50, 230, 10, 10);
-                doc.text(53, 238, "3");
+                doc.addImage(imgData, 'PNG', 15, 105, 80, 80);
+                doc.addImage(imgAddData, 'PNG', 50, 140, 10, 10);
+                doc.text(53, 148, "2");
                 
+                imgData = document.getElementById("qrCR_print2").getElementsByTagName('img')[0].src;
+                doc.addImage(imgData, 'PNG', 115, 105, 80, 80);
+                doc.addImage(imgAddData, 'PNG', 150, 140, 10, 10);
+                doc.text(153, 148, "3");
+                                
                 imgData = document.getElementById("qrCR_print3").getElementsByTagName('img')[0].src;
-                doc.addImage(imgData, 'PNG', 115, 195, 80, 80);
-                doc.addImage(imgAddData, 'PNG', 150, 230, 10, 10);
-                doc.text(153, 238, "4");
+                doc.addImage(imgData, 'PNG', 15, 200, 80, 80);
+                doc.addImage(imgAddData, 'PNG', 50, 235, 10, 10);
+                doc.text(53, 243, "4");
+                
+                imgData = document.getElementById("qrCR_print4").getElementsByTagName('img')[0].src;
+                doc.addImage(imgData, 'PNG', 115, 200, 80, 80);
+                doc.addImage(imgAddData, 'PNG', 150, 235, 10, 10);
+                doc.text(153, 243, "5");
+                
+              
                 
                 
                 newImg.callback(doc);

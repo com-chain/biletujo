@@ -102,11 +102,25 @@ VIEW_print_adr: 'Public address (.pdf)',
 VIEW_close_title: 'Close this wallet',
 VIEW_close: 'Close',
 
+
+QRS_title:'QR with reference and amount',
+QRS_Description:'Reference:',
+QRS_Description_holder:'Your reference',
+QRS_amount:'Amount:',
+QRS_Cancel:'Cancel',
+QRS_Apply:'Apply',
+
+
 QR_Full:"Full",
 QR_1:"1/4",
 QR_2:"2/4",
 QR_3:"3/4",
 QR_4:"4/4",
+QR_1_5:"1/5",
+QR_2_5:"2/5",
+QR_3_5:"3/5",
+QR_4_5:"4/5",
+QR_5_5:"5/5",
 
 VIEW_print_price: 'Notes',
 TAG_Tag_generatio_title: 'Create tags with your public address:',
@@ -190,6 +204,7 @@ PDF_CR_Assigned:'Granted to:',
 CRI_Consult_Help_title:'Concerning Consultation Rights:',
 CRI_Consult_Help_text:'A Consultation Right gives the possibility to a third party to consult the history of your transactions for a given period, even the balance of your account. By engaging the "coffee mode" (bell), he can also be informed when you receive a payment. To give a Consultation Right, you must create it on this page and then send the file to the third party concerned. To receive a Consultation Right, it is necessary to obtain the file of creation from the third party and to import it on this page through the + button.',
 
+WALL_missing_message_key:'The backup of this wallet is in an outdated format. Please save a new backup.',
 
 /*Transaction*/
 TRAN_Address: 'Your wallet',
@@ -217,6 +232,12 @@ TRAN_From: 'from',
 TRAN_Enter_pass_request: 'Please enter your password and confirm your request',
 TRAN_executed_request_text: 'You have sent your payment request',
 TRAN_total: 'Total = ',
+
+TRAN_Message_to:'Reference/Message',
+TRAN_Message_to_Placeholder:'For the recipient',
+TRAN_Message_from:'Note/Memo',
+TRAN_Message_from_Placeholder:'For the sender',
+TRAN_Message_copy:'Copy',
 
 TRAN_Done: 'The transaction has been sent and is being processed',
 TRAN_Wait: '(...)',
