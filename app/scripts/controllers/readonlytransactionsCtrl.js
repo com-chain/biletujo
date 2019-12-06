@@ -99,7 +99,7 @@ var readonlytransactionsCtrl = function($scope, $locale, $sce, walletService,con
         
         var local_message_key = JSON.parse(localStorage.getItem('ComChainWallet')).message_key.priv;
         
-        $scope.possible_wallets[$scope.currentWalletAddress]  = {"viewbalance":true, "viewoldtran": true, "message_key":local_message_key};
+        $scope.possible_wallets[$scope.currentWalletAddress]  = {"viewbalance":true, "viewoldtran": true, "messageKey":local_message_key};
      
        
         
@@ -118,7 +118,7 @@ var readonlytransactionsCtrl = function($scope, $locale, $sce, walletService,con
         globalFuncs.getAmmount(globalFuncs.slockitElBlance, $scope.watched_address, function(value){$scope.balanceEL = value;});
         globalFuncs.getAmmount(globalFuncs.slockitCmBlance, $scope.watched_address, function(value){$scope.balanceCM = value;});
         
-        $scope.current_message_key = messageService.messageKeysFromCrypted($scope.wallet, $scope.possible_wallets[$scope.currentWalletAddress].message_key);
+        $scope.current_message_key = messageService.messageKeysFromCrypted($scope.wallet, $scope.possible_wallets[$scope.watched_address].messageKey);
         
         $scope.index=0;
         $scope.loadTransactions($scope.tra_number,$scope.index*$scope.tra_number + $scope.tra_offset);
@@ -366,9 +366,9 @@ var readonlytransactionsCtrl = function($scope, $locale, $sce, walletService,con
         }
         
         
-        $scope.start_date=new Date($scope.start_date.getFullYear(), $scope.start_date.getMonth(),  $scope.start_date.getDate(),  $scope.start_time, 0, 0, 0);
+        $scope.start_date=new Date($scope.start_date.getFullYear(), $scope.start_date.getMonth()+1,  $scope.start_date.getDate(),  $scope.start_time, 0, 0, 0);
        
-        $scope.end_date=new Date($scope.end_date.getFullYear(), $scope.end_date.getMonth(),  $scope.end_date.getDate(), $scope.end_time-1, 59, 59, 0);
+        $scope.end_date=new Date($scope.end_date.getFullYear(), $scope.end_date.getMonth()+1,  $scope.end_date.getDate(), $scope.end_time-1, 59, 59, 0);
         
         
        if ($scope.end_date.getTime()<$scope.start_date.getTime()){
@@ -617,6 +617,11 @@ var readonlytransactionsCtrl = function($scope, $locale, $sce, walletService,con
     //// wallet selection
     
     $scope.pickWallet = function() {
+        $scope.possible_wallets_add = [];
+        for (var add in $scope.possible_wallets) {
+            $scope.possible_wallets_add.push(add);
+
+        }
         $scope.showSelectorPop = true;
     }
     

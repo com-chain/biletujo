@@ -761,8 +761,8 @@ var balanceCtrl = function($scope, $locale, $sce, walletService,contactservice, 
     var obj_content = {"address":$scope.wallet.getAddressString(), 
               "server":globalFuncs.getServerName(), 
               "destinary":$scope.dest,
-              "begin":$scope.start_date.getFullYear()+ "/" + $scope.start_date.getMonth()+"/" + $scope.start_date.getDate(), 
-              "end":$scope.end_date.getFullYear()+ "/" + $scope.end_date.getMonth()+"/" + $scope.end_date.getDate(), 
+              "begin":$scope.start_date.getFullYear()+ "/" + ($scope.start_date.getMonth()+1)+"/" + $scope.start_date.getDate(), 
+              "end":$scope.end_date.getFullYear()+ "/" + ($scope.end_date.getMonth()+1)+"/" + $scope.end_date.getDate(), 
               "viewbalance": ($scope.balanceView == 1),
               "viewoldtran": ($scope.oldTran == 1)
     };

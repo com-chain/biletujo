@@ -168,7 +168,11 @@ const Decrypt = function(privKey, encrypted) {
     }
     
     function messageKeysFromCrypted(wallet, ciphered) {
-        var priv = '0x' + Decrypt(wallet.getPrivateKey(), ciphered);
+        var priv =  Decrypt(wallet.getPrivateKey(), ciphered);
+        
+        if (priv.substring(0,2)!='0x') {
+            priv = '0x'+priv;
+        }
         var pub = ethUtil.privateToPublic(priv);
         return {"pub": pub, "clear_priv": priv};
     }

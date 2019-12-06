@@ -23,7 +23,7 @@
                             <div class="ctt_tool">
                                 <div class="ctt_pop_scroll">
                                     <div class="ctt_cent">
-                                        <div  ng-repeat="ct in possible_wallets_key" class="ctt_elm">
+                                        <div  ng-repeat="ct in possible_wallets_add" class="ctt_elm">
                                             <div>
                                                 <div  ng-click="pickSel(ct)">
                                                     <div class="identiconWrapper" style="max-width:60px;" >
