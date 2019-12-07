@@ -262,6 +262,7 @@ var readonlytransactionsCtrl = function($scope, $locale, $sce, walletService,con
         
         if ($scope.selectedTrans){
           $scope.current_trans_memo =   $scope.getTransactionMessage($scope.selectedTrans); 
+          $scope.ref_trans_memo = $scope.current_trans_memo ;
           $scope.current_tran_hash_info='{"transactionHash":"'+$scope.selectedTrans.hash+'","block":"'+$scope.selectedTrans.BLOCK+'"}';
           $scope.transDetails.open();
         }
@@ -269,14 +270,17 @@ var readonlytransactionsCtrl = function($scope, $locale, $sce, walletService,con
     
     $scope.closeDetails = function(){
         $scope.current_trans_memo = document.getElementById('current_trans_memo').value;
-        $scope.memos = memoService.setMemo($scope.memos, $scope.selectedTrans.hash,$scope.current_trans_memo);
-         if(!$scope.isApp){
-             $scope.blobMemo = memoService.getMemoBlob($scope.memos)
-         }
-         $scope.transDetails.close(); 
-         globalFuncs.showLoading($translate.instant("GP_Wait"));
-         $scope.loadTransactions($scope.tra_number,$scope.index*$scope.tra_number + $scope.tra_offset);
-         memoService.storeIpfsMemos($scope.wallet,walletService.password);
+        $scope.transDetails.close(); 
+        if ($scope.current_trans_memo.trim() != $scope.ref_trans_memo.trim()) {
+             $scope.memos = memoService.setMemo($scope.memos, $scope.selectedTrans.hash,$scope.current_trans_memo);
+             if(!$scope.isApp){
+                 $scope.blobMemo = memoService.getMemoBlob($scope.memos)
+             }
+             
+             globalFuncs.showLoading($translate.instant("GP_Wait"));
+             $scope.loadTransactions($scope.tra_number,$scope.index*$scope.tra_number + $scope.tra_offset);
+             memoService.storeIpfsMemos($scope.wallet,walletService.password);
+        }
     }
     
     
