@@ -352,6 +352,10 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, me
        
        $scope.message_to = $scope.reference;
        $scope.message_from = $scope.reference;
+       if ($scope.isShopTx) {
+           $scope.message_to = $scope.shopTxInfo.txId + " " + $scope.reference;
+           $scope.message_from = $scope.message_to;
+       }
        $scope.cp_mess = false;
        $scope.to_message_key = "";
        messageService.getMessageKey($scope.tokenTx.to, false, function(keys) {
@@ -360,7 +364,7 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, me
             $scope.to_message_key = "";
           } 
           if ( $scope.to_message_key .length>0) {
-              $scope.cp_mess = $scope.reference.length==0;
+              $scope.cp_mess = $scope.reference.length==0 && !$scope.isShopTx;
           }   
        });
        
