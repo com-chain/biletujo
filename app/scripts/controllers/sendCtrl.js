@@ -205,7 +205,15 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, me
         $scope.reference = "";
         $scope.setName();
         
-
+        if ($scope.tokenTx.to.trim().startsWith("{") && !$scope.tokenTx.to.trim().endsWith("}")){
+            $scope.showRaw = false;
+            return;
+        }
+        
+        if ($scope.tokenTx.to.trim().startsWith("{") && $scope.tokenTx.to.trim().endsWith("}")) {
+            $scope.helloToAddress($scope.tokenTx.to.trim());
+            return;
+        }
         
         if ($scope.tokenTx.to=='' ||$scope.tokenTx.value=='' ){
             $scope.showRaw = false;

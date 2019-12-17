@@ -297,11 +297,11 @@
                               </div>
                               <div ng-hide="is_request_mode">
                                   <div ng-show="to_message_key.length>0">
-                                    <div><label translate="TRAN_Message_to"  >Message</label><label>&nbsp;({{message_to.length}}/50)</label></div>
-                                    <input class="form-control" type="text" ng-change="messageChanged()" placeholder="{{ 'TRAN_Message_to_Placeholder' | translate }}" ng-model="message_to"  maxlength="50"/> </br>
+                                    <div><label translate="TRAN_Message_to" >Message</label><label>&nbsp;({{message_to.length}}/50)</label></div>
+                                    <input class="form-control" type="text" ng-change="messageChanged()" placeholder="{{ 'TRAN_Message_to_Placeholder' | translate }}" ng-model="message_to"  maxlength="50" ng-readonly="isShopTx" /> </br>
                                   </div>
                                   <div ng-show="from_message_key.length>0">
-                                    <div><label translate="TRAN_Message_from"  >Message</label><label>&nbsp;({{message_from.length}}/50) &nbsp;</label> <input type="checkbox" ng-model="cp_mess" /><label translate="TRAN_Message_copy"  >Message</label></div>
+                                    <div><label translate="TRAN_Message_from" >Message</label><label>&nbsp;({{message_from.length}}/50) &nbsp;</label> <input type="checkbox" ng-model="cp_mess" /><label translate="TRAN_Message_copy"  >Message</label></div>
                                     <input class="form-control" type="text"  placeholder="{{ 'TRAN_Message_from_Placeholder' | translate }}" ng-model="message_from"  maxlength="50" ng-readonly="cp_mess" />
                                     </br>
                                   </div>
