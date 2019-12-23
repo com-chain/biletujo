@@ -177,7 +177,7 @@ var tabsCtrl = function($scope, $attrs, globalService, contactservice, $translat
     
     
    globalService.registerNavigate( function (address) {
-       $scope.tabClick(1);
+       $scope.tabClick(0);
    });
     
     

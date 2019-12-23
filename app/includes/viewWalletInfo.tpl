@@ -128,9 +128,9 @@
                    <div class="col-md-12 ">
                       <label translate="VIEW_QR" >QR Code de votre portefeuille :</label>
                    </div>
-                   <div class="col-md-12 qr_wrap ">
+                   <div class="col-md-12 qr_wrap " ng-click="configureQR()">
                    
-                     <div id="qr_qdd" qr-code="{{currentAddress}}" watch-var="wallet" width="100%" style=" max-width: 250px; margin-right:auto; margin-left:auto;" ></div>
+                     <div id="qr_qdd" qr-code="{{current_QR_content}}" watch-var="current_QR_content" width="100%" style=" max-width: 250px; margin-right:auto; margin-left:auto;" ></div>
                     
                      
                    </div>
@@ -140,7 +140,7 @@
                    <div class="col-md-6 col-xs-6" ng-if="!isApp" >
                         <a class="btn btn-info btn-block" ng-click="printAdr()"  translate="VIEW_print_adr" > Imprimer votre adressse </a>
                    </div>
-                    <div class="col-md-6 col-xs-6"  >
+                    <div class="col-md-6 col-xs-6" ng-if="!isApp" >
                         <a class="btn btn-info btn-block" ng-click="printPriceTag()"  translate="VIEW_print_price" > Imprimer votre adressse </a>
                    </div>
                    <div class="col-md-12 col-xs-12" ng-if="hasBnCheck">
@@ -229,6 +229,38 @@
                   </div>
               </div>
         </div>
+        
+                   
+            <div class="modal fade" id="pop_setupQR" tabindex="-1" role="dialog" aria-labelledby="sendTransactionLabel">
+              <div class="modal-dialog" role="document">
+                  <div class="modal-content">
+                  
+                      <div class="modal-header">
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                      </div>
+                      
+                      <div class="modal-body">
+                          <div align="center">
+                              <h4><label translate="QRS_title" ></label></h4>                     
+                               <div >
+                                  <span translate="QRS_Description" ></span> &nbsp;({{qr_reference.length}}/50)  
+                                  <input class="form-control" type="text" placeholder="{{'QRS_Description_holder' | translate}}" ng-model="qr_reference" maxlength="50"/>
+                                  <span translate="QRS_amount" ></span>  
+                                  <input class="form-control" type="text" placeholder="0.00" ng-model="qr_price" />
+                               </div> 
+                          </div>
+                      </div>
+                      
+                      <div class="modal-footer text-center">
+                           <button type="button" class="btn btn-default" data-dismiss="modal"  translate="QRS_Cancel">Close</button>
+                          <button type="button" class="btn btn-primary" ng-click="do_setupQR()" translate="QRS_Apply">Verify</button>
+                          
+                      </div>
+                      
+                  </div>
+              </div>
+        </div> 
+            
             
             
             

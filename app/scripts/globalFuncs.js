@@ -89,9 +89,9 @@ var globalFuncs = function() {}
  globalFuncs.confEndPointsOur = ["https://node-001.cchosting.org","https://node-002.cchosting.org","https://node-003.cchosting.org","https://node-004.cchosting.org","https://node-cc-001.cchosting.org/","https://api.monnaie-leman.org"];
  globalFuncs.confEndPointsOther = ["https://ipfs.io","https://ipfs.infura.io","https://ipfs.jes.xxx","https://siderus.io","https://hardbin.com","https://ipfs.infura.io","https://xmine128.tk"];
                                
- globalFuncs.configRepo = "/ipns/QmaAAZor2uLKnrzGCwyXTSwogJqmPjJgvpYgpmtz5XcSmR/configs";
- globalFuncs.nodesRepo = "/ipns/QmcRWARTpuEf9E87cdA4FfjBkv7rKTJyfvsLFTzXsGATbL";
- globalFuncs.custoRepo = "/ipns/QmaAAZor2uLKnrzGCwyXTSwogJqmPjJgvpYgpmtz5XcSmR/resources/";
+ globalFuncs.configRepo = "/ipns/Qmcir6CzDtTZvywPt9N4uXbEjp3CJeVpW6CetMG6f93QNt/configs";
+ globalFuncs.nodesRepo = "/ipns/Qmb2paHChFzvU9fnDtAvmpbEcwyKfpKjaHc67j4GCmWLZv";
+ globalFuncs.custoRepo = "/ipns/Qmcir6CzDtTZvywPt9N4uXbEjp3CJeVpW6CetMG6f93QNt/resources/";
 
   
  globalFuncs.multicurr = true;
@@ -601,23 +601,23 @@ globalFuncs.askTransfertCMFrom = function (wallet,account_address, from_address,
 
 
 
-globalFuncs.PayRequestNant = function (wallet, to_address, amount, callback){
+globalFuncs.PayRequestNant = function (wallet, to_address, amount, additional_data, callback){
       var to_Add = ethFuncs.padLeft(ethFuncs.getNakedAddress(to_address), 64);
       globalFuncs.generateTx(globalFuncs.getContract2(),
                              wallet, 
                              globalFuncs.payRequestNant, 
                              [to_Add, globalFuncs.encodeNumber(amount)], 
-                             {}, 
+                             additional_data, 
                              callback);
 }
 
-globalFuncs.PayRequestCM = function (wallet, to_address, amount, callback){
+globalFuncs.PayRequestCM = function (wallet, to_address, amount, additional_data, callback){
       var to_Add = ethFuncs.padLeft(ethFuncs.getNakedAddress(to_address), 64);
       globalFuncs.generateTx(globalFuncs.getContract2(),
                              wallet, 
                              globalFuncs.payRequestCM, 
                              [to_Add, globalFuncs.encodeNumber(amount)],
-                             {}, 
+                             additional_data, 
                              callback);
 }
 
@@ -1140,6 +1140,7 @@ globalFuncs.testNode = function(api_address,callback) {
 
 globalFuncs.loadWallet = function(wallet,callback){
     localStorage.removeItem("ComChainContacts");
+    localStorage.removeItem("ComChainContactsInfo");
     localStorage.removeItem("ComChainMemos");
     if (!wallet.server || !wallet.server.name){
         var new_name = globalFuncs.getServerName();
@@ -1179,12 +1180,14 @@ globalFuncs.loadWallet = function(wallet,callback){
 globalFuncs.removeWallet = function(){
     localStorage.removeItem('ComChainWallet');
     localStorage.removeItem("ComChainContacts");
+    localStorage.removeItem("ComChainContactsInfo");
     localStorage.removeItem("ComChainMemos");
     
     if (globalFuncs.isMulti()){
          localStorage.removeItem('ComChainServerConf'); 
     }
 }
+
 
 
 //////////////////////////////////////////////
@@ -1335,7 +1338,7 @@ globalFuncs.notify = function(title, text){
 
 
 globalFuncs.notifyApproval = function(){
-    if (document.getElementsByClassName('trans')[0]){
+   /* if (document.getElementsByClassName('trans')[0]){
             if (JSON.parse(localStorage.getItem('ComChainWallet'))){
                 var addresss = JSON.parse(localStorage.getItem('ComChainWallet')).address;
                 globalFuncs.getInfo(globalFuncs.getContract1(), globalFuncs.requestCount,addresss,function(count){
@@ -1349,7 +1352,7 @@ globalFuncs.notifyApproval = function(){
             } else {
                 document.getElementsByClassName('trans')[0].className = "trans"; 
             }
-        }
+        }*/
 }
 
 
@@ -1540,7 +1543,26 @@ globalFuncs.readCordovaDir = function(success){
     }
  
 
-
+globalFuncs.generateSaveQRPiece  = function(address, piece){
+    
+    var container = document.getElementById("qrcode_print_2");
+    var child = container.lastElementChild;  
+    while (child) { 
+        container.removeChild(child); 
+        child = container.lastElementChild; 
+    }
+        
+        
+    if (piece == 0) {
+        var qrcode = new QRCode(document.getElementById("qrcode_print_2"),localStorage.getItem('ComChainWallet'));
+    } else {
+        var i = piece -1;
+        var full=localStorage.getItem('ComChainWallet');
+        var chunk_length = Math.ceil(full.length/4);
+        var string = "FRAGMENT"+address.substring(2,6)+i.toString()+full.substring(chunk_length*i,Math.min(chunk_length*(i+1),full.length));
+        var qrcode = new QRCode(document.getElementById("qrcode_print_2"),string);
+    } 
+}
 
 globalFuncs.generateSaveQR = function(address){
        var qrcode = new QRCode(document.getElementById("qrcode_print"),localStorage.getItem('ComChainWallet'));
@@ -1684,7 +1706,12 @@ globalFuncs.cleanName = function(name){
     return name.substring(0,name.length-1);
 }
 
-globalFuncs.generateSavePDF = function(title,key,address,callback){
+
+
+
+globalFuncs.generateSavePDF = function(title, key, address, callback){
+            title = title.trim();
+            key = key.trim();
             var newImg = new Image();
             newImg.callback=callback;
             newImg.setAttribute('crossOrigin', 'anonymous');
@@ -1699,14 +1726,17 @@ globalFuncs.generateSavePDF = function(title,key,address,callback){
                 ctx.drawImage(newImg, 0, 0);
                 var logoData = c.toDataURL('image/png');
           
-                var imgData = document.getElementById("qrcode_print").getElementsByTagName('img')[0].src;
+                // var imgData = document.getElementById("qrcode_print").getElementsByTagName('img')[0].src;
                 var imgAddData = globalFuncs.wrapImgData(document.getElementById("addressIdenticon").style.backgroundImage);
             
                 var doc = new jsPDF();
                 doc.setFontSize(32);
-                doc.text(62, 25, title);
+                
+                var textWidth = doc.getStringUnitWidth(title) * doc.internal.getFontSize() / doc.internal.scaleFactor;
+                var textOffset = (doc.internal.pageSize.width - textWidth) / 2;
+                doc.text(textOffset, 25, title);
                 doc.setLineWidth(1.0);
-                doc.line(60, 27, 150, 27);
+                doc.line(textOffset, 27, textOffset+textWidth+3, 27);
                 doc.addImage(imgAddData, 'PNG', 90, 32, 30, 30);
                 doc.addImage(logoData, 'PNG', 50, 32, 30, 30);
                 
@@ -1717,19 +1747,21 @@ globalFuncs.generateSavePDF = function(title,key,address,callback){
                 
                 
                 doc.setFontSize(22);
-                
-                doc.text(79, 71, key);
-                doc.addImage(imgData, 'PNG', 15, 75, 180, 180);
+                var keytextWidth = doc.getStringUnitWidth(key) * doc.internal.getFontSize() / doc.internal.scaleFactor;
+                var keytextOffset = (doc.internal.pageSize.width - keytextWidth) / 2;
+         
+                doc.text(keytextOffset, 71, key);
+                //doc.addImage(imgData, 'PNG', 15, 75, 180, 180);
                 doc.setFontSize(12);
                 var lines = doc.splitTextToSize(localStorage.getItem('ComChainWallet'), 180, {});
-                doc.text(15, 265, lines);
+                doc.text(15, 80, lines);
                 
                 doc.addPage();
                 
                 doc.setFontSize(32);
-                doc.text(62, 25, title);
+                doc.text(textOffset, 25, title);
                 doc.setLineWidth(1.0);
-                doc.line(60, 27, 150, 27); 
+                doc.line(textOffset, 27, textOffset+textWidth+3, 27);
                 
                 doc.addImage(imgAddData, 'PNG', 90, 32, 30, 30);
                 doc.addImage(logoData, 'PNG', 50, 32, 30, 30);
@@ -1738,8 +1770,8 @@ globalFuncs.generateSavePDF = function(title,key,address,callback){
               
                 doc.setFontSize(22);
                 
-                doc.text(79, 81, key);
-                imgData = document.getElementById("qrcode_print0").getElementsByTagName('img')[0].src;
+                doc.text(keytextOffset, 81, key);
+                var imgData = document.getElementById("qrcode_print0").getElementsByTagName('img')[0].src;
                 doc.addImage(imgData, 'PNG', 15, 95, 80, 80);
                 doc.addImage(imgAddData, 'PNG', 50, 130, 10, 10);
                 doc.text(53, 138, "1");
@@ -1773,7 +1805,96 @@ globalFuncs.generateSavePDF = function(title,key,address,callback){
             }
                 
 }
+
+globalFuncs.generateCrPDF = function(title, on,assigned,validity,address,dest,content, callback){
+            title = title.trim();
+            on = on.trim();
+            assigned = assigned.trim();
+            validity = validity.trim();
+            var newImg = new Image();
+            newImg.callback=callback;
+            newImg.setAttribute('crossOrigin', 'anonymous');
+            newImg.onload = function() {
+                var height = this.naturalHeight;
+                var width = this.naturalWidth;
+               
+                var c = document.createElement('canvas');
+                c.height = height;
+                c.width = width;
+                var ctx = c.getContext("2d");
+                ctx.drawImage(newImg, 0, 0);
+                var logoData = c.toDataURL('image/png');
+          
+                var imgAddData = globalFuncs.wrapImgData(document.getElementsByName("addressIdenticon")[0].style.backgroundImage);
+                var imgDestData = globalFuncs.wrapImgData(document.getElementsByName("addressIdenticonDest")[0].style.backgroundImage);
+            
+                var doc = new jsPDF();
+                doc.setFontSize(22);
+                
+                var textWidth = doc.getStringUnitWidth(title) * doc.internal.getFontSize() / doc.internal.scaleFactor;
+                var textOffset = 15+(80 - textWidth) / 2;
+                doc.text(textOffset, 21, title);
+                doc.setLineWidth(1.0);
+                doc.line(textOffset, 22, textOffset+textWidth+2, 22);
+                
+     
+                
+                
+                doc.addImage(logoData, 'PNG', 15, 32, 20, 20);
+                doc.setFontSize(10);
+                doc.text(45, 30, on);
+                doc.addImage(imgAddData, 'PNG', 45, 32, 20, 20);
+                doc.text(75, 30, assigned);
+                doc.addImage(imgDestData, 'PNG', 75, 32, 20, 20);
+                
+                doc.setFontSize(15);
+                var lines_val = doc.splitTextToSize(validity, 80, {});
+                doc.text(15, 71, lines_val);
+
+                var imgData = document.getElementById("qrCR_print0").getElementsByTagName('img')[0].src;
+                doc.addImage(imgData, 'PNG', 115, 10, 80, 80);
+                doc.addImage(imgAddData, 'PNG', 150, 45, 10, 10);
+                doc.text(153, 53, "1");
+                
+                
+                imgData = document.getElementById("qrCR_print1").getElementsByTagName('img')[0].src;
+                doc.addImage(imgData, 'PNG', 15, 105, 80, 80);
+                doc.addImage(imgAddData, 'PNG', 50, 140, 10, 10);
+                doc.text(53, 148, "2");
+                
+                imgData = document.getElementById("qrCR_print2").getElementsByTagName('img')[0].src;
+                doc.addImage(imgData, 'PNG', 115, 105, 80, 80);
+                doc.addImage(imgAddData, 'PNG', 150, 140, 10, 10);
+                doc.text(153, 148, "3");
+                                
+                imgData = document.getElementById("qrCR_print3").getElementsByTagName('img')[0].src;
+                doc.addImage(imgData, 'PNG', 15, 200, 80, 80);
+                doc.addImage(imgAddData, 'PNG', 50, 235, 10, 10);
+                doc.text(53, 243, "4");
+                
+                imgData = document.getElementById("qrCR_print4").getElementsByTagName('img')[0].src;
+                doc.addImage(imgData, 'PNG', 115, 200, 80, 80);
+                doc.addImage(imgAddData, 'PNG', 150, 235, 10, 10);
+                doc.text(153, 243, "5");
+                
+              
+                
+                
+                newImg.callback(doc);
+            }
+
+            if (globalFuncs.isMulti()){
+               var the_arr = globalFuncs.getCssUrl().split('/');
+                the_arr.pop();
+                the_arr.pop();
+                newImg.src = the_arr.join('/')+"/images/lem.png";  
+            } else {
+                newImg.src = "images/lem.png";  
+            }
+                
+}
     
+
     
 globalFuncs.generateSaveAdrPDF = function(walletAddress, callback){
             var newImg = new Image();
@@ -1936,7 +2057,10 @@ newImg.onload = function() {
     ctx.drawImage(newImg, 0, 0);
     var logoData = c.toDataURL('image/png');
     
+    var log_width = (20*width)/height;
     
+    
+    var imgAddData = globalFuncs.wrapImgData(document.getElementById("addressIdenticon").style.backgroundImage);
     
     
     var today = new Date();    
@@ -1944,7 +2068,8 @@ newImg.onload = function() {
     var tran_row_height=10;
     var margin_left=25;
     var margin_right=185;
-    var col_2=45;
+    var col_2=42;
+    var col_21=80;
     var col_25=113;
     var col_3=128;
     var col_35=143;
@@ -1962,13 +2087,14 @@ newImg.onload = function() {
     var tot_out=0;
     for  (var page = 0; page < num_tot_page; ++page){
         // header
-        doc.addImage(logoData, 'PNG', 125, 10, 60, 20);
+        doc.addImage(logoData, 'PNG', doc.internal.pageSize.width - 25 - log_width, 10, log_width, 20);
         doc.setFontSize(13);
         
         doc.text(margin_left, 40, texts.date);
         doc.text(60, 40, today.toISOString().slice(0,10)+' '+today.toTimeString().slice(0,8));
         doc.text(margin_left, 50, texts.requestAddress);
-        doc.text(60, 50, walletAddress);
+        doc.text(73, 48, [walletAddress.substring(0,21),walletAddress.substring(21)]);
+        doc.addImage(imgAddData, 'PNG', 60, 44, 10, 10);
         
         doc.setFontSize(18)
         var title = texts.title;
@@ -1979,23 +2105,33 @@ newImg.onload = function() {
         
         doc.setFontSize(8);
         
-        if (list.length>0){
+         if (list.length>0){
             if ( list[0].data.balance!=''){
                 var date_init = new Date(list[0].data.time*1000);
                 doc.text(margin_left, 73, texts.initBal+date_init.toISOString().slice(0,10) +' '+date_init.toTimeString().slice(0,2)+':00 ');
                 doc.text(73, 73, globalFuncs.currencies.CUR);
-                if (list[0].data.addr_from==walletAddress){
-                    doc.text(83, 73, (parseFloat(list[0].data.balance) + list[0].data.sent/100.).toFixed(2));
-                } else {
-                   doc.text(83, 73, (parseFloat(list[0].data.balance) - list[0].data.recieved/100.).toFixed(2)); 
+                
+                var tra_date = list[0].data.time;
+                var last_block = 0;
+                var i=0;
+                while ( i<list.length && list[i].data.time==tra_date ){
+                   if (list[i].data.addr_from==walletAddress){
+                        last_block += list[i].data.sent/100.;
+                    } else {
+                       last_block -= (list[i].data.recieved - list[i].data.tax)/100.; 
+                    } 
+                    i++;
                 }
+                
+                doc.text(83, 73, (parseFloat(list[0].data.balance) + last_block).toFixed(2));
+                
             }
             
             if ( list[list.length-1].data.balance!=''){
                 var date_final = new Date(list[list.length-1].data.time*1000);
                 doc.text(margin_left, 77, texts.finalBal+date_final.toISOString().slice(0,10) +' '+date_final.toTimeString().slice(0,2)+':59');
                 doc.text(73, 77, globalFuncs.currencies.CUR);
-                doc.text(83, 77, list[list.length-1].data.balance);
+                doc.text(83, 77, parseFloat(list[list.length-1].data.balance).toFixed(2));
             }
         }
         
@@ -2004,6 +2140,7 @@ newImg.onload = function() {
         doc.line(margin_left, 82, margin_right, 82);
         doc.text(margin_left, 86, texts.dateCol);
         doc.text(col_2, 86, texts.textCol);
+        doc.text(col_21, 86, texts.memoCol);
         doc.text(col_25, 86, texts.sendCol);
         doc.text(col_35, 86, texts.recievedCol);
         doc.text(col_5, 86, texts.balanceCol +' '+globalFuncs.currencies.CUR);
@@ -2016,27 +2153,53 @@ newImg.onload = function() {
             var date = new Date(tra.time*1000);
             doc.text(margin_left, vertical_start+tran_row_height*row, date.toISOString().slice(0,10));
             doc.text(margin_left, vertical_start-1+tran_row_height*(row+0.5), ' '+date.toTimeString().slice(0,8));
+            
+            
+            var memo_lines = doc.splitTextToSize(tra.memo, col_25-col_21-3, {});
+            if (memo_lines.length>2){
+                memo_lines=memo_lines.slice(0,2);
+                memo_lines[1]=memo_lines[1]+'...';
+            }
+            doc.text(col_21, vertical_start+tran_row_height*(row),memo_lines);
+            
             if (tra.addr_from==walletAddress){
-                
-               doc.setFontSize(8);
-               doc.text(col_2, vertical_start+tran_row_height*row, tra.addr_to);
-               doc.setFontSize(8);
-               doc.text(col_2, vertical_start-1+tran_row_height*(row+0.5), tra.to_name); 
+
+               if (tra.to_name && tra.to_name.length>0){
+                  
+                  doc.text(col_2, vertical_start+tran_row_height*(row), tra.to_name);
+                  doc.text(col_2, vertical_start-1+tran_row_height*(row+0.5), tra.addr_to.substring(0, 18)+"..."); 
+                  
+               } else {
+                  var lines = doc.splitTextToSize(tra.addr_to, col_21 - col_2-3, {});
+                  doc.text(col_2, vertical_start+tran_row_height*(row), lines); 
+               }
+        
+               
                doc.text(col_25, vertical_start-1+(tran_row_height)*(row+0.5), tra.currency);
                doc.text(col_3, vertical_start-1+(tran_row_height)*(row+0.5), (tra.sent/100.).toFixed(2));
                
                tot_out+=tra.sent/100.;
             } else {
-               doc.setFontSize(8);
-               doc.text(col_2, vertical_start+tran_row_height*row, tra.addr_from);
-               doc.setFontSize(8);
-               doc.text(col_2, vertical_start-1+tran_row_height*(row+0.5), tra.from_name); 
+              if (tra.from_name && tra.from_name.length>0){
+                  
+                  doc.text(col_2, vertical_start+tran_row_height*(row), tra.from_name);
+                  doc.text(col_2, vertical_start-1+tran_row_height*(row+0.5), tra.addr_from.substring(0, 18)+"..."); 
+                  
+               } else {
+                  var lines = doc.splitTextToSize(tra.addr_from, col_21 - col_2-3, {});
+                  doc.text(col_2, vertical_start+tran_row_height*(row), lines); 
+               }
+        
+               
+               
+               
+               
                doc.text(col_35, vertical_start-1+(tran_row_height)*(row+0.5), tra.currency);
-               doc.text(col_4, vertical_start-1+(tran_row_height)*(row+0.5), (tra.recieved/100.).toFixed(2));
+               doc.text(col_4, vertical_start-1+(tran_row_height)*(row+0.5), (parseFloat(tra.recieved - tra.tax)/100.).toFixed(2));
                tot_in+=tra.recieved/100.;
             }
             
-            if (tra.balance!=''){
+            if (tra.balance!='' && (index == list.length-1 || list[index+1].data.time != tra.time)){
                 doc.text(col_5, vertical_start-1+(tran_row_height)*(row+0.5), (parseFloat(tra.balance)).toFixed(2));
             }
             
@@ -2067,7 +2230,7 @@ newImg.onload = function() {
         var date_final = new Date(list[list.length-1].data.time*1000);
         doc.text(margin_left, vertical_start+tran_row_height*(row+0.5), texts.finalBal+date_final.toISOString().slice(0,10) +' '+date_final.toTimeString().slice(0,2)+':59');
         doc.text(73, vertical_start+tran_row_height*(row+0.5), globalFuncs.currencies.CUR);
-        doc.text(83, vertical_start+tran_row_height*(row+0.5), list[list.length-1].data.balance);
+        doc.text(83, vertical_start+tran_row_height*(row+0.5), parseFloat(list[list.length-1].data.balance).toFixed(2));
     }
 
    this.callback(doc);

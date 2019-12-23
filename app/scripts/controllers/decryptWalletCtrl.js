@@ -1,5 +1,5 @@
 'use strict';
-var decryptWalletCtrl = function($scope, $sce, $translate, walletService, contactService, memoService, authenticationService, globalService) {
+var decryptWalletCtrl = function($scope, $sce, $translate, walletService, contactService, memoService, authenticationService, messageService, globalService) {
     $scope.isApp =  globalFuncs.isApp();
     globalFuncs.hideLoadingWaiting();
     
@@ -85,6 +85,7 @@ var decryptWalletCtrl = function($scope, $sce, $translate, walletService, contac
                       // ok need more input
                       
                         $scope.fileStatusFrag = $sce.trustAsHtml(globalFuncs.getSuccessText($translate.instant('OPEN_Frag_Read'))); 
+                        $scope.startScanPaperWallet();
                   }
                }else {
                    // error fragment already know
@@ -118,6 +119,9 @@ var decryptWalletCtrl = function($scope, $sce, $translate, walletService, contac
             $scope.fileStatus =  $sce.trustAsHtml(globalFuncs.getSuccessText($translate.instant('OPEN_Paper_selected'))); 
         }
 		try {
+            $fileContent = $fileContent.replace(/(\n|\r|\ )/gm, "");
+           
+            
             var current = JSON.parse($fileContent);
             if (typeof current === 'undefined' || typeof current.address === 'undefined' || 
                 (typeof current.Crypto === 'undefined' && current.crypto === 'undefined') ||  typeof current.id === 'undefined'||  
@@ -134,13 +138,13 @@ var decryptWalletCtrl = function($scope, $sce, $translate, walletService, contac
     
     $scope.openFile = function(){              
        globalFuncs.showLoading($translate.instant("GP_Wait"));
+       $scope.fileContent = $scope.fileContent.replace(/(\n|\r|\ )/gm, "");
        globalFuncs.loadWallet(JSON.parse($scope.fileContent),function(success){
            if (success){
 
                globalFuncs.loadWallets(true);
                try{
                     var current = JSON.parse($scope.fileContent);
-                    contactService.ensureContact('0x'+current.address);
                } catch(e){}
                location.reload();
            } else { 
@@ -259,20 +263,30 @@ var decryptWalletCtrl = function($scope, $sce, $translate, walletService, contac
             // toujours dans le cas d'un file dans le storage local
 			$scope.fileContent = localStorage.getItem('ComChainWallet');
 		    $scope.wallet = Wallet.getWalletFromPrivKeyFile($scope.fileContent, document.getElementById('passwdField').value);
+            var parsed =  JSON.parse($scope.fileContent);
+            if (parsed.message_key !== undefined) {
+                 $scope.wallet.message_key = parsed.message_key;
+            }
+            
             walletService.password = $scope.filePassword;
             walletService.wallet = $scope.wallet;
+            
+            messageService.ensureWalletMessageKey($scope.wallet, $scope.filePassword, $translate.instant('WALL_missing_message_key'),  function(complete_wall) {
+                $scope.wallet = complete_wall;
+                walletService.wallet = complete_wall;
+                
+                localStorage.setItem('ComChainWallet',JSON.stringify($scope.wallet.toV3($scope.filePassword, {
+                              kdf: globalFuncs.kdf, n: globalFuncs.scrypt.n,
+                              server_name: globalFuncs.getServerName(),
+                              message_key: $scope.wallet.message_key                                                        
+                })));  
+                globalFuncs.loadWallets(true);
+            });
+            
             walletService.setUsed();
             walletService.next_ok=true;
             
             $scope.hideWalletSelector = true;
-            
-         /*   localStorage.setItem('ComChainWallet',JSON.stringify($scope.wallet.toV3($scope.filePassword, {
-                              kdf: globalFuncs.kdf, n: globalFuncs.scrypt.n,
-                              server_name: globalFuncs.getServerName() })));  
-            globalFuncs.loadWallets(true);*/
-            
-        
-            
             
 		} catch (e) {
             $scope.decryptStatus = $sce.trustAsHtml(globalFuncs.getDangerText($translate.instant('ERROR_7')));
@@ -281,7 +295,6 @@ var decryptWalletCtrl = function($scope, $sce, $translate, walletService, contac
         
         
         /****Load the contacts & memos *****/
-        contactService.loadIpfsContacts($scope.wallet, walletService.password);
         memoService.loadIpfsMemos($scope.wallet, walletService.password);
 	
 	    /**** Authenticate *****/
@@ -350,6 +363,7 @@ var decryptWalletCtrl = function($scope, $sce, $translate, walletService, contac
       $scope.validateToken =function(){
         var enr_txt=document.getElementById("enr_tk2").value;
         try {
+            enr_txt = enr_txt.replace(/(\n|\r|\ )/gm, "");
             var enrollmentLetter = JSON.parse(enr_txt);  
             if (enrollmentLetter.servername){
                 globalFuncs.getConfJSON(enrollmentLetter.servername,function(success){

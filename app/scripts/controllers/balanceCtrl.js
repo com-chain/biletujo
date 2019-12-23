@@ -1,5 +1,5 @@
 'use strict';
-var balanceCtrl = function($scope, $locale, $sce, walletService,contactservice, $translate) {
+var balanceCtrl = function($scope, $locale, $sce, walletService,contactservice, consultService, messageService, $translate) {
     // Environment variables
     $scope.isApp =  globalFuncs.isApp();
     $scope.currentWalletAddress=globalFuncs.getWalletAddress();
@@ -12,6 +12,8 @@ var balanceCtrl = function($scope, $locale, $sce, walletService,contactservice, 
     $scope.has_deleg=false;
     $scope.has_autor=false;
     $scope.acc_name= $translate.instant("TRAN_Address");
+    $scope.fingerprint=false;
+    $scope.CR_frag_number = 5;
     
     // Popup 
 	$scope.qrModal = new Modal(document.getElementById('QR_pop'));
@@ -24,7 +26,14 @@ var balanceCtrl = function($scope, $locale, $sce, walletService,contactservice, 
 	$scope.addAllowanceModal = new Modal(document.getElementById('addAllowance'));
 	$scope.editAllowanceModal = new Modal(document.getElementById('editAllowance'));
     $scope.deleteAllowanceModal = new Modal(document.getElementById('deleteAllowance'));
-	$scope.allowanceHelpPop = new Modal(document.getElementById('allowance_help_pop'), { keyboard: false, backdrop  : 'static'});
+	$scope.allowanceHelpPop = new Modal(document.getElementById('allowance_help_pop'), { keyboard: false, backdrop  : 'static'}); 
+    
+    $scope.createRightModal = new Modal(document.getElementById('createConsultRight'));
+    $scope.dislayQRModal = new Modal(document.getElementById('QR_consult_pop'));
+    $scope.openRightModal = new Modal(document.getElementById('QR_scan_pop'));
+    $scope.deleteConsultModal = new Modal(document.getElementById('deleteConsultRight'));
+    $scope.consultHelpPop = new Modal(document.getElementById('consult_help_pop'), { keyboard: false, backdrop  : 'static'});
+    
     
 	$scope.confPopModal = new Modal(document.getElementById('conf_pop'));
 	$scope.optionPopModal = new Modal(document.getElementById('option_pop'));
@@ -40,6 +49,13 @@ var balanceCtrl = function($scope, $locale, $sce, walletService,contactservice, 
 	$scope.token = {
 		balance: 0
 	}
+    
+    $scope.NoCR = true;
+    $scope.consult_rights = [];  
+    $scope.start_date =  new Date();
+    $scope.end_date =  new Date();
+    $scope.end_date.setDate($scope.end_date.getDate() + 1);
+    
     
     $scope.token.balance = $translate.instant("TRAN_Wait");
     $scope.token.balanceEL = $translate.instant("TRAN_Wait");
@@ -58,21 +74,27 @@ var balanceCtrl = function($scope, $locale, $sce, walletService,contactservice, 
 	}, function() {
 		if (walletService.wallet == null) return;
 		$scope.wallet = walletService.wallet;
-        $scope.contacts = contactservice.loadContactsForCurr(globalFuncs.getServerName());
-        var my_name =  contactservice.getContactName($scope.contacts, $scope.wallet.getAddressString());
-        if (my_name!=''){
-            $scope.acc_name=my_name;
-        }
-        $scope.contacts = contactservice.hideContact($scope.contacts, $scope.wallet.getAddressString());
+        $scope.wallet.message_key = JSON.parse(localStorage.getItem('ComChainWallet')).message_key;
+        contactservice.loadContacts($scope.wallet, walletService.password, function(contact_list){
+            var filtered_list = contactservice.filterContactForCurr(contact_list, globalFuncs.getServerName());
+            
+            var my_name =  contactservice.getContactName(filtered_list, $scope.wallet.getAddressString());
+            if (my_name!=''){
+                $scope.acc_name=my_name;
+            }
+            
+            $scope.contacts = contactservice.hideContact(filtered_list, $scope.wallet.getAddressString());
+            
+        });
+        
+       
         globalFuncs.getAccInfo(globalFuncs.slockitAccStatus, $scope.wallet.getAddressString(), function(status){
            $scope.is_locked = status==0;
         });
-        $scope.blobEnc = globalFuncs.getBlob("text/json;charset=UTF-8", $scope.wallet.toV3(walletService.password, {
-				kdf: globalFuncs.kdf,
-                n: globalFuncs.scrypt.n,
-                server_name:globalFuncs.getServerName(),     
-                server_address:globalFuncs.getServerAddress()                                                                                
-			}));
+        
+        
+                
+        $scope.blobEnc = globalFuncs.getBlob("text/json;charset=UTF-8", localStorage.getItem('ComChainWallet'));
         $scope.CUR=globalFuncs.currencies.CUR;
         $scope.CUR_nanti=globalFuncs.currencies.CUR_nanti;
         $scope.CUR_credit_mut=globalFuncs.currencies.CUR_credit_mut;
@@ -81,10 +103,12 @@ var balanceCtrl = function($scope, $locale, $sce, walletService,contactservice, 
         $scope.has_deleg=globalFuncs.hasDeleg();
         $scope.has_autor=globalFuncs.hasAutor();
         $scope.qr_content = localStorage.getItem('ComChainWallet');
-        var qrcode = new QRCode(document.getElementById("qrcode_print_2"),localStorage.getItem('ComChainWallet'));
+        var qrcode = new QRCode(document.getElementById("qrcode_print_2"),$scope.qr_content);
         setTimeout(function(){ document.getElementById("qrcode_print_2").getElementsByTagName('img')[0].style.display="inline";},100); 
         
-       
+        globalFuncs.canUseFingerprint(function(result){
+             $scope.fingerprint = result;
+        });
      
         
 	});
@@ -118,11 +142,12 @@ var balanceCtrl = function($scope, $locale, $sce, walletService,contactservice, 
     }
     
     $scope.callback = function(pdf_doc){
-        var uri = pdf_doc.output('datauristring');
-        window.open(uri, '_blank', 'location=no');  
+        var file_name = globalFuncs.cleanName($translate.instant("PDF_Priv_file")) +'_'+$scope.currentWalletAddress+'.pdf';
+        pdf_doc.save(file_name);
     }
 
 	$scope.printQRCode = function() {
+        if (!$scope.isApp) {
          globalFuncs.generateSaveQR($scope.currentWalletAddress);
 
          setTimeout(function(){ 
@@ -133,9 +158,13 @@ var balanceCtrl = function($scope, $locale, $sce, walletService,contactservice, 
                 $scope.callback);
          },100); 
        
-     
+       }
        $scope.qrModal.open();
 	}
+    
+   $scope.qrBackup = function(piece) {
+       globalFuncs.generateSaveQRPiece($scope.currentWalletAddress,piece);
+   }
     
     
     
@@ -245,20 +274,16 @@ var balanceCtrl = function($scope, $locale, $sce, walletService,contactservice, 
       
     }
     
-   $scope.saveNewDeleg = function(){
-         if ($scope.trPass.length==0){
-            globalFuncs.unlock(function(result){
+    
+   $scope.fingetrprintUnlock = function(){
+        globalFuncs.unlock(function(result){
                 if (result) {
                     $scope.trPass=walletService.password;
-                }
-                $scope.saveNewDelegOld();
-            });
-         } else {
-             $scope.saveNewDelegOld();
          }
-    }
+        });
+   }  
     
-    $scope.saveNewDelegOld = function(){
+    $scope.saveNewDeleg = function(){
         if ($scope.trPass==walletService.password){
             walletService.setUsed();
           
@@ -293,6 +318,7 @@ var balanceCtrl = function($scope, $locale, $sce, walletService,contactservice, 
     // contacts
     $scope.contactPop = function() {
       $scope.NoCtc= $scope.contacts.length==0;
+      $scope.dest = "";
       $scope.showContactPop=true;
     }
     
@@ -305,6 +331,8 @@ var balanceCtrl = function($scope, $locale, $sce, walletService,contactservice, 
              $scope.curraddress=address;
              $scope.selectedName = name; 
         }
+        $scope.dest = address;
+        $scope.selectedName = name;
         $scope.closeCttPop();
     }
     
@@ -319,10 +347,12 @@ var balanceCtrl = function($scope, $locale, $sce, walletService,contactservice, 
       var add_obj = globalFuncs.parseAddress(text);  
       if (add_obj.address){
           $scope.curraddress=add_obj.address;
+          $scope.dest=add_obj.address;
           $scope.selectedName = contactservice.getContactName($scope.contacts, add_obj.address); 
       } else {
           
           $scope.curraddress='';
+          $scope.dest='';
           $scope.selectedName ='';
           alert($translate.instant("EXC_unknow_address"));
       }
@@ -352,22 +382,9 @@ var balanceCtrl = function($scope, $locale, $sce, walletService,contactservice, 
     }
     
     
-   $scope.saveEditDeleg = function(){
-         if ($scope.trPass.length==0){
-            globalFuncs.unlock(function(result){
-                if (result) {
-                    $scope.trPass=walletService.password;
-                }
-                $scope.saveEditDelegOld();
-            });
-         } else {
-             $scope.saveEditDelegOld();
-         }
-    }
+
     
-    
-    
-    $scope.saveEditDelegOld = function(){
+    $scope.saveEditDeleg = function(){
         if ($scope.trPass==walletService.password){
             walletService.setUsed();
           
@@ -401,21 +418,8 @@ var balanceCtrl = function($scope, $locale, $sce, walletService,contactservice, 
         $scope.deleteDelegationModal.open();
     }
     
-    $scope.saveDeleteDeleg = function(){
-         if ($scope.trPass.length==0){
-            globalFuncs.unlock(function(result){
-                if (result) {
-                    $scope.trPass=walletService.password;
-                }
-                $scope.saveDeleteDelegOld();
-            });
-         } else {
-             $scope.saveDeleteDelegOld();
-         }
-    }
     
-    
-     $scope.saveDeleteDelegOld = function(){
+     $scope.saveDeleteDeleg = function(){
         if ($scope.trPass==walletService.password){
               walletService.setUsed();
               globalFuncs.setDelegation($scope.wallet, $scope.curraddress,-1,function(res){
@@ -539,23 +543,8 @@ var balanceCtrl = function($scope, $locale, $sce, walletService,contactservice, 
         $scope.addAllowanceModal.open();
     }
     
+    
     $scope.saveNewAllow = function(){
-         if ($scope.trPass.length==0){
-            globalFuncs.unlock(function(result){
-                if (result) {
-                    $scope.trPass=walletService.password;
-                }
-                $scope.saveNewAllowOld();
-            });
-         } else {
-             $scope.saveNewAllowOld();
-         }
-    }
-    
-    
-    
-    
-    $scope.saveNewAllowOld = function(){
       if ($scope.trPass==walletService.password){
            walletService.setUsed();
            
@@ -596,21 +585,9 @@ var balanceCtrl = function($scope, $locale, $sce, walletService,contactservice, 
         $scope.editAllowanceModal.open();
     }
     
+
+    
     $scope.saveEditAllowance = function(){
-         if ($scope.trPass.length==0){
-            globalFuncs.unlock(function(result){
-                if (result) {
-                    $scope.trPass=walletService.password;
-                }
-                $scope.saveEditAllowanceOld();
-            });
-         } else {
-             $scope.saveEditAllowanceOld();
-         }
-    } 
-    
-    
-    $scope.saveEditAllowanceOld = function(){
         if ($scope.trPass==walletService.password){
             walletService.setUsed();
           
@@ -646,21 +623,8 @@ var balanceCtrl = function($scope, $locale, $sce, walletService,contactservice, 
         $scope.deleteAllowanceModal.open();
     }
     
-    $scope.saveDeleteAllowance = function(){
-         if ($scope.trPass.length==0){
-            globalFuncs.unlock(function(result){
-                if (result) {
-                    $scope.trPass=walletService.password;
-                }
-                $scope.saveDeleteAllowanceOld();
-            });
-         } else {
-             $scope.saveDeleteAllowanceOld();
-         }
-    }
-    
-    
-     $scope.saveDeleteAllowanceOld = function(){
+
+     $scope.saveDeleteAllowance = function(){
         if ($scope.trPass==walletService.password){
             walletService.setUsed();
                globalFuncs.setAllowance($scope.wallet, $scope.curraddress,-1,function(res){
@@ -692,21 +656,9 @@ var balanceCtrl = function($scope, $locale, $sce, walletService,contactservice, 
         $scope.optionPopModal.open();
     }
     
-     $scope.saveOption = function(){
-         if ($scope.trPass.length==0){
-            globalFuncs.unlock(function(result){
-                if (result) {
-                    $scope.trPass=walletService.password;
-                }
-                $scope.saveOptionOld();
-            });
-         } else {
-             $scope.saveOptionOld();
-         }
-    }
+
     
-    
-    $scope.saveOptionOld = function(){
+    $scope.saveOption = function(){
        if ($scope.trPass==walletService.password){
           walletService.setUsed();
           walletService.setDelay($scope.delay);
@@ -737,13 +689,356 @@ var balanceCtrl = function($scope, $locale, $sce, walletService,contactservice, 
       
       $scope.interval_id = setInterval(function(){
           ajaxReq.getBlock(transaction_ash, function(block_json){
-              if (block_json.blockNumber && block_json.blockNumber.startsWith('0x')){
+              // CHANGE BEHAVIOR: HIDE DIRECTLY THE WEELS
+              // if (block_json.blockNumber && block_json.blockNumber.startsWith('0x')){
                  $scope.recievedTransaction();
-              }
+              //}
           });
       },5000);  
   }  
+  
+  
+  /////////////////////////////////////////
+  
+  $scope.handleConsultRight = function() {
+       globalFuncs.showLoading($translate.instant("GP_Wait"));
+       $scope.consult_rights = consultService.loadConsults($scope.wallet.getAddressString());
+       $scope.loadRights();
+       document.getElementById('consultRightTab_tab').style.display="inline-block"; 
+       setTimeout(function () {
+        document.getElementById('consultRightTab_tab').style.top="62px";
+       }, 200);
+  }
+  
+  $scope.closeCRI = function() {
+    document.getElementById('consultRightTab_tab').style.top="100%";
+         setTimeout(function () {
+              document.getElementById('consultRightTab_tab').style.display="none"; 
+         }, 700);  
+  }
+  
+
+  $scope.loadRights= function(){
+      for (var id in $scope.consult_rights){
+          try{
+              $scope.consult_rights[id].name = contactservice.getContactName($scope.contacts, $scope.consult_rights[id].data.address); 
+              $scope.consult_rights[id].valid = ((new Date($scope.consult_rights[id].data.end)).getTime() >= (new Date()).getTime());
+              
+          } catch(e){}
+      }
+      
+      $scope.NoCR= $scope.consult_rights.length==0;
+      globalFuncs.hideLoadingWaiting();  
+  }
+  
+   $scope.createRight= function() {
+        $scope.dest = "";
+        $scope.selectedName = "";
+        $scope.trPass = walletService.getPass();
+        document.getElementById('createStatus').innerHTML = "";
+        $scope.createRightModal.open();
+        $scope.balanceView = 0;
+        $scope.oldTran = 0;
+    }
     
+     $scope.qrRight = function(piece) {
+       $scope.generateSaveQRPiece(piece);
+   }
+   
+   
+   
+   $scope.generateSaveQRPiece  = function(piece) {
+    
+    var container = document.getElementById("qrcode_consultRight");
+    var child = container.lastElementChild;  
+    while (child) { 
+        container.removeChild(child); 
+        child = container.lastElementChild; 
+    }
+    
+    var mess_keys = messageService.messageKeysFromWallet($scope.wallet);
+    
+    var obj_content = {"address":$scope.wallet.getAddressString(), 
+              "server":globalFuncs.getServerName(), 
+              "destinary":$scope.dest,
+              "begin":$scope.start_date.getFullYear()+ "/" + ($scope.start_date.getMonth()+1)+"/" + $scope.start_date.getDate(), 
+              "end":$scope.end_date.getFullYear()+ "/" + ($scope.end_date.getMonth()+1)+"/" + $scope.end_date.getDate(), 
+              "viewbalance": ($scope.balanceView == 1),
+              "viewoldtran": ($scope.oldTran == 1)
+    };
+    
+   
+    if ($scope.dest_keys.public_key !== undefined) {
+        var dest_public_key = Buffer.from($scope.dest_keys.public_key, 'hex');
+        var crypted_m_key = messageService.cipherMessage(dest_public_key, mess_keys.clear_priv);
+        obj_content.message_key = crypted_m_key;
+    }
+    
+    
+    var str_content = JSON.stringify(obj_content);
+    var hash = ethUtil.sha3(str_content);
+    var signature = ethUtil.ecsign(hash, $scope.wallet.privKey);
+    var output = {"data":obj_content, "signature":{ "v":signature.v,
+    "r":'0x' + signature.r.toString('hex'),
+    "s":'0x' + signature.s.toString('hex')}};
+    $scope.qr_cr_content =  JSON.stringify(output);
+    
+    
+    
+    
+    var full= $scope.qr_cr_content;
+    var chunk_length = Math.ceil(full.length/$scope.CR_frag_number);
+        
+    if (piece <0){
+        var qrcode = new QRCode(document.getElementById("qrCR_print"), $scope.qr_cr_content);
+        document.getElementById("qrCR_print").style.display = "none";
+        for (var i=0; i<$scope.CR_frag_number;i++) {
+            var string = "FRAG_CR"+signature.s.toString('hex').substring(2,6)+i.toString()+full.substring(chunk_length*i,Math.min(chunk_length*(i+1),full.length));
+            var qrcode = new QRCode(document.getElementById("qrCR_print" + i.toString()),string); 
+            document.getElementById("qrCR_print" + i.toString()).style.display = "none";
+        } 
+    } else if (piece == 0) {
+        var qrcode = new QRCode(document.getElementById("qrcode_consultRight"), $scope.qr_cr_content);
+    } else {
+        var i = piece -1;
+       
+        var string = "FRAG_CR"+signature.s.toString('hex').substring(2,6)+i.toString()+full.substring(chunk_length*i,Math.min(chunk_length*(i+1),full.length));
+        var qrcode = new QRCode(document.getElementById("qrcode_consultRight"),string);
+    }  
+ 
+}
+   
+   
+    $scope.callback_consult = function(pdf_doc){
+        var file_name = "CONSULT_"+ $scope.wallet.getAddressString()+"_for_"+$scope.dest+'.pdf';
+        pdf_doc.save(file_name);
+    }
+    
+    
+    $scope.createConsultRight = function() {
+       if ($scope.start_date.getTime()>=$scope.end_date.getTime()) {
+           document.getElementById('createStatus').innerHTML = $sce.trustAsHtml(globalFuncs.getDangerText($translate.instant("CRI_wrongDates"))); 
+       } else if ($scope.trPass==walletService.password){
+           walletService.setUsed();       
+           $scope.createRightModal.close();
+           $scope.trPass="";
+           messageService.getMessageKey($scope.dest, false, function(dest_keys) {
+               $scope.dest_keys = dest_keys;
+               // processing
+               $scope.generateSaveQRPiece(-1);
+               $scope.generateSaveQRPiece(0);
+               $scope.dislayQRModal.open();
+
+               if (!$scope.isApp) {
+                   // export .dat file
+                   $scope.blobCrEnc = globalFuncs.getBlob("text/json;charset=UTF-8", $scope.qr_cr_content);
+                   document.getElementById('dwonloadBtn').click();
+                       
+                   // export pdf 
+                   setTimeout(function(){ 
+                         globalFuncs.generateCrPDF(
+                            $translate.instant("PDF_CR_Title"),
+                            $translate.instant("PDF_CR_On"),
+                            $translate.instant("PDF_CR_Assigned"),
+                            globalFuncs.cleanName($translate.instant("PDF_CR_Validity")) + " " + $scope.start_date.getFullYear()+ "/" + $scope.start_date.getMonth()+"/" + $scope.start_date.getDate() +"-"+
+                            $scope.end_date.getFullYear()+ "/" + $scope.end_date.getMonth()+"/" + $scope.end_date.getDate(), 
+                            $scope.currentWalletAddress,
+                            $scope.dest,
+                            $scope.qr_cr_content,                       
+                            $scope.callback_consult);
+                     },100); 
+               }
+          
+          });
+           
+           
+           
+       } else {
+           document.getElementById('createStatus').innerHTML = $sce.trustAsHtml(globalFuncs.getDangerText($translate.instant("TRAN_WrongPass")));
+
+       }
+    };
+
+    
+
+$scope.showContent = function(content) {
+    $scope.openStatus = "";
+    try {
+        // decode the Json
+        var obj = JSON.parse(content);
+        // extract the signature
+        var v = obj.signature.v;
+        var r = obj.signature.r; 
+        var s = obj.signature.s; 
+
+        // get the hash
+        var str_content = JSON.stringify(obj.data);
+        var hash = ethUtil.sha3(str_content);
+        
+        // check the signature
+        var public_sign_key = ethUtil.ecrecover(hash, v, r, s);
+        var rec_address = ethUtil.bufferToHex(ethUtil.publicToAddress(public_sign_key));
+        if (rec_address != obj.data.address) {
+            $scope.openStatus = $sce.trustAsHtml(globalFuncs.getDangerText($translate.instant('OPEN_not_right_sign')));    
+        } else {
+           // check the validity 
+           if (obj.data.destinary!=$scope.wallet.getAddressString()){
+               $scope.openStatus = $sce.trustAsHtml(globalFuncs.getDangerText($translate.instant('OPEN_right_not_for_you'))); 
+           } else if (obj.data.server!=globalFuncs.getServerName()){
+               $scope.openStatus = $sce.trustAsHtml(globalFuncs.getDangerText($translate.instant('OPEN_right_not_right_server'))); 
+           } else if ((new Date(obj.data.end)).getTime()< (new Date()).getTime()){   
+                $scope.openStatus = $sce.trustAsHtml(globalFuncs.getDangerText($translate.instant('OPEN_too_old_right'))); 
+           } else {    
+               // OK we can close the popup
+               $scope.openRightModal.close();  
+               // add to the right
+               consultService.addConsult(obj);
+               //reload the grid
+               $scope.consult_rights = consultService.loadConsults($scope.wallet.getAddressString()); 
+               $scope.loadRights();
+           }
+        }
+        
+    
+    } catch (e) {
+         $scope.openStatus = $sce.trustAsHtml(globalFuncs.getDangerText($translate.instant('OPEN_not_right_format'))); 
+    }
+    
+  
+    
+    
+}  
+    
+    
+$scope.importRightPop = function() {
+    $scope.cancelFragment();
+    $scope.openRightModal.open();
+}
+
+$scope.selectFile = function() {
+	    document.getElementById('fileSelector').click();
+};
+
+
+
+$scope.fileContent = function($fileContent) {
+    if (document.getElementById('fileSelector').files[0]){
+        $scope.openStatus = $sce.trustAsHtml(globalFuncs.getSuccessText(document.getElementById('fileSelector').files[0].name));    
+    }
+    
+	try {
+        $fileContent = $fileContent.replace(/(\n|\r|\ )/gm, "");
+        $scope.checkForFragment($fileContent);
+        
+	} catch (e) {
+		$scope.openStatus = $sce.trustAsHtml(globalFuncs.getDangerText($translate.instant('CRI_ERROR_FILE')));
+	}
+};
+
+
+$scope.scanQR = function() {
+    cordova.plugins.barcodeScanner.scan(
+        function (result) {
+	        $scope.helloPaperWallet(result.text);
+        }, 
+        function (error) {
+	        alert("Scanning failed: " + error);
+        }, {'SCAN_MODE': 'QR_CODE_MODE'}
+    );
+}
+
+
+$scope.helloPaperWallet = function(text){
+   $scope.checkForFragment(text);
+   $scope.$apply();
+}
+    
+
+    
+    
+ $scope.checkForFragment = function(content){
+   if (content.startsWith('FRAG_CR')){
+       $scope.showFragements = true;
+       var id = content.substring(7,11);
+       if ( $scope.partial_id==""){
+            $scope.partial_id = id;
+       }
+       if (id!=$scope.partial_id){
+          $scope.openStatus = $sce.trustAsHtml(globalFuncs.getDangerText($translate.instant('OPEN_Frag_Wrong_ID'))); 
+         //error expecting fragement with same id  
+       } else {
+           var number = content.substring(11,12);
+           if (!(number in $scope.partial_content)){
+              var cont= content.substring(12);
+              $scope.partial_content[number]=cont;
+              
+              $scope.partial_prog+=1;
+              
+              if ($scope.partial_prog==$scope.CR_frag_number){
+                  //end of input
+                  var full="";
+                  for (var i=0;i<$scope.CR_frag_number;i++){
+                      full+=$scope.partial_content[i.toString()];
+                  }
+                  $scope.partial_content={};
+                  $scope.partial_id="";
+                  $scope.partial_prog=0;
+                  $scope.showFragements = false;
+                  $scope.fileStatusFrag="";
+                  $scope.showContent(full);
+                  
+              } else {
+                  // ok need more input
+                    $scope.openStatus = $sce.trustAsHtml(globalFuncs.getSuccessText($translate.instant('OPEN_Frag_Read'))); 
+                    scanQR();
+              }
+           }else {
+               // error fragment already know
+                $scope.openStatus = $sce.trustAsHtml(globalFuncs.getWarningText($translate.instant('OPEN_Frag_Already_Know'))); 
+           }
+       }
+   } else if ( $scope.partial_id!="") {
+          $scope.openStatus = $sce.trustAsHtml(globalFuncs.getDangerText($translate.instant('OPEN_Frag_Not_Frag'))); 
+   } else {
+        $scope.showContent(content);
+   }
+}
+
+
+$scope.cancelFragment = function(){
+    $scope.partial_content={};
+    $scope.partial_id=""; 
+    $scope.partial_prog=0;
+    $scope.openStatus="";
+}
+
+$scope.deleteCR = function(r){
+    var index=-1;
+    for (var i=$scope.consult_rights.length-1;i>=0;i--){
+        if ($scope.consult_rights[i].signature.r == r){
+            index = i;
+        }
+    }
+        
+    var right_obj = $scope.consult_rights[index];    
+    
+    
+    
+    $scope.del_address = right_obj.data.address;
+    $scope.del_start_date = new Date(right_obj.data.begin);
+    $scope.del_end_date = new Date(right_obj.data.end);
+    $scope.del_obj = right_obj;
+    $scope.deleteConsultModal.open();
+}
+
+$scope.deleteConsultRight = function() {
+    $scope.deleteConsultModal.close();
+    consultService.deleteConsult($scope.del_obj);
+    $scope.consult_rights = consultService.loadConsults($scope.wallet.getAddressString()); 
+    $scope.loadRights();
+}
+    
+  
     
     
     

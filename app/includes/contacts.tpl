@@ -1,4 +1,4 @@
-    <!-- Transactions-->
+    <!-- Contacts-->
     <div class="tab-pane active" ng-if="globalService.currentTab==globalService.tabs.contacts.id">
        @@if (site === 'mew' ) {
         <div>
@@ -21,9 +21,11 @@
                 <div class="col-md-7 col-xs-7">
                   <button type="button" id="ajouter" class="btn btn-primary bellowmargin"  ng-click="addNamePop()" translate="CTC_add">Add </button>
                 
-                    <a type="button" class="btn btn-primary bellowmargin" id="exporter" href="{{blobCtc}}" download="Bilutejo_Contacts.dat"  ng-hide="isApp" translate="CTC_export" >&nbsp; </a>
+                    <a type="button" class="btn btn-primary bellowmargin" id="exporter" href="{{blobCtc}}" download="Biletujo_Contacts.dat"  ng-hide="isApp" translate="CTC_export" >&nbsp; </a>
                     
-                  <button type="button" id="importer" class="btn btn-primary bellowmargin"  ng-click="openImportCtc()" translate="CTC_import" ng-hide="isApp" >Import </button>
+                  <button type="button" class="btn btn-primary bellowmargin"  ng-click="exportCtc()" translate="CTC_export" ng-show="isApp">Export </button>
+                  
+                  <button type="button" id="importer" class="btn btn-primary bellowmargin"  ng-click="openImportCtc()" translate="CTC_import" >Import </button>
 
                 
                 
@@ -49,21 +51,18 @@
                          </td>
                          
                          
-                        <td  ng-show="ct.has_logo">
+                        <td  ng-show="ct.has_logo" ng-click="editCtc(ct.address,ct.name)">
                             {{ct.name}}
                         </td>
                         
-                         <td   ng-hide="ct.has_logo" colspan="2">
+                         <td   ng-hide="ct.has_logo" colspan="2" ng-click="editCtc(ct.address,ct.name)">
                             {{ct.name}}
                         </td>
                         
-                        <td ng-show="ct.has_logo" width="39px;">
+                        <td ng-show="ct.has_logo" width="39px;" ng-click="editCtc(ct.address,ct.name)">
                             <img ng-src="{{ct.logo}}"   height="30px;"></img>
                         </td>
                        
-                        <td width="50px;">
-                              <a class="btn btn-primary btn-block"  ng-click="editCtc(ct.address,ct.name)"  translate="CTC_edit" >edit</a>
-                        </td>
                         <td width="50px;">
                              <a class="btn btn-info btn-block" ng-click="deleteCtc(ct.address,ct.name)"  translate="CTC_delete"> delete </a>
                         </td>

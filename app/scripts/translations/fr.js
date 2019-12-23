@@ -6,7 +6,7 @@ var fr = function() {}
 fr.code = 'fr';
 fr.data = {
 /****************************************/
-Version:'&middot; v2.1.0 &middot;&nbsp;',
+Version:'&middot; v2.2.2 &middot;&nbsp;',
 /****************************************/
 
 GP_Wait: 'En attente du serveur... Si ce message persiste vérifiez votre connexion puis cliquez ici:',
@@ -21,6 +21,7 @@ NAV_Limites: 'Compte',
 NAV_Help: 'Aide',
 NAV_Transactions: 'Transactions',
 NAV_Contacts: 'Contacts',
+NAV_roAutor: 'Droits de consultation',
 NAV_Close: 'Verrouiller le compte',
 NAV_OpenStorage: 'Ouvrir un compte',
 NAV_Billing: 'Mouvements',
@@ -103,6 +104,26 @@ VIEW_print_adr: 'Adresse publique (.pdf)',
 VIEW_close_title: 'Verrouiller votre compte:',
 VIEW_close: 'Verouiller',
 
+
+
+QRS_title:'QR avec référence et montant',
+QRS_Description:'Référence:',
+QRS_Description_holder:'Votre référence',
+QRS_amount:'Montant:',
+QRS_Cancel:'Annuler',
+QRS_Apply:'Appliquer',
+
+QR_Full:"Complet",
+QR_1:"1/4",
+QR_2:"2/4",
+QR_3:"3/4",
+QR_4:"4/4",
+QR_1_5:"1/5",
+QR_2_5:"2/5",
+QR_3_5:"3/5",
+QR_4_5:"4/5",
+QR_5_5:"5/5",
+
 VIEW_print_price:'Etiquettes',
 TAG_Tag_generatio_title:'Créer des étiquettes avec votre adresse publique:',
 TAG_prod_name:'Nom du produit',
@@ -120,9 +141,10 @@ BN_NotValid:'Cette addresse ne correspond pas à un billet valide.',
 BN_Valid:'Cette addresse correspond à un billet valide de ',
 
 
-VIEW_Delegation_Allowance: 'Procurations et Autorisations:',
+VIEW_Delegation_Allowance: 'Relations aux tiers:',
 VIEW_Delegate_btn: 'Procurations',
 VIEW_Allowance_btn: 'Autorisations',
+VIEW_CR_btn:        'Consultations',
 WIEW_WrongPass: 'Mot de passe erroné!',
 
 /* Decrypt */
@@ -135,6 +157,56 @@ DCRY_Close_Wrn: 'Attention! : Si vous fermez un compte sans avoir effectué une 
 DCRY_Close_conf: 'J\'ai une sauvegarde. Je veux fermer ce compte.',
 DCRY_Close_cancel: 'Garder ce compte ouvert.',
 DCRY_Missing_server: 'Il n\'y a pas de server associé à ce compte. Veuillez entrer votre code d\'autorisation. (Pensez à refaire une sauvegarde de ce compte)',
+
+
+/* Consultation of transactions */
+
+CRI_wrongDates : 'Les dates ne sont pas compatibles',
+OPEN_not_right_sign : 'La signature n\'est pas valide',
+OPEN_right_not_for_you : 'Ce droit ne vous est pas destiné',
+OPEN_too_old_right : 'Droit échu',
+OPEN_not_right_format : 'Format incorrect',
+CRI_CreateBtn : 'Créer',
+CRI_ConsultRight_List : '',
+CRI_Tab_Title:'Vos droits de consultation:',
+CRI_NoCR : 'Pas de droits',
+CRI_ValidityStart : 'Du ',
+CRI_ValidityEnd : ' Au ',
+CRI_delete : '&#x2718;',
+CRI_confirmDelete : 'Supprimer le droit de consultation',
+CRI_ValidityRange : 'Valide',
+CRI_cancel : 'Annuler',
+CRI_deleteConfirm : 'Supprimer',
+CRI_Create_title : 'Créer un droit de consultation',
+CRI_TargetAddress : 'En faveur de',
+CRI_DisplayBalance : 'Affichage des soldes',
+OPT_no : 'Non',
+OPT_yes : 'Oui',
+CRI_olderTran : 'Accès aux transactions plus anciennes',
+CRI_create : 'Créer',
+CRI_QRTitle : 'Droit de consultation',
+CRI_close : 'Fermer',
+CRI_Import : 'Importer un droit de consultation',
+CRI_open_file : 'Fichier',
+CRI_scan_qr : 'Scan QR',
+CRI_selected_wallet : 'Compte',
+CRI_change : 'Changer',
+ROTR_balances : 'Balances',
+TRA_roTransactions : 'Transactions',
+CRI_help:'?',
+CRI_ERROR_FILE:'Ceci n\'est pas un fichier de droit de consultation.',
+OPEN_right_not_right_server:'Ces droits ne correspondent pas au server',
+CRI_Help_title:'Consultation des transcations d\'un autre compte',
+CRI_Help_text:'Pour pouvoir consulter les transaction d\'un autre compte vous devez recevoir et enregistrer un droit de consultation dans la page dédiée. Seul votre compte et les comptes pour lesquels vous avez un droit de consultation valid sont disponiblent dans le pop-up de selection.',
+PDF_CR_Title:'Droit de consultation',
+PDF_CR_Validity:'Valide pour la période',
+PDF_CR_On:'Sur le compte:',
+PDF_CR_Assigned:'Accordé à:',
+CRI_Consult_Help_title:'A propos des droits de consultation:',
+CRI_Consult_Help_text:'Un droit de consultation donne la possibilité à un tiers de consulter l\'historique de vos transactions pour une période donnée, voire le solde de votre compte. En enclenchant le "mode cafetier" (cloche), il peut également être informé lorsque vous recevez un paiement. Pour donner un droit de consultation, il vous faut le créer sur cette page puis transmettre le fichier au tiers en question. Pour recevoir un droit de consultation, il faut obtenir le fichier de création de la part du tiers et l\'importer sur cette page à travers le bouton +.',
+
+WALL_missing_message_key:'La sauvegarde de ce compte est dans une ancienne version. Veuillez en faire une nouvelle sauvegarde.',
+
 
 /*Transaction*/
 TRAN_Address: 'Votre compte',
@@ -162,6 +234,13 @@ TRAN_From: 'à',
 TRAN_Enter_pass_request: 'Veuillez entrer votre mot de passe et confirmer la demande',
 TRAN_executed_request_text:'Vous avez transmis la demande de paiement',
 TRAN_total: 'Total = ',
+
+TRAN_Message_to:'Référence/Message',
+TRAN_Message_to_Placeholder:'Pour le destinataire',
+TRAN_Message_from:'Note/Mémo',
+TRAN_Message_from_Placeholder:'Pour celui qui envoie',
+TRAN_Message_copy:'Copier',
+
 
 TRAN_Done: 'La transaction a été transmise et est en traitement',
 TRAN_Wait: '(...)',
@@ -545,6 +624,7 @@ CTC_AlreadyAdded: 'Cette adresse publique fait déjà partie de vos contacts',
 CTC_updateName: 'Voulez-vous modifier son nom?',
 CTC_addCancel: 'Annuler',
 CTC_updateConfirm: 'Confirmer',
+CTC_no_valid_ctc:'Ceci n\'est pas un fichier de contact valide.',
 
 
 CTC_add: '&#x271A;',
@@ -588,16 +668,17 @@ CTC_Import_save: 'Importer',
 
 PDF_T_date: 'Date :',
 PDF_T_Address: 'Compte :',
-PDF_T_title: 'Transactions individuelles',
+PDF_T_title: 'Transactions ',
 PDF_T_initial_b: 'Solde initial au ',
 PDF_T_final_b: 'Solde final au ',
 PDF_T_title_ext: '(suite)',
 PDF_T_col_date: 'Date',
-PDF_T_col_text: 'Text',
+PDF_T_col_text: 'Compte',
 PDF_T_col_send: 'Débit',
+PDF_T_col_memo: 'Mémo',
 PDF_T_col_recieve: 'Crédit',
 PDF_T_col_balance: 'Solde',
-PDF_T_diclaimer: 'Certains soldes peuvent être manquant.',
+PDF_T_diclaimer: '',
 PDF_T_total: 'Total :',
 
 

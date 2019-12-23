@@ -45,17 +45,8 @@ var globalService = function($http, $httpParamSerializerJQLike) {
   };
     } else {
   var tabs = {
-    viewWalletInfo: {
+   send: {
       id: 0,
-      name: "NAV_ViewWallet",
-      url: "recieve",
-      mew: true,
-      readOnly: true,
-      exchangeOffice:false,
-      cssClass: "recieve"
-    },
-    send: {
-      id: 1,
       name: "NAV_Transaction",
       url: "send",
       mew: true,
@@ -63,16 +54,29 @@ var globalService = function($http, $httpParamSerializerJQLike) {
       exchangeOffice:false,
       cssClass: "send"
     },
+    
+    viewWalletInfo: {
+      id: 1,
+      name: "NAV_ViewWallet",
+      url: "recieve",
+      mew: true,
+      readOnly: true,
+      exchangeOffice:false,
+      cssClass: "recieve"
+    },
+
     limites: {
       id: 2, 
       name: "NAV_Limites",
       url: "info",
       mew: true,
-      readOnly: true,
+      readOnly: false,
       exchangeOffice:false,
       cssClass: "cmpt"
     },
-    transactions: {
+
+    
+    rotransactions: {
       id: 3,
       name: "NAV_Transactions",
       url: "transactions",
@@ -81,6 +85,7 @@ var globalService = function($http, $httpParamSerializerJQLike) {
       exchangeOffice:false,
       cssClass: "trans"
     },
+    
     contacts: {
       id: 4,
       name: "NAV_Contacts",
@@ -90,6 +95,7 @@ var globalService = function($http, $httpParamSerializerJQLike) {
       exchangeOffice:false,
       cssClass: "ctc"
     },
+    
      billing: {
       id: 5,
       name: "NAV_Billing",

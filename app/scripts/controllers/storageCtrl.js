@@ -86,7 +86,8 @@ var storageCtrl = function($scope, $sce, walletService, contactservice, $transla
     }
     
     $scope.clearData = function(){
-        var storage_keys = ["ComChainContacts","ComChainLocalContacts","ComChainWallets","ComChainWallet","ComChainMemos"];
+        var storage_keys = ["ComChainContacts","ComChainContactsInfo","ComChainLocalContacts","ComChainContactsInfof",
+                            "ComChainWallets","ComChainWallet","ComChainMemos","ComChainConsultRights","ComChainWatchTransaction"];
         for (var key in storage_keys){
             localStorage.removeItem(storage_keys[key]);
         }
