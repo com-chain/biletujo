@@ -235,7 +235,7 @@ const Decrypt = function(privKey, encrypted) {
                 if (crypted!="") {
                     try {
                          message = decipherMessage(my_message_key, crypted);
-                    } cartch (e) {
+                    } catch (e) {
                         message ='';
                     }
                 }
