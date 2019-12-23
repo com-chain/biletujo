@@ -233,7 +233,11 @@ const Decrypt = function(privKey, encrypted) {
                 }
                 
                 if (crypted!="") {
-                    message = decipherMessage(my_message_key, crypted);
+                    try {
+                         message = decipherMessage(my_message_key, crypted);
+                    } cartch (e) {
+                        message ='';
+                    }
                 }
             }
             callback(message);
