@@ -15,6 +15,7 @@
     ajaxReq.GETCODE = "getuid.php";
     ajaxReq.GETADDRESS = "getadd.php";
     ajaxReq.keystore = "keys.php";
+    ajaxReq.requestMessages = "requestMessages.php";
     ajaxReq.pendingPosts = [];
     ajaxReq.config = {headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}};
 
@@ -165,6 +166,24 @@
         data["data"]=data_str;
         data["sign"]=sign;
         this.http.post(globalFuncs.getServerAddress()+ajaxReq.keystore, this.postSerializer(data), this.config).then(function(data) {
+		    callback(data.data);
+	    });
+    }
+    
+    ajaxReq.getReqMessages = function(add_from, add_to, callback) {
+        var query_string = '?add_req='+encodeURIComponent(add_from)+ '&add_cli='+encodeURIComponent(add_to);
+
+        this.http.get(globalFuncs.getServerAddress()+ajaxReq.requestMessages+query_string).then(function(data){
+             callback(data.data);
+        });
+        
+    }
+    
+    ajaxReq.publishReqMessages = function(data_str, sign, callback) {
+        var data = {};
+        data["data"]=data_str;
+        data["sign"]=sign;
+        this.http.post(globalFuncs.getServerAddress()+ajaxReq.requestMessages, this.postSerializer(data), this.config).then(function(data) {
 		    callback(data.data);
 	    });
     }

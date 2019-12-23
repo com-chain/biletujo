@@ -122,6 +122,10 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, me
         
         $scope.loadPendingTransactions();
         globalFuncs.notifyApproval();
+        
+        
+        var local_message_key = JSON.parse(localStorage.getItem('ComChainWallet')).message_key.priv;
+        $scope.my_message_key =Buffer.from( messageService.messageKeysFromCrypted($scope.wallet, local_message_key).clear_priv.substring(2),'hex');
 	});
     
 	$scope.setBalance = function(readyStatus) {
@@ -383,6 +387,13 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, me
             $scope.from_message_key = "";
           }
        });
+       
+       if ($scope.mode == "toMe"){
+           ////////////////////
+           messageService.getReqMessage($scope.wallet, $scope.origine_address, $scope.my_message_key, true, function(message) {
+               $scope.message_to=message;
+           });
+       }
                            
        $scope.sendTxModal.open();
     }
@@ -492,6 +503,10 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, me
                } else if ($scope.mode == "toMe"){
                    $scope.refreshFrom(function(){
                        
+                      
+                      messageService.publishReqMessages($scope.wallet, $scope.curr_from_add, $scope.message_to, function(data){});
+
+                       
                       $scope.elemanAmmount=0;
                       $scope.lemanexAmmount=0;
                       var value_cent = Math.round($scope.tokenTx.value * 100);
@@ -542,6 +557,7 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, me
         $scope.mode = "fromMe";
         $scope.is_request_mode=false;
         $scope.reference = "";
+        $scope.selectOrigineMy();
     
        
      }
@@ -903,8 +919,22 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, me
         });
         
         globalFuncs.getRequestToApproveList($scope.wallet.getAddressString(),0,1, function(list){
-            $scope.pendingApproval=list;
+            $scope.pendingApproval = [];
+            for (var index=0; index<list.length; index++) {
+                try {
+                    $scope.addMessagePending(list[index]);
+                } catch (e){
+                    $scope.pendingApproval.unshift(list[index]); 
+                }
+            }
         });
+    }
+    
+    $scope.addMessagePending = function(item){
+         messageService.getReqMessage($scope.wallet, item.address, $scope.my_message_key, false, function(message) {
+                    item['message'] = message;
+                    $scope.pendingApproval.unshift(item);
+                });
     }
     
     
@@ -1201,16 +1231,25 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, me
           
          globalFuncs.getRequestToApproveList($scope.wallet.getAddressString(),offset,offset+count-1 ,
                                      function(list){
-                                         $scope.pendingApproval = list;
-                                         $scope.noMoreApproval = $scope.pendingApproval.length<count;
+                                         $scope.pendingApproval = [];
+                                         $scope.noMoreApproval = list.length<count;
                                          
                                          if (!$scope.noMoreApproval){
                                               document.getElementById("nextApproval").style.display = 'block';
                                          }
                                          
                                        
-                                         for(var ind =0;ind<$scope.pendingApproval.length;ind++){
-                                            $scope.pendingApproval[ind].name =  contactservice.getContactName($scope.contacts, $scope.pendingApproval[ind].address); 
+                                         for(var ind =0;ind<list.length;ind++){
+                                            var item = list[ind];
+                                            item.name =  contactservice.getContactName($scope.contacts,item.address);
+                                            try {
+                                                 
+                                                $scope.addMessagePending(item);
+                                            } catch (e){
+                                                $scope.pendingApproval.unshift(item); 
+                                            } 
+                                             
+                                           
                                          }
                                           // $scope.$apply();
                                          $scope.transApprovalStatus='';
@@ -1268,8 +1307,9 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, me
                            }
                            
 
-                           $scope.message_to = "";
-                           $scope.message_from = "";
+                           $scope.message_to = request.message===undefined?"":request.message;
+                           $scope.to_lock = $scope.message_to.length>0;
+                           $scope.message_from = request.message===undefined?"":request.message;
                            $scope.cp_mess = false;
                            $scope.to_message_key = "";
                            messageService.getMessageKey($scope.transaction_to, false, function(keys) {
@@ -1277,7 +1317,7 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, me
                               if ( $scope.to_message_key === undefined) {
                                 $scope.to_message_key = "";
                               }
-                              if ($scope.to_message_key .length>0) {
+                              if ($scope.to_message_key .length>0 && request.message=="") {
                                   $scope.cp_mess = true;
                               }   
                            });

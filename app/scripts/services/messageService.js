@@ -186,6 +186,62 @@ const Decrypt = function(privKey, encrypted) {
         return Decrypt(private_key, ciphered);
     }
     
+    
+    function publishReqMessages(wallet, add_to, message, callback) {
+        getMessageKey(wallet.getAddressString(),false,function(from_key){
+            var from_msg_key = from_key.public_message_key;
+            getMessageKey(add_to,false,function(to_key){ 
+                var to_msg_key = to_key.public_message_key;
+                
+                var message_from = '';
+                if (from_msg_key!==undefined) {  
+                   message_from = cipherMessage(Buffer.from(from_msg_key.substring(2),'hex'), message);
+                }
+                
+                var message_to = '';
+                if (to_msg_key!==undefined) {  
+                   message_to = cipherMessage(Buffer.from(to_msg_key.substring(2),'hex'), message);
+                }
+                
+                var data_obj = {"add_req": wallet.getAddressString(),
+                    "add_cli": add_to,
+                    "ref_req": message_from,
+                    "ref_cli": message_to
+                }
+                
+                var data_str = JSON.stringify(data_obj);
+                var msg=ethUtil.toBuffer(data_str);
+                var msgHash = ethUtil.hashPersonalMessage(msg);
+                var signature = ethUtil.ecsign(msgHash, wallet.getPrivateKey());
+                var sign = ethUtil.bufferToHex(Buffer.concat([ signature.r, signature.s, ethUtil.toBuffer(signature.v) ]))
+                ajaxReq.publishReqMessages(data_str, sign, function(data) {callback(data);} ); 
+            });
+        });   
+    }
+    
+    function getReqMessage(wallet, other_add, my_message_key, ISentThisMessage, callback) {
+        var add_from = ISentThisMessage ? wallet.getAddressString() : other_add;
+        var add_to = !ISentThisMessage ? wallet.getAddressString() : other_add;
+        ajaxReq.getReqMessages(add_from, add_to, function(data){
+            var message ='';
+            if (data!== undefined){
+                var crypted = '';
+                if (ISentThisMessage && data.ref_from !== undefined ){
+                    crypted = data.ref_from;
+                } else if (!ISentThisMessage && data.ref_to !== undefined ){
+                    crypted = data.ref_to;
+                }
+                
+                if (crypted!="") {
+                    message = decipherMessage(my_message_key, crypted);
+                }
+            }
+            callback(message);
+        });
+    } 
+    
+    
+    
     return {
             getMessageKey:getMessageKey,
             ensureWalletMessageKey:ensureWalletMessageKey,
@@ -193,6 +249,8 @@ const Decrypt = function(privKey, encrypted) {
             messageKeysFromCrypted:messageKeysFromCrypted,
             cipherMessage:cipherMessage,
             decipherMessage:decipherMessage, 
+            publishReqMessages:publishReqMessages,
+            getReqMessage:getReqMessage,
     }
    
 };
