@@ -224,7 +224,7 @@
             <div class="waiting_tran" id="wt_msg_anim"> 
                  <svg class="wt_svg"  width="300" height="300"  
                                viewPort="0 0 300 300" version="1.1" xmlns="http://www.w3.org/2000/svg"> 
-                    <circle id="c1" r="75" cx="150" cy="150"/>
+                    <circle id="c1" r="75" cx="150" cy="150"/> 
                     <circle id="c2" r="65" cx="150" cy="150"/>
                     <circle id="c3" r="40" cx="150" cy="150"/>
                  </svg>
