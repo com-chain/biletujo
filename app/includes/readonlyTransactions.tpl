@@ -333,7 +333,7 @@
                       <div class="modal-body">
                           <div align="center">
                            <h4><label translate="CRI_Help_title">Delegate:</label></h4>
-                           <div translate="CRI_Help_text"></div>
+                           <div align="left" translate="CRI_Help_text"></div>
                              
                           </div>
                       </div>

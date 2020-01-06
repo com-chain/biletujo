@@ -525,7 +525,7 @@
                       <div class="modal-body">
                           <div align="center">
                                <div><label translate="TRA_Approval_Help_title">Delegate:</label></div>
-                               <div translate="TRA_Approval_Help_text"></div>   
+                               <div align="left" translate="TRA_Approval_Help_text"></div>   
                           </div>
                       </div>
                       <div class="modal-footer text-center">
@@ -874,7 +874,7 @@
                       <div class="modal-body">
                           <div align="center">
                            <h4><label translate="TRA_Pending_Help_title">Delegate:</label></h4>
-                           <div translate="TRA_Pending_Help_text"></div>
+                           <div align="left" translate="TRA_Pending_Help_text"></div>
                              
                           </div>
                       </div>

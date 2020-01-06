@@ -243,7 +243,7 @@
                       <div class="modal-body">
                           <div align="center">
                            <h4><label translate="DELEG_Delegate_Help_title">Delegate:</label></h4>
-                           <div translate="DELEG_Delegate_Help_text"></div>
+                           <div align="left" translate="DELEG_Delegate_Help_text"></div>
                              
                           </div>
                       </div>
@@ -467,7 +467,7 @@
                       <div class="modal-body">
                           <div align="center">
                            <h4><label translate="ALLOW_Allowance_Help_title">Delegate:</label></h4>
-                           <div translate="ALLOW_Allowance_Help_text"></div>
+                           <div align="left" translate="ALLOW_Allowance_Help_text"></div>
                              
                           </div>
                       </div>
@@ -929,7 +929,7 @@
                   <div class="modal-body">
                       <div align="center">
                        <h4><label translate="CRI_Consult_Help_title">Delegate:</label></h4>
-                       <div translate="CRI_Consult_Help_text"></div>
+                       <div align="left" translate="CRI_Consult_Help_text"></div>
                          
                       </div>
                   </div>
