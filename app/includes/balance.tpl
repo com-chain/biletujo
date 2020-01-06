@@ -149,7 +149,9 @@
                          </td>
                     <tr>
 	                <tr  ng-repeat="dg in delegations track by $index" class="tr_trans">
-	                  
+	                
+	                
+	            
                          <td  width="100px">
                              <div class="identiconWrapper without_text_tr" ng-class="{'with_text_tr': dg.name!=''}">
                                  <div id="addressIdenticon" title="Address Indenticon" img="1" blockie-address="{{dg.address}}"  watch-var="delegations" ></div>
@@ -166,9 +168,8 @@
                         </td>
                        <td width="50px;">
                               <a class="btn btn-primary btn-block"  ng-click="editDeleg(dg)"  translate="CTC_edit" >edit</a>
-                        </td>
-                        <td width="50px;">
-                             <a class="btn btn-info btn-block" ng-click="deleteDeleg(dg)"  translate="CTC_delete"> delete </a>
+                
+                              <a class="btn btn-info btn-block" ng-click="deleteDeleg(dg)"  translate="CTC_delete"> delete </a>
                         </td>
                         
 	               </tr>
