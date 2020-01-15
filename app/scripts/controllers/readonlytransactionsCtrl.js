@@ -369,21 +369,21 @@ var readonlytransactionsCtrl = function($scope, $locale, $sce, walletService,con
             $scope.end_time=24;
         }
         
-        
-        $scope.start_date=new Date($scope.start_date.getFullYear(), $scope.start_date.getMonth()+1,  $scope.start_date.getDate(),  $scope.start_time, 0, 0, 0);
-       
-        $scope.end_date=new Date($scope.end_date.getFullYear(), $scope.end_date.getMonth()+1,  $scope.end_date.getDate(), $scope.end_time-1, 59, 59, 0);
-        
-        
        if ($scope.end_date.getTime()<$scope.start_date.getTime()){
             var swap = $scope.start_date;
             $scope.start_date=$scope.end_date;
             $scope.end_date=swap;
        }
        
+       $scope.start_date=new Date($scope.start_date.getFullYear(), $scope.start_date.getMonth(),  $scope.start_date.getDate(),  $scope.start_time, 0, 0, 0);
+       
+       $scope.end_date=new Date($scope.end_date.getFullYear(), $scope.end_date.getMonth(),  $scope.end_date.getDate(), $scope.end_time-1, 59, 59, 0);
+        
        if ( $scope.lock_date &&  $scope.start_date.getTime() < $scope.lock_date_begin.getTime()) {
-          $scope.start_date = $scope.lock_date_begin;           
+         $scope.start_date = $scope.lock_date_begin;           
        }
+        
+       
         
         var d_start = $scope.start_date.getTime()/1000;
         var d_end = $scope.end_date.getTime()/1000;
