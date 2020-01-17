@@ -664,7 +664,7 @@ CTC_Merge_mine: 'By keeping mines ',
 
 CTC_Import_save: 'Importer',
 
-PDF_T_date: 'Date :',
+PDF_T_date: 'Export date :',
 PDF_T_Address: 'Account :',
 PDF_T_title: 'Transactions ',
 PDF_T_title_ext: '(cont.)',

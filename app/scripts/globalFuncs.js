@@ -2041,7 +2041,7 @@ globalFuncs.generateTagsPDF = function(walletAddress, tags, callback){
 
 
 
-globalFuncs.generateTransPDF = function(walletAddress, list, texts, callback){
+globalFuncs.generateTransPDF = function(walletAddress, list, texts, start_date, end_date, callback){
  var newImg = new Image();
 newImg.callback=callback;
 newImg.walletAddress=walletAddress;
@@ -2096,6 +2096,14 @@ newImg.onload = function() {
         doc.text(73, 48, [walletAddress.substring(0,21),walletAddress.substring(21)]);
         doc.addImage(imgAddData, 'PNG', 60, 44, 10, 10);
         
+        var name_lines = doc.splitTextToSize(texts.proper_name, 50, {});
+        if (name_lines.length>2){
+             name_lines=name_lines.slice(0,2);
+             name_lines[1]=name_lines[1]+'...';
+        }
+        doc.text(140, 48, name_lines);
+        
+        
         doc.setFontSize(18)
         var title = texts.title;
         if (page>0){
@@ -2107,8 +2115,7 @@ newImg.onload = function() {
         
          if (list.length>0){
             if ( list[0].data.balance!=''){
-                var date_init = new Date(list[0].data.time*1000);
-                doc.text(margin_left, 73, texts.initBal+date_init.toISOString().slice(0,10) +' '+date_init.toTimeString().slice(0,2)+':00 ');
+                doc.text(margin_left, 73, texts.initBal+start_date.toISOString().slice(0,10) +' '+start_date.toTimeString().slice(0,2)+':00 ');
                 doc.text(73, 73, globalFuncs.currencies.CUR);
                 
                 var tra_date = list[0].data.time;
@@ -2128,8 +2135,7 @@ newImg.onload = function() {
             }
             
             if ( list[list.length-1].data.balance!=''){
-                var date_final = new Date(list[list.length-1].data.time*1000);
-                doc.text(margin_left, 77, texts.finalBal+date_final.toISOString().slice(0,10) +' '+date_final.toTimeString().slice(0,2)+':59');
+                doc.text(margin_left, 77, texts.finalBal+end_date.toISOString().slice(0,10) +' '+end_date.toTimeString().slice(0,2)+':59');
                 doc.text(73, 77, globalFuncs.currencies.CUR);
                 doc.text(83, 77, parseFloat(list[list.length-1].data.balance).toFixed(2));
             }
@@ -2165,8 +2171,13 @@ newImg.onload = function() {
             if (tra.addr_from==walletAddress){
 
                if (tra.to_name && tra.to_name.length>0){
+                  var name_to_lines = doc.splitTextToSize(tra.to_name, col_21 - col_2-3, {});
+                  if (name_to_lines.length>1){
+                        name_to_lines=name_to_lines.slice(0,1);
+                        name_to_lines[0]=name_to_lines[0]+'...';
+                  }
                   
-                  doc.text(col_2, vertical_start+tran_row_height*(row), tra.to_name);
+                  doc.text(col_2, vertical_start+tran_row_height*(row), name_to_lines[0]);
                   doc.text(col_2, vertical_start-1+tran_row_height*(row+0.5), tra.addr_to.substring(0, 18)+"..."); 
                   
                } else {
@@ -2175,14 +2186,18 @@ newImg.onload = function() {
                }
         
                
-               doc.text(col_25, vertical_start-1+(tran_row_height)*(row+0.5), tra.currency);
+               doc.text(col_25, vertical_start-1+(tran_row_height)*(row+0.5), globalFuncs.currencies.CUR);
                doc.text(col_3, vertical_start-1+(tran_row_height)*(row+0.5), (tra.sent/100.).toFixed(2));
                
                tot_out+=tra.sent/100.;
             } else {
               if (tra.from_name && tra.from_name.length>0){
-                  
-                  doc.text(col_2, vertical_start+tran_row_height*(row), tra.from_name);
+                  var name_from_lines = doc.splitTextToSize(tra.from_name, col_21 - col_2-3, {});
+                  if (name_from_lines.length>1){
+                        name_from_lines=name_from_lines.slice(0,1);
+                        name_from_lines[0]=name_from_lines[0]+'...';
+                  }
+                  doc.text(col_2, vertical_start+tran_row_height*(row), name_from_lines);
                   doc.text(col_2, vertical_start-1+tran_row_height*(row+0.5), tra.addr_from.substring(0, 18)+"..."); 
                   
                } else {
@@ -2194,7 +2209,7 @@ newImg.onload = function() {
                
                
                
-               doc.text(col_35, vertical_start-1+(tran_row_height)*(row+0.5), tra.currency);
+               doc.text(col_35, vertical_start-1+(tran_row_height)*(row+0.5), globalFuncs.currencies.CUR);
                doc.text(col_4, vertical_start-1+(tran_row_height)*(row+0.5), (parseFloat(tra.recieved - tra.tax)/100.).toFixed(2));
                tot_in+=tra.recieved/100.;
             }

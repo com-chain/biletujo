@@ -323,7 +323,8 @@ var readonlytransactionsCtrl = function($scope, $locale, $sce, walletService,con
         if (index>=list.length){
             globalFuncs.generateTransPDF(walletAddress,
                                          list, 
-                                         { "date":$translate.instant("PDF_T_date").replace(/[\n\r]+/g, ''),
+                                         { "proper_name":contactservice.getContactName($scope.contacts, walletAddress),
+                                           "date":$translate.instant("PDF_T_date").replace(/[\n\r]+/g, ''),
                                            "requestAddress":$translate.instant("PDF_T_Address").replace(/[\n\r]+/g, ''),
                                            "title":$translate.instant("PDF_T_title").replace(/[\n\r]+/g, ''),
                                            "titleNext":$translate.instant("PDF_T_title_ext").replace(/[\n\r]+/g, ''),
@@ -338,6 +339,8 @@ var readonlytransactionsCtrl = function($scope, $locale, $sce, walletService,con
                                            "disclaimer":$translate.instant("PDF_T_diclaimer").replace(/[\n\r]+/g, ''),
                                            "totals":$translate.instant("PDF_T_total").replace(/[\n\r]+/g, '')
                                          }, 
+                                         $scope.start_date,
+                                         $scope.end_date,
                                          function(doc){
                                               var name= "Transactions_"+$scope.start_date.getFullYear()+'-'+($scope.start_date.getMonth()+1)+'-'+ ($scope.start_date.getDate())+"_"+$scope.end_date.getFullYear()+'-'+($scope.end_date.getMonth()+1)+'-'+ ($scope.end_date.getDate())+".pdf";
                                               doc.save(name);

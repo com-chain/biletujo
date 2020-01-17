@@ -666,7 +666,7 @@ CTC_Merge_mine: 'Conserver les miens ',
 CTC_Import_save: 'Importer',
 
 
-PDF_T_date: 'Date :',
+PDF_T_date: "Date export :",
 PDF_T_Address: 'Compte :',
 PDF_T_title: 'Transactions ',
 PDF_T_initial_b: 'Solde initial au ',
