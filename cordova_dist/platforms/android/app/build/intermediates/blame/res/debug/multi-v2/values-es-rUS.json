@@ -29,6 +29,21 @@
                     }
                 }
             ]
+        },
+        {
+            "outputFile": "/d00/perso/Open-sources/biletujo/cordova_dist/platforms/android/app/build/intermediates/incremental/mergeDebugResources/merged.dir/values-es-rUS/values-es-rUS.xml",
+            "map": [
+                {
+                    "source": "/home/fdubath/.gradle/caches/transforms-1/files-1.1/support-compat-27.1.0.aar/13447645b4bac594153de3f9b3affe22/res/values-es-rUS/values-es-rUS.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "100",
+                        "endOffsets": "151"
+                    }
+                }
+            ]
         }
     ]
 }

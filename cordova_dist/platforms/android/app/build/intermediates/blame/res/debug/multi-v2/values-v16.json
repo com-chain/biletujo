@@ -1,6 +1,21 @@
 {
     "logs": [
         {
+            "outputFile": "/d00/perso/Open-sources/biletujo/cordova_dist/platforms/android/app/build/intermediates/incremental/mergeDebugResources/merged.dir/values-v16/values-v16.xml",
+            "map": [
+                {
+                    "source": "/home/fdubath/.gradle/caches/transforms-1/files-1.1/support-compat-27.1.0.aar/13447645b4bac594153de3f9b3affe22/res/values-v16/values-v16.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "65",
+                        "endOffsets": "116"
+                    }
+                }
+            ]
+        },
+        {
             "outputFile": "/d00/perso/Lemam-Wallet/automated-building/cc-wallet/cordova_dist/platforms/android/app/build/intermediates/incremental/mergeDebugResources/merged.dir/values-v16/values-v16.xml",
             "map": [
                 {

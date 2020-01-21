@@ -1,0 +1,108 @@
+{
+  "_args": [
+    [
+      {
+        "raw": "cordova-plugin-app-event",
+        "scope": null,
+        "escapedName": "cordova-plugin-app-event",
+        "name": "cordova-plugin-app-event",
+        "rawSpec": "",
+        "spec": "latest",
+        "type": "tag"
+      },
+      "/d00/perso/Lemam-Wallet/automated-building/cc-wallet/cordova_test"
+    ]
+  ],
+  "_from": "cordova-plugin-app-event@latest",
+  "_id": "cordova-plugin-app-event@1.2.1",
+  "_inCache": true,
+  "_location": "/cordova-plugin-app-event",
+  "_nodeVersion": "7.10.1",
+  "_npmOperationalInternal": {
+    "host": "s3://npm-registry-packages",
+    "tmp": "tmp/cordova-plugin-app-event-1.2.1.tgz_1503907213132_0.5502542078029364"
+  },
+  "_npmUser": {
+    "name": "katzer",
+    "email": "katzer@appplant.de"
+  },
+  "_npmVersion": "4.6.1",
+  "_phantomChildren": {},
+  "_requested": {
+    "raw": "cordova-plugin-app-event",
+    "scope": null,
+    "escapedName": "cordova-plugin-app-event",
+    "name": "cordova-plugin-app-event",
+    "rawSpec": "",
+    "spec": "latest",
+    "type": "tag"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/cordova-plugin-app-event/-/cordova-plugin-app-event-1.2.1.tgz",
+  "_shasum": "0eebb14132aa43bb2e5c081a9abdbd97ca2d8132",
+  "_shrinkwrap": null,
+  "_spec": "cordova-plugin-app-event",
+  "_where": "/d00/perso/Lemam-Wallet/automated-building/cc-wallet/cordova_test",
+  "author": {
+    "name": "Sebastián Katzer"
+  },
+  "bugs": {
+    "url": "https://github.com/katzer/cordova-plugin-app-event/issues"
+  },
+  "cordova": {
+    "id": "cordova-plugin-app-event",
+    "platforms": [
+      "ios"
+    ]
+  },
+  "dependencies": {},
+  "description": "Broadcasts UIApplicationDelegate events",
+  "devDependencies": {},
+  "directories": {},
+  "dist": {
+    "shasum": "0eebb14132aa43bb2e5c081a9abdbd97ca2d8132",
+    "tarball": "https://registry.npmjs.org/cordova-plugin-app-event/-/cordova-plugin-app-event-1.2.1.tgz"
+  },
+  "engines": [
+    {
+      "name": "cordova",
+      "version": ">=3.6.0"
+    }
+  ],
+  "gitHead": "9e0f60af0222da4025ff4d19f836c61fe8f4ce9f",
+  "homepage": "https://github.com/katzer/cordova-plugin-app-event#readme",
+  "keywords": [
+    "appplant",
+    "UIApplicationDelegate",
+    "didRegisterUserNotificationSettings",
+    "didReceiveLocalNotification",
+    "didFinishLaunchingWithOptions",
+    "cordova",
+    "ecosystem:cordova"
+  ],
+  "license": "Apache-2.0",
+  "main": "index.js",
+  "maintainers": [
+    {
+      "name": "katzer",
+      "email": "katzer@appplant.de"
+    }
+  ],
+  "name": "cordova-plugin-app-event",
+  "optionalDependencies": {},
+  "platforms": [
+    "ios"
+  ],
+  "readme": "ERROR: No README data found!",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/katzer/cordova-plugin-app-event.git"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "version": "1.2.1"
+}

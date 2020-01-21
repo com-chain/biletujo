@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="org.comchain.wallet"
+    android:hardwareAccelerated="true"
+    android:versionCode="20009"
+    android:versionName="2.0.9" >
+
+    <uses-sdk
+        android:minSdkVersion="19"
+        android:targetSdkVersion="27" />
+
+    <supports-screens
+        android:anyDensity="true"
+        android:largeScreens="true"
+        android:normalScreens="true"
+        android:resizeable="true"
+        android:smallScreens="true"
+        android:xlargeScreens="true" />
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.FLASHLIGHT" />
+
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="true" />
+
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.USE_FINGERPRINT" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+
+    <application
+        android:debuggable="true"
+        android:hardwareAccelerated="true"
+        android:icon="@mipmap/icon"
+        android:label="@string/app_name"
+        android:supportsRtl="true" >
+        <activity
+            android:name="org.comchain.wallet.MainActivity"
+            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale"
+            android:label="@string/activity_name"
+            android:launchMode="singleTop"
+            android:theme="@android:style/Theme.DeviceDefault.NoActionBar"
+            android:windowSoftInputMode="adjustResize" >
+            <intent-filter android:label="@string/launcher_name" >
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            <intent-filter>
+                <data android:scheme="comchain" />
+
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.google.zxing.client.android.CaptureActivity"
+            android:clearTaskOnLaunch="true"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:exported="false"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
+            android:windowSoftInputMode="stateAlwaysHidden" />
+        <activity
+            android:name="com.google.zxing.client.android.encode.EncodeActivity"
+            android:label="Share" />
+
+        <receiver
+            android:name="de.appplant.cordova.plugin.localnotification.TriggerReceiver"
+            android:exported="false" />
+        <receiver
+            android:name="de.appplant.cordova.plugin.localnotification.ClearReceiver"
+            android:exported="false" />
+
+        <activity
+            android:name="de.appplant.cordova.plugin.localnotification.ClickActivity"
+            android:exported="false"
+            android:launchMode="singleInstance"
+            android:theme="@android:style/Theme.NoDisplay" />
+
+        <receiver
+            android:name="de.appplant.cordova.plugin.notification.TriggerReceiver"
+            android:exported="false" />
+        <receiver
+            android:name="de.appplant.cordova.plugin.notification.ClearReceiver"
+            android:exported="false" />
+        <receiver
+            android:name="de.appplant.cordova.plugin.localnotification.RestoreReceiver"
+            android:exported="false" >
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+
+        <activity
+            android:name="de.appplant.cordova.plugin.notification.ClickActivity"
+            android:exported="false"
+            android:launchMode="singleInstance"
+            android:theme="@android:style/Theme.NoDisplay" />
+    </application>
+
+</manifest>

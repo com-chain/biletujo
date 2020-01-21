@@ -1,11 +1,11 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="org.monnaieleman.bureau" version="1.4.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-    <name>Bureau Leman</name>
+<widget id="org.comchain.wallet" version="2.0.9" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+    <name>Biletujo</name>
     <description>
-        An Apache Cordova wallet for Monnaie Leman
+        An Apache Cordova wallet for Com-Chain
     </description>
-    <author email="info@monnaie-leman.org" href="http://monnaie-leman.org">
-        Monnaie Leman
+    <author email="it@monnaie-leman.org" href="http://com-chain.org">
+        Biletujo
     </author>
     <content src="index.html" />
     <plugin name="cordova-plugin-whitelist" spec="1" />
@@ -23,6 +23,21 @@
         <allow-intent href="itms:*" />
         <allow-intent href="itms-apps:*" />
     </platform>
-    <icon src="lem.png" />
-    <engine name="browser" spec="~5.0.4" />
+    <plugin name="phonegap-plugin-barcodescanner" spec="^8.0.1">
+        <variable name="ANDROID_SUPPORT_V4_VERSION" value="27.+" />
+    </plugin>
+    <plugin name="cordova-plugin-file" spec="^6.0.1" />
+    <plugin name="cordova-plugin-fingerprint-aio" spec="^1.6.0" />
+    <plugin name="cordova-plugin-inappbrowser" spec="^3.0.0" />
+    <plugin name="cordova-plugin-ionic-keyboard" spec="^2.1.3" />
+    <plugin name="cordova-plugin-urlhandler" spec="^0.7.2">
+        <variable name="URL_SCHEME" value="comchain" />
+    </plugin>
+    <plugin name="cordova-plugin-app-event" spec="^1.2.1" />
+    <plugin name="cordova-plugin-console" spec="^1.1.0" />
+    <plugin name="cordova-plugin-device" spec="^2.0.2" />
+    <plugin name="de.appplant.cordova.plugin.local-notification" spec="^0.8.5" />
+    <plugin name="cordova-plugin-compat" spec="^1.2.0" />
+    <engine name="android" spec="^7.1.4" />
+    <engine name="browser" spec="^5.0.4" />
 </widget>
