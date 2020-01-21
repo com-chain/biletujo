@@ -1,0 +1,2 @@
+var conf_locale ={"server":{"name":"comchain","address":"","contract_1":"0x85291865Ac4b11b086EAf901E6116eba014244cE","contract_2":"0xE616BE14B489c33c8CC3D5974A5DeAad6E4A33c8",
+"contract_3":"0xF931D0BF4139015D01C51b33A0C25D9C004Da977","url_Css":"","url_help": "http://com-chain.org/","url_cond": "http://com-chain.org/","nant":"True","CM":"True","autor":"True","deleg":"True","lang":[{"code":"fr","name":"Français"},{"code":"en","name":"English"}],"currencies":{"CUR":"LEM","CUR_global":"CCHosting","CUR_nanti":"e-leman","CUR_credit_mut":"lemanex"}}};

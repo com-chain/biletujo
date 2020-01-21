@@ -1,0 +1,114 @@
+{
+  "_args": [
+    [
+      {
+        "raw": "cordova-plugin-fingerprint-aio",
+        "scope": null,
+        "escapedName": "cordova-plugin-fingerprint-aio",
+        "name": "cordova-plugin-fingerprint-aio",
+        "rawSpec": "",
+        "spec": "latest",
+        "type": "tag"
+      },
+      "/d00/perso/Lemam-Wallet/automated-building/cc-wallet/cordova_test"
+    ]
+  ],
+  "_from": "cordova-plugin-fingerprint-aio@latest",
+  "_hasShrinkwrap": false,
+  "_id": "cordova-plugin-fingerprint-aio@1.6.0",
+  "_inCache": true,
+  "_location": "/cordova-plugin-fingerprint-aio",
+  "_nodeVersion": "10.10.0",
+  "_npmOperationalInternal": {
+    "host": "s3://npm-registry-packages",
+    "tmp": "tmp/cordova-plugin-fingerprint-aio_1.6.0_1548497556312_0.3258845836555424"
+  },
+  "_npmUser": {
+    "name": "niklasmerz",
+    "email": "NiklasMerz@gmx.net"
+  },
+  "_npmVersion": "6.7.0",
+  "_phantomChildren": {},
+  "_requested": {
+    "raw": "cordova-plugin-fingerprint-aio",
+    "scope": null,
+    "escapedName": "cordova-plugin-fingerprint-aio",
+    "name": "cordova-plugin-fingerprint-aio",
+    "rawSpec": "",
+    "spec": "latest",
+    "type": "tag"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/cordova-plugin-fingerprint-aio/-/cordova-plugin-fingerprint-aio-1.6.0.tgz",
+  "_shasum": "3053060fc5a375d62ce6c5314cb2881d2b3b298b",
+  "_shrinkwrap": null,
+  "_spec": "cordova-plugin-fingerprint-aio",
+  "_where": "/d00/perso/Lemam-Wallet/automated-building/cc-wallet/cordova_test",
+  "author": {
+    "name": "Niklas Merz"
+  },
+  "bugs": {
+    "url": "https://github.com/niklasmerz/cordova-plugin-fingerprint-aio/issues"
+  },
+  "cordova": {
+    "id": "cordova-plugin-fingerprint-aio",
+    "platforms": [
+      "android",
+      "ios"
+    ]
+  },
+  "dependencies": {
+    "cordova-plugin-add-swift-support": "^1.7.1"
+  },
+  "description": "Cordova plugin to use fingerprint authentication on Android and iOS",
+  "devDependencies": {
+    "cordova-paramedic": "git+https://github.com/apache/cordova-paramedic.git",
+    "cordova-plugin-xml": "^0.1.2",
+    "eslint": "^5.7.0",
+    "jasmine": "^3.2.0"
+  },
+  "directories": {},
+  "dist": {
+    "integrity": "sha512-2Hqa1FVSG7NCzhO4lXh92UXkGHvaLy47q0aF39jpd1yJJr6ctDybU10HIKhe6QX1T4qVNiUuzksjqvV9eLPFng==",
+    "shasum": "3053060fc5a375d62ce6c5314cb2881d2b3b298b",
+    "tarball": "https://registry.npmjs.org/cordova-plugin-fingerprint-aio/-/cordova-plugin-fingerprint-aio-1.6.0.tgz",
+    "fileCount": 34,
+    "unpackedSize": 139709,
+    "npm-signature": "-----BEGIN PGP SIGNATURE-----\r\nVersion: OpenPGP.js v3.0.4\r\nComment: https://openpgpjs.org\r\n\r\nwsFcBAEBCAAQBQJcTDKVCRA9TVsSAnZWagAAln4P/jaNjF1xGae6vaTWoD9C\n9vn5x0tQHF5a7FPgv+3AUCyt48rWAOZ5+qGFnItQ99zPouPvP6jIZjQ3Lekh\noV7EUlZaLNhxYpwbJc4sc8M7DP7WDiEEVZe02hMrf+1QS4o7NRz7N4yBJaR7\nNwE3hRUhgWUpMT2YASiGVPYVvJf+5H9CvFq8exb0EyUD4aZZjgeZaAhUQiYS\nqqMoRHj2tKZhaXyj0bAfqNCXej2t0pTjAaGRwZncsBbEQC2Xo1nKML8cnrIk\ntSDnekmYK5NQ/2WtNYoeZOozCpGbJAvSeNwzJPakdPmcEizwIERldRupyndb\nzbxu4MmH6dDQkSHEx0Oq641mL08soKYtHlxKQqXLrTVwN901DoVa11uEdux+\ngkDiMSNUN31BCkzI7xO22UFLMTmYK03D9Jmf8Ig6dL/OaxoF4t2qSrbxo5Cj\nw7zOob4PQEQnBAE1FmoD4fO3TCb9GX3JivQAYX0GVtvv5IN8Ixf5N5CDEE/2\n0/A03IvMlbaSSiU7SIqhBhdp/xjIIsbKZHMswnabT/D9UAUy/EeQElXTeJVr\nkmSQuHRIS45LGAx4tQ8HXwmrFIxjLfsyREyO9CoXbwPHqW6DuK6wI7IhT0UH\nzOOW5813qHJVsRkmlhWIG7829VJMN8Ltz8709phsAuDR/d1LJ1KOzxTcuOuB\n1srp\r\n=eVDt\r\n-----END PGP SIGNATURE-----\r\n"
+  },
+  "gitHead": "a37e199f46033ad827b8a05f8af8c87453317806",
+  "homepage": "https://github.com/niklasmerz/cordova-plugin-fingerprint-aio#readme",
+  "keywords": [
+    "cordova",
+    "plugin",
+    "android",
+    "fingerprint",
+    "authentication",
+    "ecosystem:cordova",
+    "cordova-android",
+    "cordova-ios",
+    "ios"
+  ],
+  "license": "MIT",
+  "maintainers": [
+    {
+      "name": "niklasmerz",
+      "email": "NiklasMerz@gmx.net"
+    }
+  ],
+  "name": "cordova-plugin-fingerprint-aio",
+  "optionalDependencies": {},
+  "readme": "ERROR: No README data found!",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/niklasmerz/cordova-plugin-fingerprint-aio.git"
+  },
+  "scripts": {
+    "plugin-version": "cordova-plugin-xml setVersion",
+    "test": "./node_modules/cordova-paramedic/main.js --plugin . --platform"
+  },
+  "version": "1.6.0"
+}

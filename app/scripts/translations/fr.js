@@ -6,7 +6,7 @@ var fr = function() {}
 fr.code = 'fr';
 fr.data = {
 /****************************************/
-Version:'&middot; v2.2.2 &middot;&nbsp;',
+Version:'&middot; v2.2.4 &middot;&nbsp;',
 /****************************************/
 
 GP_Wait: 'En attente du serveur... Si ce message persiste vérifiez votre connexion puis cliquez ici:',
@@ -196,8 +196,8 @@ TRA_roTransactions : 'Transactions',
 CRI_help:'?',
 CRI_ERROR_FILE:'Ceci n\'est pas un fichier de droit de consultation.',
 OPEN_right_not_right_server:'Ces droits ne correspondent pas au server',
-CRI_Help_title:'Consultation des transcations d\'un autre compte',
-CRI_Help_text:'Pour pouvoir consulter les transaction d\'un autre compte vous devez recevoir et enregistrer un droit de consultation dans la page dédiée. Seul votre compte et les comptes pour lesquels vous avez un droit de consultation valid sont disponiblent dans le pop-up de selection.',
+CRI_Help_title:'Consultation des transactions d\'un autre compte',
+CRI_Help_text:'Pour pouvoir consulter les transactions d\'un autre compte, vous devez recevoir et enregistrer un droit de consultation sur la page "Mon compte" ("Consultations"). Vous ne pouvez sélectionner que votre compte et les comptes pour lesquels vous avez un droit de consultation valide.',
 PDF_CR_Title:'Droit de consultation',
 PDF_CR_Validity:'Valide pour la période',
 PDF_CR_On:'Sur le compte:',
@@ -666,7 +666,7 @@ CTC_Merge_mine: 'Conserver les miens ',
 CTC_Import_save: 'Importer',
 
 
-PDF_T_date: 'Date :',
+PDF_T_date: "Date export :",
 PDF_T_Address: 'Compte :',
 PDF_T_title: 'Transactions ',
 PDF_T_initial_b: 'Solde initial au ',

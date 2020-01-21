@@ -277,7 +277,7 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, me
                     } else {
 
                         if ($scope.lemanexAmmount>0){
-                             $scope.generatelTx(1);
+                             $scope.generatelTx(1, res.data);
                         } else {
                             $scope.waitTransaction(res.data);
                             $scope.err_message = $translate.instant("TRAN_Done");
@@ -290,7 +290,7 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, me
      }
     
     
-    $scope.generatelTx = function(incr){
+    $scope.generatelTx = function(incr, parent_hash){
         var data={};
         if ($scope.isShopTx){
             data = $scope.shopTxInfo;
@@ -302,6 +302,10 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, me
         
         if ($scope.to_message_key.length>0 && $scope.message_to.length>0) {
             data['memo_to']= messageService.cipherMessage(Buffer.from($scope.to_message_key.substring(2),'hex'), $scope.message_to);
+        }
+        
+        if (parent_hash!==undefined){
+            data['parent_hash']=parent_hash;
         }
         
         globalFuncs.TransfertCM($scope.wallet, $scope.tokenTx.to, $scope.lemanexAmmount,incr, data, function(res){
@@ -325,7 +329,7 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, me
         if ($scope.elemanAmmount>0){
              $scope.generateeTx();
         } else if ($scope.lemanexAmmount>0){
-             $scope.generatelTx(0);
+             $scope.generatelTx(0, undefined);
         } 
 	}
     

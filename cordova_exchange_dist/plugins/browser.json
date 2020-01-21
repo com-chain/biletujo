@@ -7,31 +7,43 @@
     "files": {}
   },
   "installed_plugins": {
-    "cordova-plugin-console": {
-      "PACKAGE_NAME": "org.monnaieleman.bureau"
-    },
-    "cordova-plugin-device": {
-      "PACKAGE_NAME": "org.monnaieleman.bureau"
-    },
     "cordova-plugin-file": {
-      "PACKAGE_NAME": "org.monnaieleman.bureau"
-    },
-    "cordova-plugin-inappbrowser": {
-      "PACKAGE_NAME": "org.monnaieleman.bureau"
-    },
-    "cordova-plugin-ionic-keyboard": {
-      "PACKAGE_NAME": "org.monnaieleman.bureau"
+      "PACKAGE_NAME": "io.cordova.hellocordova"
     },
     "cordova-plugin-whitelist": {
-      "PACKAGE_NAME": "org.monnaieleman.bureau"
+      "PACKAGE_NAME": "io.cordova.hellocordova"
     },
     "phonegap-plugin-barcodescanner": {
-      "PACKAGE_NAME": "org.monnaieleman.bureau"
+      "PACKAGE_NAME": "io.cordova.hellocordova"
+    },
+    "cordova-plugin-fingerprint-aio": {
+      "PACKAGE_NAME": "io.cordova.hellocordova"
+    },
+    "cordova-plugin-inappbrowser": {
+      "PACKAGE_NAME": "io.cordova.hellocordova"
+    },
+    "cordova-plugin-ionic-keyboard": {
+      "PACKAGE_NAME": "io.cordova.hellocordova"
+    },
+    "cordova-plugin-urlhandler": {
+      "URL_SCHEME": "comchain",
+      "PACKAGE_NAME": "io.cordova.hellocordova"
+    },
+    "cordova-plugin-app-event": {
+      "PACKAGE_NAME": "io.cordova.hellocordova"
+    },
+    "cordova-plugin-console": {
+      "PACKAGE_NAME": "io.cordova.hellocordova"
+    },
+    "cordova-plugin-device": {
+      "PACKAGE_NAME": "io.cordova.hellocordova"
+    },
+    "de.appplant.cordova.plugin.local-notification": {
+      "PACKAGE_NAME": "io.cordova.hellocordova"
+    },
+    "cordova-plugin-compat": {
+      "PACKAGE_NAME": "io.cordova.hellocordova"
     }
   },
-  "dependent_plugins": {
-    "cordova-plugin-compat": {
-      "PACKAGE_NAME": "org.monnaieleman.bureau"
-    }
-  }
+  "dependent_plugins": {}
 }

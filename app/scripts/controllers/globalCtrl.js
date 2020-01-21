@@ -149,9 +149,10 @@ var globalCtrl = function($scope, $locale, $sce, walletService, $translate) {
       
       $scope.interval_id = setInterval(function(){
           ajaxReq.getBlock(transaction_ash, function(block_json){
-              if (block_json.blockNumber && block_json.blockNumber.startsWith('0x')){
+               // CHANGE BEHAVIOR: HIDE DIRECTLY THE WEELS
+              //if (block_json.blockNumber && block_json.blockNumber.startsWith('0x')){
                  $scope.recievedTransaction();
-              }
+             // }
           });
       },5000);  
   }  

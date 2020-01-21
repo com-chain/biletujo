@@ -323,7 +323,8 @@ var readonlytransactionsCtrl = function($scope, $locale, $sce, walletService,con
         if (index>=list.length){
             globalFuncs.generateTransPDF(walletAddress,
                                          list, 
-                                         { "date":$translate.instant("PDF_T_date").replace(/[\n\r]+/g, ''),
+                                         { "proper_name":contactservice.getContactName($scope.contacts, walletAddress),
+                                           "date":$translate.instant("PDF_T_date").replace(/[\n\r]+/g, ''),
                                            "requestAddress":$translate.instant("PDF_T_Address").replace(/[\n\r]+/g, ''),
                                            "title":$translate.instant("PDF_T_title").replace(/[\n\r]+/g, ''),
                                            "titleNext":$translate.instant("PDF_T_title_ext").replace(/[\n\r]+/g, ''),
@@ -338,6 +339,8 @@ var readonlytransactionsCtrl = function($scope, $locale, $sce, walletService,con
                                            "disclaimer":$translate.instant("PDF_T_diclaimer").replace(/[\n\r]+/g, ''),
                                            "totals":$translate.instant("PDF_T_total").replace(/[\n\r]+/g, '')
                                          }, 
+                                         $scope.start_date,
+                                         $scope.end_date,
                                          function(doc){
                                               var name= "Transactions_"+$scope.start_date.getFullYear()+'-'+($scope.start_date.getMonth()+1)+'-'+ ($scope.start_date.getDate())+"_"+$scope.end_date.getFullYear()+'-'+($scope.end_date.getMonth()+1)+'-'+ ($scope.end_date.getDate())+".pdf";
                                               doc.save(name);
@@ -369,21 +372,21 @@ var readonlytransactionsCtrl = function($scope, $locale, $sce, walletService,con
             $scope.end_time=24;
         }
         
-        
-        $scope.start_date=new Date($scope.start_date.getFullYear(), $scope.start_date.getMonth()+1,  $scope.start_date.getDate(),  $scope.start_time, 0, 0, 0);
-       
-        $scope.end_date=new Date($scope.end_date.getFullYear(), $scope.end_date.getMonth()+1,  $scope.end_date.getDate(), $scope.end_time-1, 59, 59, 0);
-        
-        
        if ($scope.end_date.getTime()<$scope.start_date.getTime()){
             var swap = $scope.start_date;
             $scope.start_date=$scope.end_date;
             $scope.end_date=swap;
        }
        
+       $scope.start_date=new Date($scope.start_date.getFullYear(), $scope.start_date.getMonth(),  $scope.start_date.getDate(),  $scope.start_time, 0, 0, 0);
+       
+       $scope.end_date=new Date($scope.end_date.getFullYear(), $scope.end_date.getMonth(),  $scope.end_date.getDate(), $scope.end_time-1, 59, 59, 0);
+        
        if ( $scope.lock_date &&  $scope.start_date.getTime() < $scope.lock_date_begin.getTime()) {
-          $scope.start_date = $scope.lock_date_begin;           
+         $scope.start_date = $scope.lock_date_begin;           
        }
+        
+       
         
         var d_start = $scope.start_date.getTime()/1000;
         var d_end = $scope.end_date.getTime()/1000;

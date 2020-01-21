@@ -3,7 +3,7 @@
 var en = function() {}
 en.code = 'en';
 en.data = {
-Version:'&middot; v2.2.2 &middot;&nbsp;',
+Version:'&middot; v2.2.4 &middot;&nbsp;',
 GP_Wait: 'Please wait… If this message persists, check your connection and click here:',
 GP_Wait_tran: 'Your request is being processed (approx. 30 sec.). You may click on the arrow and continue using the app.',
 ID_placeholder: 'Type a public address here (ex..0x88b..)',
@@ -196,7 +196,7 @@ CRI_help:'?',
 CRI_ERROR_FILE:'This is not a consultation right file.',
 OPEN_right_not_right_server:'Thoses rights are not on the right server',
 CRI_Help_title:'Consult transactions of another wallet',
-CRI_Help_text:'In order to be able to consult the transactions of another wallet, a Consultation Right must be granted to you and opened in the dedicated page. Only your wallet and wallets for which you have a valid Consultation Right will appear in the selection popup.',
+CRI_Help_text:'In order to be able to consult transactions of another wallet, a Consultation Right must be granted to you and opened on the "My Account" page.  You can only select your account and accounts for which you have a valid Consultation Right.',
 PDF_CR_Title:'Consultation Right',
 PDF_CR_Validity:'Validity:',
 PDF_CR_On:'On wallet:',
@@ -664,7 +664,7 @@ CTC_Merge_mine: 'By keeping mines ',
 
 CTC_Import_save: 'Importer',
 
-PDF_T_date: 'Date :',
+PDF_T_date: 'Export date :',
 PDF_T_Address: 'Account :',
 PDF_T_title: 'Transactions ',
 PDF_T_title_ext: '(cont.)',

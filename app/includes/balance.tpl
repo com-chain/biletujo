@@ -149,7 +149,9 @@
                          </td>
                     <tr>
 	                <tr  ng-repeat="dg in delegations track by $index" class="tr_trans">
-	                  
+	                
+	                
+	            
                          <td  width="100px">
                              <div class="identiconWrapper without_text_tr" ng-class="{'with_text_tr': dg.name!=''}">
                                  <div id="addressIdenticon" title="Address Indenticon" img="1" blockie-address="{{dg.address}}"  watch-var="delegations" ></div>
@@ -166,9 +168,8 @@
                         </td>
                        <td width="50px;">
                               <a class="btn btn-primary btn-block"  ng-click="editDeleg(dg)"  translate="CTC_edit" >edit</a>
-                        </td>
-                        <td width="50px;">
-                             <a class="btn btn-info btn-block" ng-click="deleteDeleg(dg)"  translate="CTC_delete"> delete </a>
+                
+                              <a class="btn btn-info btn-block" ng-click="deleteDeleg(dg)"  translate="CTC_delete"> delete </a>
                         </td>
                         
 	               </tr>
@@ -243,7 +244,7 @@
                       <div class="modal-body">
                           <div align="center">
                            <h4><label translate="DELEG_Delegate_Help_title">Delegate:</label></h4>
-                           <div translate="DELEG_Delegate_Help_text"></div>
+                           <div align="left" translate="DELEG_Delegate_Help_text"></div>
                              
                           </div>
                       </div>
@@ -467,7 +468,7 @@
                       <div class="modal-body">
                           <div align="center">
                            <h4><label translate="ALLOW_Allowance_Help_title">Delegate:</label></h4>
-                           <div translate="ALLOW_Allowance_Help_text"></div>
+                           <div align="left" translate="ALLOW_Allowance_Help_text"></div>
                              
                           </div>
                       </div>
@@ -929,7 +930,7 @@
                   <div class="modal-body">
                       <div align="center">
                        <h4><label translate="CRI_Consult_Help_title">Delegate:</label></h4>
-                       <div translate="CRI_Consult_Help_text"></div>
+                       <div align="left" translate="CRI_Consult_Help_text"></div>
                          
                       </div>
                   </div>

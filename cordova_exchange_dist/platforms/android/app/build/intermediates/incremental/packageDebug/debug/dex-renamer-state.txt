@@ -1,0 +1,4 @@
+#Thu Apr 11 14:40:25 CEST 2019
+base.0=/d00/perso/Open-sources/wallet/cordova_dist/platforms/android/app/build/intermediates/transforms/dexMerger/debug/0
+path.0=classes.dex
+renamed.0=classes.dex
