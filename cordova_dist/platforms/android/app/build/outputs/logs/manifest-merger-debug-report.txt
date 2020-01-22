@@ -1,10 +1,22 @@
 -- Merging decision tree log ---
+provider#de.appplant.cordova.plugin.notification.util.AssetProvider
+INJECTED from /d00/perso/Open-sources/biletujo/cordova_dist/platforms/android/app/src/main/AndroidManifest.xml:28:9-30:20
+	android:grantUriPermissions
+		ADDED from /d00/perso/Open-sources/biletujo/cordova_dist/platforms/android/app/src/main/AndroidManifest.xml:28:92-126
+	android:authorities
+		INJECTED from /d00/perso/Open-sources/biletujo/cordova_dist/platforms/android/app/src/main/AndroidManifest.xml
+		ADDED from /d00/perso/Open-sources/biletujo/cordova_dist/platforms/android/app/src/main/AndroidManifest.xml:28:19-66
+	android:exported
+		ADDED from /d00/perso/Open-sources/biletujo/cordova_dist/platforms/android/app/src/main/AndroidManifest.xml:28:67-91
+	android:name
+		ADDED from /d00/perso/Open-sources/biletujo/cordova_dist/platforms/android/app/src/main/AndroidManifest.xml:28:127-200
 manifest
-ADDED from /d00/perso/Open-sources/biletujo/cordova_dist/platforms/android/app/src/main/AndroidManifest.xml:2:1-39:12
-INJECTED from /d00/perso/Open-sources/biletujo/cordova_dist/platforms/android/app/src/main/AndroidManifest.xml:2:1-39:12
-INJECTED from /d00/perso/Open-sources/biletujo/cordova_dist/platforms/android/app/src/main/AndroidManifest.xml:2:1-39:12
-INJECTED from /d00/perso/Open-sources/biletujo/cordova_dist/platforms/android/app/src/main/AndroidManifest.xml:2:1-39:12
+ADDED from /d00/perso/Open-sources/biletujo/cordova_dist/platforms/android/app/src/main/AndroidManifest.xml:2:1-42:12
+INJECTED from /d00/perso/Open-sources/biletujo/cordova_dist/platforms/android/app/src/main/AndroidManifest.xml:2:1-42:12
+INJECTED from /d00/perso/Open-sources/biletujo/cordova_dist/platforms/android/app/src/main/AndroidManifest.xml:2:1-42:12
+INJECTED from /d00/perso/Open-sources/biletujo/cordova_dist/platforms/android/app/src/main/AndroidManifest.xml:2:1-42:12
 MERGED from [:barcodescanner-release-2.1.5:] /home/fdubath/.gradle/caches/transforms-1/files-1.1/barcodescanner-release-2.1.5.aar/387b3dc06edc969cb7e7bef8f0aa6337/AndroidManifest.xml:2:1-14:12
+MERGED from [me.leolin:ShortcutBadger:1.1.22] /home/fdubath/.gradle/caches/transforms-1/files-1.1/ShortcutBadger-1.1.22.aar/b1bec577817bad7b02d1b9d8237317d0/AndroidManifest.xml:2:1-52:12
 MERGED from [com.android.support:support-v4:27.1.0] /home/fdubath/.gradle/caches/transforms-1/files-1.1/support-v4-27.1.0.aar/47d679c4baa7690beb1f8a9acfceafe3/AndroidManifest.xml:17:1-22:12
 MERGED from [:CordovaLib] /d00/perso/Open-sources/biletujo/cordova_dist/platforms/android/CordovaLib/build/intermediates/manifests/full/debug/AndroidManifest.xml:20:1-27:12
 MERGED from [com.android.support:support-media-compat:27.1.0] /home/fdubath/.gradle/caches/transforms-1/files-1.1/support-media-compat-27.1.0.aar/da5f96d25e6fc563aef0bb23e49578fb/AndroidManifest.xml:17:1-22:12
@@ -16,9 +28,9 @@ MERGED from [android.arch.lifecycle:runtime:1.1.0] /home/fdubath/.gradle/caches/
 MERGED from [android.arch.lifecycle:livedata-core:1.1.0] /home/fdubath/.gradle/caches/transforms-1/files-1.1/livedata-core-1.1.0.aar/198fa650b96739410a8762e8e7645a68/AndroidManifest.xml:17:1-22:12
 MERGED from [android.arch.lifecycle:viewmodel:1.1.0] /home/fdubath/.gradle/caches/transforms-1/files-1.1/viewmodel-1.1.0.aar/507e5cc63380f6c51c2bf34a33669dfc/AndroidManifest.xml:17:1-22:12
 MERGED from [android.arch.core:runtime:1.1.0] /home/fdubath/.gradle/caches/transforms-1/files-1.1/runtime-1.1.0.aar/a778cb46d8aa4224958917ca852e5790/AndroidManifest.xml:17:1-22:12
-INJECTED from /d00/perso/Open-sources/biletujo/cordova_dist/platforms/android/app/src/main/AndroidManifest.xml:2:1-39:12
-INJECTED from /d00/perso/Open-sources/biletujo/cordova_dist/platforms/android/app/src/main/AndroidManifest.xml:2:1-39:12
-INJECTED from /d00/perso/Open-sources/biletujo/cordova_dist/platforms/android/app/src/main/AndroidManifest.xml:2:1-39:12
+INJECTED from /d00/perso/Open-sources/biletujo/cordova_dist/platforms/android/app/src/main/AndroidManifest.xml:2:1-42:12
+INJECTED from /d00/perso/Open-sources/biletujo/cordova_dist/platforms/android/app/src/main/AndroidManifest.xml:2:1-42:12
+INJECTED from /d00/perso/Open-sources/biletujo/cordova_dist/platforms/android/app/src/main/AndroidManifest.xml:2:1-42:12
 	package
 		ADDED from /d00/perso/Open-sources/biletujo/cordova_dist/platforms/android/app/src/main/AndroidManifest.xml:2:102-131
 		INJECTED from /d00/perso/Open-sources/biletujo/cordova_dist/platforms/android/app/src/main/AndroidManifest.xml
@@ -54,7 +66,7 @@ ADDED from /d00/perso/Open-sources/biletujo/cordova_dist/platforms/android/app/s
 	android:name
 		ADDED from /d00/perso/Open-sources/biletujo/cordova_dist/platforms/android/app/src/main/AndroidManifest.xml:4:22-64
 application
-ADDED from /d00/perso/Open-sources/biletujo/cordova_dist/platforms/android/app/src/main/AndroidManifest.xml:5:5-31:19
+ADDED from /d00/perso/Open-sources/biletujo/cordova_dist/platforms/android/app/src/main/AndroidManifest.xml:5:5-34:19
 MERGED from [:barcodescanner-release-2.1.5:] /home/fdubath/.gradle/caches/transforms-1/files-1.1/barcodescanner-release-2.1.5.aar/387b3dc06edc969cb7e7bef8f0aa6337/AndroidManifest.xml:11:5-12:19
 MERGED from [:barcodescanner-release-2.1.5:] /home/fdubath/.gradle/caches/transforms-1/files-1.1/barcodescanner-release-2.1.5.aar/387b3dc06edc969cb7e7bef8f0aa6337/AndroidManifest.xml:11:5-12:19
 	android:supportsRtl
@@ -129,67 +141,69 @@ ADDED from /d00/perso/Open-sources/biletujo/cordova_dist/platforms/android/app/s
 		ADDED from /d00/perso/Open-sources/biletujo/cordova_dist/platforms/android/app/src/main/AndroidManifest.xml:19:19-40
 	android:name
 		ADDED from /d00/perso/Open-sources/biletujo/cordova_dist/platforms/android/app/src/main/AndroidManifest.xml:19:41-109
-receiver#de.appplant.cordova.plugin.localnotification.TriggerReceiver
-ADDED from /d00/perso/Open-sources/biletujo/cordova_dist/platforms/android/app/src/main/AndroidManifest.xml:20:9-122
+receiver#cordova.plugin.localnotification.TriggerReceiver
+ADDED from /d00/perso/Open-sources/biletujo/cordova_dist/platforms/android/app/src/main/AndroidManifest.xml:20:9-110
 	android:exported
 		ADDED from /d00/perso/Open-sources/biletujo/cordova_dist/platforms/android/app/src/main/AndroidManifest.xml:20:19-43
 	android:name
-		ADDED from /d00/perso/Open-sources/biletujo/cordova_dist/platforms/android/app/src/main/AndroidManifest.xml:20:44-119
-receiver#de.appplant.cordova.plugin.localnotification.ClearReceiver
-ADDED from /d00/perso/Open-sources/biletujo/cordova_dist/platforms/android/app/src/main/AndroidManifest.xml:21:9-120
+		ADDED from /d00/perso/Open-sources/biletujo/cordova_dist/platforms/android/app/src/main/AndroidManifest.xml:20:44-107
+receiver#cordova.plugin.localnotification.ClearReceiver
+ADDED from /d00/perso/Open-sources/biletujo/cordova_dist/platforms/android/app/src/main/AndroidManifest.xml:21:9-108
 	android:exported
 		ADDED from /d00/perso/Open-sources/biletujo/cordova_dist/platforms/android/app/src/main/AndroidManifest.xml:21:19-43
 	android:name
-		ADDED from /d00/perso/Open-sources/biletujo/cordova_dist/platforms/android/app/src/main/AndroidManifest.xml:21:44-117
-activity#de.appplant.cordova.plugin.localnotification.ClickActivity
-ADDED from /d00/perso/Open-sources/biletujo/cordova_dist/platforms/android/app/src/main/AndroidManifest.xml:22:9-203
+		ADDED from /d00/perso/Open-sources/biletujo/cordova_dist/platforms/android/app/src/main/AndroidManifest.xml:21:44-105
+activity#cordova.plugin.localnotification.ClickActivity
+ADDED from /d00/perso/Open-sources/biletujo/cordova_dist/platforms/android/app/src/main/AndroidManifest.xml:22:9-191
 	android:launchMode
 		ADDED from /d00/perso/Open-sources/biletujo/cordova_dist/platforms/android/app/src/main/AndroidManifest.xml:22:44-79
 	android:exported
 		ADDED from /d00/perso/Open-sources/biletujo/cordova_dist/platforms/android/app/src/main/AndroidManifest.xml:22:19-43
 	android:theme
-		ADDED from /d00/perso/Open-sources/biletujo/cordova_dist/platforms/android/app/src/main/AndroidManifest.xml:22:154-200
+		ADDED from /d00/perso/Open-sources/biletujo/cordova_dist/platforms/android/app/src/main/AndroidManifest.xml:22:142-188
 	android:name
-		ADDED from /d00/perso/Open-sources/biletujo/cordova_dist/platforms/android/app/src/main/AndroidManifest.xml:22:80-153
-receiver#de.appplant.cordova.plugin.notification.TriggerReceiver
-ADDED from /d00/perso/Open-sources/biletujo/cordova_dist/platforms/android/app/src/main/AndroidManifest.xml:23:9-117
+		ADDED from /d00/perso/Open-sources/biletujo/cordova_dist/platforms/android/app/src/main/AndroidManifest.xml:22:80-141
+receiver#cordova.plugin.localnotification.RestoreReceiver
+ADDED from /d00/perso/Open-sources/biletujo/cordova_dist/platforms/android/app/src/main/AndroidManifest.xml:23:9-27:20
 	android:exported
 		ADDED from /d00/perso/Open-sources/biletujo/cordova_dist/platforms/android/app/src/main/AndroidManifest.xml:23:19-43
 	android:name
-		ADDED from /d00/perso/Open-sources/biletujo/cordova_dist/platforms/android/app/src/main/AndroidManifest.xml:23:44-114
-receiver#de.appplant.cordova.plugin.notification.ClearReceiver
-ADDED from /d00/perso/Open-sources/biletujo/cordova_dist/platforms/android/app/src/main/AndroidManifest.xml:24:9-115
-	android:exported
-		ADDED from /d00/perso/Open-sources/biletujo/cordova_dist/platforms/android/app/src/main/AndroidManifest.xml:24:19-43
-	android:name
-		ADDED from /d00/perso/Open-sources/biletujo/cordova_dist/platforms/android/app/src/main/AndroidManifest.xml:24:44-112
-receiver#de.appplant.cordova.plugin.localnotification.RestoreReceiver
-ADDED from /d00/perso/Open-sources/biletujo/cordova_dist/platforms/android/app/src/main/AndroidManifest.xml:25:9-29:20
-	android:exported
-		ADDED from /d00/perso/Open-sources/biletujo/cordova_dist/platforms/android/app/src/main/AndroidManifest.xml:25:19-43
-	android:name
-		ADDED from /d00/perso/Open-sources/biletujo/cordova_dist/platforms/android/app/src/main/AndroidManifest.xml:25:44-119
+		ADDED from /d00/perso/Open-sources/biletujo/cordova_dist/platforms/android/app/src/main/AndroidManifest.xml:23:44-107
 intent-filter#android.intent.action.BOOT_COMPLETED
-ADDED from /d00/perso/Open-sources/biletujo/cordova_dist/platforms/android/app/src/main/AndroidManifest.xml:26:13-28:29
+ADDED from /d00/perso/Open-sources/biletujo/cordova_dist/platforms/android/app/src/main/AndroidManifest.xml:24:13-26:29
 action#android.intent.action.BOOT_COMPLETED
-ADDED from /d00/perso/Open-sources/biletujo/cordova_dist/platforms/android/app/src/main/AndroidManifest.xml:27:17-79
+ADDED from /d00/perso/Open-sources/biletujo/cordova_dist/platforms/android/app/src/main/AndroidManifest.xml:25:17-79
 	android:name
-		ADDED from /d00/perso/Open-sources/biletujo/cordova_dist/platforms/android/app/src/main/AndroidManifest.xml:27:25-76
-activity#de.appplant.cordova.plugin.notification.ClickActivity
-ADDED from /d00/perso/Open-sources/biletujo/cordova_dist/platforms/android/app/src/main/AndroidManifest.xml:30:9-198
-	android:launchMode
-		ADDED from /d00/perso/Open-sources/biletujo/cordova_dist/platforms/android/app/src/main/AndroidManifest.xml:30:44-79
+		ADDED from /d00/perso/Open-sources/biletujo/cordova_dist/platforms/android/app/src/main/AndroidManifest.xml:25:25-76
+receiver#de.appplant.cordova.plugin.localnotification.TriggerReceiver
+ADDED from /d00/perso/Open-sources/biletujo/cordova_dist/platforms/android/app/src/main/AndroidManifest.xml:31:9-122
 	android:exported
-		ADDED from /d00/perso/Open-sources/biletujo/cordova_dist/platforms/android/app/src/main/AndroidManifest.xml:30:19-43
-	android:theme
-		ADDED from /d00/perso/Open-sources/biletujo/cordova_dist/platforms/android/app/src/main/AndroidManifest.xml:30:149-195
+		ADDED from /d00/perso/Open-sources/biletujo/cordova_dist/platforms/android/app/src/main/AndroidManifest.xml:31:19-43
 	android:name
-		ADDED from /d00/perso/Open-sources/biletujo/cordova_dist/platforms/android/app/src/main/AndroidManifest.xml:30:80-148
+		ADDED from /d00/perso/Open-sources/biletujo/cordova_dist/platforms/android/app/src/main/AndroidManifest.xml:31:44-119
+receiver#de.appplant.cordova.plugin.localnotification.ClearReceiver
+ADDED from /d00/perso/Open-sources/biletujo/cordova_dist/platforms/android/app/src/main/AndroidManifest.xml:32:9-120
+	android:exported
+		ADDED from /d00/perso/Open-sources/biletujo/cordova_dist/platforms/android/app/src/main/AndroidManifest.xml:32:19-43
+	android:name
+		ADDED from /d00/perso/Open-sources/biletujo/cordova_dist/platforms/android/app/src/main/AndroidManifest.xml:32:44-117
+activity#de.appplant.cordova.plugin.localnotification.ClickReceiver
+ADDED from /d00/perso/Open-sources/biletujo/cordova_dist/platforms/android/app/src/main/AndroidManifest.xml:33:9-205
+	android:launchMode
+		ADDED from /d00/perso/Open-sources/biletujo/cordova_dist/platforms/android/app/src/main/AndroidManifest.xml:33:44-79
+	android:exported
+		ADDED from /d00/perso/Open-sources/biletujo/cordova_dist/platforms/android/app/src/main/AndroidManifest.xml:33:19-43
+	android:theme
+		ADDED from /d00/perso/Open-sources/biletujo/cordova_dist/platforms/android/app/src/main/AndroidManifest.xml:33:154-202
+	android:name
+		ADDED from /d00/perso/Open-sources/biletujo/cordova_dist/platforms/android/app/src/main/AndroidManifest.xml:33:80-153
 uses-sdk
-ADDED from /d00/perso/Open-sources/biletujo/cordova_dist/platforms/android/app/src/main/AndroidManifest.xml:32:5-74
-INJECTED from /d00/perso/Open-sources/biletujo/cordova_dist/platforms/android/app/src/main/AndroidManifest.xml:32:5-74
+ADDED from /d00/perso/Open-sources/biletujo/cordova_dist/platforms/android/app/src/main/AndroidManifest.xml:35:5-74
+INJECTED from /d00/perso/Open-sources/biletujo/cordova_dist/platforms/android/app/src/main/AndroidManifest.xml:35:5-74
 MERGED from [:barcodescanner-release-2.1.5:] /home/fdubath/.gradle/caches/transforms-1/files-1.1/barcodescanner-release-2.1.5.aar/387b3dc06edc969cb7e7bef8f0aa6337/AndroidManifest.xml:7:5-9:41
 MERGED from [:barcodescanner-release-2.1.5:] /home/fdubath/.gradle/caches/transforms-1/files-1.1/barcodescanner-release-2.1.5.aar/387b3dc06edc969cb7e7bef8f0aa6337/AndroidManifest.xml:7:5-9:41
+MERGED from [me.leolin:ShortcutBadger:1.1.22] /home/fdubath/.gradle/caches/transforms-1/files-1.1/ShortcutBadger-1.1.22.aar/b1bec577817bad7b02d1b9d8237317d0/AndroidManifest.xml:7:5-9:41
+MERGED from [me.leolin:ShortcutBadger:1.1.22] /home/fdubath/.gradle/caches/transforms-1/files-1.1/ShortcutBadger-1.1.22.aar/b1bec577817bad7b02d1b9d8237317d0/AndroidManifest.xml:7:5-9:41
 MERGED from [com.android.support:support-v4:27.1.0] /home/fdubath/.gradle/caches/transforms-1/files-1.1/support-v4-27.1.0.aar/47d679c4baa7690beb1f8a9acfceafe3/AndroidManifest.xml:20:5-44
 MERGED from [com.android.support:support-v4:27.1.0] /home/fdubath/.gradle/caches/transforms-1/files-1.1/support-v4-27.1.0.aar/47d679c4baa7690beb1f8a9acfceafe3/AndroidManifest.xml:20:5-44
 MERGED from [:CordovaLib] /d00/perso/Open-sources/biletujo/cordova_dist/platforms/android/CordovaLib/build/intermediates/manifests/full/debug/AndroidManifest.xml:25:5-44
@@ -212,36 +226,106 @@ MERGED from [android.arch.lifecycle:viewmodel:1.1.0] /home/fdubath/.gradle/cache
 MERGED from [android.arch.lifecycle:viewmodel:1.1.0] /home/fdubath/.gradle/caches/transforms-1/files-1.1/viewmodel-1.1.0.aar/507e5cc63380f6c51c2bf34a33669dfc/AndroidManifest.xml:20:5-44
 MERGED from [android.arch.core:runtime:1.1.0] /home/fdubath/.gradle/caches/transforms-1/files-1.1/runtime-1.1.0.aar/a778cb46d8aa4224958917ca852e5790/AndroidManifest.xml:20:5-44
 MERGED from [android.arch.core:runtime:1.1.0] /home/fdubath/.gradle/caches/transforms-1/files-1.1/runtime-1.1.0.aar/a778cb46d8aa4224958917ca852e5790/AndroidManifest.xml:20:5-44
-INJECTED from /d00/perso/Open-sources/biletujo/cordova_dist/platforms/android/app/src/main/AndroidManifest.xml:32:5-74
+INJECTED from /d00/perso/Open-sources/biletujo/cordova_dist/platforms/android/app/src/main/AndroidManifest.xml:35:5-74
 	android:targetSdkVersion
-		ADDED from /d00/perso/Open-sources/biletujo/cordova_dist/platforms/android/app/src/main/AndroidManifest.xml:32:42-71
+		ADDED from /d00/perso/Open-sources/biletujo/cordova_dist/platforms/android/app/src/main/AndroidManifest.xml:35:42-71
 	android:minSdkVersion
-		ADDED from /d00/perso/Open-sources/biletujo/cordova_dist/platforms/android/app/src/main/AndroidManifest.xml:32:15-41
+		ADDED from /d00/perso/Open-sources/biletujo/cordova_dist/platforms/android/app/src/main/AndroidManifest.xml:35:15-41
 		INJECTED from /d00/perso/Open-sources/biletujo/cordova_dist/platforms/android/app/src/main/AndroidManifest.xml
 		INJECTED from /d00/perso/Open-sources/biletujo/cordova_dist/platforms/android/app/src/main/AndroidManifest.xml
 uses-permission#android.permission.CAMERA
-ADDED from /d00/perso/Open-sources/biletujo/cordova_dist/platforms/android/app/src/main/AndroidManifest.xml:33:5-65
+ADDED from /d00/perso/Open-sources/biletujo/cordova_dist/platforms/android/app/src/main/AndroidManifest.xml:36:5-65
 	android:name
-		ADDED from /d00/perso/Open-sources/biletujo/cordova_dist/platforms/android/app/src/main/AndroidManifest.xml:33:22-62
+		ADDED from /d00/perso/Open-sources/biletujo/cordova_dist/platforms/android/app/src/main/AndroidManifest.xml:36:22-62
 uses-permission#android.permission.FLASHLIGHT
-ADDED from /d00/perso/Open-sources/biletujo/cordova_dist/platforms/android/app/src/main/AndroidManifest.xml:34:5-69
+ADDED from /d00/perso/Open-sources/biletujo/cordova_dist/platforms/android/app/src/main/AndroidManifest.xml:37:5-69
 	android:name
-		ADDED from /d00/perso/Open-sources/biletujo/cordova_dist/platforms/android/app/src/main/AndroidManifest.xml:34:22-66
+		ADDED from /d00/perso/Open-sources/biletujo/cordova_dist/platforms/android/app/src/main/AndroidManifest.xml:37:22-66
 uses-feature#android.hardware.camera
-ADDED from /d00/perso/Open-sources/biletujo/cordova_dist/platforms/android/app/src/main/AndroidManifest.xml:35:5-84
+ADDED from /d00/perso/Open-sources/biletujo/cordova_dist/platforms/android/app/src/main/AndroidManifest.xml:38:5-84
 	android:required
-		ADDED from /d00/perso/Open-sources/biletujo/cordova_dist/platforms/android/app/src/main/AndroidManifest.xml:35:58-81
+		ADDED from /d00/perso/Open-sources/biletujo/cordova_dist/platforms/android/app/src/main/AndroidManifest.xml:38:58-81
 	android:name
-		ADDED from /d00/perso/Open-sources/biletujo/cordova_dist/platforms/android/app/src/main/AndroidManifest.xml:35:19-57
-uses-permission#android.permission.WRITE_EXTERNAL_STORAGE
-ADDED from /d00/perso/Open-sources/biletujo/cordova_dist/platforms/android/app/src/main/AndroidManifest.xml:36:5-81
-	android:name
-		ADDED from /d00/perso/Open-sources/biletujo/cordova_dist/platforms/android/app/src/main/AndroidManifest.xml:36:22-78
+		ADDED from /d00/perso/Open-sources/biletujo/cordova_dist/platforms/android/app/src/main/AndroidManifest.xml:38:19-57
 uses-permission#android.permission.USE_FINGERPRINT
-ADDED from /d00/perso/Open-sources/biletujo/cordova_dist/platforms/android/app/src/main/AndroidManifest.xml:37:5-74
+ADDED from /d00/perso/Open-sources/biletujo/cordova_dist/platforms/android/app/src/main/AndroidManifest.xml:39:5-74
 	android:name
-		ADDED from /d00/perso/Open-sources/biletujo/cordova_dist/platforms/android/app/src/main/AndroidManifest.xml:37:22-71
-uses-permission#android.permission.RECEIVE_BOOT_COMPLETED
-ADDED from /d00/perso/Open-sources/biletujo/cordova_dist/platforms/android/app/src/main/AndroidManifest.xml:38:5-81
+		ADDED from /d00/perso/Open-sources/biletujo/cordova_dist/platforms/android/app/src/main/AndroidManifest.xml:39:22-71
+uses-permission#android.permission.WRITE_EXTERNAL_STORAGE
+ADDED from /d00/perso/Open-sources/biletujo/cordova_dist/platforms/android/app/src/main/AndroidManifest.xml:40:5-81
 	android:name
-		ADDED from /d00/perso/Open-sources/biletujo/cordova_dist/platforms/android/app/src/main/AndroidManifest.xml:38:22-78
+		ADDED from /d00/perso/Open-sources/biletujo/cordova_dist/platforms/android/app/src/main/AndroidManifest.xml:40:22-78
+uses-permission#android.permission.WAKE_LOCK
+ADDED from /d00/perso/Open-sources/biletujo/cordova_dist/platforms/android/app/src/main/AndroidManifest.xml:41:5-68
+	android:name
+		ADDED from /d00/perso/Open-sources/biletujo/cordova_dist/platforms/android/app/src/main/AndroidManifest.xml:41:22-65
+meta-data#android.support.FILE_PROVIDER_PATHS
+ADDED from /d00/perso/Open-sources/biletujo/cordova_dist/platforms/android/app/src/main/AndroidManifest.xml:29:13-134
+	android:resource
+		ADDED from /d00/perso/Open-sources/biletujo/cordova_dist/platforms/android/app/src/main/AndroidManifest.xml:29:75-131
+	android:name
+		ADDED from /d00/perso/Open-sources/biletujo/cordova_dist/platforms/android/app/src/main/AndroidManifest.xml:29:24-74
+uses-permission#com.sec.android.provider.badge.permission.READ
+ADDED from [me.leolin:ShortcutBadger:1.1.22] /home/fdubath/.gradle/caches/transforms-1/files-1.1/ShortcutBadger-1.1.22.aar/b1bec577817bad7b02d1b9d8237317d0/AndroidManifest.xml:19:5-86
+	android:name
+		ADDED from [me.leolin:ShortcutBadger:1.1.22] /home/fdubath/.gradle/caches/transforms-1/files-1.1/ShortcutBadger-1.1.22.aar/b1bec577817bad7b02d1b9d8237317d0/AndroidManifest.xml:19:22-83
+uses-permission#com.sec.android.provider.badge.permission.WRITE
+ADDED from [me.leolin:ShortcutBadger:1.1.22] /home/fdubath/.gradle/caches/transforms-1/files-1.1/ShortcutBadger-1.1.22.aar/b1bec577817bad7b02d1b9d8237317d0/AndroidManifest.xml:20:5-87
+	android:name
+		ADDED from [me.leolin:ShortcutBadger:1.1.22] /home/fdubath/.gradle/caches/transforms-1/files-1.1/ShortcutBadger-1.1.22.aar/b1bec577817bad7b02d1b9d8237317d0/AndroidManifest.xml:20:22-84
+uses-permission#com.htc.launcher.permission.READ_SETTINGS
+ADDED from [me.leolin:ShortcutBadger:1.1.22] /home/fdubath/.gradle/caches/transforms-1/files-1.1/ShortcutBadger-1.1.22.aar/b1bec577817bad7b02d1b9d8237317d0/AndroidManifest.xml:23:5-81
+	android:name
+		ADDED from [me.leolin:ShortcutBadger:1.1.22] /home/fdubath/.gradle/caches/transforms-1/files-1.1/ShortcutBadger-1.1.22.aar/b1bec577817bad7b02d1b9d8237317d0/AndroidManifest.xml:23:22-78
+uses-permission#com.htc.launcher.permission.UPDATE_SHORTCUT
+ADDED from [me.leolin:ShortcutBadger:1.1.22] /home/fdubath/.gradle/caches/transforms-1/files-1.1/ShortcutBadger-1.1.22.aar/b1bec577817bad7b02d1b9d8237317d0/AndroidManifest.xml:24:5-83
+	android:name
+		ADDED from [me.leolin:ShortcutBadger:1.1.22] /home/fdubath/.gradle/caches/transforms-1/files-1.1/ShortcutBadger-1.1.22.aar/b1bec577817bad7b02d1b9d8237317d0/AndroidManifest.xml:24:22-80
+uses-permission#com.sonyericsson.home.permission.BROADCAST_BADGE
+ADDED from [me.leolin:ShortcutBadger:1.1.22] /home/fdubath/.gradle/caches/transforms-1/files-1.1/ShortcutBadger-1.1.22.aar/b1bec577817bad7b02d1b9d8237317d0/AndroidManifest.xml:27:5-88
+	android:name
+		ADDED from [me.leolin:ShortcutBadger:1.1.22] /home/fdubath/.gradle/caches/transforms-1/files-1.1/ShortcutBadger-1.1.22.aar/b1bec577817bad7b02d1b9d8237317d0/AndroidManifest.xml:27:22-85
+uses-permission#com.sonymobile.home.permission.PROVIDER_INSERT_BADGE
+ADDED from [me.leolin:ShortcutBadger:1.1.22] /home/fdubath/.gradle/caches/transforms-1/files-1.1/ShortcutBadger-1.1.22.aar/b1bec577817bad7b02d1b9d8237317d0/AndroidManifest.xml:28:5-92
+	android:name
+		ADDED from [me.leolin:ShortcutBadger:1.1.22] /home/fdubath/.gradle/caches/transforms-1/files-1.1/ShortcutBadger-1.1.22.aar/b1bec577817bad7b02d1b9d8237317d0/AndroidManifest.xml:28:22-89
+uses-permission#com.anddoes.launcher.permission.UPDATE_COUNT
+ADDED from [me.leolin:ShortcutBadger:1.1.22] /home/fdubath/.gradle/caches/transforms-1/files-1.1/ShortcutBadger-1.1.22.aar/b1bec577817bad7b02d1b9d8237317d0/AndroidManifest.xml:31:5-84
+	android:name
+		ADDED from [me.leolin:ShortcutBadger:1.1.22] /home/fdubath/.gradle/caches/transforms-1/files-1.1/ShortcutBadger-1.1.22.aar/b1bec577817bad7b02d1b9d8237317d0/AndroidManifest.xml:31:22-81
+uses-permission#com.majeur.launcher.permission.UPDATE_BADGE
+ADDED from [me.leolin:ShortcutBadger:1.1.22] /home/fdubath/.gradle/caches/transforms-1/files-1.1/ShortcutBadger-1.1.22.aar/b1bec577817bad7b02d1b9d8237317d0/AndroidManifest.xml:34:5-83
+	android:name
+		ADDED from [me.leolin:ShortcutBadger:1.1.22] /home/fdubath/.gradle/caches/transforms-1/files-1.1/ShortcutBadger-1.1.22.aar/b1bec577817bad7b02d1b9d8237317d0/AndroidManifest.xml:34:22-80
+uses-permission#com.huawei.android.launcher.permission.CHANGE_BADGE
+ADDED from [me.leolin:ShortcutBadger:1.1.22] /home/fdubath/.gradle/caches/transforms-1/files-1.1/ShortcutBadger-1.1.22.aar/b1bec577817bad7b02d1b9d8237317d0/AndroidManifest.xml:37:5-91
+	android:name
+		ADDED from [me.leolin:ShortcutBadger:1.1.22] /home/fdubath/.gradle/caches/transforms-1/files-1.1/ShortcutBadger-1.1.22.aar/b1bec577817bad7b02d1b9d8237317d0/AndroidManifest.xml:37:22-88
+uses-permission#com.huawei.android.launcher.permission.READ_SETTINGS
+ADDED from [me.leolin:ShortcutBadger:1.1.22] /home/fdubath/.gradle/caches/transforms-1/files-1.1/ShortcutBadger-1.1.22.aar/b1bec577817bad7b02d1b9d8237317d0/AndroidManifest.xml:38:5-92
+	android:name
+		ADDED from [me.leolin:ShortcutBadger:1.1.22] /home/fdubath/.gradle/caches/transforms-1/files-1.1/ShortcutBadger-1.1.22.aar/b1bec577817bad7b02d1b9d8237317d0/AndroidManifest.xml:38:22-89
+uses-permission#com.huawei.android.launcher.permission.WRITE_SETTINGS
+ADDED from [me.leolin:ShortcutBadger:1.1.22] /home/fdubath/.gradle/caches/transforms-1/files-1.1/ShortcutBadger-1.1.22.aar/b1bec577817bad7b02d1b9d8237317d0/AndroidManifest.xml:39:5-93
+	android:name
+		ADDED from [me.leolin:ShortcutBadger:1.1.22] /home/fdubath/.gradle/caches/transforms-1/files-1.1/ShortcutBadger-1.1.22.aar/b1bec577817bad7b02d1b9d8237317d0/AndroidManifest.xml:39:22-90
+uses-permission#android.permission.READ_APP_BADGE
+ADDED from [me.leolin:ShortcutBadger:1.1.22] /home/fdubath/.gradle/caches/transforms-1/files-1.1/ShortcutBadger-1.1.22.aar/b1bec577817bad7b02d1b9d8237317d0/AndroidManifest.xml:42:5-73
+	android:name
+		ADDED from [me.leolin:ShortcutBadger:1.1.22] /home/fdubath/.gradle/caches/transforms-1/files-1.1/ShortcutBadger-1.1.22.aar/b1bec577817bad7b02d1b9d8237317d0/AndroidManifest.xml:42:22-70
+uses-permission#com.oppo.launcher.permission.READ_SETTINGS
+ADDED from [me.leolin:ShortcutBadger:1.1.22] /home/fdubath/.gradle/caches/transforms-1/files-1.1/ShortcutBadger-1.1.22.aar/b1bec577817bad7b02d1b9d8237317d0/AndroidManifest.xml:45:5-82
+	android:name
+		ADDED from [me.leolin:ShortcutBadger:1.1.22] /home/fdubath/.gradle/caches/transforms-1/files-1.1/ShortcutBadger-1.1.22.aar/b1bec577817bad7b02d1b9d8237317d0/AndroidManifest.xml:45:22-79
+uses-permission#com.oppo.launcher.permission.WRITE_SETTINGS
+ADDED from [me.leolin:ShortcutBadger:1.1.22] /home/fdubath/.gradle/caches/transforms-1/files-1.1/ShortcutBadger-1.1.22.aar/b1bec577817bad7b02d1b9d8237317d0/AndroidManifest.xml:46:5-83
+	android:name
+		ADDED from [me.leolin:ShortcutBadger:1.1.22] /home/fdubath/.gradle/caches/transforms-1/files-1.1/ShortcutBadger-1.1.22.aar/b1bec577817bad7b02d1b9d8237317d0/AndroidManifest.xml:46:22-80
+uses-permission#me.everything.badger.permission.BADGE_COUNT_READ
+ADDED from [me.leolin:ShortcutBadger:1.1.22] /home/fdubath/.gradle/caches/transforms-1/files-1.1/ShortcutBadger-1.1.22.aar/b1bec577817bad7b02d1b9d8237317d0/AndroidManifest.xml:49:5-88
+	android:name
+		ADDED from [me.leolin:ShortcutBadger:1.1.22] /home/fdubath/.gradle/caches/transforms-1/files-1.1/ShortcutBadger-1.1.22.aar/b1bec577817bad7b02d1b9d8237317d0/AndroidManifest.xml:49:22-85
+uses-permission#me.everything.badger.permission.BADGE_COUNT_WRITE
+ADDED from [me.leolin:ShortcutBadger:1.1.22] /home/fdubath/.gradle/caches/transforms-1/files-1.1/ShortcutBadger-1.1.22.aar/b1bec577817bad7b02d1b9d8237317d0/AndroidManifest.xml:50:5-89
+	android:name
+		ADDED from [me.leolin:ShortcutBadger:1.1.22] /home/fdubath/.gradle/caches/transforms-1/files-1.1/ShortcutBadger-1.1.22.aar/b1bec577817bad7b02d1b9d8237317d0/AndroidManifest.xml:50:22-86

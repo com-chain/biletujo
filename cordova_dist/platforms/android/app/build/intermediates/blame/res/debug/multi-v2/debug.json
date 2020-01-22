@@ -143,6 +143,36 @@
             ]
         },
         {
+            "outputFile": "/d00/perso/Lemam-Wallet/automated-building/cc-wallet/cordova_dist/platforms/android/app/build/intermediates/res/merged/debug/values-kn_values-kn.arsc.flat",
+            "map": [
+                {
+                    "source": "/home/fdubath/.gradle/caches/transforms-1/files-1.1/support-compat-27.1.0.aar/13447645b4bac594153de3f9b3affe22/res/values-kn/values-kn.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "100",
+                        "endOffsets": "151"
+                    }
+                }
+            ]
+        },
+        {
+            "outputFile": "/d00/perso/Open-sources/biletujo/cordova_dist/platforms/android/app/build/intermediates/res/merged/debug/values-kk_values-kk.arsc.flat",
+            "map": [
+                {
+                    "source": "/home/fdubath/.gradle/caches/transforms-1/files-1.1/support-compat-27.1.0.aar/13447645b4bac594153de3f9b3affe22/res/values-kk/values-kk.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "100",
+                        "endOffsets": "151"
+                    }
+                }
+            ]
+        },
+        {
             "outputFile": "/d00/perso/Open-sources/biletujo/cordova_dist/platforms/android/app/build/intermediates/res/merged/debug/values-sv_values-sv.arsc.flat",
             "map": [
                 {
@@ -177,36 +207,6 @@
                         "startOffsets": "55,113,172,241,306,364,413,487,538,593,658,708,749,814,875,943,1000,1059,1125,1186,1247,1304,1359,1409,1463,1523,1580,1636,1706,1763,1815,1869,1934,1996,2076,2122,2216,2273,2324,2385,2444,2488,2538,2594,2638,2736,2836,2890,2944,3000,3108,3157,3206,3332,3374,3426,3480,3620,3681,3735,3828,3912,3983,4029,4082,4149,4228,4389,4468,4518,4601,4685,4759,4847,4950,5026,5111,5250,5339,5421,5496,5561,5638,5709,5773,5866,5968,6073,6169,6249,6326,6394,6458,6519,6697,6772,6854,6943,7016,7158,7237,7296,7380,7440,7563,7648,7723,7822,7886,8001,8075,8137,8212,8282,8352,8423,8475,8534,8592,8653,8713,8764,8831,8988",
                         "endColumns": "57,58,68,64,57,48,73,50,54,64,49,40,64,60,67,56,58,65,60,60,56,54,49,53,59,56,55,69,56,51,53,64,61,79,45,93,56,50,60,58,43,49,55,43,97,99,53,53,55,107,48,48,125,41,51,53,139,60,53,92,83,70,45,52,66,78,160,78,49,82,83,73,87,102,75,84,138,88,81,74,64,76,70,63,92,101,104,95,79,76,67,63,60,177,74,81,88,72,141,78,58,83,59,122,84,74,98,63,114,73,61,74,69,69,70,51,58,57,60,59,50,66,55,85",
                         "endOffsets": "108,167,236,301,359,408,482,533,588,653,703,744,809,870,938,995,1054,1120,1181,1242,1299,1354,1404,1458,1518,1575,1631,1701,1758,1810,1864,1929,1991,2071,2117,2211,2268,2319,2380,2439,2483,2533,2589,2633,2731,2831,2885,2939,2995,3103,3152,3201,3327,3369,3421,3475,3615,3676,3730,3823,3907,3978,4024,4077,4144,4223,4384,4463,4513,4596,4680,4754,4842,4945,5021,5106,5245,5334,5416,5491,5556,5633,5704,5768,5861,5963,6068,6164,6244,6321,6389,6453,6514,6692,6767,6849,6938,7011,7153,7232,7291,7375,7435,7558,7643,7718,7817,7881,7996,8070,8132,8207,8277,8347,8418,8470,8529,8587,8648,8708,8759,8826,8882,9069"
-                    }
-                }
-            ]
-        },
-        {
-            "outputFile": "/d00/perso/Open-sources/biletujo/cordova_dist/platforms/android/app/build/intermediates/res/merged/debug/values-kk_values-kk.arsc.flat",
-            "map": [
-                {
-                    "source": "/home/fdubath/.gradle/caches/transforms-1/files-1.1/support-compat-27.1.0.aar/13447645b4bac594153de3f9b3affe22/res/values-kk/values-kk.xml",
-                    "from": {
-                        "startLines": "2",
-                        "startColumns": "4",
-                        "startOffsets": "55",
-                        "endColumns": "100",
-                        "endOffsets": "151"
-                    }
-                }
-            ]
-        },
-        {
-            "outputFile": "/d00/perso/Lemam-Wallet/automated-building/cc-wallet/cordova_dist/platforms/android/app/build/intermediates/res/merged/debug/values-kn_values-kn.arsc.flat",
-            "map": [
-                {
-                    "source": "/home/fdubath/.gradle/caches/transforms-1/files-1.1/support-compat-27.1.0.aar/13447645b4bac594153de3f9b3affe22/res/values-kn/values-kn.xml",
-                    "from": {
-                        "startLines": "2",
-                        "startColumns": "4",
-                        "startOffsets": "55",
-                        "endColumns": "100",
-                        "endOffsets": "151"
                     }
                 }
             ]
@@ -536,7 +536,7 @@
             ]
         },
         {
-            "outputFile": "/d00/perso/Open-sources/biletujo/cordova_dist/platforms/android/app/build/intermediates/res/merged/debug/values-b+sr+Latn_values-b+sr+Latn.arsc.flat",
+            "outputFile": "/d00/perso/Lemam-Wallet/automated-building/cc-wallet/cordova_dist/platforms/android/app/build/intermediates/res/merged/debug/values-b+sr+Latn_values-b+sr+Latn.arsc.flat",
             "map": [
                 {
                     "source": "/home/fdubath/.gradle/caches/transforms-1/files-1.1/support-compat-27.1.0.aar/13447645b4bac594153de3f9b3affe22/res/values-b+sr+Latn/values-b+sr+Latn.xml",
@@ -551,7 +551,7 @@
             ]
         },
         {
-            "outputFile": "/d00/perso/Lemam-Wallet/automated-building/cc-wallet/cordova_dist/platforms/android/app/build/intermediates/res/merged/debug/values-b+sr+Latn_values-b+sr+Latn.arsc.flat",
+            "outputFile": "/d00/perso/Open-sources/biletujo/cordova_dist/platforms/android/app/build/intermediates/res/merged/debug/values-b+sr+Latn_values-b+sr+Latn.arsc.flat",
             "map": [
                 {
                     "source": "/home/fdubath/.gradle/caches/transforms-1/files-1.1/support-compat-27.1.0.aar/13447645b4bac594153de3f9b3affe22/res/values-b+sr+Latn/values-b+sr+Latn.xml",
@@ -1252,10 +1252,10 @@
             ]
         },
         {
-            "outputFile": "/d00/perso/Open-sources/wallet/cordova_dist/platforms/android/app/build/intermediates/res/merged/debug/values-lt_values-lt.arsc.flat",
+            "outputFile": "/d00/perso/Lemam-Wallet/automated-building/cc-wallet/cordova_dist/platforms/android/app/build/intermediates/res/merged/debug/values-in_values-in.arsc.flat",
             "map": [
                 {
-                    "source": "/home/fdubath/.gradle/caches/transforms-1/files-1.1/support-compat-27.1.0.aar/13447645b4bac594153de3f9b3affe22/res/values-lt/values-lt.xml",
+                    "source": "/home/fdubath/.gradle/caches/transforms-1/files-1.1/support-compat-27.1.0.aar/13447645b4bac594153de3f9b3affe22/res/values-in/values-in.xml",
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",
@@ -1267,10 +1267,10 @@
             ]
         },
         {
-            "outputFile": "/d00/perso/Lemam-Wallet/automated-building/cc-wallet/cordova_dist/platforms/android/app/build/intermediates/res/merged/debug/values-in_values-in.arsc.flat",
+            "outputFile": "/d00/perso/Open-sources/wallet/cordova_dist/platforms/android/app/build/intermediates/res/merged/debug/values-lt_values-lt.arsc.flat",
             "map": [
                 {
-                    "source": "/home/fdubath/.gradle/caches/transforms-1/files-1.1/support-compat-27.1.0.aar/13447645b4bac594153de3f9b3affe22/res/values-in/values-in.xml",
+                    "source": "/home/fdubath/.gradle/caches/transforms-1/files-1.1/support-compat-27.1.0.aar/13447645b4bac594153de3f9b3affe22/res/values-lt/values-lt.xml",
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",
@@ -1497,6 +1497,21 @@
             ]
         },
         {
+            "outputFile": "/d00/perso/Lemam-Wallet/automated-building/cc-wallet/cordova_dist/platforms/android/app/build/intermediates/res/merged/debug/values-zu_values-zu.arsc.flat",
+            "map": [
+                {
+                    "source": "/home/fdubath/.gradle/caches/transforms-1/files-1.1/support-compat-27.1.0.aar/13447645b4bac594153de3f9b3affe22/res/values-zu/values-zu.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "100",
+                        "endOffsets": "151"
+                    }
+                }
+            ]
+        },
+        {
             "outputFile": "/d00/perso/Open-sources/biletujo/cordova_dist/platforms/android/app/build/intermediates/res/merged/debug/values-th_values-th.arsc.flat",
             "map": [
                 {
@@ -1531,21 +1546,6 @@
                         "startOffsets": "55,112,171,236,298,358,407,481,534,584,651,698,741,805,867,936,994,1054,1121,1185,1246,1305,1360,1407,1463,1525,1586,1642,1707,1764,1817,1873,1937,1996,2068,2115,2193,2245,2295,2353,2409,2457,2506,2559,2606,2699,2811,2865,2921,2980,3082,3132,3182,3277,3326,3378,3432,3557,3617,3673,3768,3836,3911,3957,4009,4084,4164,4292,4371,4425,4505,4581,4660,4745,4851,4928,5013,5149,5242,5323,5397,5464,5544,5615,5683,5788,5882,5983,6082,6167,6245,6312,6372,6432,6591,6657,6728,6811,6888,7008,7078,7134,7214,7281,7402,7488,7554,7644,7714,7834,7914,7976,8042,8106,8170,8230,8280,8332,8385,8440,8496,8542,8601,8762",
                         "endColumns": "56,58,64,61,59,48,73,52,49,66,46,42,63,61,68,57,59,66,63,60,58,54,46,55,61,60,55,64,56,52,55,63,58,71,46,77,51,49,57,55,47,48,52,46,92,111,53,55,58,101,49,49,94,48,51,53,124,59,55,94,67,74,45,51,74,79,127,78,53,79,75,78,84,105,76,84,135,92,80,73,66,79,70,67,104,93,100,98,84,77,66,59,59,158,65,70,82,76,119,69,55,79,66,120,85,65,89,69,119,79,61,65,63,63,59,49,51,52,54,55,45,58,59,91",
                         "endOffsets": "107,166,231,293,353,402,476,529,579,646,693,736,800,862,931,989,1049,1116,1180,1241,1300,1355,1402,1458,1520,1581,1637,1702,1759,1812,1868,1932,1991,2063,2110,2188,2240,2290,2348,2404,2452,2501,2554,2601,2694,2806,2860,2916,2975,3077,3127,3177,3272,3321,3373,3427,3552,3612,3668,3763,3831,3906,3952,4004,4079,4159,4287,4366,4420,4500,4576,4655,4740,4846,4923,5008,5144,5237,5318,5392,5459,5539,5610,5678,5783,5877,5978,6077,6162,6240,6307,6367,6427,6586,6652,6723,6806,6883,7003,7073,7129,7209,7276,7397,7483,7549,7639,7709,7829,7909,7971,8037,8101,8165,8225,8275,8327,8380,8435,8491,8537,8596,8656,8849"
-                    }
-                }
-            ]
-        },
-        {
-            "outputFile": "/d00/perso/Lemam-Wallet/automated-building/cc-wallet/cordova_dist/platforms/android/app/build/intermediates/res/merged/debug/values-zu_values-zu.arsc.flat",
-            "map": [
-                {
-                    "source": "/home/fdubath/.gradle/caches/transforms-1/files-1.1/support-compat-27.1.0.aar/13447645b4bac594153de3f9b3affe22/res/values-zu/values-zu.xml",
-                    "from": {
-                        "startLines": "2",
-                        "startColumns": "4",
-                        "startOffsets": "55",
-                        "endColumns": "100",
-                        "endOffsets": "151"
                     }
                 }
             ]

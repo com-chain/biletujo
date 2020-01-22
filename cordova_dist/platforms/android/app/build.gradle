@@ -99,6 +99,8 @@ ext {
 
 // PLUGIN GRADLE EXTENSIONS START
 apply from: "../phonegap-plugin-barcodescanner/hellocordova-barcodescanner.gradle"
+apply from: "../cordova-plugin-badge/wallet-badge.gradle"
+apply from: "../cordova-plugin-local-notification/wallet-localnotification.gradle"
 // PLUGIN GRADLE EXTENSIONS END
 
 def hasBuildExtras1 = file('build-extras.gradle').exists()
@@ -274,7 +276,7 @@ dependencies {
     // SUB-PROJECT DEPENDENCIES START
     implementation(project(path: ":CordovaLib"))
     compile "com.android.support:support-v4:27.+"
-    compile "com.android.support:support-v4:+"
+    compile "com.android.support:support-v4:26.+"
     // SUB-PROJECT DEPENDENCIES END
 }
 

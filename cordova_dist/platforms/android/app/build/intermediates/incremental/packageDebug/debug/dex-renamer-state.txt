@@ -1,4 +1,4 @@
-#Tue Jan 21 12:45:25 CET 2020
+#Wed Jan 22 13:04:30 CET 2020
 base.0=/d00/perso/Open-sources/biletujo/cordova_dist/platforms/android/app/build/intermediates/transforms/dexMerger/debug/0
 path.0=classes.dex
 renamed.0=classes.dex

@@ -36,7 +36,6 @@
     <plugin name="cordova-plugin-app-event" spec="^1.2.1" />
     <plugin name="cordova-plugin-console" spec="^1.1.0" />
     <plugin name="cordova-plugin-device" spec="^2.0.2" />
-    <plugin name="de.appplant.cordova.plugin.local-notification" spec="^0.8.5" />
     <plugin name="cordova-plugin-compat" spec="^1.2.0" />
     <engine name="android" spec="^7.1.4" />
     <engine name="browser" spec="^5.0.4" />

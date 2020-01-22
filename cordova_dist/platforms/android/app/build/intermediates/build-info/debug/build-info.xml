@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<instant-run
+    abi="x86"
+    api-level="28"
+    build-mode="FULL"
+    density="560dpi"
+    format="10"
+    plugin-version="3.0.1"
+    timestamp="1579611186056"
+    token="-4359079562504679238"
+    verifier="FULL_BUILD_REQUESTED" >
+
+    <task
+        name="javac"
+        duration="1100" />
+    <task
+        name="instant-run-dex"
+        duration="0" />
+    <task
+        name="instant-run-transform"
+        duration="409" />
+    <task
+        name="verifier"
+        duration="54" />
+
+    <artifact
+        location="/d00/perso/Lemam-Wallet/automated_build_OS/biletujo/cordova_dist/platforms/android/app/build/intermediates/split-apk/debug/dep/dependencies.apk"
+        type="SPLIT" />
+    <artifact
+        location="/d00/perso/Lemam-Wallet/automated_build_OS/biletujo/cordova_dist/platforms/android/app/build/intermediates/split-apk/debug/slices/slice_0.apk"
+        type="SPLIT" />
+    <artifact
+        location="/d00/perso/Lemam-Wallet/automated_build_OS/biletujo/cordova_dist/platforms/android/app/build/intermediates/split-apk/debug/slices/slice_5.apk"
+        type="SPLIT" />
+    <artifact
+        location="/d00/perso/Lemam-Wallet/automated_build_OS/biletujo/cordova_dist/platforms/android/app/build/intermediates/split-apk/debug/slices/slice_1.apk"
+        type="SPLIT" />
+    <artifact
+        location="/d00/perso/Lemam-Wallet/automated_build_OS/biletujo/cordova_dist/platforms/android/app/build/intermediates/split-apk/debug/slices/slice_7.apk"
+        type="SPLIT" />
+    <artifact
+        location="/d00/perso/Lemam-Wallet/automated_build_OS/biletujo/cordova_dist/platforms/android/app/build/intermediates/split-apk/debug/slices/slice_6.apk"
+        type="SPLIT" />
+    <artifact
+        location="/d00/perso/Lemam-Wallet/automated_build_OS/biletujo/cordova_dist/platforms/android/app/build/intermediates/split-apk/debug/slices/slice_3.apk"
+        type="SPLIT" />
+    <artifact
+        location="/d00/perso/Lemam-Wallet/automated_build_OS/biletujo/cordova_dist/platforms/android/app/build/intermediates/split-apk/debug/slices/slice_4.apk"
+        type="SPLIT" />
+    <artifact
+        location="/d00/perso/Lemam-Wallet/automated_build_OS/biletujo/cordova_dist/platforms/android/app/build/intermediates/split-apk/debug/slices/slice_2.apk"
+        type="SPLIT" />
+    <artifact
+        location="/d00/perso/Lemam-Wallet/automated_build_OS/biletujo/cordova_dist/platforms/android/app/build/intermediates/split-apk/debug/slices/slice_8.apk"
+        type="SPLIT" />
+    <artifact
+        location="/d00/perso/Lemam-Wallet/automated_build_OS/biletujo/cordova_dist/platforms/android/app/build/intermediates/split-apk/debug/slices/slice_9.apk"
+        type="SPLIT" />
+    <artifact
+        location="/d00/perso/Lemam-Wallet/automated_build_OS/biletujo/cordova_dist/platforms/android/app/build/outputs/apk/debug/app-debug.apk"
+        type="SPLIT_MAIN" />
+
+    <build
+        build-mode="FULL"
+        timestamp="1579611186056"
+        verifier="FULL_BUILD_REQUESTED" >
+        <artifact
+            location="/d00/perso/Lemam-Wallet/automated_build_OS/biletujo/cordova_dist/platforms/android/app/build/intermediates/split-apk/debug/dep/dependencies.apk"
+            type="SPLIT" />
+        <artifact
+            location="/d00/perso/Lemam-Wallet/automated_build_OS/biletujo/cordova_dist/platforms/android/app/build/intermediates/split-apk/debug/slices/slice_0.apk"
+            type="SPLIT" />
+        <artifact
+            location="/d00/perso/Lemam-Wallet/automated_build_OS/biletujo/cordova_dist/platforms/android/app/build/intermediates/split-apk/debug/slices/slice_5.apk"
+            type="SPLIT" />
+        <artifact
+            location="/d00/perso/Lemam-Wallet/automated_build_OS/biletujo/cordova_dist/platforms/android/app/build/intermediates/split-apk/debug/slices/slice_1.apk"
+            type="SPLIT" />
+        <artifact
+            location="/d00/perso/Lemam-Wallet/automated_build_OS/biletujo/cordova_dist/platforms/android/app/build/intermediates/split-apk/debug/slices/slice_7.apk"
+            type="SPLIT" />
+        <artifact
+            location="/d00/perso/Lemam-Wallet/automated_build_OS/biletujo/cordova_dist/platforms/android/app/build/intermediates/split-apk/debug/slices/slice_6.apk"
+            type="SPLIT" />
+        <artifact
+            location="/d00/perso/Lemam-Wallet/automated_build_OS/biletujo/cordova_dist/platforms/android/app/build/intermediates/split-apk/debug/slices/slice_3.apk"
+            type="SPLIT" />
+        <artifact
+            location="/d00/perso/Lemam-Wallet/automated_build_OS/biletujo/cordova_dist/platforms/android/app/build/intermediates/split-apk/debug/slices/slice_4.apk"
+            type="SPLIT" />
+        <artifact
+            location="/d00/perso/Lemam-Wallet/automated_build_OS/biletujo/cordova_dist/platforms/android/app/build/intermediates/split-apk/debug/slices/slice_2.apk"
+            type="SPLIT" />
+        <artifact
+            location="/d00/perso/Lemam-Wallet/automated_build_OS/biletujo/cordova_dist/platforms/android/app/build/intermediates/split-apk/debug/slices/slice_8.apk"
+            type="SPLIT" />
+        <artifact
+            location="/d00/perso/Lemam-Wallet/automated_build_OS/biletujo/cordova_dist/platforms/android/app/build/intermediates/split-apk/debug/slices/slice_9.apk"
+            type="SPLIT" />
+        <artifact
+            location="/d00/perso/Lemam-Wallet/automated_build_OS/biletujo/cordova_dist/platforms/android/app/build/outputs/apk/debug/app-debug.apk"
+            type="SPLIT_MAIN" />
+    </build>
+
+</instant-run>

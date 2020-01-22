@@ -28,24 +28,24 @@
         "source": "/home/fdubath/.gradle/caches/transforms-1/files-1.1/barcodescanner-release-2.1.5.aar/387b3dc06edc969cb7e7bef8f0aa6337/res/layout-land/share.xml"
     },
     {
-        "merged": "/d00/perso/Open-sources/biletujo/cordova_dist/platforms/android/app/build/intermediates/res/merged/debug/drawable-xxhdpi_ic_action_remove.png.flat",
-        "source": "/d00/perso/Open-sources/biletujo/cordova_dist/platforms/android/app/src/main/res/drawable-xxhdpi/ic_action_remove.png"
-    },
-    {
         "merged": "/d00/perso/Open-sources/wallet/cordova_dist/platforms/android/app/build/intermediates/res/merged/debug/layout-v21_notification_template_icon_group.xml.flat",
         "source": "/home/fdubath/.gradle/caches/transforms-1/files-1.1/support-compat-27.1.0.aar/13447645b4bac594153de3f9b3affe22/res/layout-v21/notification_template_icon_group.xml"
+    },
+    {
+        "merged": "/d00/perso/Open-sources/biletujo/cordova_dist/platforms/android/app/build/intermediates/res/merged/debug/drawable-xxhdpi_ic_action_remove.png.flat",
+        "source": "/d00/perso/Open-sources/biletujo/cordova_dist/platforms/android/app/src/main/res/drawable-xxhdpi/ic_action_remove.png"
     },
     {
         "merged": "/d00/perso/Open-sources/biletujo/cordova_dist/platforms/android/app/build/intermediates/res/merged/debug/drawable-mdpi-v4_notification_bg_low_pressed.9.png.flat",
         "source": "/home/fdubath/.gradle/caches/transforms-1/files-1.1/support-compat-27.1.0.aar/13447645b4bac594153de3f9b3affe22/res/drawable-mdpi-v4/notification_bg_low_pressed.9.png"
     },
     {
-        "merged": "/d00/perso/Open-sources/wallet/cordova_dist/platforms/android/app/build/intermediates/res/merged/debug/drawable-land-hdpi_screen.png.flat",
-        "source": "/d00/perso/Open-sources/wallet/cordova_dist/platforms/android/app/src/main/res/drawable-land-hdpi/screen.png"
-    },
-    {
         "merged": "/d00/perso/Lemam-Wallet/automated-building/cc-wallet/cordova_dist/platforms/android/app/build/intermediates/res/merged/debug/menu_capture.xml.flat",
         "source": "/home/fdubath/.gradle/caches/transforms-1/files-1.1/barcodescanner-release-2.1.5.aar/8fd7093b17b6f2a88db79b5a925014b4/res/menu/capture.xml"
+    },
+    {
+        "merged": "/d00/perso/Open-sources/wallet/cordova_dist/platforms/android/app/build/intermediates/res/merged/debug/drawable-land-hdpi_screen.png.flat",
+        "source": "/d00/perso/Open-sources/wallet/cordova_dist/platforms/android/app/src/main/res/drawable-land-hdpi/screen.png"
     },
     {
         "merged": "/d00/perso/Open-sources/wallet/cordova_dist/platforms/android/app/build/intermediates/res/merged/debug/layout-ldpi_capture.xml.flat",
@@ -642,6 +642,10 @@
     {
         "merged": "/d00/perso/Lemam-Wallet/automated-building/cc-wallet/cordova_dist/platforms/android/app/build/intermediates/res/merged/debug/layout_fingerprint_dialog_content.xml.flat",
         "source": "/d00/perso/Lemam-Wallet/automated-building/cc-wallet/cordova_dist/platforms/android/app/src/main/res/layout/fingerprint_dialog_content.xml"
+    },
+    {
+        "merged": "/d00/perso/Open-sources/biletujo/cordova_dist/platforms/android/app/build/intermediates/res/merged/debug/xml_localnotification_provider_paths.xml.flat",
+        "source": "/d00/perso/Open-sources/biletujo/cordova_dist/platforms/android/app/src/main/res/xml/localnotification_provider_paths.xml"
     },
     {
         "merged": "/d00/perso/Open-sources/biletujo/cordova_dist/platforms/android/app/build/intermediates/res/merged/debug/layout_notification_template_big_media.xml.flat",

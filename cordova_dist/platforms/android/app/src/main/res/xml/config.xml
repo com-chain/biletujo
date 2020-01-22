@@ -25,10 +25,16 @@
         <param name="android-package" value="org.apache.cordova.device.Device" />
     </feature>
     <feature name="LocalNotification">
+        <param name="android-package" value="cordova.plugin.localnotification.LocalNotification" />
+    </feature>
+    <feature name="LocalNotification">
         <param name="android-package" value="de.appplant.cordova.plugin.localnotification.LocalNotification" />
     </feature>
     <feature name="Keyboard">
         <param name="android-package" onload="true" value="io.ionic.keyboard.IonicKeyboard" />
+    </feature>
+    <feature name="Badge">
+        <param name="android-package" value="de.appplant.cordova.plugin.badge.Badge" />
     </feature>
     <name>Biletujo</name>
     <description>
