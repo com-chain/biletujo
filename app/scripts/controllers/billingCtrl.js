@@ -389,7 +389,7 @@ var billingCtrl = function($scope, $locale, $sce, walletService, $translate) {
             });
         } else {
             var tran = JSON.parse(trans_list[index]);
-            if (tran.addr_to == address){
+            if (tran.addr_to == address.toLowerCase()){
                 // in
                 if (tran.type=='Pledge'){
                     current_result.InPlNb += 1;
@@ -419,7 +419,7 @@ var billingCtrl = function($scope, $locale, $sce, walletService, $translate) {
                        $scope.addTrans(address, trans_list, current_result, index+1, callback);
                     });
                 }
-             } else if (tran.addr_from == address){
+             } else if (tran.addr_from == address.toLowerCase()){
                  // out
                  $scope.getAccType(tran.addr_to, function(type){
                       if (tran.type=='TransferCredit'){

@@ -110,7 +110,7 @@ var readonlytransactionsCtrl = function($scope, $locale, $sce, walletService,con
     
     
     $scope.loadWatchedWallet = function() {
-        if ($scope.currentWalletAddress == $scope.watched_address) {
+        if ($scope.currentWalletAddress.toLowerCase() == $scope.watched_address.toLowerCase()) {
             $scope.show_bal=true;
             $scope.lock_date = false;
         }
@@ -137,11 +137,11 @@ var readonlytransactionsCtrl = function($scope, $locale, $sce, walletService,con
         try {
             var key = Buffer.from($scope.current_message_key.clear_priv.substring(2),'hex')
             if (memo=="") {
-              if (transaction_data.addr_to == $scope.watched_address && transaction_data.message_to != '') {
+              if (transaction_data.addr_to == $scope.watched_address.toLowerCase() && transaction_data.message_to != '') {
                   memo = messageService.decipherMessage(key, transaction_data.message_to);
               }
               
-              if (transaction_data.addr_from == $scope.watched_address && transaction_data.message_from != '') {
+              if (transaction_data.addr_from == $scope.watched_address.toLowerCase() && transaction_data.message_from != '') {
                   memo = messageService.decipherMessage(key, transaction_data.message_from);
               }
             }
@@ -191,10 +191,10 @@ var readonlytransactionsCtrl = function($scope, $locale, $sce, walletService,con
                           $scope.transactions[ind].data.currency=globalFuncs.currencies.CUR_credit_mut;
                       }
                       
-                      if ($scope.transactions[ind].data.addr_to==$scope.watched_address){
+                      if ($scope.transactions[ind].data.addr_to==$scope.watched_address.toLowerCase()){
                           $scope.tot_in +=  Number($scope.transactions[ind].data.recieved);
                       }
-                      if ($scope.transactions[ind].data.addr_from==$scope.watched_address){
+                      if ($scope.transactions[ind].data.addr_from==$scope.watched_address.toLowerCase()){
                           $scope.tot_out+= Number($scope.transactions[ind].data.sent);
                       }
                   }
@@ -447,7 +447,7 @@ var readonlytransactionsCtrl = function($scope, $locale, $sce, walletService,con
                   to = tra.to_name;
                }
                cvs=cvs+'"'+to+'","'+toAdd+'",';
-               if ($scope.watched_address==tra.addr_to){
+               if ($scope.watched_address.toLowerCase()==tra.addr_to){
                    cvs=cvs+tra.recieved/100.+',,'; 
                } else {
                    cvs=cvs+','+tra.sent/100.+',';
@@ -540,7 +540,7 @@ var readonlytransactionsCtrl = function($scope, $locale, $sce, walletService,con
                          
                          var title = $translate.instant("TRA_new_tra").replace("\n","");
                          var message = '';
-                         if (new_tra.FROM==$scope.watched_address){
+                         if (new_tra.FROM==$scope.watched_address.toLowerCase()){
                              message = message + $translate.instant("TRA_Paid").replace("\n","");
                              message = message +' '+ (new_tra.sent/100.) +' '+$scope.CUR;
                          } else {
