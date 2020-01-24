@@ -106,6 +106,7 @@
 	                <tr  ng-repeat="tran in transactions track by $index" class="tr_trans">
 	                     <td ng-show="tran.data.addr_from==watched_address">
 	                     <a ng-click="openDetails(tran.id)" style="color:black;">
+	                        <span ng-show="tran.data.status==1">*</span>
                             <span translate="TRA_Paid" class="paid"></span> {{ tran.data.sent/100. | number : 2}} {{CUR}}
 	                        <span translate="TRA_InDateOf"></span>   {{tran.data.time*1000 | date : 'yyyy-MM-dd HH:mm' }}
 	                        <span translate="TRA_To"></span> 
@@ -113,6 +114,7 @@
                          </td>
                          <td ng-show="tran.data.addr_to==watched_address">
                          <a ng-click="openDetails(tran.id)" style="color:black;">
+	                        <span ng-show="tran.data.status==1">*</span>
 	                        <span translate="TRA_Got" class="get"></span> {{ tran.data.recieved/100. | number : 2}} {{CUR}}
 	                        <span translate="TRA_InDateOf"></span>   {{tran.data.time*1000 | date : 'yyyy-MM-dd HH:mm' }}
 	                        <span translate="TRA_From"></span> 

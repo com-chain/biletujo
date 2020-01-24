@@ -181,6 +181,7 @@ var readonlytransactionsCtrl = function($scope, $locale, $sce, walletService,con
                           result.slice(ind,1);
                   } else {
                       $scope.transactions[ind]={'id': (ind), 'data':data};
+                      $scope.transactions[ind].data.status = $scope.transactions[ind].data.status;
                       $scope.transactions[ind].data.to_name = contactservice.getContactName($scope.contacts, $scope.transactions[ind].data.addr_to);
                       $scope.transactions[ind].data.from_name = contactservice.getContactName($scope.contacts, $scope.transactions[ind].data.addr_from);
                       $scope.transactions[ind].data.memo = $scope.getTransactionMessage($scope.transactions[ind].data);
@@ -263,7 +264,7 @@ var readonlytransactionsCtrl = function($scope, $locale, $sce, walletService,con
         if ($scope.selectedTrans){
           $scope.current_trans_memo =   $scope.getTransactionMessage($scope.selectedTrans); 
           $scope.ref_trans_memo = $scope.current_trans_memo ;
-          $scope.current_tran_hash_info='{"transactionHash":"'+$scope.selectedTrans.hash+'","block":"'+$scope.selectedTrans.BLOCK+'"}';
+          $scope.current_tran_hash_info='{"transactionHash":"'+$scope.selectedTrans.hash+'","block":"'+$scope.selectedTrans.block+'"}';
           $scope.transDetails.open();
         }
     }
@@ -515,6 +516,7 @@ var readonlytransactionsCtrl = function($scope, $locale, $sce, walletService,con
   
   $scope.check_interval_id=null;
   $scope.last_trans_id=null;
+  $scope.last_trans_status=-1;
   
   $scope.watch_click = function(){
      
@@ -527,7 +529,9 @@ var readonlytransactionsCtrl = function($scope, $locale, $sce, walletService,con
       } else {
          ajaxReq.getTransList($scope.watched_address,1,0,function(result){
             if (result.length==1){
-                $scope.last_trans_id=JSON.parse(result[0]).hash;
+                var res = JSON.parse(result[0]);
+                $scope.last_trans_id=res.hash;
+                $scope.last_trans_status=res.status;
             }
          });
          
@@ -535,8 +539,8 @@ var readonlytransactionsCtrl = function($scope, $locale, $sce, walletService,con
             ajaxReq.getTransList($scope.watched_address,1,0,function(result){
                 if (result.length==1){
                     var new_tra=JSON.parse(result[0]);
-                    if ($scope.last_trans_id!=new_tra.hash){
-                         $scope.last_trans_id=new_tra.hash;
+                    if ($scope.last_trans_id!=new_tra.hash || $scope.last_trans_status!=new_tra.status){
+                        
                          
                          var title = $translate.instant("TRA_new_tra").replace("\n","");
                          var message = '';
@@ -548,7 +552,11 @@ var readonlytransactionsCtrl = function($scope, $locale, $sce, walletService,con
                              message = message +' '+ (new_tra.recieved/100.) +' '+$scope.CUR;
                          }
                          
+                         if ($scope.last_trans_id!=new_tra.hash)
                          globalFuncs.notify(title,message);
+                         
+                         $scope.last_trans_id=new_tra.hash;
+                         $scope.last_trans_status=new_tra.status;
                          $scope.refreshTrans();
                     }
                    
