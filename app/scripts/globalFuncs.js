@@ -2211,7 +2211,7 @@ newImg.onload = function() {
                
                doc.text(col_35, vertical_start-1+(tran_row_height)*(row+0.5), globalFuncs.currencies.CUR);
                doc.text(col_4, vertical_start-1+(tran_row_height)*(row+0.5), (parseFloat(tra.recieved - tra.tax)/100.).toFixed(2));
-               tot_in+=tra.recieved/100.;
+               tot_in+=(tra.recieved-tra.tax)/100.;
             }
             
             if (tra.balance!='' && (index == list.length-1 || list[index+1].data.time != tra.time)){
