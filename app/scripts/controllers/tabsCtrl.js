@@ -297,6 +297,11 @@ var tabsCtrl = function($scope, $attrs, globalService, contactservice, $translat
        globalFuncs.configure();
        
        globalService.configureNoteTab(globalFuncs.hasBn());
+       
+       if (!globalFuncs.hasBn() && $scope.tabNames['note'].id==globalService.currentTab){
+            $scope.tabClick($scope.tabNames['exchange'].id);
+       }
+       
        document.title=globalFuncs.currencies.CUR_global;
     }
    

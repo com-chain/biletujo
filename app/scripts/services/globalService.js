@@ -122,7 +122,7 @@ var globalService = function($http, $httpParamSerializerJQLike) {
       url: "note",
       mew: false,
       readOnly: false,
-      exchangeOffice:true,
+      exchangeOffice:false,
       cssClass: "not"
     },
     global: {
