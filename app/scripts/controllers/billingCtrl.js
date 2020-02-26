@@ -400,20 +400,20 @@ var billingCtrl = function($scope, $locale, $sce, walletService, $translate) {
                         if (tran.type=='TransferCredit'){
                             if (type==0){
                                 current_result.InPerCmNb += 1;
-                                current_result.InPerCmTot += (tran.recieved - tran.tax)/100.0; 
+                                current_result.InPerCmTot += (tran.sent - tran.tax)/100.0; 
                             }
                             else {
                                 current_result.InProCmNb += 1;
-                                current_result.InProCmTot += (tran.recieved - tran.tax)/100.0; 
+                                current_result.InProCmTot += (tran.sent - tran.tax)/100.0; 
                             }
                         } else if (tran.type=='Transfer'){
                             if (type==0){
                                 current_result.InPerNaNb += 1;
-                                current_result.InPerNaTot += (tran.recieved - tran.tax)/100.0; 
+                                current_result.InPerNaTot += (tran.sent - tran.tax)/100.0; 
                             }
                             else {
                                 current_result.InProNaNb += 1;
-                                current_result.InProNaTot += (tran.recieved - tran.tax)/100.0; 
+                                current_result.InProNaTot += (tran.sent - tran.tax)/100.0; 
                             }
                        }
                        $scope.addTrans(address, trans_list, current_result, index+1, callback);
