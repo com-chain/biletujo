@@ -107,7 +107,7 @@
 	                     <td ng-show="tran.data.addr_from==watched_address">
 	                     <a ng-click="openDetails(tran.id)" style="color:black;">
 	                        <span ng-show="tran.data.status==1">*</span>
-                            <span translate="TRA_Paid" class="paid"></span> {{ tran.data.sent/100. | number : 2}} {{CUR}}
+                            <span translate="TRA_Paid" class="paid"></span> {{ (tran.data.recieved + tran.data.tax)/100. | number : 2}} {{CUR}}
 	                        <span translate="TRA_InDateOf"></span>   {{tran.data.time*1000 | date : 'yyyy-MM-dd HH:mm' }}
 	                        <span translate="TRA_To"></span> 
 	                      </a>
@@ -209,7 +209,7 @@
                             <div><label translate="TRA_details_date">date</label> {{selectedTrans.time*1000 | date : 'yyyy-MM-dd HH:mm' }}</div>
                             
                             <div ng-show="selectedTrans.addr_from==watched_address"> 
-                                <div><strong><span translate="TRA_Paid" class="paid"></span> &nbsp;{{selectedTrans.sent/100. | number : 2}}  {{selectedTrans.currency}}</strong></div>
+                                <div><strong><span translate="TRA_Paid" class="paid"></span> &nbsp;{{(selectedTrans.recieved + selectedTrans.tax)/100. | number : 2}}  {{selectedTrans.currency}}</strong></div>
                                 <div><strong translate="TRA_To"></strong> {{selectedTrans.to_name }}</div>
                                 <span> 
                                      <div ng-show="selectedTrans.addr_from==watched_address" class="identiconWrapper without_text_tr">
@@ -276,7 +276,7 @@
                               </div>
                               
                               <div><label translate="TRA_details_amount"></label> </div>
-                              <div><strong><span translate="TRA_Paid" class="paid"></span> &nbsp;{{selectedTrans.sent/100. | number : 2}}  {{selectedTrans.currency}}</strong></div>
+                              <div><strong><span translate="TRA_Paid" class="paid"></span> &nbsp;{{(selectedTrans.recieved + selectedTrans.tax)/100. | number : 2}}  {{selectedTrans.currency}}</strong></div>
                               <div><strong><span translate="TRA_Got" class="get"></span>&nbsp;{{selectedTrans.recieved/100. | number : 2}}  {{selectedTrans.currency}}</strong></div>
                             
                               <div><label translate="TRA_details_date">date</label> {{selectedTrans.time*1000 | date : 'yyyy-MM-dd HH:mm' }}</div>

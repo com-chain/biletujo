@@ -400,20 +400,20 @@ var billingCtrl = function($scope, $locale, $sce, walletService, $translate) {
                         if (tran.type=='TransferCredit'){
                             if (type==0){
                                 current_result.InPerCmNb += 1;
-                                current_result.InPerCmTot += (tran.sent - tran.tax)/100.0; 
+                                current_result.InPerCmTot += (tran.recieved )/100.0; 
                             }
                             else {
                                 current_result.InProCmNb += 1;
-                                current_result.InProCmTot += (tran.sent - tran.tax)/100.0; 
+                                current_result.InProCmTot += (tran.recieved )/100.0; 
                             }
                         } else if (tran.type=='Transfer'){
                             if (type==0){
                                 current_result.InPerNaNb += 1;
-                                current_result.InPerNaTot += (tran.sent - tran.tax)/100.0; 
+                                current_result.InPerNaTot += (tran.recieved )/100.0; 
                             }
                             else {
                                 current_result.InProNaNb += 1;
-                                current_result.InProNaTot += (tran.sent - tran.tax)/100.0; 
+                                current_result.InProNaTot += (tran.recieved )/100.0; 
                             }
                        }
                        $scope.addTrans(address, trans_list, current_result, index+1, callback);
@@ -425,20 +425,20 @@ var billingCtrl = function($scope, $locale, $sce, walletService, $translate) {
                       if (tran.type=='TransferCredit'){
                             if (type==0){
                                 current_result.OutPerCmNb += 1;
-                                current_result.OutPerCmTot += tran.sent/100.0; 
+                                current_result.OutPerCmTot += (tran.recieved + tran.tax)/100.0; 
                             }
                             else {
                                 current_result.OutProCmNb += 1;
-                                current_result.OutProCmTot += tran.sent/100.0; 
+                                current_result.OutProCmTot += (tran.recieved + tran.tax)/100.0; 
                             }
                         } else if (tran.type=='Transfer'){
                             if (type==0){
                                 current_result.OutPerNaNb += 1;
-                                current_result.OutPerNaTot += tran.sent/100.0; 
+                                current_result.OutPerNaTot += (tran.recieved + tran.tax)/100.0; 
                             }
                             else {
                                 current_result.OutProNaNb += 1;
-                                current_result.OutProNaTot += tran.sent/100.0; 
+                                current_result.OutProNaTot += (tran.recieved + tran.tax)/100.0; 
                             }
                        }
                        $scope.addTrans(address, trans_list, current_result, index+1, callback);
