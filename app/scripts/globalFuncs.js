@@ -1509,7 +1509,7 @@ globalFuncs.stripTags = function(str) {
 
 globalFuncs.isStrongPass = function(password) {
     
-    var regularExpression = /^(?=.*\d)(?=.*[a-zA-Z])(?=.*[\W_])[a-zA-Z\d\W_]{8,25}$/;
+    var regularExpression = /^(?=.*\d)(?=.*[a-zA-Z])(?=.*[\W_])[a-zA-Z\d\W_]{8,200}$/;
     return password.length >= 8 && regularExpression.test(password);
 }
 globalFuncs.hexToAscii = function(hex) {
