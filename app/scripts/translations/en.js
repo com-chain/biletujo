@@ -3,7 +3,7 @@
 var en = function() {}
 en.code = 'en';
 en.data = {
-Version:'&middot; v2.2.5 &middot;&nbsp;',
+Version:'&middot; v2.2.8 &middot;&nbsp;',
 GP_Wait: 'Please wait… If this message persists, check your connection and click here:',
 GP_Wait_tran: 'Your request is being processed (approx. 30 sec.). You may click on the arrow and continue using the app.',
 ID_placeholder: 'Type a public address here (ex..0x88b..)',
