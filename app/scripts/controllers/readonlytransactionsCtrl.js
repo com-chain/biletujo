@@ -328,6 +328,7 @@ var readonlytransactionsCtrl = function($scope, $locale, $sce, walletService,con
                                            "date":$translate.instant("PDF_T_date").replace(/[\n\r]+/g, ''),
                                            "requestAddress":$translate.instant("PDF_T_Address").replace(/[\n\r]+/g, ''),
                                            "title":$translate.instant("PDF_T_title").replace(/[\n\r]+/g, ''),
+                                           "to":$translate.instant("PDF_T_title_to").replace(/[\n\r]+/g, ''),
                                            "titleNext":$translate.instant("PDF_T_title_ext").replace(/[\n\r]+/g, ''),
                                            "initBal":$translate.instant("PDF_T_initial_b").replace(/[\n\r]+/g, ''),
                                            "finalBal":$translate.instant("PDF_T_final_b").replace(/[\n\r]+/g, ''),

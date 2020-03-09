@@ -2039,7 +2039,11 @@ globalFuncs.generateTagsPDF = function(walletAddress, tags, callback){
 }
 
 
-
+globalFuncs.formatDate = function(date) {
+    var day = "00"+date.getDate().toString();
+    var month = "00"+(date.getMonth()+1).toString();
+    return day.substring(day.length-2) + "." + month.substring(month.length-2)+ "." + date.getFullYear().toString();
+}
 
 globalFuncs.generateTransPDF = function(walletAddress, list, texts, start_date, end_date, callback){
  var newImg = new Image();
@@ -2091,7 +2095,7 @@ newImg.onload = function() {
         doc.setFontSize(13);
         
         doc.text(margin_left, 40, texts.date);
-        doc.text(60, 40, today.toISOString().slice(0,10)+' '+today.toTimeString().slice(0,8));
+        doc.text(60, 40, globalFuncs.formatDate(today)+' '+today.toTimeString().slice(0,8));
         doc.text(margin_left, 50, texts.requestAddress);
         doc.text(73, 48, [walletAddress.substring(0,21),walletAddress.substring(21)]);
         doc.addImage(imgAddData, 'PNG', 60, 44, 10, 10);
@@ -2105,7 +2109,7 @@ newImg.onload = function() {
         
         
         doc.setFontSize(18)
-        var title = texts.title;
+        var title = texts.title + globalFuncs.formatDate(start_date) + texts.to + globalFuncs.formatDate(end_date);
         if (page>0){
             title = title+' '+texts.titleNext;
         }
@@ -2115,7 +2119,7 @@ newImg.onload = function() {
         
          if (list.length>0){
             if ( list[0].data.balance!=''){
-                doc.text(margin_left, 73, texts.initBal+start_date.toISOString().slice(0,10) +' '+start_date.toTimeString().slice(0,2)+':00 ');
+                doc.text(margin_left, 73, texts.initBal+globalFuncs.formatDate(start_date) +' '+start_date.toTimeString().slice(0,2)+':00 ');
                 doc.text(73, 73, globalFuncs.currencies.CUR);
                 
                 var tra_date = list[0].data.time;
@@ -2135,7 +2139,7 @@ newImg.onload = function() {
             }
             
             if ( list[list.length-1].data.balance!=''){
-                doc.text(margin_left, 77, texts.finalBal+end_date.toISOString().slice(0,10) +' '+end_date.toTimeString().slice(0,2)+':59');
+                doc.text(margin_left, 77, texts.finalBal+globalFuncs.formatDate(end_date) +' '+end_date.toTimeString().slice(0,2)+':59');
                 doc.text(73, 77, globalFuncs.currencies.CUR);
                 doc.text(83, 77, parseFloat(list[list.length-1].data.balance).toFixed(2));
             }
@@ -2157,7 +2161,7 @@ newImg.onload = function() {
         for (var index = (page*tran_on_page); index < Math.min(list.length,(page+1)*tran_on_page); ++index){
             var tra=list[index].data;
             var date = new Date(tra.time*1000);
-            doc.text(margin_left, vertical_start+tran_row_height*row, date.toISOString().slice(0,10));
+            doc.text(margin_left, vertical_start+tran_row_height*row, globalFuncs.formatDate(date));
             doc.text(margin_left, vertical_start-1+tran_row_height*(row+0.5), ' '+date.toTimeString().slice(0,8));
             
             
@@ -2243,7 +2247,7 @@ newImg.onload = function() {
    
     if (list && list.length>0 && list[list.length-1].data.balance!=''){
         var date_final = new Date(list[list.length-1].data.time*1000);
-        doc.text(margin_left, vertical_start+tran_row_height*(row+0.5), texts.finalBal+date_final.toISOString().slice(0,10) +' '+date_final.toTimeString().slice(0,2)+':59');
+        doc.text(margin_left, vertical_start+tran_row_height*(row+0.5), texts.finalBal+globalFuncs.formatDate(date_final) +' '+date_final.toTimeString().slice(0,2)+':59');
         doc.text(73, vertical_start+tran_row_height*(row+0.5), globalFuncs.currencies.CUR);
         doc.text(83, vertical_start+tran_row_height*(row+0.5), parseFloat(list[list.length-1].data.balance).toFixed(2));
     }
