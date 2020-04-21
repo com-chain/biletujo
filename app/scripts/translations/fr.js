@@ -250,6 +250,7 @@ TRAN_executed_text: 'Vous avez transmis l\'ordre de payer',
 TRAN_rejected_request_text: 'Vous avez refusé de payer',
 TRAN_tans_id: 'Identifiant de la transaction:',
 TRAN_NotPossible: 'Avoir insuffisant pour la transaction',
+TRAN_NotPossibleWithoutSplit: 'Les payement en ligne ne peuvent pas être passé en plusieurs transaction. Avoir insuffisant pour une transaction unique.',
 TRAN_SplitedTrans: 'Le paiement sera passé en plusieurs transactions',
 
 TRAN_Origine: 'Origine:',
@@ -553,6 +554,8 @@ TRA_details_title: 'Détails de la transaction:',
 TRA_details_block: 'Faisant partie du block: ',
 TRA_details_date: 'Date:',
 TRA_details_amount: 'Montant transféré:',
+TRA_Registered: 'Transaction enregistrée',
+TRA_Confirmed: 'Transaction effectuée',
 TRA_Close: 'Fermer',
 TRA_memo_title: 'Mémo:',
 TRA_no_valid_memo: 'Ce fichier ne contient pas de mémo valide.',
@@ -703,6 +706,8 @@ STR_Lock_wallet: 'Verrouiller',
 STR_Switch_title: 'Ouvrir un autre compte',
 STR_LockCancel: 'Annuler',
 /********************************************************/
+/* server Error Messages */
+Account_Locked_Error: 'L\'autre compte n\'est pas un compte actif.',
 
 /* Error Messages */
 ERROR_1: 'Veuillez entrer un montant valide.',

@@ -103,7 +103,7 @@
                         <p translate="TRA_NoTrans" >Aucunes</p>
                      </td>
 	               </tr>
-	                <tr  ng-repeat="tran in transactions track by $index" class="tr_trans">
+	                <tr  ng-repeat="tran in transactions track by $index" class="tr_trans" ng-class="{'pending': tran.data.status==1}">
 	                     <td ng-show="tran.data.addr_from==watched_address">
 	                     <a ng-click="openDetails(tran.id)" style="color:black;">
 	                        <span ng-show="tran.data.status==1">*</span>
@@ -204,6 +204,11 @@
                       <div class="modal-body">
                           <div align="center">
                             <h4><label translate="TRA_details_title">Transaction details</label></h4>
+                            <h4>
+                                <span ng-show="current_tran_status==1" translate="TRA_Registered" class="pending"></span>
+                                <span ng-show="current_tran_status==0" translate="TRA_Confirmed"></span>
+                            </h4>
+                            
                             <div  qr-code="{{current_tran_hash_info}}" watch-var="current_tran_hash_info" width="100%" style=" max-width: 200px; margin-right:auto; margin-left:auto;" ></div><br/>
 
                             <div><label translate="TRA_details_date">date</label> {{selectedTrans.time*1000 | date : 'yyyy-MM-dd HH:mm' }}</div>

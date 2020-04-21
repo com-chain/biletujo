@@ -272,7 +272,7 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, me
         globalFuncs.TransfertNant($scope.wallet, $scope.tokenTx.to, $scope.elemanAmmount, data,  function(res){
                     if (res.isError){
                         globalFuncs.hideLoadingWaiting();  
-				        $scope.err_message = $sce.trustAsHtml(globalFuncs.getDangerText(res.error));
+				        $scope.err_message = $sce.trustAsHtml(globalFuncs.getDangerText($translate.instant(res.error)));
                         $scope.sendTxModal.open();
                     } else {
 
@@ -311,7 +311,7 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, me
         globalFuncs.TransfertCM($scope.wallet, $scope.tokenTx.to, $scope.lemanexAmmount,incr, data, function(res){
                     if (res.isError){
                         globalFuncs.hideLoadingWaiting();  
-				        $scope.err_message = $sce.trustAsHtml(globalFuncs.getDangerText(res.error));
+				        $scope.err_message = $sce.trustAsHtml(globalFuncs.getDangerText($translate.instant(res.error)));
                         $scope.sendTxModal.open();
                     } else {
                         $scope.waitTransaction(res.data);
@@ -411,7 +411,7 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, me
     $scope.delegationSendCallBack = function(res){
          if (res.isError){
             globalFuncs.hideLoadingWaiting();  
-			$scope.err_message = $sce.trustAsHtml(globalFuncs.getDangerText(res.error));
+			$scope.err_message = $sce.trustAsHtml(globalFuncs.getDangerText($translate.instant(res.error)));
             $scope.sendTxModal.open();
          } else {
             $scope.err_message = $translate.instant("TRAN_Done");
@@ -453,12 +453,29 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, me
                    $scope.setBalance(false);
                    // Compute the splitting 
                    var value_cent = Math.round($scope.tokenTx.value * 100);
-                   var splitted = globalFuncs.getSplitting($scope.balanceEL, $scope.balanceCM, $scope.limitCMm, value_cent);
-                   if (splitted['possible']){
-                       $scope.elemanAmmount=splitted['nant'];
-                       $scope.lemanexAmmount=splitted['cm'];
+                   
+                   if (!$scope.isShopTx){
+                   
+                       var splitted = globalFuncs.getSplitting($scope.balanceEL, $scope.balanceCM, $scope.limitCMm, value_cent);
+                       if (splitted['possible']){
+                           $scope.elemanAmmount=splitted['nant'];
+                           $scope.lemanexAmmount=splitted['cm'];
+                       } else {
+                           throw 'TRAN_NotPossible';
+                       }
                    } else {
-                       throw 'TRAN_NotPossible';
+                       var cur_tran_type = globalFuncs.getTransCurrency($scope.balanceEL, $scope.balanceCM, $scope.limitCMm, value_cent);
+                       if (cur_tran_type=='nant'){
+                           $scope.elemanAmmount=value_cent;
+                           $scope.lemanexAmmount=0;
+                       } else if (cur_tran_type=='cm'){
+                           $scope.elemanAmmount=0;
+                           $scope.lemanexAmmount=value_cent;
+                       } else if ($scope.balanceEL + $scope.balanceCM - $scope.limitCMm >= value_cent){
+                           throw 'TRAN_NotPossibleWithoutSplit';
+                       } else {
+                           throw 'TRAN_NotPossible';
+                       }
                    }
                    
 			       $scope.generateTxx();
@@ -568,21 +585,7 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, me
      
     // contacts
     $scope.contactPop = function() {
-    //DBG  
-    /* 
-       var crypted = messageService.cipherMessage($scope.wallet.getPublicKey(),"message");
-       var recovered = messageService.decipherMessage($scope.wallet.getPrivateKey(),crypted);
-            
-    
-     
-      messageService.ensureWalletMessageKey($scope.wallet, $scope.filePassword, 'Message',  function(complete_wall) {
-         if (complete_wall===undefined) {
-             
-         } 
-          
-      });
-      
-     */  //DBG
+
         
         
         
@@ -1141,7 +1144,7 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, me
     $scope.dissmissRejected =function(address){
         globalFuncs.DissmissRejectedInfo($scope.wallet,address, function(res){
              if (res.isError){
-                    $scope.transPendingStatus=$sce.trustAsHtml(globalFuncs.getDangerText(res.error));
+                    $scope.transPendingStatus=$sce.trustAsHtml(globalFuncs.getDangerText($translate.instant(res.error)));
              } else {
                 $scope.transPendingStatus=$sce.trustAsHtml($translate.instant("TRA_Accepted_dissmissed"));
                // $scope.conf_dissModal.open();
@@ -1155,7 +1158,7 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, me
     $scope.dissmissAccepted =function(address){
         globalFuncs.DissmissAcceptedInfo($scope.wallet,address, function(res){
               if (res.isError){
-                    $scope.transPendingStatus=$sce.trustAsHtml(globalFuncs.getDangerText(res.error));
+                    $scope.transPendingStatus=$sce.trustAsHtml(globalFuncs.getDangerText($translate.instant(res.error)));
              } else {
                 $scope.transPendingStatus=$sce.trustAsHtml($translate.instant("TRA_Accepted_dissmissed"));
                 $scope.trans_message = $translate.instant("TRA_Accepted_dissmissed") + " "+ $translate.instant("GP_Wait_tran");
@@ -1367,7 +1370,7 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, me
             globalFuncs.PayRequestCM($scope.wallet, $scope.transaction_to ,  Math.round($scope.transaction_amount*100), data,  function(res){
                    globalFuncs.hideLoadingWaiting();  
                    if (res.isError){
-                       $scope.tr_err_message=$sce.trustAsHtml(globalFuncs.getDangerText(res.error));
+                       $scope.tr_err_message=$sce.trustAsHtml(globalFuncs.getDangerText($translate.instant(res.error)));
                        $scope.sendTransactionModal.open();
                    } else {
                        $scope.tr_err_message=$translate.instant("TRAN_Done");
@@ -1381,7 +1384,7 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, me
             globalFuncs.PayRequestNant($scope.wallet, $scope.transaction_to ,  Math.round($scope.transaction_amount*100), data, function(res){
                    globalFuncs.hideLoadingWaiting();  
                    if (res.isError){
-                       $scope.tr_err_message=$sce.trustAsHtml(globalFuncs.getDangerText(res.error));
+                       $scope.tr_err_message=$sce.trustAsHtml(globalFuncs.getDangerText($translate.instant(res.error)));
                        $scope.sendTransactionModal.open();
                    } else {
                        $scope.tr_err_message=$translate.instant("TRAN_Done");
@@ -1420,7 +1423,7 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, me
             globalFuncs.RejectRequest($scope.wallet, $scope.transaction_to , function(res){
                  globalFuncs.hideLoadingWaiting();  
                  if (res.isError){
-                    $scope.err_reject_message=$sce.trustAsHtml(globalFuncs.getDangerText(res.error));
+                    $scope.err_reject_message=$sce.trustAsHtml(globalFuncs.getDangerText($translate.instant(res.error)));
                     $scope.rejectTransactionModal.open();
                  } else {
                     $scope.waitTransaction(res.data);

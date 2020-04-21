@@ -247,6 +247,7 @@ TRAN_executed_text: 'You have sent a payment order',
 TRAN_rejected_request_text: 'You rejected a payment request',
 TRAN_tans_id: 'Transaction ID:',
 TRAN_NotPossible: 'Insufficient funding for payment',
+TRAN_NotPossibleWithoutSplit: 'Online payment can not be made in several transactions. Insufficient funding for a single payment.',
 TRAN_SplitedTrans: 'Payment will be made in several transactions',
 
 TRAN_Origine: 'Source:',
@@ -550,6 +551,8 @@ TRA_details_title: 'Transaction details:',
 TRA_details_block: 'Par of block number: ',
 TRA_details_date: 'Date:',
 TRA_details_amount: 'Amount transferred:',
+TRA_Registered: 'Transaction registered',
+TRA_Confirmed: 'Transaction completed',
 TRA_Close: 'Close',
 TRA_memo_title: 'Notes:',
 TRA_no_valid_memo: 'This file does not contain valid Notes.',
@@ -702,6 +705,10 @@ STR_Lock_wallet: 'Close',
 STR_Switch_title: 'Open another wallet',
 STR_LockCancel: 'Cancel',
 /********************************************************/
+
+/* server Error Messages */
+Account_Locked_Error: 'The other account is not active.',
+
   /* Error Messages */
   ERROR_1:              'Please enter valid amount.',
   ERROR_2:              'Your password must be at least 9 characters. Please ensure it is a strong password. ',

@@ -265,6 +265,7 @@ var readonlytransactionsCtrl = function($scope, $locale, $sce, walletService,con
           $scope.current_trans_memo =   $scope.getTransactionMessage($scope.selectedTrans); 
           $scope.ref_trans_memo = $scope.current_trans_memo ;
           $scope.current_tran_hash_info='{"transactionHash":"'+$scope.selectedTrans.hash+'","block":"'+$scope.selectedTrans.block+'"}';
+          $scope.current_tran_status=$scope.selectedTrans.status;
           $scope.transDetails.open();
         }
     }
