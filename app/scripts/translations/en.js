@@ -103,6 +103,11 @@ VIEW_close_title: 'Close this wallet',
 VIEW_close: 'Close',
 
 
+GEN_Unlock_title: 'Request un-locking of this wallet',
+GEN_btn_Unlock: 'Request',
+GEN_Unlock_confirm: 'The un-locking request has been sent.',
+
+
 QRS_title:'QR with reference and amount',
 QRS_Description:'Reference:',
 QRS_Description_holder:'Your reference',

@@ -101,6 +101,10 @@
          <textarea cols="9" rows="5" class="adrtxt" disabled>{{wallet.getChecksumAddressString()}} </textarea>
         </div>
        </div>
+       
+      
+       
+       
        <div class="row "> 
         <div class="col-md-12 ">
          <label translate="VIEW_Save_title" >Sauvegarde de votre portefeuille : </label>
@@ -138,6 +142,19 @@
       <div id="qrcode_print1"></div>
       <div id="qrcode_print2"></div>
       <div id="qrcode_print3"></div>
+      
+       <div class="row " ng-show="has_unlock"> 
+        <div class="col-md-12 ">
+         <label translate="GEN_Unlock_title" >UnlockTitle : </label>
+        </div>
+         <div class="col-md-12 ">
+         <a class="btn btn-info btn-block btnAction" ng-click="request_unlock()" translate="GEN_btn_Unlock">Unlock</a>
+        </div>
+         <div class="col-md-12 ">
+         &nbsp;
+         </div>
+       </div>
+      
        
        <div class="row "> 
         <div class="col-md-12 ">

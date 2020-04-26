@@ -948,6 +948,18 @@ globalFuncs.getCondUrl = function(){
     }
 }
 
+globalFuncs.getUnlockUrl = function(){
+    try{
+        if (globalFuncs.isMulti()){
+            return  JSON.parse(localStorage.getItem('ComChainServerConf')).server.url_unlock;
+         } else {
+            return conf_locale.server.url_unlock;
+        }
+    } catch(e){
+        return "";
+    }
+}
+
 globalFuncs.getLang = function(){
     if (globalFuncs.isMulti()){
         try{

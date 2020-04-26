@@ -26,6 +26,9 @@ var walletGenCtrl = function($scope, $globalService, $translate, walletService, 
     
     $scope.cond1=false;
     $scope.cond2=false;
+    
+    $scope.unlock_url = globalFuncs.getUnlockUrl();
+    $scope.has_unlock = $scope.unlock_url.length;
     //////////////////////
     
     // Show the page
@@ -226,7 +229,16 @@ var walletGenCtrl = function($scope, $globalService, $translate, walletService, 
                 pdf_doc.save(file_name); 
           });
        },100); 
-	}  
+	} 
+    
+    
+   // Send the Unlock request
+    $scope.request_unlock = function(){
+        ajaxReq.requestUnlock($scope.wallet.getAddressString(),$scope.unlock_url,function(data){alert($translate.instant("GEN_Unlock_confirm"))});
+    }
+
 };
+
+
 
 module.exports = walletGenCtrl;

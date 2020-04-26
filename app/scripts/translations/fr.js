@@ -104,6 +104,10 @@ VIEW_print_adr: 'Adresse publique (.pdf)',
 VIEW_close_title: 'Verrouiller votre compte:',
 VIEW_close: 'Verouiller',
 
+GEN_Unlock_title: 'Demander le déverrouillage de ce compte',
+GEN_btn_Unlock: 'Demander',
+GEN_Unlock_confirm: 'La demande de déverrouillage a été transmise',
+
 
 
 QRS_title:'QR avec référence et montant',

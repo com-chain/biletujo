@@ -170,6 +170,14 @@
 	    });
     }
     
+     ajaxReq.requestUnlock = function(address, url, callback) {
+        var data = {};
+        data["address"]=address;
+        this.http.post(url, this.postSerializer(data), this.config).then(function(data) {
+		    callback(data);
+	    });
+    }
+    
     ajaxReq.getReqMessages = function(add_from, add_to, callback) {
         var query_string = '?add_req='+encodeURIComponent(add_from)+ '&add_cli='+encodeURIComponent(add_to);
 
