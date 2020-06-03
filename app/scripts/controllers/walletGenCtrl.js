@@ -91,6 +91,9 @@ var walletGenCtrl = function($scope, $globalService, $translate, walletService, 
                                    globalFuncs.configure();
                                    $globalService.configureNoteTab(globalFuncs.hasBn());
                                    $scope.CUR=globalFuncs.currencies.CUR;
+                                   
+                                   $scope.unlock_url = globalFuncs.getUnlockUrl();
+                                   $scope.has_unlock = $scope.unlock_url.length;
                                }  else {
                                    $scope.message_creation=globalFuncs.getDangerText($translate.instant("GEN_Token_validation_KO"));
                                } 
