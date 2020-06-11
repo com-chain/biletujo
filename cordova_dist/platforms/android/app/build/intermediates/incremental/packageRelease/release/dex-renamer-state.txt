@@ -1,4 +1,0 @@
-#Wed Apr 10 10:51:44 CEST 2019
-base.0=/d00/perso/Lemam-Wallet/automated-building/cc-wallet/cordova_dist/platforms/android/app/build/intermediates/transforms/dex/release/0
-path.0=classes.dex
-renamed.0=classes.dex

@@ -1,8 +1,8 @@
 <component name="libraryTable">
   <library name="barcodescanner-release-2.1.5:@aar">
     <CLASSES>
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/barcodescanner-release-2.1.5.aar/ec9701cf524fdbf3d548500ec432029f/res" />
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/barcodescanner-release-2.1.5.aar/ec9701cf524fdbf3d548500ec432029f/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/barcodescanner-release-2.1.5.aar/b91f33491154224f255cae70cb8b039e/res" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/barcodescanner-release-2.1.5.aar/b91f33491154224f255cae70cb8b039e/jars/classes.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

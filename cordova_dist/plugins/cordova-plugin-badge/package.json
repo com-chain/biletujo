@@ -10,7 +10,7 @@
         "spec": ">=0.8.5",
         "type": "range"
       },
-      "/d00/perso/Open-sources/biletujo/cordova_dist"
+      "/d00/perso/Lemam-Wallet/automated_build_OS/biletujo/cordova_dist"
     ]
   ],
   "_from": "cordova-plugin-badge@>=0.8.5",
@@ -46,7 +46,7 @@
   "_shasum": "0924018699b48f92dd3b33615452737582144c96",
   "_shrinkwrap": null,
   "_spec": "cordova-plugin-badge@>=0.8.5",
-  "_where": "/d00/perso/Open-sources/biletujo/cordova_dist",
+  "_where": "/d00/perso/Lemam-Wallet/automated_build_OS/biletujo/cordova_dist",
   "author": {
     "name": "Sebastián Katzer"
   },

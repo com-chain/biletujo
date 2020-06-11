@@ -1,4 +1,0 @@
-#Tue Jan 21 13:53:17 CET 2020
-base.0=/d00/perso/Lemam-Wallet/automated_build_OS/biletujo/cordova_dist/platforms/android/app/build/intermediates/transforms/dexMerger/debug/1
-path.0=classes.dex
-renamed.0=classes.dex
