@@ -66,6 +66,20 @@ var balanceCtrl = function($scope, $locale, $sce, walletService,contactservice, 
     $scope.is_locked = false;
     
     
+    if (document.getElementById("bal_opt")){
+        document.getElementById("bal_opt").title=$translate.instant("BAL_Tooltip_opt").replace("\n","");
+    }
+    if(document.getElementById("bal_down_w")){
+        document.getElementById("bal_down_w").title=$translate.instant("BAL_Tooltip_sav").replace("\n","");
+    }
+    if (document.getElementById("bal_down_app")){
+    document.getElementById("bal_down_app").title=$translate.instant("BAL_Tooltip_sav").replace("\n","");
+    }
+    if (document.getElementById("bal_qr")){
+    document.getElementById("bal_qr").title=$translate.instant("BAL_Tooltip_sav_qr").replace("\n","");
+    }
+    
+    
     globalFuncs.showLoading($translate.instant("GP_Wait"));
     
 	$scope.$watch(function() {

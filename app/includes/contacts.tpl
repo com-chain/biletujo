@@ -19,13 +19,13 @@
                  <input type="text" ng-model="ctt_filter"  placeholder="{{'CT_Filter' | translate}}" ng-change="filter_ctt()" style="width: 80px; margin-bottom: 5px;" />
                </div>
                 <div class="col-md-7 col-xs-7">
-                  <button type="button" id="ajouter" class="btn btn-primary bellowmargin"  ng-click="addNamePop()" translate="CTC_add">Add </button>
+                  <button type="button" id="ajouter" class="btn btn-primary bellowmargin btn_add_ct"  ng-click="addNamePop()" translate="CTC_add">Add </button>
                 
-                    <a type="button" class="btn btn-primary bellowmargin" id="exporter" href="{{blobCtc}}" download="Biletujo_Contacts.dat"  ng-hide="isApp" translate="CTC_export" >&nbsp; </a>
+                    <a type="button" class="btn btn-primary bellowmargin btn_export" id="exporter" href="{{blobCtc}}" download="Biletujo_Contacts.dat"  ng-hide="isApp" translate="CTC_export" >&nbsp; </a>
                     
-                  <button type="button" class="btn btn-primary bellowmargin"  ng-click="exportCtc()" translate="CTC_export" ng-show="isApp">Export </button>
+                  <button type="button" class="btn btn-primary bellowmargin btn_export"  ng-click="exportCtc()" translate="CTC_export" ng-show="isApp">Export </button>
                   
-                  <button type="button" id="importer" class="btn btn-primary bellowmargin"  ng-click="openImportCtc()" translate="CTC_import" >Import </button>
+                  <button type="button" id="importer" class="btn btn-primary bellowmargin btn_import"  ng-click="openImportCtc()" translate="CTC_import" >Import </button>
 
                 
                 

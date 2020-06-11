@@ -14,7 +14,7 @@
          <section class="row" >
           <div class="col-md-10 col-xs-10 totBal grp">
                  {{token.balance| number : 2}} {{CUR}}
-                 <button type="button" class="btn btn-primary" style="padding: 2px 10px;" ng-click="refreshBal()" translate="TRA_Refresh">Refresh </button>
+                 <button type="button" class="btn btn-primary btn_refresh" style="padding: 2px 10px;" ng-click="refreshBal()" translate="TRA_Refresh">Refresh </button>
           </div>
          </section>
          
@@ -27,11 +27,11 @@
                </div>
                 <div class="col-md-6 col-xs-6">
                 
-                  <a class="btn btn-primary bellowmargin option_btn" ng-click="openOptions()"  >&nbsp; </a>
+                  <a Id="bal_opt" class="btn btn-primary bellowmargin option_btn" ng-click="openOptions()"  >&nbsp; </a>
                 
-                  <a type="button" class="btn btn-primary bellowmargin file_btn" href="{{blobEnc}}" download="{{CUR}}_{{currentWalletAddress}}.dat"  ng-if="!isApp">&nbsp; </a>
-                  <a class="btn btn-primary bellowmargin file_btn" ng-click="dowloadAppFile()"  ng-if="isApp">&nbsp; </a>
-                  <a class="btn btn-primary bellowmargin qr_btn" ng-click="printQRCode()">&nbsp; </a>
+                  <a Id="bal_down_w" type="button" class="btn btn-primary bellowmargin file_btn" href="{{blobEnc}}" download="{{CUR}}_{{currentWalletAddress}}.dat"  ng-if="!isApp">&nbsp; </a>
+                  <a Id="bal_down_app" class="btn btn-primary bellowmargin file_btn" ng-click="dowloadAppFile()"  ng-if="isApp">&nbsp; </a>
+                  <a Id="bal_qr" class="btn btn-primary bellowmargin qr_btn" ng-click="printQRCode()">&nbsp; </a>
                 </div>
                 
                 
@@ -119,7 +119,7 @@
 	         <div  class="col-md-12">  
 	            <label translate="DELEG_Delegate_Tab_Title"></label>
 	            <button type="button" class="btn btn-primary" ng-click="closeDelegation()" style="float:right;" translate="DELEG_CloseTab">Close</button>
-	             <!--<button type="button" class="btn btn-primary" style="float:right; margin-right:10px;"   ng-click="refreshDel()" translate="TRA_Refresh">Refresh </button>-->
+	             <!--<button type="button" class="btn btn-primary btn_refresh" style="float:right; margin-right:10px;"   ng-click="refreshDel()" translate="TRA_Refresh">Refresh </button>-->
 	   
 	          </div>
 	          <div  class="col-md-12">  
@@ -378,7 +378,7 @@
 	         <div  class="col-md-12">  
 	            <label translate="ALLOW_Allowance_Tab_Title"></label>
 	            <button type="button" class="btn btn-primary" ng-click="closeAllowance()" style="float:right;" translate="ALLOW_CloseTab">Close</button>
-	             <!--<button type="button" class="btn btn-primary" style="float:right; margin-right:10px;"   ng-click="refreshAllowance()" translate="TRA_Refresh">Refresh </button>-->
+	             <!--<button type="button" class="btn btn-primary btn_refresh" style="float:right; margin-right:10px;"   ng-click="refreshAllowance()" translate="TRA_Refresh">Refresh </button>-->
 	   
 	          </div>
 	          <div  class="col-md-12">  
@@ -692,7 +692,7 @@
               </div>
               <div class="col-md-7 col-xs-7">
                   <button type="button" class="btn btn-primary bellowmargin" ng-click="consultHelpPop.open()" translate="DELEG_help">?</button>
-                  <button type="button" id="ajouter" class="btn btn-primary bellowmargin"  ng-click="importRightPop()" translate="CTC_add">Add </button>
+                  <button type="button" id="ajouter" class="btn btn-primary bellowmargin"  ng-click="importRightPop()" translate="DELEG_add">Add </button>
               </div>
             </div>
             <div class="row">   

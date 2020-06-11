@@ -219,8 +219,8 @@
         <div class="glassPane" id="gl_pane"> </div> 
         <div class="waitingMsg" id="wt_msg_dv"> 
             <span id="wt_msg_txt"></span> 
-            <button type="button" id="wt_msg_bt_r" class="btn btn-primary bellowmargin" onclick="location.reload();" translate="TRA_Refresh">Refresh </button> 
-            <button type="button" id="wt_msg_bt_h" class="btn btn-primary bellowmargin" ng-click="dismissWaiting()" translate="TRA_Refresh">Refresh </button> 
+            <button type="button" id="wt_msg_bt_r" class="btn btn-primary bellowmargin btn_refresh" onclick="location.reload();" translate="TRA_Refresh">Refresh </button> 
+            <button type="button" id="wt_msg_bt_h" class="btn btn-primary bellowmargin btn_refresh" ng-click="dismissWaiting()" translate="TRA_Refresh">Refresh </button> 
             <div class="waiting_tran" id="wt_msg_anim"> 
                  <svg class="wt_svg"  width="300" height="300"  
                                viewPort="0 0 300 300" version="1.1" xmlns="http://www.w3.org/2000/svg"> 

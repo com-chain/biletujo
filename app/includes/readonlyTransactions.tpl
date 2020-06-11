@@ -86,10 +86,10 @@
                  <label translate="TRA_roTransactions" >Transaction :</label>
                </div>
                 <div class="col-md-8 col-xs-8">
-                  <button type="button" id="rafraichir" class="btn btn-primary bellowmargin"  ng-click="refreshTrans()" translate="TRA_Refresh">Refresh </button>
-                   <button type="button" id="notify" class="btn bellowmargin"  ng-class="watching ? 'btn-default':'btn-primary'"  ng-click="watch_click()" translate="TRA_Watch">watch </button>
+                  <button type="button" id="rafraichir" class="btn btn-primary bellowmargin btn_refresh"  ng-click="refreshTrans()" translate="TRA_Refresh">Refresh </button>
+                   <button type="button" id="notify" class="btn bellowmargin"  ng-class="watching ? 'btn-default btn_watching':'btn-primary btn_watch'"  ng-click="watch_click()" translate="TRA_Watch">watch </button>
                   
-                  <button type="button" id="exporter" class="btn btn-primary bellowmargin"  ng-click="exportMemos()" translate="CTC_export_mem" >Export </button>
+                  <button type="button" id="exporter" class="btn btn-primary bellowmargin btn_export"  ng-click="exportMemos()" translate="CTC_export_mem" >Export </button>
                   <button type="button" id="verifier" class="btn btn-primary bellowmargin"  ng-click="checkTran()" translate="TRA_check"  ng-if="isApp" >Export </button>
                   
                   
