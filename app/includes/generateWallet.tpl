@@ -144,6 +144,9 @@
       <div id="qrcode_print3"></div>
       
        <div class="row " ng-show="has_unlock"> 
+         <div class="col-md-12 "> 
+         &nbsp;
+        </div>
         <div class="col-md-12 ">
          <label translate="GEN_Unlock_title" >UnlockTitle : </label>
         </div>
