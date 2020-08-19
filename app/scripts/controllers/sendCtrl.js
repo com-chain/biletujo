@@ -21,6 +21,8 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, me
 
 	$scope.showRaw = false;
     $scope.isApp =  globalFuncs.isApp();
+    $scope.display_curr_btn = false; 
+    $scope.show_curr_sel = false;
     
     //globalFuncs.showLoading($translate.instant("GP_Wait"));
     globalFuncs.hideLoadingWaiting();  
@@ -134,7 +136,14 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, me
         globalFuncs.getAmmount(globalFuncs.slockitBalance, wallet_address, function(value){$scope.token.balance = value;});
         globalFuncs.getAmmount(globalFuncs.slockitElBlance, wallet_address, function(value){$scope.balanceEL = Math.round(value * 100);});
         globalFuncs.getAmmount(globalFuncs.slockitCmBlance, wallet_address, function(value){$scope.balanceCM = Math.round(value * 100);});
-        globalFuncs.getAmmount(globalFuncs.slockitCmLimitm,wallet_address, function(value){
+        
+        globalFuncs.getAccInfo(globalFuncs.slockitAccType, wallet_address, function(value){
+                 $scope.display_curr_btn = globalFuncs.hasNant() && globalFuncs.hasCM() && value!=0; // only available when 2 currency and not a personal account
+                   
+        });
+        
+        
+        globalFuncs.getAmmount(globalFuncs.slockitCmLimitm, wallet_address, function(value){
             $scope.limitCMm = Math.round(value * 100);
             if (readyStatus){   
                globalFuncs.hideLoadingWaiting();  
@@ -340,18 +349,23 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, me
            $scope.typeTrans="no"
            $scope.err_message='';
            var value_cent = Math.round($scope.tokenTx.value * 100);
-           var splitted = globalFuncs.getSplitting($scope.balanceEL, $scope.balanceCM, $scope.limitCMm, value_cent);
-           if (splitted['possible']){
-                if (splitted['cm']>0){
-                    if (splitted['nant']>0){
+           $scope.splitted = globalFuncs.getSplitting($scope.balanceEL, $scope.balanceCM, $scope.limitCMm, value_cent);
+           if ($scope.splitted['possible']){
+                if ($scope.splitted['cm']>0){
+                    if ($scope.splitted['nant']>0){
                          $scope.typeTrans=globalFuncs.currencies.CUR_nanti+"/"+globalFuncs.currencies.CUR_credit_mut;
                          $scope.err_message=$sce.trustAsHtml(globalFuncs.getWarningText($translate.instant('TRAN_SplitedTrans')));
                     } else {
                         $scope.typeTrans=globalFuncs.currencies.CUR_credit_mut;
                     }
-                }  else  if (splitted['nant']>0){
+                }  else  if ($scope.splitted['nant']>0){
                     $scope.typeTrans=globalFuncs.currencies.CUR_nanti;
                 }
+                
+                $scope.val_nant = $scope.splitted['nant']/100.0;
+                $scope.max_val_nant = Math.min(value_cent, $scope.balanceEL)/100.0;
+                $scope.val_cm = $scope.splitted['cm']/100.0;
+                $scope.max_val_cm = Math.min(value_cent, $scope.balanceCM - $scope.limitCMm )/100.0;
            } else {
               $scope.err_message=$sce.trustAsHtml(globalFuncs.getDangerText($translate.instant('TRAN_NotPossible')));
            }
@@ -398,8 +412,71 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, me
                $scope.message_to=message;
            });
        }
+       
+       $scope.show_curr_sel = false;
                            
        $scope.sendTxModal.open();
+    }
+    
+    $scope.recompute_split_nant = function() {
+        var value_cent = Math.round($scope.tokenTx.value * 100);
+        if ($scope.val_nant < 0) {
+            $scope.val_nant = 0;
+        } 
+        
+        if ($scope.val_nant > $scope.max_val_nant) {
+            $scope.val_nant =  $scope.max_val_nant;
+        }
+        
+        $scope.val_cm = (value_cent - Math.round($scope.val_nant * 100))/100.0;
+            
+        if ($scope.val_nant>0 && $scope.val_cm>0) {
+            $scope.err_message=$sce.trustAsHtml(globalFuncs.getWarningText($translate.instant('TRAN_SplitedTrans')));
+            $scope.typeTrans=globalFuncs.currencies.CUR_nanti+"/"+globalFuncs.currencies.CUR_credit_mut;
+        } else {
+            $scope.err_message="";
+            if ($scope.val_nant>0) {
+                $scope.typeTrans=globalFuncs.currencies.CUR_nanti;
+            } else {
+                $scope.typeTrans=globalFuncs.currencies.CUR_credit_mut;
+            }
+        }
+        
+        $scope.splitted['nant'] = Math.round($scope.val_nant * 100);
+        $scope.splitted['cm'] = Math.round($scope.val_cm * 100);
+    }
+    
+    $scope.recompute_split_cm = function() {
+        var value_cent = Math.round($scope.tokenTx.value * 100);
+        if ($scope.val_cm < 0) {
+            $scope.val_cm = 0;
+        } 
+        
+        if ($scope.val_cm > $scope.max_val_cm) {
+            $scope.val_cm =  $scope.max_val_cm;
+        }
+        
+        $scope.val_nant = (value_cent - Math.round($scope.val_cm * 100))/100.0;
+        
+        if ($scope.val_nant>0 && $scope.val_cm>0) {
+            $scope.err_message=$sce.trustAsHtml(globalFuncs.getWarningText($translate.instant('TRAN_SplitedTrans')));
+            $scope.typeTrans=globalFuncs.currencies.CUR_nanti+"/"+globalFuncs.currencies.CUR_credit_mut;
+        } else {
+            $scope.err_message="";
+            if ($scope.val_nant>0) {
+                $scope.typeTrans=globalFuncs.currencies.CUR_nanti;
+            } else {
+                $scope.typeTrans=globalFuncs.currencies.CUR_credit_mut;
+            }
+        }
+        
+        $scope.splitted['nant'] = Math.round($scope.val_nant * 100);
+        $scope.splitted['cm'] = Math.round($scope.val_cm * 100);
+    }
+    
+    
+    $scope.showCurrSel = function(){
+        $scope.show_curr_sel = !$scope.show_curr_sel;
     }
     
   
@@ -456,10 +533,10 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, me
                    
                    if (!$scope.isShopTx){
                    
-                       var splitted = globalFuncs.getSplitting($scope.balanceEL, $scope.balanceCM, $scope.limitCMm, value_cent);
-                       if (splitted['possible']){
-                           $scope.elemanAmmount=splitted['nant'];
-                           $scope.lemanexAmmount=splitted['cm'];
+                       
+                       if ($scope.splitted['possible']){
+                           $scope.elemanAmmount=$scope.splitted['nant'];
+                           $scope.lemanexAmmount=$scope.splitted['cm'];
                        } else {
                            throw 'TRAN_NotPossible';
                        }
