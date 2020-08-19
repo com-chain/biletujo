@@ -270,8 +270,23 @@
                                     <label translate="TRAN_Confirm_text_request" ng-show="is_request_mode" >Vous êtes en train de demander</label>
                               </h4> 
                               <strong id="confirmAmount" class="text-primary"> {{tokenTx.value| number : 2}} </strong>
-                              <strong id="confirmCurrancy" class="text-primary"> {{CUR}} </strong><br/>
-                              <div ng-hide="is_request_mode"><strong ng-hide="typeTrans=='no'" class="text-primary"> {{typeTrans}}</strong></div><br/>
+                              <strong id="confirmCurrancy" class="text-primary"> {{CUR}} <br/>
+                              <div ng-hide="is_request_mode"><strong ng-hide="typeTrans=='no'" class="text-primary"> {{typeTrans}}</strong></strong><button type="button" class="btn btn-primary btn_small" ng-click="showCurrSel()" ng-show="display_curr_btn" translate="TRAN_CurrSelBtn">*</button></div><br/>
+                              
+                               
+                              <div ng-show="show_curr_sel" class="popup_pannel">
+                              
+                                    <h4><label translate="TRAN_Change_rep">Changer la répartition</label></h4>
+                                    <div><input class="form-control" type="text" placeholder="0.00" ng-model="val_nant"  ng-change="recompute_split_nant()" ng-readonly="isShopTx"/>{{CUR_nanti}} (≤{{max_val_nant}} {{CUR}} ) </div><br/> 
+                                     <div><input class="form-control" type="text" placeholder="0.00" ng-model="val_cm"  ng-change="recompute_split_cm()" ng-readonly="isShopTx"/>{{CUR_credit_mut}} (≤{{max_val_cm}} {{CUR}} ) </div>
+                              
+                              
+                              </div><br/>
+                              
+                              
+                              
+                              
+                              
 
                               
                               <div style="width:44%;display:inline-block;vertical-align:top;">
@@ -547,7 +562,12 @@
                               <strong id="confirmAmount" class="text-primary"> {{transaction_amount| number : 2}} </strong>
                               <strong id="confirmCurrancy" class="text-primary"> {{CUR}} </strong><br/>
                               <strong ng-hide="typeTrans=='no'" class="text-primary"> {{typeTrans}}</strong>
-                              <br/> <br/>
+                              
+                              <br/> 
+                             
+                              
+                              
+                              <br/>
                               <div><label translate="TRAN_To" >&agrave;</label></div>
                               <br/>
                               

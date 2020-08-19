@@ -254,6 +254,8 @@ TRAN_tans_id: 'Transaction ID:',
 TRAN_NotPossible: 'Insufficient funding for payment',
 TRAN_NotPossibleWithoutSplit: 'Online payment can not be made in several transactions. Insufficient funding for a single payment.',
 TRAN_SplitedTrans: 'Payment will be made in several transactions',
+TRAN_CurrSelBtn:'*',
+TRAN_Change_rep:'Change repartition',
 
 TRAN_Origine: 'Source',
 TRAN_choose_origine_btn: 'Change',
