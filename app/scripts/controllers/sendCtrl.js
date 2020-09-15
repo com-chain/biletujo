@@ -138,7 +138,7 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, me
         globalFuncs.getAmmount(globalFuncs.slockitCmBlance, wallet_address, function(value){$scope.balanceCM = Math.round(value * 100);});
         
         globalFuncs.getAccInfo(globalFuncs.slockitAccType, wallet_address, function(value){
-                 $scope.display_curr_btn = globalFuncs.hasNant() && globalFuncs.hasCM() && value!=0; // only available when 2 currency and not a personal account
+                 $scope.display_curr_btn = globalFuncs.hasNant() && globalFuncs.hasCM()  && !$scope.isApp  && value!=0; // only available when 2 currency and not a personal account
                    
         });
         
