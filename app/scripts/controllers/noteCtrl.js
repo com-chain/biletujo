@@ -63,7 +63,7 @@ var noteCtrl = function($scope, $locale, $sce, walletService, $translate) {
   
   $scope.preparInfo = function(address, length){
         globalFuncs.getAccInfo(globalFuncs.slockitAccStatus, address, function(status){
-             globalFuncs.getAmmount(globalFuncs.slockitElBlance, address, function(value){
+             jsc3l_bcRead.getNantBalance(address, function(value){
                 var status_txt = "NOT_Locked";
                 if (status == 1){
                     status_txt = "NOT_Unlocked";
@@ -149,7 +149,7 @@ var noteCtrl = function($scope, $locale, $sce, walletService, $translate) {
       } else {
           var address = $scope.info_list[$scope.curr_index].address;
           globalFuncs.getAccInfo(globalFuncs.slockitAccStatus, address, function(status){
-             globalFuncs.getAmmount(globalFuncs.slockitElBlance, address, function(value){
+             jsc3l_bcRead.getNantBalance(address, function(value){
                  $scope.info_list[$scope.curr_index].amount = value;
                  var status_txt = "NOT_Locked";
                  if (status == 1){

@@ -2,6 +2,8 @@
 ////
 // Pre-requisit:
 // BigNumber
+// 
+// ajaxReq (getEthCall & getEthCallAt)
 ////
 
 var jsc3l_bcRead = function() {};

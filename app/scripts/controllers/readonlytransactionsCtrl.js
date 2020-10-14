@@ -115,8 +115,8 @@ var readonlytransactionsCtrl = function($scope, $locale, $sce, walletService,con
             $scope.lock_date = false;
         }
         
-        globalFuncs.getAmmount(globalFuncs.slockitElBlance, $scope.watched_address, function(value){$scope.balanceEL = value;});
-        globalFuncs.getAmmount(globalFuncs.slockitCmBlance, $scope.watched_address, function(value){$scope.balanceCM = value;});
+        jsc3l_bcRead.getNantBalance($scope.watched_address, function(value){$scope.balanceEL = value;});
+        jsc3l_bcRead.getCmBalance($scope.watched_address, function(value){$scope.balanceCM = value;});
         
         $scope.current_message_key = messageService.messageKeysFromCrypted($scope.wallet, $scope.possible_wallets[$scope.watched_address].messageKey);
         

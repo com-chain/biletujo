@@ -78,9 +78,8 @@ var exchangeCtrl = function($scope, $locale, $sce, walletService, $translate) {
                                                                                                             $scope.is_lock = true;
                                                                                                          }
                                                                                                      });
-        
-        globalFuncs.getAmmount(globalFuncs.slockitCmLimitm, $scope.selected_account, function(value){ $scope.limitCMm = value;});
-        globalFuncs.getAmmount(globalFuncs.slockitCmLimitp, $scope.selected_account, function(value){ $scope.limitCMp = value; globalFuncs.hideLoadingWaiting(); });
+        jsc3l_bcRead.getCmLimitBelow($scope.selected_account, function(value){$scope.limitCMm = value;});
+        jsc3l_bcRead.getCmLimitAbove($scope.selected_account, function(value){$scope.limitCMp = value; globalFuncs.hideLoadingWaiting(); });
         
 	}
     
@@ -266,9 +265,9 @@ var exchangeCtrl = function($scope, $locale, $sce, walletService, $translate) {
                  $scope.trans_message = $translate.instant("EXC_Account_credited_with")+$scope.credit_amount+globalFuncs.currencies.CUR;
                  $scope.waitTransaction(rawTx.data); 
              }
-             globalFuncs.getAmmount(globalFuncs.slockitBalance, $scope.selected_account, function(value){
+             jsc3l_bcRead.getGlobalBalance($scope.selected_account, function(value){
                   $scope.balance = value;
-                  globalFuncs.getAmmount(globalFuncs.slockitElBlance, $scope.selected_account, function(value){
+                  jsc3l_bcRead.getCmBalance($scope.selected_account, function(value){
                       $scope.balanceEL = value;
                       $scope.credit_amount=null;
                       $scope.confCreditPop.close();

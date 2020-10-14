@@ -144,8 +144,7 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, me
                    
         });
         
-        
-        globalFuncs.getAmmount(globalFuncs.slockitCmLimitm, wallet_address, function(value){
+        jsc3l_bcRead.getCmLimitBelow(wallet_address, function(value){
             $scope.limitCMm = Math.round(value * 100);
             if (readyStatus){   
                globalFuncs.hideLoadingWaiting();  
@@ -179,11 +178,13 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, me
     $scope.refreshDeleg = function(callback){
         globalFuncs.showLoading($translate.instant("GP_Wait"));
         $scope.showDelegLimit=true;
-        globalFuncs.getAmmount(globalFuncs.slockitElBlance, $scope.origine_address, function(value){
+        
+        
+        jsc3l_bcRead.getNantBalance($scope.origine_address, function(value){
             $scope.deleg_nant_bal = Math.round(value * 100);
-            globalFuncs.getAmmount(globalFuncs.slockitCmBlance, $scope.origine_address, function(value){
+             jsc3l_bcRead.getCmBalance($scope.origine_address, function(value){
                 $scope.deleg_cm_bal = Math.round(value * 100);
-                globalFuncs.getAmmount(globalFuncs.slockitCmLimitm, $scope.origine_address, function(value){
+                 jsc3l_bcRead.getCmLimitBelow( $scope.origine_address, function(value){
                     $scope.deleg_cm_lim = Math.round(value * 100);
                     var cm_available= $scope.deleg_cm_bal- $scope.deleg_cm_lim;
                     $scope.display_deleg_limit = Math.min( Math.round($scope.delegation_limit* 100), Math.max(cm_available, $scope.deleg_nant_bal))/100.;
@@ -197,11 +198,11 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, me
     
    $scope.refreshFrom = function(callback){
         globalFuncs.showLoading($translate.instant("GP_Wait"));
-        globalFuncs.getAmmount(globalFuncs.slockitElBlance, $scope.curr_from_add, function(value){
+        jsc3l_bcRead.getNantBalance($scope.curr_from_add, function(value){
             $scope.from_nant_bal = Math.round(value * 100);
-            globalFuncs.getAmmount(globalFuncs.slockitCmBlance, $scope.curr_from_add, function(value){
+            jsc3l_bcRead.getCmBalance($scope.curr_from_add, function(value){
                 $scope.from_cm_bal = Math.round(value * 100);
-                globalFuncs.getAmmount(globalFuncs.slockitCmLimitm, $scope.curr_from_add, function(value){
+                 jsc3l_bcRead.getCmLimitBelow($scope.curr_from_add, function(value){
                     $scope.from_cm_lim = Math.round(value * 100);
                     globalFuncs.hideLoadingWaiting();  
                     callback();
@@ -1363,16 +1364,13 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, me
     
     $scope.payRequest = function(request){
        globalFuncs.showLoading($translate.instant("GP_Wait"));
-       globalFuncs.getAmmount(
-           globalFuncs.slockitElBlance,
+       jsc3l_bcRead.getNantBalance(
            $scope.wallet.getAddressString(), 
            function(balanceEL){
-               globalFuncs.getAmmount(
-                   globalFuncs.slockitCmLimitm,
+               jsc3l_bcRead.getCmLimitBelow(
                    $scope.wallet.getAddressString(), 
                    function(limitCMm){
-                     globalFuncs.getAmmount(
-                       globalFuncs.slockitCmBlance,
+                     jsc3l_bcRead.getCmBalance(
                        $scope.wallet.getAddressString(), 
                        function(balanceCM){
                            $scope.trPass=walletService.getPass();
