@@ -21,6 +21,16 @@ var Wallet = require('./myetherwallet');
 window.Wallet = Wallet;
 var Token = require('./tokens');
 window.Token = Token;
+
+var jsc3l_config = require('./jsc3l_config');
+window.jsc3l_config = jsc3l_config;
+var jsc3l_connection = require('./jsc3l_connection');
+window.jsc3l_connection = jsc3l_connection;
+var jsc3l_connection = require('./jsc3l_connection');
+window.jsc3l_connection = jsc3l_connection;
+var jsc3l_customization = require('./jsc3l_customization');
+window.jsc3l_customization = jsc3l_customization;
+
 var globalFuncs = require('./globalFuncs');
 window.globalFuncs = globalFuncs;
 var uiFuncs = require('./uiFuncs');

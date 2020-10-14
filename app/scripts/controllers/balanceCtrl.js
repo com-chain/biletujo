@@ -1,7 +1,7 @@
 'use strict';
 var balanceCtrl = function($scope, $locale, $sce, walletService,contactservice, consultService, messageService, $translate) {
     // Environment variables
-    $scope.isApp =  globalFuncs.isApp();
+    $scope.isApp =  jsc3l_customization.isApp();
     $scope.currentWalletAddress=globalFuncs.getWalletAddress();
     $scope.blobEnc = '';
     $scope.CUR='';
@@ -90,7 +90,7 @@ var balanceCtrl = function($scope, $locale, $sce, walletService,contactservice, 
 		$scope.wallet = walletService.wallet;
         $scope.wallet.message_key = JSON.parse(localStorage.getItem('ComChainWallet')).message_key;
         contactservice.loadContacts($scope.wallet, walletService.password, function(contact_list){
-            var filtered_list = contactservice.filterContactForCurr(contact_list, globalFuncs.getServerName());
+            var filtered_list = contactservice.filterContactForCurr(contact_list, jsc3l_customization.getCurencyName());
             
             var my_name =  contactservice.getContactName(filtered_list, $scope.wallet.getAddressString());
             if (my_name!=''){
@@ -112,10 +112,10 @@ var balanceCtrl = function($scope, $locale, $sce, walletService,contactservice, 
         $scope.CUR=globalFuncs.currencies.CUR;
         $scope.CUR_nanti=globalFuncs.currencies.CUR_nanti;
         $scope.CUR_credit_mut=globalFuncs.currencies.CUR_credit_mut;
-        $scope.has_nant=globalFuncs.hasNant();
-        $scope.has_credit_mut=globalFuncs.hasCM();
-        $scope.has_deleg=globalFuncs.hasDeleg();
-        $scope.has_autor=globalFuncs.hasAutor();
+        $scope.has_nant=jsc3l_customization.hasNant();
+        $scope.has_credit_mut=jsc3l_customization.hasCM();
+        $scope.has_deleg=jsc3l_customization.hasDeleg();
+        $scope.has_autor=jsc3l_customization.hasAutor();
         $scope.qr_content = localStorage.getItem('ComChainWallet');
         var qrcode = new QRCode(document.getElementById("qrcode_print_2"),$scope.qr_content);
         setTimeout(function(){ document.getElementById("qrcode_print_2").getElementsByTagName('img')[0].style.display="inline";},100); 
@@ -256,7 +256,7 @@ var balanceCtrl = function($scope, $locale, $sce, walletService,contactservice, 
     
     
     $scope.passwordCheck = function(control){
-        var number = globalFuncs.passwordAutocomplete();
+        var number = jsc3l_customization.passwordAutocomplete();
         var curr_length = $scope.trPass.length;
         if (curr_length>=number && walletService.password.startsWith($scope.trPass)){
             // autocomplete (bypass angular for timinig reason with the set selection range)
@@ -773,7 +773,7 @@ var balanceCtrl = function($scope, $locale, $sce, walletService,contactservice, 
     var mess_keys = messageService.messageKeysFromWallet($scope.wallet);
     
     var obj_content = {"address":$scope.wallet.getAddressString(), 
-              "server":globalFuncs.getServerName(), 
+              "server":jsc3l_customization.getCurencyName(), 
               "destinary":$scope.dest,
               "begin":$scope.start_date.getFullYear()+ "/" + ($scope.start_date.getMonth()+1)+"/" + $scope.start_date.getDate(), 
               "end":$scope.end_date.getFullYear()+ "/" + ($scope.end_date.getMonth()+1)+"/" + $scope.end_date.getDate(), 
@@ -898,7 +898,7 @@ $scope.showContent = function(content) {
            // check the validity 
            if (obj.data.destinary!=$scope.wallet.getAddressString()){
                $scope.openStatus = $sce.trustAsHtml(globalFuncs.getDangerText($translate.instant('OPEN_right_not_for_you'))); 
-           } else if (obj.data.server!=globalFuncs.getServerName()){
+           } else if (obj.data.server!=jsc3l_customization.getCurencyName()){
                $scope.openStatus = $sce.trustAsHtml(globalFuncs.getDangerText($translate.instant('OPEN_right_not_right_server'))); 
            } else if ((new Date(obj.data.end)).getTime()< (new Date()).getTime()){   
                 $scope.openStatus = $sce.trustAsHtml(globalFuncs.getDangerText($translate.instant('OPEN_too_old_right'))); 

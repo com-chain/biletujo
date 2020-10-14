@@ -1,7 +1,7 @@
 'use strict';
 var noteCtrl = function($scope, $locale, $sce, walletService, $translate) {
     // Check the environment
-    $scope.isApp =  globalFuncs.isApp();
+    $scope.isApp =  jsc3l_customization.isApp();
     $scope.currentWalletAddress=globalFuncs.getWalletAddress();
     $scope.CUR='';
     
@@ -37,7 +37,7 @@ var noteCtrl = function($scope, $locale, $sce, walletService, $translate) {
             
             $scope.CUR=globalFuncs.currencies.CUR;
             
-            $scope.value_options = globalFuncs.getNoteValues();
+            $scope.value_options = jsc3l_customization.getNoteValues();
             $scope.value_options.unshift(0.00);
             $scope.target_amount_option = $scope.value_options[0];
             

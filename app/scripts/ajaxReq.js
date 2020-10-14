@@ -50,7 +50,7 @@
         var callback = this.pendingPosts[0].callback;
       
         try{
-	        this.http.post(globalFuncs.getServerAddress()+this.SERVERURL, this.postSerializer(data), this.config).then(function(data) {
+	        this.http.post(jsc3l_customization.getEndpointAddress()+this.SERVERURL, this.postSerializer(data), this.config).then(function(data) {
 		        callback(data.data);
                 ajaxReq.pendingPosts.splice(0, 1);
                 if(ajaxReq.pendingPosts.length>0)
@@ -73,7 +73,7 @@
 
     ajaxReq.enrollPost = function(data,callback){
        
-         this.http.post(globalFuncs.getServerAddress()+this.ENROLLURL, this.postSerializer(data), this.config).then(function(data) {
+         this.http.post(jsc3l_customization.getEndpointAddress()+this.ENROLLURL, this.postSerializer(data), this.config).then(function(data) {
 		    callback(data.data);
 	    });
     }
@@ -96,13 +96,13 @@
     }
     
     ajaxReq.getTransList = function(id,count,offset, callback){
-        this.http.get(globalFuncs.getServerAddress()+ajaxReq.TRANLIST+"?addr="+id+"&count="+count+"&offset="+offset).then(function(data){
+        this.http.get(jsc3l_customization.getEndpointAddress()+ajaxReq.TRANLIST+"?addr="+id+"&count="+count+"&offset="+offset).then(function(data){
              callback(data.data);
         });
     }
     
     ajaxReq.getTransCheck = function(hash, callback){
-        this.http.get(globalFuncs.getServerAddress()+ajaxReq.TRANCHECK+"?hash="+hash).then(function(data){
+        this.http.get(jsc3l_customization.getEndpointAddress()+ajaxReq.TRANCHECK+"?hash="+hash).then(function(data){
              callback(data.data);
         });
     }
@@ -111,13 +111,13 @@
     
     
     ajaxReq.getExportTransList = function(id,date_start,date_end, callback){
-        this.http.get(globalFuncs.getServerAddress()+ajaxReq.EXPORTTRAN+"?addr="+id+"&start="+date_start+"&end="+date_end).then(function(data){
+        this.http.get(jsc3l_customization.getEndpointAddress()+ajaxReq.EXPORTTRAN+"?addr="+id+"&start="+date_start+"&end="+date_end).then(function(data){
              callback(data.data);
         });
     }
     
     ajaxReq.getExportTransListWithId = function(id,date_start,date_end, callback){
-        this.http.get(globalFuncs.getServerAddress()+ajaxReq.EXPORTTRAN+"?addr="+id+"&start="+date_start+"&end="+date_end).then(function(data){
+        this.http.get(jsc3l_customization.getEndpointAddress()+ajaxReq.EXPORTTRAN+"?addr="+id+"&start="+date_start+"&end="+date_end).then(function(data){
              callback(data.data,id);
         });
     }
@@ -130,7 +130,7 @@
         data["signature"]=signature;
         data["addresses"]=addresses;
         
-        this.http.post(globalFuncs.getServerAddress()+ajaxReq.GETCODE, this.postSerializer(data), this.config).then(function(data) {
+        this.http.post(jsc3l_customization.getEndpointAddress()+ajaxReq.GETCODE, this.postSerializer(data), this.config).then(function(data) {
 		    callback(data.data);
 	    }); 
     }
@@ -143,7 +143,7 @@
         data["signature"]=signature;
         data["code"]=code;
         
-        this.http.post(globalFuncs.getServerAddress()+ajaxReq.GETADDRESS, this.postSerializer(data), this.config).then(function(data) {
+        this.http.post(jsc3l_customization.getEndpointAddress()+ajaxReq.GETADDRESS, this.postSerializer(data), this.config).then(function(data) {
 		    callback(data.data);
 	    });
         
@@ -156,7 +156,7 @@
            query_string = query_string + "&private=1" ;
         }
         
-        this.http.get(globalFuncs.getServerAddress()+ajaxReq.keystore+query_string).then(function(data){
+        this.http.get(jsc3l_customization.getEndpointAddress()+ajaxReq.keystore+query_string).then(function(data){
              callback(data.data);
         });
     }
@@ -165,7 +165,7 @@
         var data = {};
         data["data"]=data_str;
         data["sign"]=sign;
-        this.http.post(globalFuncs.getServerAddress()+ajaxReq.keystore, this.postSerializer(data), this.config).then(function(data) {
+        this.http.post(jsc3l_customization.getEndpointAddress()+ajaxReq.keystore, this.postSerializer(data), this.config).then(function(data) {
 		    callback(data.data);
 	    });
     }
@@ -181,7 +181,7 @@
     ajaxReq.getReqMessages = function(add_from, add_to, callback) {
         var query_string = '?add_req='+encodeURIComponent(add_from)+ '&add_cli='+encodeURIComponent(add_to);
 
-        this.http.get(globalFuncs.getServerAddress()+ajaxReq.requestMessages+query_string).then(function(data){
+        this.http.get(jsc3l_customization.getEndpointAddress()+ajaxReq.requestMessages+query_string).then(function(data){
              callback(data.data);
         });
         
@@ -191,20 +191,20 @@
         var data = {};
         data["data"]=data_str;
         data["sign"]=sign;
-        this.http.post(globalFuncs.getServerAddress()+ajaxReq.requestMessages, this.postSerializer(data), this.config).then(function(data) {
+        this.http.post(jsc3l_customization.getEndpointAddress()+ajaxReq.requestMessages, this.postSerializer(data), this.config).then(function(data) {
 		    callback(data.data);
 	    });
     }
     
     
     ajaxReq.currBlock = function(callback){
-        this.http.get(globalFuncs.getServerAddress()+ajaxReq.SERVERURL).then(function(data){
+        this.http.get(jsc3l_customization.getEndpointAddress()+ajaxReq.SERVERURL).then(function(data){
              callback(data.data);
         });
     }
     
     ajaxReq.getBlock = function(hash, callback){
-         this.http.get(globalFuncs.getServerAddress()+ajaxReq.SERVERURL+"?hash="+hash).then(function(data){
+         this.http.get(jsc3l_customization.getEndpointAddress()+ajaxReq.SERVERURL+"?hash="+hash).then(function(data){
              if (data.data && typeof data.data !='object'){
                  data.data = JSON.parse(data.data).transaction 
              }

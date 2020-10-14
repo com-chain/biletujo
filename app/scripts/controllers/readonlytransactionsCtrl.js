@@ -1,7 +1,7 @@
 'use strict';
 var readonlytransactionsCtrl = function($scope, $locale, $sce, walletService,contactservice,consultService, memoService, messageService, $translate, $filter) {
     // Check the environment
-    $scope.isApp =  globalFuncs.isApp();
+    $scope.isApp =  jsc3l_customization.isApp();
     $scope.currentWalletAddress=globalFuncs.getWalletAddress();
     $scope.fingerprint=false;
     
@@ -92,8 +92,8 @@ var readonlytransactionsCtrl = function($scope, $locale, $sce, walletService,con
         $scope.CUR=globalFuncs.currencies.CUR;
         $scope.CUR_nanti=globalFuncs.currencies.CUR_nanti;
         $scope.CUR_credit_mut=globalFuncs.currencies.CUR_credit_mut;
-        $scope.has_nant=globalFuncs.hasNant();
-        $scope.has_credit_mut=globalFuncs.hasCM();
+        $scope.has_nant=jsc3l_customization.hasNant();
+        $scope.has_credit_mut=jsc3l_customization.hasCM();
         
         $scope.possible_wallets = consultService.loadRightFor($scope.currentWalletAddress);
         

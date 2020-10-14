@@ -1,7 +1,7 @@
 'use strict';
 var walletGenCtrl = function($scope, $globalService, $translate, walletService, contactService, messageService) {
     // Environment variables
-    $scope.isApp = globalFuncs.isApp();
+    $scope.isApp = jsc3l_customization.isApp();
     $scope.trans_message = $translate.instant("GP_Wait");
     $scope.CUR = globalFuncs.currencies.CUR;
     
@@ -27,7 +27,7 @@ var walletGenCtrl = function($scope, $globalService, $translate, walletService, 
     $scope.cond1=false;
     $scope.cond2=false;
     
-    $scope.unlock_url = globalFuncs.getUnlockUrl();
+    $scope.unlock_url = jsc3l_customization.getUnlockUrl();
     $scope.has_unlock = $scope.unlock_url.length;
     //////////////////////
     
@@ -73,11 +73,10 @@ var walletGenCtrl = function($scope, $globalService, $translate, walletService, 
         try {
             var enrollmentLetter = JSON.parse($scope.token); 
             if (enrollmentLetter.servername){
-                if (globalFuncs.isMulti()){
                      globalFuncs.getConfJSON(enrollmentLetter.servername,function(success){
                          if (success){
                            ajaxReq.validateEnrollmentLetter(enrollmentLetter.id, 
-                                                            globalFuncs.getServerName(), 
+                                                            jsc3l_customization.getCurencyName(), 
                                                             enrollmentLetter.signature,
                                                             function(data){
                                 globalFuncs.hideLoadingWaiting(); // hide the waiting overlay
@@ -88,11 +87,12 @@ var walletGenCtrl = function($scope, $globalService, $translate, walletService, 
                                    $scope.showSecret = true;
                                    $scope.message_creation = '';
                                    // Adapt the UI to the selected server
-                                   globalFuncs.configure();
-                                   $globalService.configureNoteTab(globalFuncs.hasBn());
+                                   jsc3l_customization.configureCurrency();
+                                   globalFuncs.getCurrencies();
+                                   $globalService.configureNoteTab(jsc3l_customization.hasBn());
                                    $scope.CUR=globalFuncs.currencies.CUR;
                                    
-                                   $scope.unlock_url = globalFuncs.getUnlockUrl();
+                                   $scope.unlock_url = jsc3l_customization.getUnlockUrl();
                                    $scope.has_unlock = $scope.unlock_url.length;
                                }  else {
                                    $scope.message_creation=globalFuncs.getDangerText($translate.instant("GEN_Token_validation_KO"));
@@ -105,23 +105,7 @@ var walletGenCtrl = function($scope, $globalService, $translate, walletService, 
                         
                         $scope.$apply(); 
                    });
-                } else {
-                   ajaxReq.validateEnrollmentLetter(enrollmentLetter.id, 
-                                                    globalFuncs.getServerName(), 
-                                                    enrollmentLetter.signature,
-                                                    function(data){
-                        globalFuncs.hideLoadingWaiting();  // hide the waiting overlay
-                        if (data.result=="OK"){
-                           $scope.enrollmentLetter = enrollmentLetter; 
-                           $scope.enrollmentToken = data.token;
-                           // Enable next step:
-                           $scope.showSecret = true;
-                           $scope.message_creation = '';
-                       } else {
-                           $scope.message_creation=globalFuncs.getDangerText($translate.instant("GEN_Token_validation_KO"));
-                       } 
-                    });
-                } 
+           
              } else {
                   globalFuncs.hideLoadingWaiting();  // hide the waiting overlay
                   $scope.message_creation=globalFuncs.getDangerText($translate.instant("GEN_No_config"));
@@ -152,7 +136,7 @@ var walletGenCtrl = function($scope, $globalService, $translate, walletService, 
     
     //  Open, in a new window, the General Usage Condition
     $scope.openGenCondition = function(){
-        var cond = globalFuncs.getCondUrl();
+        var cond = jsc3l_customization.getCondUrl();
         window.open(cond.replace('LANG',$scope.gelLanguageCode()), "_system");
     }
     
@@ -173,7 +157,7 @@ var walletGenCtrl = function($scope, $globalService, $translate, walletService, 
             try {
                  ajaxReq.enrollAddress($scope.enrollmentLetter.id,
                                        $scope.wallet.getAddressString(), 
-                                       globalFuncs.getServerName(),
+                                       jsc3l_customization.getCurencyName(),
                                        $scope.enrollmentToken,
                                        function(data){
                        if (data.result=="OK"){
@@ -182,7 +166,7 @@ var walletGenCtrl = function($scope, $globalService, $translate, walletService, 
 
                                globalFuncs.loadWallet($scope.wallet.toV3($scope.password, {
                                             kdf: globalFuncs.kdf, n: globalFuncs.scrypt.n,
-                                            server_name: globalFuncs.getServerName(),
+                                            server_name: jsc3l_customization.getCurencyName(),
                                             message_key: complete_wall.message_key}),function(success){
                                                 globalFuncs.loadWallets(true);
                                                 

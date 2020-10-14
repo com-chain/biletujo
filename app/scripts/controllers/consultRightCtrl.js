@@ -4,7 +4,7 @@ var consultRightCtrl = function($scope, $sce, walletService, contactservice, con
 
     
     // Check the environment
-    $scope.isApp = globalFuncs.isApp();
+    $scope.isApp = jsc3l_customization.isApp();
     
     // Create the modal popups
 	$scope.deleteConsultModal = new Modal(document.getElementById('deleteConsultRight'));
@@ -137,7 +137,7 @@ var consultRightCtrl = function($scope, $sce, walletService, contactservice, con
    } 
 
    $scope.passwordCheck = function(control){
-        var number = globalFuncs.passwordAutocomplete();
+        var number = jsc3l_customization.passwordAutocomplete();
         var curr_length = $scope.trPass.length;
         if (curr_length>=number && walletService.password.startsWith($scope.trPass)){
             // autocomplete (bypass angular for timinig reason with the set selection range)
@@ -166,7 +166,7 @@ var consultRightCtrl = function($scope, $sce, walletService, contactservice, con
     
     
     var obj_content = {"address":$scope.currentAddress, 
-              "server":globalFuncs.getServerName(), 
+              "server":jsc3l_customization.getCurencyName(), 
               "destinary":$scope.dest,
               "begin":$scope.start_date.getFullYear()+ "/" + $scope.start_date.getMonth()+"/" + $scope.start_date.getDate(), 
               "end":$scope.end_date.getFullYear()+ "/" + $scope.end_date.getMonth()+"/" + $scope.end_date.getDate(), 

@@ -20,7 +20,7 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, me
     
 
 	$scope.showRaw = false;
-    $scope.isApp =  globalFuncs.isApp();
+    $scope.isApp =  jsc3l_customization.isApp();
     $scope.display_curr_btn = false; 
     $scope.show_curr_sel = false;
     
@@ -40,7 +40,7 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, me
     
     
     $scope.isShopTx =false;
-    $scope.hasFrom = globalFuncs.hasPayRequest();
+    $scope.hasFrom = jsc3l_customization.hasPayRequest();
     $scope.shopTxInfo=null;
     $scope.reference = "";
     
@@ -92,7 +92,7 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, me
 		$scope.wallet = walletService.wallet;
        
         contactservice.loadContacts($scope.wallet, walletService.password, function(contact_list){
-            $scope.contacts = contactservice.filterContactForCurr(contact_list, globalFuncs.getServerName());
+            $scope.contacts = contactservice.filterContactForCurr(contact_list, jsc3l_customization.getCurencyName());
             $scope.contacts_without_me = contactservice.hideContact($scope.contacts, $scope.wallet.getAddressString());
             $scope.filtered_contacts=$scope.contacts_without_me.slice();
             
@@ -138,7 +138,7 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, me
         globalFuncs.getAmmount(globalFuncs.slockitCmBlance, wallet_address, function(value){$scope.balanceCM = Math.round(value * 100);});
         
         globalFuncs.getAccInfo(globalFuncs.slockitAccType, wallet_address, function(value){
-                 $scope.display_curr_btn = globalFuncs.hasNant() && globalFuncs.hasCM()  && !$scope.isApp  && value!=0; // only available when 2 currency and not a personal account
+                 $scope.display_curr_btn = jsc3l_customization.hasNant() && jsc3l_customization.hasCM()  && !$scope.isApp  && value!=0; // only available when 2 currency and not a personal account
                    
         });
         
@@ -169,7 +169,7 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, me
          globalFuncs.showLoading($translate.instant("GP_Wait"));
          $scope.validateTxStatus ='';
          $scope.isShopTx =false;
-         $scope.hasFrom = globalFuncs.hasPayRequest();
+         $scope.hasFrom = jsc3l_customization.hasPayRequest();
          $scope.shopTxInfo=null;
          $scope.setBalance(true);
     }
@@ -508,7 +508,7 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, me
    } 
 
    $scope.passwordCheck = function(control){
-        var number = globalFuncs.passwordAutocomplete();
+        var number = jsc3l_customization.passwordAutocomplete();
         var curr_length = $scope.trPass.length;
         if (curr_length>=number && walletService.password.startsWith($scope.trPass)){
             // autocomplete (bypass angular for timinig reason with the set selection range)
@@ -684,7 +684,7 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, me
     
     $scope.pickCtc = function(address,name){
         $scope.isShopTx =false;
-        $scope.hasFrom = globalFuncs.hasPayRequest();
+        $scope.hasFrom = jsc3l_customization.hasPayRequest();
         $scope.shopTxInfo=null;
         $scope.tokenTx.to= address; 
         $scope.generateTokenTx();
@@ -695,7 +695,7 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, me
     // Cancel shop Transaction
     $scope.cancelShopTx = function(){  
         $scope.isShopTx =false;
-        $scope.hasFrom = globalFuncs.hasPayRequest();
+        $scope.hasFrom = jsc3l_customization.hasPayRequest();
         $scope.shopTxInfo=null;
     }
     
@@ -859,7 +859,7 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, me
            alert($translate.instant("EXC_unknow_address"));
       } else {
       
-          if ( add_obj.serverName &&  add_obj.serverName!=globalFuncs.getServerName()){
+          if ( add_obj.serverName &&  add_obj.serverName!=jsc3l_customization.getCurencyName()){
               $scope.alrtNotSameCurrModal.open();
               return;
           }

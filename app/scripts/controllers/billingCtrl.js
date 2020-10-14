@@ -1,7 +1,7 @@
 'use strict';
 var billingCtrl = function($scope, $locale, $sce, walletService, $translate) {
     // Check the environment
-    $scope.isApp =  globalFuncs.isApp();
+    $scope.isApp =  jsc3l_customization.isApp();
     $scope.currentWalletAddress=globalFuncs.getWalletAddress();
     $scope.CUR='';
     $scope.CUR_nanti='';
@@ -62,8 +62,8 @@ var billingCtrl = function($scope, $locale, $sce, walletService, $translate) {
             $scope.CUR_nanti=globalFuncs.currencies.CUR_nanti;
             $scope.CUR_credit_mut=globalFuncs.currencies.CUR_credit_mut;
             
-            $scope.has_nant=globalFuncs.hasNant();
-            $scope.has_credit_mut=globalFuncs.hasCM();
+            $scope.has_nant=jsc3l_customization.hasNant();
+            $scope.has_credit_mut=jsc3l_customization.hasCM();
         });
     
     ///////////////////////////////////
@@ -332,7 +332,7 @@ var billingCtrl = function($scope, $locale, $sce, walletService, $translate) {
         var signature = ethUtil.ecsign(message_hash, $scope.wallet.getPrivateKey());
         var sign = ethUtil.bufferToHex(Buffer.concat([signature.r, signature.s, ethUtil.toBuffer(signature.v)]));
         
-         ajaxReq.getCodesFromAddresses(add, globalFuncs.getServerName(),caller, sign, function(data){
+         ajaxReq.getCodesFromAddresses(add, jsc3l_customization.getCurencyName(),caller, sign, function(data){
             for(var add_index=0; add_index<addresses.length; ++add_index){
                 var address = addresses[add_index];
                 if (address in data){
@@ -352,7 +352,7 @@ var billingCtrl = function($scope, $locale, $sce, walletService, $translate) {
         var signature = ethUtil.ecsign(message_hash, $scope.wallet.getPrivateKey());
         var sign = ethUtil.bufferToHex(Buffer.concat([signature.r, signature.s, ethUtil.toBuffer(signature.v)]));
         
-         ajaxReq.getAddressesFromCode(code, globalFuncs.getServerName(), caller, sign, function(data){
+         ajaxReq.getAddressesFromCode(code, jsc3l_customization.getCurencyName(), caller, sign, function(data){
             var add_list = [];
             for (var ind = 0; ind < data.length; ++ind) {
                 if (data[ind].startsWith('0x')){

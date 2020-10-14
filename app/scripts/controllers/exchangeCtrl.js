@@ -1,7 +1,7 @@
 'use strict';
 var exchangeCtrl = function($scope, $locale, $sce, walletService, $translate) {
     // Check the environment
-    $scope.isApp =  globalFuncs.isApp();
+    $scope.isApp =  jsc3l_customization.isApp();
     $scope.currentWalletAddress=globalFuncs.getWalletAddress();
     $scope.blobEnc = globalFuncs.getBlob("text/json;charset=UTF-8", localStorage.getItem('ComChainWallet'));
     
@@ -111,8 +111,8 @@ var exchangeCtrl = function($scope, $locale, $sce, walletService, $translate) {
             $scope.CUR_nanti=globalFuncs.currencies.CUR_nanti;
             $scope.CUR_credit_mut=globalFuncs.currencies.CUR_credit_mut;
             
-            $scope.has_nant=globalFuncs.hasNant();
-            $scope.has_credit_mut=globalFuncs.hasCM();
+            $scope.has_nant=jsc3l_customization.hasNant();
+            $scope.has_credit_mut=jsc3l_customization.hasCM();
         });
     
       

@@ -10,8 +10,10 @@ var tabsCtrl = function($scope, $attrs, globalService, contactservice, $translat
     $scope.ng_ok=true;
     
     // Check Connectivity to the config server
- 
-    globalFuncs.checkConnectivity(function(connect_ok){
+
+    
+    
+    jsc3l_connection.ensureComChainRepo(function(connect_ok){
        if (!connect_ok){
           globalFuncs.hideLoadingWaiting (true);
           $scope.ng_ok=false;
@@ -21,8 +23,8 @@ var tabsCtrl = function($scope, $attrs, globalService, contactservice, $translat
           $scope.$apply();
        } else{
          
-          globalFuncs.getApiNodesList(function(nodes){
-              globalFuncs.selectApiNode(nodes,function(success){
+          
+              jsc3l_connection.acquireEndPoint(function(success){
                   if (success){
                        $scope.ng_ok=true;
                        globalFuncs.hideLoadingWaiting (true);
@@ -36,7 +38,6 @@ var tabsCtrl = function($scope, $attrs, globalService, contactservice, $translat
                   }
                   $scope.$apply();
               });
-          });
        }
     });
 
@@ -48,7 +49,7 @@ var tabsCtrl = function($scope, $attrs, globalService, contactservice, $translat
     $scope.onDeviceReady = function() {
         $scope.isIos = globalFuncs.isIos();
         
-        if (globalFuncs.isApp()){
+        if (jsc3l_customization.isApp()){
             globalFuncs.dowloadAppFileWithNameWithoutMessage('tmp.txt', {});
         }
     }
@@ -69,7 +70,7 @@ var tabsCtrl = function($scope, $attrs, globalService, contactservice, $translat
         if (!$scope.NoWallet){
              for (var id in $scope.other_wallets){
                $scope.other_wallets[id].name=contactservice.getContactName($scope.contacts, '0x'+$scope.other_wallets[id].address);
-               $scope.other_wallets[id].logo = globalFuncs.getCurrencyLogoUrl( $scope.other_wallets[id].file.server.name);
+               $scope.other_wallets[id].logo = jsc3l_customization.getCurrencyLogoUrl( $scope.other_wallets[id].file.server.name);
                $scope.other_wallets[id].has_logo = $scope.other_wallets[id].logo !='';
             }
             $scope.other_wallets.sort(function(a,b){return a.name.localeCompare(b.name); });
@@ -127,7 +128,7 @@ var tabsCtrl = function($scope, $attrs, globalService, contactservice, $translat
 
     
     var uls=document.getElementById('lg_mn');
-    var lang = globalFuncs.getLang();
+    var lang = jsc3l_customization.getLang();
     uls.innerHTML='';
     var inner='';
     
@@ -187,7 +188,7 @@ var tabsCtrl = function($scope, $attrs, globalService, contactservice, $translat
                 if ($scope.tabNames[key].url=='close'){
                     $scope.openLockPopup();
                 } else if ($scope.tabNames[key].url=='aide'){
-                    window.open( globalFuncs.getHelpUrl().replace('LANG',$scope.gelLanguageCode()), "_system");
+                    window.open( jsc3l_customization.getHelpUrl().replace('LANG',$scope.gelLanguageCode()), "_system");
                 } else{
                     if ($scope.activeTab!=id){ 
                         globalFuncs.showLoading($translate.instant("GP_Wait"));
@@ -293,17 +294,16 @@ var tabsCtrl = function($scope, $attrs, globalService, contactservice, $translat
    
     setInterval(globalFuncs.notifyApproval(), 30000);
     
-    if (globalFuncs.isMulti() && globalFuncs.hasConfig()){
-       globalFuncs.configure();
+   jsc3l_customization.configureCurrency();
+    globalFuncs.getCurrencies();
+   
+   globalService.configureNoteTab(jsc3l_customization.hasBn());
+   
+   if (!jsc3l_customization.hasBn() && $scope.tabNames['note'].id==globalService.currentTab){
+        $scope.tabClick($scope.tabNames['exchange'].id);
+   }
        
-       globalService.configureNoteTab(globalFuncs.hasBn());
-       
-       if (!globalFuncs.hasBn() && $scope.tabNames['note'].id==globalService.currentTab){
-            $scope.tabClick($scope.tabNames['exchange'].id);
-       }
-       
-       document.title=globalFuncs.currencies.CUR_global;
-    }
+  
    
     document.title=globalFuncs.currencies.CUR_global;
     

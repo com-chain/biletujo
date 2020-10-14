@@ -4,7 +4,7 @@ var storageCtrl = function($scope, $sce, walletService, contactservice, $transla
     $scope.deleteWalletModal = new Modal(document.getElementById('deleteWallet'));
     $scope.editWallModal = new Modal(document.getElementById('editWall'));
 
-    $scope.isApp =  globalFuncs.isApp();
+    $scope.isApp =  jsc3l_customization.isApp();
     globalFuncs.hideLoadingWaiting();
     $scope.private_cmp = JSON.parse(localStorage.getItem('ComChainPrivateComputer')); 
     if (! $scope.private_cmp){
@@ -23,7 +23,7 @@ var storageCtrl = function($scope, $sce, walletService, contactservice, $transla
          if (!$scope.NoWallet){
              for (var id in $scope.wallets){
                $scope.wallets[id].name=contactservice.getContactName($scope.contacts, '0x'+$scope.wallets[id].address);
-               $scope.wallets[id].logo = globalFuncs.getCurrencyLogoUrl( $scope.wallets[id].file.server.name);
+               $scope.wallets[id].logo = jsc3l_customization.getCurrencyLogoUrl( $scope.wallets[id].file.server.name);
                $scope.wallets[id].has_logo = $scope.wallets[id].logo !='';
                
             }
