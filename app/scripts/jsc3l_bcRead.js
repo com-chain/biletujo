@@ -20,6 +20,20 @@ for (var key in balance_function) {
     jsc3l_bcRead[key] = function(walletAddress, callback){getAmmount(address, walletAddress, callback);};
 }
 
+// Function to read Account infos 
+var account_function = {"getAccountStatus":"0x61242bdd",
+                        "getAccountType":"0xba99af70", 
+                        "getIsOwner":"0x2f54bf6e",
+                        "getTaxAmount":"0x4f2eabe0",
+                        "getLegTaxAmount":"0x48455399",
+                        "getTotalAmount":"0x18160ddd"};                      
+                      
+for (var key in account_function) {
+    const address = account_function[key]
+    jsc3l_bcRead[key] = function(walletAddress, callback){getAccInfo(address, walletAddress, callback);};
+}
+
+
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -72,7 +86,18 @@ var getAmmount = function(address, walletAddress, callback){
         }
     });        
 }
-  
+
+var getAccInfo = function(address, walletAddress, callback){
+    var userInfo = getDataObj(jsc3l_customization.getContract1(), address, [getNakedAddress(walletAddress)]);
+	ajaxReq.getEthCall(userInfo, function(data) {
+        if (!data.error) {
+		    callback(globalFuncs.getNumber(data.data, 1.));     
+	    }
+	});        
+}
+ 
+
+////
 var getAmmountAt = function(address, walletAddress, block_nb, callback){
     var userInfo = getDataObj(jsc3l_customization.getContract1(), address, [getNakedAddress(walletAddress)]);
     var block_hex='0x'+new BigNumber(block_nb).toString(16);

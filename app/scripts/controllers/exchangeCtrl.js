@@ -62,12 +62,8 @@ var exchangeCtrl = function($scope, $locale, $sce, walletService, $translate) {
         jsc3l_bcRead.getGlobalBalance($scope.selected_account, function(value){$scope.balance = value;});
         jsc3l_bcRead.getNantBalance($scope.selected_account, function(value){$scope.balanceEL = value;});
         jsc3l_bcRead.getCmBalance($scope.selected_account, function(value){$scope.balanceCM = value;});
-        
-        globalFuncs.getAccInfo(globalFuncs.slockitAccType, $scope.selected_account, function(value){
-                    $scope.acc_type_obj.setType(value);
-                   
-        });
-        globalFuncs.getAccInfo(globalFuncs.slockitAccStatus, $scope.selected_account, function(value){
+        jsc3l_bcRead.getAccountType($scope.selected_account, function(value){ $scope.acc_type_obj.setType(value);});
+        jsc3l_bcRead.getAccountStatus($scope.selected_account, function(value){
                                                                                                          if (value==1){
                                                                                                             $scope.lock_status = $translate.instant("EXC_Unlocked");
                                                                                                             $scope.lock_button = $translate.instant("EXC_Lock");
@@ -98,9 +94,9 @@ var exchangeCtrl = function($scope, $locale, $sce, walletService, $translate) {
 	    }, function() {
 		    if (walletService.wallet == null) return;
 		    $scope.wallet = walletService.wallet;
-            globalFuncs.getAccInfo(globalFuncs.slockitAccType, $scope.wallet.getAddressString(), function(type){
+            jsc3l_bcRead.getAccountType($scope.wallet.getAddressString(), function(type){
               
-               globalFuncs.getAccInfo(globalFuncs.slockitAccStatus, $scope.wallet.getAddressString(), function(status){
+               jsc3l_bcRead.getAccountStatus($scope.wallet.getAddressString(), function(status){
                     $scope.is_admin = type==2 && status==1;
                });
             });

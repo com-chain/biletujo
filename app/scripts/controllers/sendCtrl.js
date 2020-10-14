@@ -101,7 +101,7 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, me
 
         $scope.setOrigineAddress($scope.wallet.getAddressString());
         $scope.lockDestinationAddress(false);
-        globalFuncs.getAccInfo(globalFuncs.slockitAccStatus, $scope.wallet.getAddressString(), function(status){
+        jsc3l_bcRead.getAccountStatus($scope.wallet.getAddressString(), function(status){
                     $scope.is_locked = status==0;
         });
         $scope.setBalance(true);
@@ -139,7 +139,7 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, me
         jsc3l_bcRead.getCmBalance(wallet_address, function(value){$scope.balanceCM =  Math.round(value * 100);});
 
         
-        globalFuncs.getAccInfo(globalFuncs.slockitAccType, wallet_address, function(value){
+        jsc3l_bcRead.getAccountType(wallet_address, function(value){
                  $scope.display_curr_btn = jsc3l_customization.hasNant() && jsc3l_customization.hasCM()  && !$scope.isApp  && value!=0; // only available when 2 currency and not a personal account
                    
         });

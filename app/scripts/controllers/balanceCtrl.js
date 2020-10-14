@@ -102,7 +102,7 @@ var balanceCtrl = function($scope, $locale, $sce, walletService,contactservice, 
         });
         
        
-        globalFuncs.getAccInfo(globalFuncs.slockitAccStatus, $scope.wallet.getAddressString(), function(status){
+        jsc3l_bcRead.getAccountStatus($scope.wallet.getAddressString(), function(status){
            $scope.is_locked = status==0;
         });
         

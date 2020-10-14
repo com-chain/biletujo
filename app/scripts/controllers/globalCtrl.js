@@ -27,7 +27,7 @@ var globalCtrl = function($scope, $locale, $sce, walletService, $translate) {
     
     $scope.refresh = function(){
         $scope.validateStatus='';
-        globalFuncs.getAccInfo(globalFuncs.slockitIsOwner, $scope.wallet.getAddressString(), function(status){
+        jsc3l_bcRead.getIsOwner($scope.wallet.getAddressString(), function(status){
                 $scope.is_owner = status==1;
                 $scope.owner_account=$scope.wallet.getAddressString();
                 $scope.load(); 
@@ -39,10 +39,10 @@ var globalCtrl = function($scope, $locale, $sce, walletService, $translate) {
         
         $scope.CUR_nanti=globalFuncs.currencies.CUR_nanti;
         
-        globalFuncs.getAccInfo(globalFuncs.slockitTaxAmount, $scope.wallet.getAddressString(), function(amount){
-          globalFuncs.getAccInfo(globalFuncs.slockitTaxLegAmount, $scope.wallet.getAddressString(), function(amountLeg){
+        jsc3l_bcRead.getTaxAmount($scope.wallet.getAddressString(), function(amount){
+          jsc3l_bcRead.getLegTaxAmount($scope.wallet.getAddressString(), function(amountLeg){
            globalFuncs.getGlobInfo(globalFuncs.slockitTaxAccount, function(acc){
-                globalFuncs.getAccInfo(globalFuncs.slockitGetTotalAmount, $scope.wallet.getAddressString(), function(tot){
+                jsc3l_bcRead.getTotalAmount($scope.wallet.getAddressString(), function(tot){
                    $scope.taxes_amount = amount;
                    $scope.taxes_amount_leg = amountLeg;
                    $scope.total_amount = tot/100.0;

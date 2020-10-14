@@ -51,9 +51,9 @@ var billingCtrl = function($scope, $locale, $sce, walletService, $translate) {
 	    }, function() {
 		    if (walletService.wallet == null) return;
 		    $scope.wallet = walletService.wallet;
-            globalFuncs.getAccInfo(globalFuncs.slockitAccType, $scope.wallet.getAddressString(), function(type){
+            jsc3l_bcRead.getAccountType($scope.wallet.getAddressString(), function(type){
               
-               globalFuncs.getAccInfo(globalFuncs.slockitAccStatus, $scope.wallet.getAddressString(), function(status){
+               jsc3l_bcRead.getAccountStatus($scope.wallet.getAddressString(), function(status){
                     $scope.is_admin = type==2 && status==1;
                });
             });
@@ -103,7 +103,7 @@ var billingCtrl = function($scope, $locale, $sce, walletService, $translate) {
         if (index>=address_list.length){
             callback(address_list);
         } else {
-             globalFuncs.getAccInfo(globalFuncs.slockitAccStatus, address_list[index].add, function(status){
+             jsc3l_bcRead.getAccountStatus(address_list[index].add, function(status){
                     if ( status==1){
                          address_list[index].stat = $translate.instant("EXC_Unlocked");
                     }
@@ -298,7 +298,7 @@ var billingCtrl = function($scope, $locale, $sce, walletService, $translate) {
     
     $scope.addAccountToTypeDict = function(address,callback){
         if (!(address in $scope.account_type)){
-            globalFuncs.getAccInfo(globalFuncs.slockitAccType, address, function(type){
+            jsc3l_bcRead.getAccountType(address, function(type){
                 // peron=0 / legal=1/ admin=2
                 $scope.account_type[address] = type;
                 callback();
