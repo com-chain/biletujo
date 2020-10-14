@@ -132,10 +132,12 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, me
     
 	$scope.setBalance = function(readyStatus) {
         var wallet_address = $scope.wallet.getAddressString();
+        
+        
+        jsc3l_bcRead.getGlobalBalance(wallet_address, function(value){$scope.token.balance = value;});
+        jsc3l_bcRead.getNantBalance(wallet_address, function(value){$scope.balanceEL = Math.round(value * 100);});
+        jsc3l_bcRead.getCmBalance(wallet_address, function(value){$scope.balanceCM =  Math.round(value * 100);});
 
-        globalFuncs.getAmmount(globalFuncs.slockitBalance, wallet_address, function(value){$scope.token.balance = value;});
-        globalFuncs.getAmmount(globalFuncs.slockitElBlance, wallet_address, function(value){$scope.balanceEL = Math.round(value * 100);});
-        globalFuncs.getAmmount(globalFuncs.slockitCmBlance, wallet_address, function(value){$scope.balanceCM = Math.round(value * 100);});
         
         globalFuncs.getAccInfo(globalFuncs.slockitAccType, wallet_address, function(value){
                  $scope.display_curr_btn = jsc3l_customization.hasNant() && jsc3l_customization.hasCM()  && !$scope.isApp  && value!=0; // only available when 2 currency and not a personal account

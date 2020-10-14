@@ -1,4 +1,14 @@
 'use strict';
+
+///
+//
+//  Pre-requisite: the variable conf_locale should store an object with at least the following infos:
+// conf_locale.server.lang
+// conf_locale.server.notes
+// conf_locale.server.url_Css
+///
+
+
 var jsc3l_customization = function() {}
 
 ///

@@ -6,7 +6,7 @@ jsc3l_config.confEndPointsOther = ["https://ipfs.io","https://ipfs.infura.io","h
 
 jsc3l_config.configRepo = "/ipns/Qmcir6CzDtTZvywPt9N4uXbEjp3CJeVpW6CetMG6f93QNt/configs";  // IPNS of the list of available ComChain currency configs
 jsc3l_config.nodesRepo = "/ipns/Qmb2paHChFzvU9fnDtAvmpbEcwyKfpKjaHc67j4GCmWLZv"; // IPNS of the list of available ComChain end-points
-jsc3l_config.custoRepo = "/ipns/Qmcir6CzDtTZvywPt9N4uXbEjp3CJeVpW6CetMG6f93QNt/resources/";
+jsc3l_config.custoRepo = "/ipns/Qmcir6CzDtTZvywPt9N4uXbEjp3CJeVpW6CetMG6f93QNt/resources/";// IPNS of the configuration for the different currencies
 jsc3l_config.ping = jsc3l_config.configRepo+'/ping.json';
 
 

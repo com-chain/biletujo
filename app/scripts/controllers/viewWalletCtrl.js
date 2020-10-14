@@ -159,7 +159,7 @@ var viewWalletCtrl = function($scope, walletService, contactservice, $translate)
             if (status!=0){
               $scope.BN_Status=globalFuncs.getDangerText($translate.instant("BN_NotValid"));      
             } else {
-                globalFuncs.getAmmount(globalFuncs.slockitBalance, $scope.bnaddress, function(value){
+                jsc3l_bcRead.getGlobalBalance($scope.bnaddress, function(value){
                     if (globalFuncs.isValidBNValue(value)){
                        $scope.BN_Status=globalFuncs.getSuccessText($translate.instant("BN_Valid")+value+globalFuncs.currencies.CUR);    
                     } else {

@@ -59,10 +59,9 @@ var exchangeCtrl = function($scope, $locale, $sce, walletService, $translate) {
     
     
     $scope.setBalance = function() {
-
-        globalFuncs.getAmmount(globalFuncs.slockitBalance, $scope.selected_account, function(value){$scope.balance = value;});
-        globalFuncs.getAmmount(globalFuncs.slockitElBlance, $scope.selected_account, function(value){$scope.balanceEL = value;});
-        globalFuncs.getAmmount(globalFuncs.slockitCmBlance, $scope.selected_account, function(value){$scope.balanceCM = value;});
+        jsc3l_bcRead.getGlobalBalance($scope.selected_account, function(value){$scope.balance = value;});
+        jsc3l_bcRead.getNantBalance($scope.selected_account, function(value){$scope.balanceEL = value;});
+        jsc3l_bcRead.getCmBalance($scope.selected_account, function(value){$scope.balanceCM = value;});
         
         globalFuncs.getAccInfo(globalFuncs.slockitAccType, $scope.selected_account, function(value){
                     $scope.acc_type_obj.setType(value);

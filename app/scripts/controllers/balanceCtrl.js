@@ -128,12 +128,11 @@ var balanceCtrl = function($scope, $locale, $sce, walletService,contactservice, 
 	});
     
 	$scope.setBalance = function() {
-
-        globalFuncs.getAmmount(globalFuncs.slockitBalance, $scope.currentWalletAddress, function(value){$scope.token.balance = value;});
-        globalFuncs.getAmmount(globalFuncs.slockitElBlance, $scope.currentWalletAddress, function(value){$scope.token.balanceEL = value;});
-        globalFuncs.getAmmount(globalFuncs.slockitCmBlance, $scope.currentWalletAddress, function(value){$scope.token.balanceCM = value;});
-        globalFuncs.getAmmount(globalFuncs.slockitCmLimitm, $scope.currentWalletAddress, function(value){$scope.token.limitCMm = value;});
-        globalFuncs.getAmmount(globalFuncs.slockitCmLimitp, $scope.currentWalletAddress, function(value){$scope.token.limitCMp = value; globalFuncs.hideLoadingWaiting();});
+        jsc3l_bcRead.getGlobalBalance($scope.currentWalletAddress, function(value){$scope.token.balance = value;});
+        jsc3l_bcRead.getNantBalance($scope.currentWalletAddress, function(value){$scope.token.balanceEL = value;});
+        jsc3l_bcRead.getCmBalance($scope.currentWalletAddress, function(value){$scope.token.balanceCM = value;});
+        jsc3l_bcRead.getCmLimitBelow($scope.currentWalletAddress, function(value){$scope.token.limitCMm = value;});
+        jsc3l_bcRead.getCmLimitAbove($scope.currentWalletAddress, function(value){$scope.token.limitCMp = value; globalFuncs.hideLoadingWaiting();});  
 	}
     
     $scope.setBalance();
