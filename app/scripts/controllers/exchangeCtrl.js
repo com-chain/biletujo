@@ -222,7 +222,7 @@ var exchangeCtrl = function($scope, $locale, $sce, walletService, $translate) {
              $scope.pop_limitCMm =0;
         }
         
-        globalFuncs.SetAccountParam($scope.wallet, 
+        jsc3l_bcTransaction.SetAccountParam($scope.wallet, 
                                     $scope.selected_account, 
                                     status, 
                                     $scope.pop_acc_type,  
@@ -253,7 +253,7 @@ var exchangeCtrl = function($scope, $locale, $sce, walletService, $translate) {
    }
       
    $scope.confirmCreditAccount = function(){
-       globalFuncs.PledgeAccount($scope.wallet, $scope.selected_account, $scope.credit_amount, function(rawTx){
+       jsc3l_bcTransaction.PledgeAccount($scope.wallet, $scope.selected_account, $scope.credit_amount, function(rawTx){
              if (rawTx.isError){
                  $scope.acc_message = $sce.trustAsHtml(globalFuncs.getDangerText(rawTx.error));
              } else {

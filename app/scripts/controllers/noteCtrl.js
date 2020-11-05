@@ -121,7 +121,7 @@ var noteCtrl = function($scope, $locale, $sce, walletService, $translate) {
   
   $scope.lock = function(address){
        $scope.curr_operation=$translate.instant("NOT_Currently")+$translate.instant("NOT_Locking") + address;
-       globalFuncs.SetAccountParam($scope.wallet, address, 0, 0, 0, 0, function(data){
+       jsc3l_bcTransaction.SetAccountParam($scope.wallet, address, 0, 0, 0, 0, function(data){
                                          if (data.isError){
                                             alert($translate.instant("NOT_Processing_error") + data.error);
                                          } else {
@@ -132,7 +132,7 @@ var noteCtrl = function($scope, $locale, $sce, walletService, $translate) {
   
   $scope.adjustAmount = function(address, amount){
        $scope.curr_operation=$translate.instant("NOT_Currently")+$translate.instant("NOT_Pledging") +  amount + $scope.CUR + $translate.instant("NOT_to")+ address;
-       globalFuncs.PledgeAccount($scope.wallet, address, amount, function(data){
+       jsc3l_bcTransaction.PledgeAccount($scope.wallet, address, amount, function(data){
                                          if (data.isError){
                                              alert($translate.instant("NOT_Processing_error") + data.error);
                                          } else {

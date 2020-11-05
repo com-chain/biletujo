@@ -27,6 +27,14 @@ var tabsCtrl = function($scope, $attrs, globalService, contactservice, $translat
               jsc3l_connection.acquireEndPoint(function(success){
                   if (success){
                        $scope.ng_ok=true;
+                        jsc3l_customization.configureCurrency();
+                        globalFuncs.getCurrencies();
+
+                        globalService.configureNoteTab(jsc3l_customization.hasBn());
+
+                        if (!jsc3l_customization.hasBn() && $scope.tabNames['note'].id==globalService.currentTab){
+                            $scope.tabClick($scope.tabNames['exchange'].id);
+                        }
                        globalFuncs.hideLoadingWaiting (true);
                        
                   }else{
@@ -294,14 +302,7 @@ var tabsCtrl = function($scope, $attrs, globalService, contactservice, $translat
    
     setInterval(globalFuncs.notifyApproval(), 30000);
     
-   jsc3l_customization.configureCurrency();
-    globalFuncs.getCurrencies();
-   
-   globalService.configureNoteTab(jsc3l_customization.hasBn());
-   
-   if (!jsc3l_customization.hasBn() && $scope.tabNames['note'].id==globalService.currentTab){
-        $scope.tabClick($scope.tabNames['exchange'].id);
-   }
+ 
        
   
    

@@ -2,7 +2,7 @@
 
 ///
 //
-//  Pre-requisite: the variable conf_locale should store an object with at least the following infos:
+// Pre-requisite: the variable conf_locale should store an object with at least the following infos:
 // conf_locale.server.lang
 // conf_locale.server.notes
 // conf_locale.server.url_Css
@@ -114,7 +114,7 @@ jsc3l_customization.hasBnCheck = function(){
 
 jsc3l_customization.getCssUrl = function(){  
     try{
-        return localStorage.getItem('ComChainRepo') + jsc3l_config.custoRepo + jsc3l_customization.jsc3l_customization() + '/css/etherwallet-master.min.css';
+        return localStorage.getItem('ComChainRepo') + jsc3l_config.custoRepo + jsc3l_customization.getCurencyName() + '/css/etherwallet-master.min.css';
     } catch(e){
         return conf_locale.server.url_Css;
     }  
@@ -155,8 +155,8 @@ jsc3l_customization.passwordAutocomplete = function(){
     var number = 10000;
     try{
         config =  JSON.parse(localStorage.getItem('ComChainServerConf')).server;
-        if (config.passwordAutocomplete && config.passwordAutocomplete>0){
-            number = config.passwordAutocomplete;
+        if (config['passwordAutocomplete'] && config['passwordAutocomplete']>0){
+            number = config['passwordAutocomplete'];
         }
     } catch(e){
         

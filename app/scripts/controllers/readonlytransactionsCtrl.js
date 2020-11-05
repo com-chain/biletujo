@@ -353,7 +353,7 @@ var readonlytransactionsCtrl = function($scope, $locale, $sce, walletService,con
             
             
         } else {
-            globalFuncs.getAmmountAt(globalFuncs.slockitBalance, walletAddress, list[index].data.block, function(value){
+            jsc3l_bcRead.getHistoricalGlobalBalance(walletAddress, list[index].data.block, function(value){
                 list[index].data.balance = value;
                 $scope.addBalance(walletAddress,list,index+1);
             });

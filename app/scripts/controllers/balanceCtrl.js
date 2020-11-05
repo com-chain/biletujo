@@ -231,7 +231,7 @@ var balanceCtrl = function($scope, $locale, $sce, walletService,contactservice, 
           document.getElementById("nextDeleg").style.display = 'none';
         
           
-          globalFuncs.getDelegationList($scope.wallet.getAddressString(),offset,offset+count-1 ,
+          jsc3l_bcRead.getDelegationList($scope.wallet.getAddressString(),offset,offset+count-1 ,
                                      function(list){
                                          $scope.delegations = list;
                                          $scope.noDelegation = $scope.delegations.length==0 && offset==0;
@@ -306,7 +306,7 @@ var balanceCtrl = function($scope, $locale, $sce, walletService,contactservice, 
             } else if (isNaN($scope.currDelLimit)  || $scope.currDelLimit<=0){
                  document.getElementById('delStatus').innerHTML=$sce.trustAsHtml(globalFuncs.getDangerText($translate.instant("DELEG_InvalidDelegationLimit")));
             } else {
-              globalFuncs.setDelegation($scope.wallet, $scope.curraddress,$scope.currDelLimit,function(res){
+              jsc3l_bcTransaction.setDelegation($scope.wallet, $scope.curraddress,$scope.currDelLimit,function(res){
                    if (res.isError){
                         globalFuncs.hideLoadingWaiting();
 				        document.getElementById('delStatus').innerHTML= $sce.trustAsHtml(globalFuncs.getDangerText(res.error));
@@ -404,7 +404,7 @@ var balanceCtrl = function($scope, $locale, $sce, walletService,contactservice, 
             if (isNaN($scope.currDelLimit)  || $scope.currDelLimit<=0){
                  document.getElementById('delEditStatus').innerHTML=$sce.trustAsHtml(globalFuncs.getDangerText($translate.instant("DELEG_InvalidDelegationLimit")));
             } else {
-              globalFuncs.setDelegation($scope.wallet, $scope.curraddress,$scope.currDelLimit,function(res){
+              jsc3l_bcTransaction.setDelegation($scope.wallet, $scope.curraddress,$scope.currDelLimit,function(res){
                     if (res.isError){
                         globalFuncs.hideLoadingWaiting();
 				        document.getElementById('delEditStatus').innerHTML= $sce.trustAsHtml(globalFuncs.getDangerText(res.error));
@@ -435,7 +435,7 @@ var balanceCtrl = function($scope, $locale, $sce, walletService,contactservice, 
      $scope.saveDeleteDeleg = function(){
         if ($scope.trPass==walletService.password){
               walletService.setUsed();
-              globalFuncs.setDelegation($scope.wallet, $scope.curraddress,-1,function(res){
+              jsc3l_bcTransaction.setDelegation($scope.wallet, $scope.curraddress,-1,function(res){
                     if (res.isError){
                         globalFuncs.hideLoadingWaiting();
 				        document.getElementById('delDeleteStatus').innerHTML= $sce.trustAsHtml(globalFuncs.getDangerText(res.error));
@@ -510,7 +510,7 @@ var balanceCtrl = function($scope, $locale, $sce, walletService,contactservice, 
           document.getElementById("nextAllow").style.display = 'none';
         
           
-         globalFuncs.getAllowanceList($scope.wallet.getAddressString(),offset,offset+count-1 ,
+         jsc3l_bcRead.getAllowanceList($scope.wallet.getAddressString(),offset,offset+count-1 ,
                                      function(list){
                                          $scope.allowances = list;
                                          $scope.noAllowance = $scope.allowances.length==0 && offset==0;
@@ -566,7 +566,7 @@ var balanceCtrl = function($scope, $locale, $sce, walletService,contactservice, 
             }  else if (isNaN($scope.currAllowAmount)  || $scope.currAllowAmount<=0){
                  document.getElementById('allowStatus').innerHTML=$sce.trustAsHtml(globalFuncs.getDangerText($translate.instant("ALLOW_InvalidAmount")));
             } else {
-              globalFuncs.setAllowance($scope.wallet, $scope.curraddress,$scope.currAllowAmount,function(res){
+              jsc3l_bcTransaction.setAllowance($scope.wallet, $scope.curraddress,$scope.currAllowAmount,function(res){
                     if (res.isError){
                         globalFuncs.hideLoadingWaiting();
 				        document.getElementById('allowStatus').innerHTML= $sce.trustAsHtml(globalFuncs.getDangerText(res.error));
@@ -607,7 +607,7 @@ var balanceCtrl = function($scope, $locale, $sce, walletService,contactservice, 
             if (isNaN($scope.currAllowAmount)  || $scope.currAllowAmount<=0){
                  document.getElementById('allowEditStatus').innerHTML=$sce.trustAsHtml(globalFuncs.getDangerText($translate.instant("ALLOW_InvalidAmount")));
             } else {
-              globalFuncs.setAllowance($scope.wallet, $scope.curraddress,$scope.currAllowAmount,function(res){
+              jsc3l_bcTransaction.setAllowance($scope.wallet, $scope.curraddress,$scope.currAllowAmount,function(res){
                     if (res.isError){
                         globalFuncs.hideLoadingWaiting();
 				        document.getElementById('allowEditStatus').innerHTML= $sce.trustAsHtml(globalFuncs.getDangerText(res.error));
@@ -640,7 +640,7 @@ var balanceCtrl = function($scope, $locale, $sce, walletService,contactservice, 
      $scope.saveDeleteAllowance = function(){
         if ($scope.trPass==walletService.password){
             walletService.setUsed();
-               globalFuncs.setAllowance($scope.wallet, $scope.curraddress,-1,function(res){
+               jsc3l_bcTransaction.setAllowance($scope.wallet, $scope.curraddress,-1,function(res){
                    if (res.isError){
                         globalFuncs.hideLoadingWaiting();
 				        document.getElementById('allowDeleteStatus').innerHTML= $sce.trustAsHtml(globalFuncs.getDangerText(res.error));
