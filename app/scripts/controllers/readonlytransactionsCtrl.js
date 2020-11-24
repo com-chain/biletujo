@@ -135,7 +135,7 @@ var readonlytransactionsCtrl = function($scope, $locale, $sce, walletService,con
     $scope.getTransactionMessage = function(transaction_data) {
         var memo = memoService.getMemo($scope.memos,transaction_data.hash);
         try {
-            var key = Buffer.from($scope.current_message_key.clear_priv.substring(2),'hex')
+            var key =$scope.current_message_key.clear_priv;
             if (memo=="") {
               if (transaction_data.addr_to == $scope.watched_address.toLowerCase() && transaction_data.message_to != '') {
                   memo = messageService.decipherMessage(key, transaction_data.message_to);

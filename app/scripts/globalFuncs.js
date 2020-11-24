@@ -514,41 +514,6 @@ globalFuncs.getTransCurrency = function(nant_val,cm_val,cm_minus_lim,amount){
 }
 
 
-globalFuncs.getSplitting = function(nant_val,cm_val,cm_minus_lim,amount){
-    var nant =0;
-    var cm=0;
-    
-    var res=parseFloat(amount);
-    if (parseFloat(cm_val)>0){
-        if (parseFloat(cm_val)>=res){
-            cm = res;
-            res=0;
-        } else {
-            cm = parseFloat(cm_val);
-            res=res-parseFloat(cm_val);
-            cm_val=0;
-        }
-    }
-    
-    if (parseFloat(nant_val)>0){
-        if (parseFloat(nant_val)>=res){
-            nant=res;
-            res=0;
-        } else {
-            nant=parseFloat(nant_val);
-            res=res-parseFloat(nant_val);
-            //nant_val=0;
-        }
-    }
-    
-    if (res>0 && parseFloat(cm_val)-parseFloat(cm_minus_lim)>=res){
-        cm = cm + res;
-        res = 0;
-    }
-    
-    var possible = res==0;
-    return  {'possible': possible,'nant':nant, 'cm':cm};
-}
 
 
 
@@ -628,11 +593,8 @@ globalFuncs.getGethMsg = function(str) {
 	}
 	return str;
 }
-globalFuncs.scrypt = {
-	n: 1024
-};
+
 globalFuncs.postDelay = 300;
-globalFuncs.kdf = "scrypt";
 globalFuncs.defaultTxGasLimit = 21000;
 globalFuncs.digixClaimTxGasLimit = 150000;
 globalFuncs.isNumeric = function(n) {

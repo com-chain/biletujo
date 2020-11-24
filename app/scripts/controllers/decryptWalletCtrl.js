@@ -271,15 +271,12 @@ var decryptWalletCtrl = function($scope, $sce, $translate, walletService, contac
             walletService.password = $scope.filePassword;
             walletService.wallet = $scope.wallet;
             
-            messageService.ensureWalletMessageKey($scope.wallet, $scope.filePassword, $translate.instant('WALL_missing_message_key'),  function(complete_wall) {
+            messageService.ensureWalletMessageKey($scope.wallet, $translate.instant('WALL_missing_message_key'),  function(complete_wall) {
                 $scope.wallet = complete_wall;
                 walletService.wallet = complete_wall;
                 
-                localStorage.setItem('ComChainWallet',JSON.stringify($scope.wallet.toV3($scope.filePassword, {
-                              kdf: globalFuncs.kdf, n: globalFuncs.scrypt.n,
-                              server_name: jsc3l_customization.getCurencyName(),
-                              message_key: $scope.wallet.message_key                                                        
-                })));  
+                localStorage.setItem('ComChainWallet',JSON.stringify(jsc3l_wallet.encryptWallet($scope.wallet, $scope.filePassword)));
+
                 globalFuncs.loadWallets(true);
             });
             

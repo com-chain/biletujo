@@ -12,7 +12,7 @@ var tabsCtrl = function($scope, $attrs, globalService, contactservice, $translat
     // Check Connectivity to the config server
 
     
-    
+    $scope.loaded = false;
     jsc3l_connection.ensureComChainRepo(function(connect_ok){
        if (!connect_ok){
           globalFuncs.hideLoadingWaiting (true);
@@ -25,26 +25,30 @@ var tabsCtrl = function($scope, $attrs, globalService, contactservice, $translat
          
           
               jsc3l_connection.acquireEndPoint(function(success){
-                  if (success){
-                       $scope.ng_ok=true;
-                        jsc3l_customization.configureCurrency();
-                        globalFuncs.getCurrencies();
+                  if (!$scope.loaded) {
+                      if (success){
+                           $scope.ng_ok=true;
+                            jsc3l_customization.configureCurrency();
+                            globalFuncs.getCurrencies();
 
-                        globalService.configureNoteTab(jsc3l_customization.hasBn());
+                            globalService.configureNoteTab(jsc3l_customization.hasBn());
 
-                        if (!jsc3l_customization.hasBn() && $scope.tabNames['note'].id==globalService.currentTab){
-                            $scope.tabClick($scope.tabNames['exchange'].id);
-                        }
-                       globalFuncs.hideLoadingWaiting (true);
-                       
-                  }else{
-                       $scope.ng_ok=false;
-                       globalFuncs.hideLoadingWaiting (true);
-                       document.getElementById("global_error").innerHTML='<br/><br/><br/>'+$translate.instant("GLB_No_valid_nodes_reload_them") +
-                 '<br/><br/><button type="button" class="btn btn-primary bellowmargin" onclick="location.reload();" >'+$translate.instant("GLB_Relaoad_nodes")+' </button>';
+                            if (!jsc3l_customization.hasBn() && $scope.tabNames['note'].id==globalService.currentTab){
+                                $scope.tabClick($scope.tabNames['exchange'].id);
+                            }
+                           globalFuncs.hideLoadingWaiting (true);
+                           $scope.loaded=true;
+                           
+                      }else{
+                          
+                           $scope.ng_ok=false;
+                           globalFuncs.hideLoadingWaiting (true);
+                           document.getElementById("global_error").innerHTML='<br/><br/><br/>'+$translate.instant("GLB_No_valid_nodes_reload_them") +
+                     '<br/><br/><button type="button" class="btn btn-primary bellowmargin" onclick="location.reload();" >'+$translate.instant("GLB_Relaoad_nodes")+' </button>';
 
+                      }
+                      $scope.$apply();
                   }
-                  $scope.$apply();
               });
        }
     });

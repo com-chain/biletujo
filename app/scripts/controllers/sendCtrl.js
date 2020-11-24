@@ -352,7 +352,7 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, me
            $scope.typeTrans="no"
            $scope.err_message='';
            var value_cent = Math.round($scope.tokenTx.value * 100);
-           $scope.splitted = globalFuncs.getSplitting($scope.balanceEL, $scope.balanceCM, $scope.limitCMm, value_cent);
+           $scope.splitted = jsc3l_bcTransaction.getSplitting($scope.balanceEL, $scope.balanceCM, $scope.limitCMm, value_cent);
            if ($scope.splitted['possible']){
                 if ($scope.splitted['cm']>0){
                     if ($scope.splitted['nant']>0){
