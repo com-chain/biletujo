@@ -36,6 +36,12 @@ var tabsCtrl = function($scope, $attrs, globalService, contactservice, $translat
                             if (!jsc3l_customization.hasBn() &&  ('note' in $scope.tabNames) && $scope.tabNames['note'].id==globalService.currentTab){
                                 $scope.tabClick($scope.tabNames['exchange'].id);
                             }
+                            
+                            var currCode = globalService.getCurrCode();
+                            if (currCode!=undefined && currCode!=""){
+                                $scope.tabClick(1);
+                            }
+                            
                            globalFuncs.hideLoadingWaiting (true);
                            $scope.loaded=true;
                            
@@ -382,10 +388,7 @@ var tabsCtrl = function($scope, $attrs, globalService, contactservice, $translat
    }
    
    $scope.checkURL();
-   var currCode = globalService.getCurrCode();
-   if (currCode!=undefined && currCode!=""){
-        $scope.tabClick(1);
-   }
+
    
 };
 module.exports = tabsCtrl;
