@@ -274,11 +274,11 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, me
         }
         
         if ($scope.from_message_key.length>0 && $scope.message_from.length>0) {
-            data['memo_from']= messageService.cipherMessage(Buffer.from($scope.from_message_key.substring(2),'hex'), $scope.message_from);
+            data['memo_from']= messageService.cipherMessage($scope.from_message_key.substring(2), $scope.message_from);
         }
         
         if ($scope.to_message_key.length>0 && $scope.message_to.length>0) {
-            data['memo_to']= messageService.cipherMessage(Buffer.from($scope.to_message_key.substring(2),'hex'), $scope.message_to);
+            data['memo_to']= messageService.cipherMessage($scope.to_message_key.substring(2), $scope.message_to);
         }
     
         jsc3l_bcTransaction.TransfertNant($scope.wallet, $scope.tokenTx.to, $scope.elemanAmmount/100, data,  function(res){
@@ -309,11 +309,11 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, me
         }
         
         if ($scope.from_message_key.length>0 && $scope.message_from.length>0) {
-            data['memo_from']= messageService.cipherMessage(Buffer.from($scope.from_message_key.substring(2),'hex'), $scope.message_from);
+            data['memo_from']= messageService.cipherMessage($scope.from_message_key.substring(2), $scope.message_from);
         }
         
         if ($scope.to_message_key.length>0 && $scope.message_to.length>0) {
-            data['memo_to']= messageService.cipherMessage(Buffer.from($scope.to_message_key.substring(2),'hex'), $scope.message_to);
+            data['memo_to']= messageService.cipherMessage($scope.to_message_key.substring(2), $scope.message_to);
         }
         
         if (parent_hash!==undefined){
@@ -573,11 +573,11 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, me
                       }
                       
                       if ($scope.from_message_key.length>0 && $scope.message_from.length>0) {
-                        data['memo_from']= messageService.cipherMessage(Buffer.from($scope.from_message_key.substring(2),'hex'), $scope.message_from);
+                        data['memo_from']= messageService.cipherMessage($scope.from_message_key.substring(2), $scope.message_from);
                       }
 
                       if ($scope.to_message_key.length>0 && $scope.message_to.length>0) {
-                        data['memo_to']= messageService.cipherMessage(Buffer.from($scope.to_message_key.substring(2),'hex'), $scope.message_to);
+                        data['memo_to']= messageService.cipherMessage($scope.to_message_key.substring(2), $scope.message_to);
                       }
                       
                       if (cur_tran_type=='nant'){
@@ -1430,11 +1430,11 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, me
   $scope.sendReqTx = function(){
         var data= {};
         if ($scope.from_message_key.length>0 && $scope.message_from.length>0) {
-            data['memo_from']= messageService.cipherMessage(Buffer.from($scope.from_message_key.substring(2),'hex'), $scope.message_from);
+            data['memo_from']= messageService.cipherMessage($scope.from_message_key.substring(2), $scope.message_from);
         }
 
         if ($scope.to_message_key.length>0 && $scope.message_to.length>0) {
-            data['memo_to']= messageService.cipherMessage(Buffer.from($scope.to_message_key.substring(2),'hex'), $scope.message_to);
+            data['memo_to']= messageService.cipherMessage($scope.to_message_key.substring(2), $scope.message_to);
         }
 
       

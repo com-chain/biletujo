@@ -183,6 +183,21 @@ var globalService = function($http, $httpParamSerializerJQLike) {
     return localStorage.getItem('ComChainPayRequest');
   }
   
+  
+   var setCurrCode = function(address_object){
+    localStorage.setItem('ComChainCode',JSON.stringify(address_object)); 
+  }
+  
+  var clearCurrCode = function(){
+    
+    localStorage.removeItem('ComChainCode');
+  }
+  
+  var getCurrCode = function(){
+    
+    return localStorage.getItem('ComChainCode');
+  }
+  
   var configureNoteTab = function(show){
        if (localStorage.getItem('ComChainWallet') != null) {
          tabs['note'].exchangeOffice=show;  
@@ -201,6 +216,9 @@ var globalService = function($http, $httpParamSerializerJQLike) {
     setCurrAddress:setCurrAddress,
     getCurrAddress:getCurrAddress,
     clearCurrAddress:clearCurrAddress,
+    setCurrCode:setCurrCode,
+    getCurrCode:getCurrCode,
+    clearCurrCode:clearCurrCode,
     configureNoteTab:configureNoteTab
   };
   

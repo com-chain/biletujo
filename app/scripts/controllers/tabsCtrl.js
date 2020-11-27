@@ -318,6 +318,9 @@ var tabsCtrl = function($scope, $attrs, globalService, contactservice, $translat
    
 
    
+   // https://v2.cchosting.org/index.html?address=0x9e898bc7c13ba309a412904f07aff65a13e15d32&amount=0.01&shopId=1&txId=TEST_5fc0e4a1afa18&serverName=Lemanopolis
+   // https://v2.cchosting.org/index.html?code=<code>
+ 
    $scope.checkURL = function(){
        var curr_url = window.location.href;
        if (curr_url.indexOf('?')>=0){
@@ -327,32 +330,46 @@ var tabsCtrl = function($scope, $attrs, globalService, contactservice, $translat
                 hash_part = query.substring(query.indexOf('#')); 
                 query = query.substr(0,query.indexOf('#')); 
             }
-            var result = {};
-            query.split("&").forEach(function(part) {
-                var item = part.split("=");
-                result[item[0]] = decodeURIComponent(item[1]);
-            });
             
-            if (result["address"] && result["address"].length==42){
-                var data={}
-                data["address"]=result["address"];
-                if (result["amount"] && result["amount"]>0.){
-                    data["amount"]=result["amount"];
+            if (query.startsWith('code=')) {
+                try {
+                    var code = JSON.parse(decodeURI(query.substring(5)));
+                    globalService.setCurrCode(code);
+                    globalFuncs.removeWallet();
+                    var new_url = curr_url.substr(0, curr_url.indexOf('?'))+hash_part; 
+                    window.history.replaceState({}, document.title, new_url);
+                    location.reload();
+                    
+                } catch(e) {
+                    
                 }
-                if (result["shopId"] && result["shopId"].length>0){
-                    data["shopId"]=result["shopId"];
-                }
-                if (result["txId"] && result["txId"].length>0){
-                    data["txId"]=result["txId"];
-                } 
-                if (result["serverName"] && result["serverName"].length>0){
-                    data["serverName"]=result["serverName"];
-                }
+            } else {
+                var result = {};
+                query.split("&").forEach(function(part) {
+                    var item = part.split("=");
+                    result[item[0]] = decodeURIComponent(item[1]);
+                });
                 
-                globalService.setCurrAddress(data);
+                if (result["address"] && result["address"].length==42){
+                    var data={}
+                    data["address"]=result["address"];
+                    if (result["amount"] && result["amount"]>0.){
+                        data["amount"]=result["amount"];
+                    }
+                    if (result["shopId"] && result["shopId"].length>0){
+                        data["shopId"]=result["shopId"];
+                    }
+                    if (result["txId"] && result["txId"].length>0){
+                        data["txId"]=result["txId"];
+                    } 
+                    if (result["serverName"] && result["serverName"].length>0){
+                        data["serverName"]=result["serverName"];
+                    }
+                    
+                    globalService.setCurrAddress(data);
+                }
             }
             
-             
             // remove the parameters
             var new_url = curr_url.substr(0, curr_url.indexOf('?'))+hash_part; 
             window.history.replaceState({}, document.title, new_url);
@@ -365,5 +382,10 @@ var tabsCtrl = function($scope, $attrs, globalService, contactservice, $translat
    }
    
    $scope.checkURL();
+   var currCode = globalService.getCurrCode();
+   if (currCode!=undefined && currCode!=""){
+        $scope.tabClick(1);
+   }
+   
 };
 module.exports = tabsCtrl;
