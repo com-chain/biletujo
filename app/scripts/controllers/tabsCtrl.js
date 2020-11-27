@@ -33,7 +33,7 @@ var tabsCtrl = function($scope, $attrs, globalService, contactservice, $translat
 
                             globalService.configureNoteTab(jsc3l_customization.hasBn());
 
-                            if (!jsc3l_customization.hasBn() && $scope.tabNames['note'].id==globalService.currentTab){
+                            if (!jsc3l_customization.hasBn() &&  ('note' in $scope.tabNames) && $scope.tabNames['note'].id==globalService.currentTab){
                                 $scope.tabClick($scope.tabNames['exchange'].id);
                             }
                            globalFuncs.hideLoadingWaiting (true);
