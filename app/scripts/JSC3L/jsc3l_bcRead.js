@@ -24,7 +24,7 @@ for (var key in balance_function) {
 var account_function = {"getAccountStatus":"0x61242bdd",
                         "getAccountType":"0xba99af70", 
                         "getIsOwner":"0x2f54bf6e",
-                        "getTaxAmount":"0x4f2eabe0",
+                        "getTaxAmount":"0x98a9cfac",
                         "getLegTaxAmount":"0x48455399",
                         "getTotalAmount":"0x18160ddd"};                      
                       
