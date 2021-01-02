@@ -216,7 +216,8 @@ var globalFuncs = function() {}
   /********************************************************/
   globalFuncs.storeOnIpfs = function (crypted_data,callback){
     var xhr = new XMLHttpRequest();
-    xhr.open('GET', jsc3l_customization.getEndpointAddress()+ globalFuncs.ipfsAdd+'?data=' +encodeURIComponent(JSON.stringify(crypted_data)), true); //
+    xhr.open('POST', jsc3l_customization.getEndpointAddress()+ globalFuncs.ipfsAdd, true); //
+    xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
     xhr.onreadystatechange = function (oEvent) {  
     if (xhr.readyState === 4) {  
         if (xhr.status === 200) { 
@@ -232,7 +233,8 @@ var globalFuncs = function() {}
         }  
     }; 
 
-    xhr.send();
+    var  urlEncodedDataPairs  = 'data='+encodeURIComponent(JSON.stringify(crypted_data));
+    xhr.send(urlEncodedDataPairs);
   }
   
   globalFuncs.readFromIpfs = function (hash,callback){
