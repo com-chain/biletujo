@@ -1,27 +1,27 @@
 -- Merging decision tree log ---
 manifest
-ADDED from /d00/perso/Lemam-Wallet/automated_build_OS/biletujo/cordova_dist/platforms/android/CordovaLib/AndroidManifest.xml:20:1-23:12
-INJECTED from /d00/perso/Lemam-Wallet/automated_build_OS/biletujo/cordova_dist/platforms/android/CordovaLib/AndroidManifest.xml:20:1-23:12
-INJECTED from /d00/perso/Lemam-Wallet/automated_build_OS/biletujo/cordova_dist/platforms/android/CordovaLib/AndroidManifest.xml:20:1-23:12
-INJECTED from /d00/perso/Lemam-Wallet/automated_build_OS/biletujo/cordova_dist/platforms/android/CordovaLib/AndroidManifest.xml:20:1-23:12
-INJECTED from /d00/perso/Lemam-Wallet/automated_build_OS/biletujo/cordova_dist/platforms/android/CordovaLib/AndroidManifest.xml:20:1-23:12
-INJECTED from /d00/perso/Lemam-Wallet/automated_build_OS/biletujo/cordova_dist/platforms/android/CordovaLib/AndroidManifest.xml:20:1-23:12
-INJECTED from /d00/perso/Lemam-Wallet/automated_build_OS/biletujo/cordova_dist/platforms/android/CordovaLib/AndroidManifest.xml:20:1-23:12
+ADDED from /d00/perso/Open-sources/biletujo/cordova_dist/platforms/android/CordovaLib/AndroidManifest.xml:20:1-23:12
+INJECTED from /d00/perso/Open-sources/biletujo/cordova_dist/platforms/android/CordovaLib/AndroidManifest.xml:20:1-23:12
+INJECTED from /d00/perso/Open-sources/biletujo/cordova_dist/platforms/android/CordovaLib/AndroidManifest.xml:20:1-23:12
+INJECTED from /d00/perso/Open-sources/biletujo/cordova_dist/platforms/android/CordovaLib/AndroidManifest.xml:20:1-23:12
+INJECTED from /d00/perso/Open-sources/biletujo/cordova_dist/platforms/android/CordovaLib/AndroidManifest.xml:20:1-23:12
+INJECTED from /d00/perso/Open-sources/biletujo/cordova_dist/platforms/android/CordovaLib/AndroidManifest.xml:20:1-23:12
+INJECTED from /d00/perso/Open-sources/biletujo/cordova_dist/platforms/android/CordovaLib/AndroidManifest.xml:20:1-23:12
 	package
-		ADDED from /d00/perso/Lemam-Wallet/automated_build_OS/biletujo/cordova_dist/platforms/android/CordovaLib/AndroidManifest.xml:21:7-35
-		INJECTED from /d00/perso/Lemam-Wallet/automated_build_OS/biletujo/cordova_dist/platforms/android/CordovaLib/AndroidManifest.xml
-		INJECTED from /d00/perso/Lemam-Wallet/automated_build_OS/biletujo/cordova_dist/platforms/android/CordovaLib/AndroidManifest.xml
+		ADDED from /d00/perso/Open-sources/biletujo/cordova_dist/platforms/android/CordovaLib/AndroidManifest.xml:21:7-35
+		INJECTED from /d00/perso/Open-sources/biletujo/cordova_dist/platforms/android/CordovaLib/AndroidManifest.xml
+		INJECTED from /d00/perso/Open-sources/biletujo/cordova_dist/platforms/android/CordovaLib/AndroidManifest.xml
 	android:versionName
-		ADDED from /d00/perso/Lemam-Wallet/automated_build_OS/biletujo/cordova_dist/platforms/android/CordovaLib/AndroidManifest.xml:21:36-61
-		INJECTED from /d00/perso/Lemam-Wallet/automated_build_OS/biletujo/cordova_dist/platforms/android/CordovaLib/AndroidManifest.xml
-		INJECTED from /d00/perso/Lemam-Wallet/automated_build_OS/biletujo/cordova_dist/platforms/android/CordovaLib/AndroidManifest.xml
+		ADDED from /d00/perso/Open-sources/biletujo/cordova_dist/platforms/android/CordovaLib/AndroidManifest.xml:21:36-61
+		INJECTED from /d00/perso/Open-sources/biletujo/cordova_dist/platforms/android/CordovaLib/AndroidManifest.xml
+		INJECTED from /d00/perso/Open-sources/biletujo/cordova_dist/platforms/android/CordovaLib/AndroidManifest.xml
 	xmlns:android
-		ADDED from /d00/perso/Lemam-Wallet/automated_build_OS/biletujo/cordova_dist/platforms/android/CordovaLib/AndroidManifest.xml:20:11-69
+		ADDED from /d00/perso/Open-sources/biletujo/cordova_dist/platforms/android/CordovaLib/AndroidManifest.xml:20:11-69
 	android:versionCode
-		ADDED from /d00/perso/Lemam-Wallet/automated_build_OS/biletujo/cordova_dist/platforms/android/CordovaLib/AndroidManifest.xml:21:62-85
-		INJECTED from /d00/perso/Lemam-Wallet/automated_build_OS/biletujo/cordova_dist/platforms/android/CordovaLib/AndroidManifest.xml
-		INJECTED from /d00/perso/Lemam-Wallet/automated_build_OS/biletujo/cordova_dist/platforms/android/CordovaLib/AndroidManifest.xml
+		ADDED from /d00/perso/Open-sources/biletujo/cordova_dist/platforms/android/CordovaLib/AndroidManifest.xml:21:62-85
+		INJECTED from /d00/perso/Open-sources/biletujo/cordova_dist/platforms/android/CordovaLib/AndroidManifest.xml
+		INJECTED from /d00/perso/Open-sources/biletujo/cordova_dist/platforms/android/CordovaLib/AndroidManifest.xml
 uses-sdk
-ADDED from /d00/perso/Lemam-Wallet/automated_build_OS/biletujo/cordova_dist/platforms/android/CordovaLib/AndroidManifest.xml:22:5-44
+ADDED from /d00/perso/Open-sources/biletujo/cordova_dist/platforms/android/CordovaLib/AndroidManifest.xml:22:5-44
 	android:minSdkVersion
-		ADDED from /d00/perso/Lemam-Wallet/automated_build_OS/biletujo/cordova_dist/platforms/android/CordovaLib/AndroidManifest.xml:22:15-41
+		ADDED from /d00/perso/Open-sources/biletujo/cordova_dist/platforms/android/CordovaLib/AndroidManifest.xml:22:15-41
