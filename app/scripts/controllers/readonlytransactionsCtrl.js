@@ -1,7 +1,7 @@
 'use strict';
 var readonlytransactionsCtrl = function($scope, $locale, $sce, walletService,contactservice,consultService, memoService, messageService, $translate, $filter) {
     // Check the environment
-    $scope.isApp =  globalFuncs.isApp();
+    $scope.isApp =  jsc3l_customization.isApp();
     $scope.currentWalletAddress=globalFuncs.getWalletAddress();
     $scope.fingerprint=false;
     
@@ -92,8 +92,8 @@ var readonlytransactionsCtrl = function($scope, $locale, $sce, walletService,con
         $scope.CUR=globalFuncs.currencies.CUR;
         $scope.CUR_nanti=globalFuncs.currencies.CUR_nanti;
         $scope.CUR_credit_mut=globalFuncs.currencies.CUR_credit_mut;
-        $scope.has_nant=globalFuncs.hasNant();
-        $scope.has_credit_mut=globalFuncs.hasCM();
+        $scope.has_nant=jsc3l_customization.hasNant();
+        $scope.has_credit_mut=jsc3l_customization.hasCM();
         
         $scope.possible_wallets = consultService.loadRightFor($scope.currentWalletAddress);
         
@@ -115,8 +115,8 @@ var readonlytransactionsCtrl = function($scope, $locale, $sce, walletService,con
             $scope.lock_date = false;
         }
         
-        globalFuncs.getAmmount(globalFuncs.slockitElBlance, $scope.watched_address, function(value){$scope.balanceEL = value;});
-        globalFuncs.getAmmount(globalFuncs.slockitCmBlance, $scope.watched_address, function(value){$scope.balanceCM = value;});
+        jsc3l_bcRead.getNantBalance($scope.watched_address, function(value){$scope.balanceEL = value;});
+        jsc3l_bcRead.getCmBalance($scope.watched_address, function(value){$scope.balanceCM = value;});
         
         $scope.current_message_key = messageService.messageKeysFromCrypted($scope.wallet, $scope.possible_wallets[$scope.watched_address].messageKey);
         
@@ -135,7 +135,7 @@ var readonlytransactionsCtrl = function($scope, $locale, $sce, walletService,con
     $scope.getTransactionMessage = function(transaction_data) {
         var memo = memoService.getMemo($scope.memos,transaction_data.hash);
         try {
-            var key = Buffer.from($scope.current_message_key.clear_priv.substring(2),'hex')
+            var key =$scope.current_message_key.clear_priv;
             if (memo=="") {
               if (transaction_data.addr_to == $scope.watched_address.toLowerCase() && transaction_data.message_to != '') {
                   memo = messageService.decipherMessage(key, transaction_data.message_to);
@@ -353,7 +353,7 @@ var readonlytransactionsCtrl = function($scope, $locale, $sce, walletService,con
             
             
         } else {
-            globalFuncs.getAmmountAt(globalFuncs.slockitBalance, walletAddress, list[index].data.block, function(value){
+            jsc3l_bcRead.getHistoricalGlobalBalance(walletAddress, list[index].data.block, function(value){
                 list[index].data.balance = value;
                 $scope.addBalance(walletAddress,list,index+1);
             });

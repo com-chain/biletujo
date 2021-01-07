@@ -1,6 +1,6 @@
 'use strict';
 var decryptWalletCtrl = function($scope, $sce, $translate, walletService, contactService, memoService, authenticationService, messageService, globalService) {
-    $scope.isApp =  globalFuncs.isApp();
+    $scope.isApp =  jsc3l_customization.isApp();
     globalFuncs.hideLoadingWaiting();
     
     
@@ -15,7 +15,7 @@ var decryptWalletCtrl = function($scope, $sce, $translate, walletService, contac
     $scope.showFragements = false;
     
     
-    $scope.hasServerAddress = globalFuncs.hasConfig();
+    $scope.hasServerAddress = true;
     
     $scope.message_creation='';
     
@@ -155,7 +155,7 @@ var decryptWalletCtrl = function($scope, $sce, $translate, walletService, contac
     }
     
     $scope.setAPINode = function(){
-          globalFuncs.testNode($scope.api,function(success){
+          jsc3l_connection.testNode($scope.api,function(success){
             if (success){
                 // store the node 
                 localStorage.setItem('ComChainAPI', $scope.api);
@@ -251,7 +251,7 @@ var decryptWalletCtrl = function($scope, $sce, $translate, walletService, contac
                 $scope.setApiNodeModal = new Modal(document.getElementById('setApiNode'));
             }
 
-            $scope.api= globalFuncs.getServerAddress();
+            $scope.api= jsc3l_customization.getEndpointAddress();
             $scope.setApiNodeModal.open();
             return;
         }
@@ -271,15 +271,12 @@ var decryptWalletCtrl = function($scope, $sce, $translate, walletService, contac
             walletService.password = $scope.filePassword;
             walletService.wallet = $scope.wallet;
             
-            messageService.ensureWalletMessageKey($scope.wallet, $scope.filePassword, $translate.instant('WALL_missing_message_key'),  function(complete_wall) {
+            messageService.ensureWalletMessageKey($scope.wallet, $translate.instant('WALL_missing_message_key'),  function(complete_wall) {
                 $scope.wallet = complete_wall;
                 walletService.wallet = complete_wall;
                 
-                localStorage.setItem('ComChainWallet',JSON.stringify($scope.wallet.toV3($scope.filePassword, {
-                              kdf: globalFuncs.kdf, n: globalFuncs.scrypt.n,
-                              server_name: globalFuncs.getServerName(),
-                              message_key: $scope.wallet.message_key                                                        
-                })));  
+                localStorage.setItem('ComChainWallet',JSON.stringify(jsc3l_wallet.encryptWallet($scope.wallet, $scope.filePassword)));
+
                 globalFuncs.loadWallets(true);
             });
             
@@ -366,7 +363,7 @@ var decryptWalletCtrl = function($scope, $sce, $translate, walletService, contac
             enr_txt = enr_txt.replace(/(\n|\r|\ )/gm, "");
             var enrollmentLetter = JSON.parse(enr_txt);  
             if (enrollmentLetter.servername){
-                globalFuncs.getConfJSON(enrollmentLetter.servername,function(success){
+                jsc3l_customization.getConfJSON(enrollmentLetter.servername,function(success){
                     if (success){
                          location.reload();  
                     } else {

@@ -1,7 +1,7 @@
 'use strict';
 var noteCtrl = function($scope, $locale, $sce, walletService, $translate) {
     // Check the environment
-    $scope.isApp =  globalFuncs.isApp();
+    $scope.isApp =  jsc3l_customization.isApp();
     $scope.currentWalletAddress=globalFuncs.getWalletAddress();
     $scope.CUR='';
     
@@ -28,16 +28,16 @@ var noteCtrl = function($scope, $locale, $sce, walletService, $translate) {
 	    }, function() {
 		    if (walletService.wallet == null) return;
 		    $scope.wallet = walletService.wallet;
-            globalFuncs.getAccInfo(globalFuncs.slockitAccType, $scope.wallet.getAddressString(), function(type){
+            jsc3l_bcRead.getAccountType($scope.wallet.getAddressString(), function(type){
               
-               globalFuncs.getAccInfo(globalFuncs.slockitAccStatus, $scope.wallet.getAddressString(), function(status){
+               jsc3l_bcRead.getAccountStatus($scope.wallet.getAddressString(), function(status){
                     $scope.is_admin = type==2 && status==1;
                });
             });
             
             $scope.CUR=globalFuncs.currencies.CUR;
             
-            $scope.value_options = globalFuncs.getNoteValues();
+            $scope.value_options = jsc3l_customization.getNoteValues();
             $scope.value_options.unshift(0.00);
             $scope.target_amount_option = $scope.value_options[0];
             
@@ -62,8 +62,8 @@ var noteCtrl = function($scope, $locale, $sce, walletService, $translate) {
   }
   
   $scope.preparInfo = function(address, length){
-        globalFuncs.getAccInfo(globalFuncs.slockitAccStatus, address, function(status){
-             globalFuncs.getAmmount(globalFuncs.slockitElBlance, address, function(value){
+        jsc3l_bcRead.getAccountStatus(address, function(status){
+             jsc3l_bcRead.getNantBalance(address, function(value){
                 var status_txt = "NOT_Locked";
                 if (status == 1){
                     status_txt = "NOT_Unlocked";
@@ -121,7 +121,7 @@ var noteCtrl = function($scope, $locale, $sce, walletService, $translate) {
   
   $scope.lock = function(address){
        $scope.curr_operation=$translate.instant("NOT_Currently")+$translate.instant("NOT_Locking") + address;
-       globalFuncs.SetAccountParam($scope.wallet, address, 0, 0, 0, 0, function(data){
+       jsc3l_bcTransaction.SetAccountParam($scope.wallet, address, 0, 0, 0, 0, function(data){
                                          if (data.isError){
                                             alert($translate.instant("NOT_Processing_error") + data.error);
                                          } else {
@@ -132,7 +132,7 @@ var noteCtrl = function($scope, $locale, $sce, walletService, $translate) {
   
   $scope.adjustAmount = function(address, amount){
        $scope.curr_operation=$translate.instant("NOT_Currently")+$translate.instant("NOT_Pledging") +  amount + $scope.CUR + $translate.instant("NOT_to")+ address;
-       globalFuncs.PledgeAccount($scope.wallet, address, amount, function(data){
+       jsc3l_bcTransaction.PledgeAccount($scope.wallet, address, amount, function(data){
                                          if (data.isError){
                                              alert($translate.instant("NOT_Processing_error") + data.error);
                                          } else {
@@ -148,8 +148,8 @@ var noteCtrl = function($scope, $locale, $sce, walletService, $translate) {
            $scope.completed();
       } else {
           var address = $scope.info_list[$scope.curr_index].address;
-          globalFuncs.getAccInfo(globalFuncs.slockitAccStatus, address, function(status){
-             globalFuncs.getAmmount(globalFuncs.slockitElBlance, address, function(value){
+          jsc3l_bcRead.getAccountStatus(address, function(status){
+             jsc3l_bcRead.getNantBalance(address, function(value){
                  $scope.info_list[$scope.curr_index].amount = value;
                  var status_txt = "NOT_Locked";
                  if (status == 1){

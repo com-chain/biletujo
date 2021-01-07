@@ -1,7 +1,7 @@
 'use strict';
 var balanceCtrl = function($scope, $locale, $sce, walletService,contactservice, consultService, messageService, $translate) {
     // Environment variables
-    $scope.isApp =  globalFuncs.isApp();
+    $scope.isApp =  jsc3l_customization.isApp();
     $scope.currentWalletAddress=globalFuncs.getWalletAddress();
     $scope.blobEnc = '';
     $scope.CUR='';
@@ -90,7 +90,7 @@ var balanceCtrl = function($scope, $locale, $sce, walletService,contactservice, 
 		$scope.wallet = walletService.wallet;
         $scope.wallet.message_key = JSON.parse(localStorage.getItem('ComChainWallet')).message_key;
         contactservice.loadContacts($scope.wallet, walletService.password, function(contact_list){
-            var filtered_list = contactservice.filterContactForCurr(contact_list, globalFuncs.getServerName());
+            var filtered_list = contactservice.filterContactForCurr(contact_list, jsc3l_customization.getCurencyName());
             
             var my_name =  contactservice.getContactName(filtered_list, $scope.wallet.getAddressString());
             if (my_name!=''){
@@ -102,7 +102,7 @@ var balanceCtrl = function($scope, $locale, $sce, walletService,contactservice, 
         });
         
        
-        globalFuncs.getAccInfo(globalFuncs.slockitAccStatus, $scope.wallet.getAddressString(), function(status){
+        jsc3l_bcRead.getAccountStatus($scope.wallet.getAddressString(), function(status){
            $scope.is_locked = status==0;
         });
         
@@ -112,10 +112,10 @@ var balanceCtrl = function($scope, $locale, $sce, walletService,contactservice, 
         $scope.CUR=globalFuncs.currencies.CUR;
         $scope.CUR_nanti=globalFuncs.currencies.CUR_nanti;
         $scope.CUR_credit_mut=globalFuncs.currencies.CUR_credit_mut;
-        $scope.has_nant=globalFuncs.hasNant();
-        $scope.has_credit_mut=globalFuncs.hasCM();
-        $scope.has_deleg=globalFuncs.hasDeleg();
-        $scope.has_autor=globalFuncs.hasAutor();
+        $scope.has_nant=jsc3l_customization.hasNant();
+        $scope.has_credit_mut=jsc3l_customization.hasCM();
+        $scope.has_deleg=jsc3l_customization.hasDeleg();
+        $scope.has_autor=jsc3l_customization.hasAutor();
         $scope.qr_content = localStorage.getItem('ComChainWallet');
         var qrcode = new QRCode(document.getElementById("qrcode_print_2"),$scope.qr_content);
         setTimeout(function(){ document.getElementById("qrcode_print_2").getElementsByTagName('img')[0].style.display="inline";},100); 
@@ -128,12 +128,11 @@ var balanceCtrl = function($scope, $locale, $sce, walletService,contactservice, 
 	});
     
 	$scope.setBalance = function() {
-
-        globalFuncs.getAmmount(globalFuncs.slockitBalance, $scope.currentWalletAddress, function(value){$scope.token.balance = value;});
-        globalFuncs.getAmmount(globalFuncs.slockitElBlance, $scope.currentWalletAddress, function(value){$scope.token.balanceEL = value;});
-        globalFuncs.getAmmount(globalFuncs.slockitCmBlance, $scope.currentWalletAddress, function(value){$scope.token.balanceCM = value;});
-        globalFuncs.getAmmount(globalFuncs.slockitCmLimitm, $scope.currentWalletAddress, function(value){$scope.token.limitCMm = value;});
-        globalFuncs.getAmmount(globalFuncs.slockitCmLimitp, $scope.currentWalletAddress, function(value){$scope.token.limitCMp = value; globalFuncs.hideLoadingWaiting();});
+        jsc3l_bcRead.getGlobalBalance($scope.currentWalletAddress, function(value){$scope.token.balance = value;});
+        jsc3l_bcRead.getNantBalance($scope.currentWalletAddress, function(value){$scope.token.balanceEL = value;});
+        jsc3l_bcRead.getCmBalance($scope.currentWalletAddress, function(value){$scope.token.balanceCM = value;});
+        jsc3l_bcRead.getCmLimitBelow($scope.currentWalletAddress, function(value){$scope.token.limitCMm = value;});
+        jsc3l_bcRead.getCmLimitAbove($scope.currentWalletAddress, function(value){$scope.token.limitCMp = value; globalFuncs.hideLoadingWaiting();});  
 	}
     
     $scope.setBalance();
@@ -232,7 +231,7 @@ var balanceCtrl = function($scope, $locale, $sce, walletService,contactservice, 
           document.getElementById("nextDeleg").style.display = 'none';
         
           
-          globalFuncs.getDelegationList($scope.wallet.getAddressString(),offset,offset+count-1 ,
+          jsc3l_bcRead.getDelegationList($scope.wallet.getAddressString(),offset,offset+count-1 ,
                                      function(list){
                                          $scope.delegations = list;
                                          $scope.noDelegation = $scope.delegations.length==0 && offset==0;
@@ -256,7 +255,7 @@ var balanceCtrl = function($scope, $locale, $sce, walletService,contactservice, 
     
     
     $scope.passwordCheck = function(control){
-        var number = globalFuncs.passwordAutocomplete();
+        var number = jsc3l_customization.passwordAutocomplete();
         var curr_length = $scope.trPass.length;
         if (curr_length>=number && walletService.password.startsWith($scope.trPass)){
             // autocomplete (bypass angular for timinig reason with the set selection range)
@@ -307,7 +306,7 @@ var balanceCtrl = function($scope, $locale, $sce, walletService,contactservice, 
             } else if (isNaN($scope.currDelLimit)  || $scope.currDelLimit<=0){
                  document.getElementById('delStatus').innerHTML=$sce.trustAsHtml(globalFuncs.getDangerText($translate.instant("DELEG_InvalidDelegationLimit")));
             } else {
-              globalFuncs.setDelegation($scope.wallet, $scope.curraddress,$scope.currDelLimit,function(res){
+              jsc3l_bcTransaction.setDelegation($scope.wallet, $scope.curraddress,$scope.currDelLimit,function(res){
                    if (res.isError){
                         globalFuncs.hideLoadingWaiting();
 				        document.getElementById('delStatus').innerHTML= $sce.trustAsHtml(globalFuncs.getDangerText(res.error));
@@ -405,7 +404,7 @@ var balanceCtrl = function($scope, $locale, $sce, walletService,contactservice, 
             if (isNaN($scope.currDelLimit)  || $scope.currDelLimit<=0){
                  document.getElementById('delEditStatus').innerHTML=$sce.trustAsHtml(globalFuncs.getDangerText($translate.instant("DELEG_InvalidDelegationLimit")));
             } else {
-              globalFuncs.setDelegation($scope.wallet, $scope.curraddress,$scope.currDelLimit,function(res){
+              jsc3l_bcTransaction.setDelegation($scope.wallet, $scope.curraddress,$scope.currDelLimit,function(res){
                     if (res.isError){
                         globalFuncs.hideLoadingWaiting();
 				        document.getElementById('delEditStatus').innerHTML= $sce.trustAsHtml(globalFuncs.getDangerText(res.error));
@@ -436,7 +435,7 @@ var balanceCtrl = function($scope, $locale, $sce, walletService,contactservice, 
      $scope.saveDeleteDeleg = function(){
         if ($scope.trPass==walletService.password){
               walletService.setUsed();
-              globalFuncs.setDelegation($scope.wallet, $scope.curraddress,-1,function(res){
+              jsc3l_bcTransaction.setDelegation($scope.wallet, $scope.curraddress,-1,function(res){
                     if (res.isError){
                         globalFuncs.hideLoadingWaiting();
 				        document.getElementById('delDeleteStatus').innerHTML= $sce.trustAsHtml(globalFuncs.getDangerText(res.error));
@@ -511,7 +510,7 @@ var balanceCtrl = function($scope, $locale, $sce, walletService,contactservice, 
           document.getElementById("nextAllow").style.display = 'none';
         
           
-         globalFuncs.getAllowanceList($scope.wallet.getAddressString(),offset,offset+count-1 ,
+         jsc3l_bcRead.getAllowanceList($scope.wallet.getAddressString(),offset,offset+count-1 ,
                                      function(list){
                                          $scope.allowances = list;
                                          $scope.noAllowance = $scope.allowances.length==0 && offset==0;
@@ -567,7 +566,7 @@ var balanceCtrl = function($scope, $locale, $sce, walletService,contactservice, 
             }  else if (isNaN($scope.currAllowAmount)  || $scope.currAllowAmount<=0){
                  document.getElementById('allowStatus').innerHTML=$sce.trustAsHtml(globalFuncs.getDangerText($translate.instant("ALLOW_InvalidAmount")));
             } else {
-              globalFuncs.setAllowance($scope.wallet, $scope.curraddress,$scope.currAllowAmount,function(res){
+              jsc3l_bcTransaction.setAllowance($scope.wallet, $scope.curraddress,$scope.currAllowAmount,function(res){
                     if (res.isError){
                         globalFuncs.hideLoadingWaiting();
 				        document.getElementById('allowStatus').innerHTML= $sce.trustAsHtml(globalFuncs.getDangerText(res.error));
@@ -608,7 +607,7 @@ var balanceCtrl = function($scope, $locale, $sce, walletService,contactservice, 
             if (isNaN($scope.currAllowAmount)  || $scope.currAllowAmount<=0){
                  document.getElementById('allowEditStatus').innerHTML=$sce.trustAsHtml(globalFuncs.getDangerText($translate.instant("ALLOW_InvalidAmount")));
             } else {
-              globalFuncs.setAllowance($scope.wallet, $scope.curraddress,$scope.currAllowAmount,function(res){
+              jsc3l_bcTransaction.setAllowance($scope.wallet, $scope.curraddress,$scope.currAllowAmount,function(res){
                     if (res.isError){
                         globalFuncs.hideLoadingWaiting();
 				        document.getElementById('allowEditStatus').innerHTML= $sce.trustAsHtml(globalFuncs.getDangerText(res.error));
@@ -641,7 +640,7 @@ var balanceCtrl = function($scope, $locale, $sce, walletService,contactservice, 
      $scope.saveDeleteAllowance = function(){
         if ($scope.trPass==walletService.password){
             walletService.setUsed();
-               globalFuncs.setAllowance($scope.wallet, $scope.curraddress,-1,function(res){
+               jsc3l_bcTransaction.setAllowance($scope.wallet, $scope.curraddress,-1,function(res){
                    if (res.isError){
                         globalFuncs.hideLoadingWaiting();
 				        document.getElementById('allowDeleteStatus').innerHTML= $sce.trustAsHtml(globalFuncs.getDangerText(res.error));
@@ -773,7 +772,7 @@ var balanceCtrl = function($scope, $locale, $sce, walletService,contactservice, 
     var mess_keys = messageService.messageKeysFromWallet($scope.wallet);
     
     var obj_content = {"address":$scope.wallet.getAddressString(), 
-              "server":globalFuncs.getServerName(), 
+              "server":jsc3l_customization.getCurencyName(), 
               "destinary":$scope.dest,
               "begin":$scope.start_date.getFullYear()+ "/" + ($scope.start_date.getMonth()+1)+"/" + $scope.start_date.getDate(), 
               "end":$scope.end_date.getFullYear()+ "/" + ($scope.end_date.getMonth()+1)+"/" + $scope.end_date.getDate(), 
@@ -783,8 +782,7 @@ var balanceCtrl = function($scope, $locale, $sce, walletService,contactservice, 
     
    
     if ($scope.dest_keys.public_key !== undefined) {
-        var dest_public_key = Buffer.from($scope.dest_keys.public_key, 'hex');
-        var crypted_m_key = messageService.cipherMessage(dest_public_key, mess_keys.clear_priv);
+        var crypted_m_key = messageService.cipherMessage($scope.dest_keys.public_key, mess_keys.clear_priv);
         obj_content.message_key = crypted_m_key;
     }
     
@@ -898,7 +896,7 @@ $scope.showContent = function(content) {
            // check the validity 
            if (obj.data.destinary!=$scope.wallet.getAddressString()){
                $scope.openStatus = $sce.trustAsHtml(globalFuncs.getDangerText($translate.instant('OPEN_right_not_for_you'))); 
-           } else if (obj.data.server!=globalFuncs.getServerName()){
+           } else if (obj.data.server!=jsc3l_customization.getCurencyName()){
                $scope.openStatus = $sce.trustAsHtml(globalFuncs.getDangerText($translate.instant('OPEN_right_not_right_server'))); 
            } else if ((new Date(obj.data.end)).getTime()< (new Date()).getTime()){   
                 $scope.openStatus = $sce.trustAsHtml(globalFuncs.getDangerText($translate.instant('OPEN_too_old_right'))); 

@@ -1,25 +1,9 @@
 'use strict';
 var globalFuncs = function() {}
- 
+ /*
  globalFuncs.eLemTransfert = "0xa5f7c148";
  globalFuncs.lemanexTransfert = "0x60ca9c4c";
  globalFuncs.fondTransfert = "0x00d24387";
- 
- globalFuncs.slockitBalance = "0x70a08231";    
- globalFuncs.slockitElBlance = "0xae261aba";
- globalFuncs.slockitCmBlance = "0xbbc72a17";
- 
- globalFuncs.slockitCmLimitm = "0xcc885a65";
- globalFuncs.slockitCmLimitp = "0xae7143d6";
- 
- globalFuncs.slockitAccType = "0xba99af70";   
- globalFuncs.slockitAccStatus = "0x61242bdd"; 
- 
- globalFuncs.slockitIsOwner = "0x2f54bf6e"; 
- globalFuncs.slockitTaxAmount = "0x98a9cfac";
- globalFuncs.slockitTaxLegAmount = "0x48455399"; 
- globalFuncs.slockitTaxAccount = "0x4f2eabe0"; 
- 
  
  globalFuncs.slockitSetTax = "0xf6f1897d"; 
  globalFuncs.slockitSetTaxLeg = "0xfafaf4c0"; 
@@ -28,24 +12,10 @@ var globalFuncs = function() {}
  
  globalFuncs.slockitSetAccountParam = "0x848b2592";
  globalFuncs.slockitPledge = "0x6c343eef";
- globalFuncs.slockitGetTotalAmount = "0x18160ddd";
- 
 
- globalFuncs.delegationCount = "0x58fb5218";
- globalFuncs.getDelegation = "0xca40edf1";
- globalFuncs.delegation = "0x046d3307";
  globalFuncs.delegate = "0x75741c79";
  
- 
- globalFuncs.allowanceCount = "0xaa7adb3d";
- globalFuncs.getAllowance = "0xb545b11f";
- globalFuncs.allowance = "0xdd62ed3e";
  globalFuncs.approve = "0xd4e12f2e";
- 
-
- globalFuncs.myDelegationCount = "0x7737784d";
- globalFuncs.getMyDelegation = "0x49bce08d";
- globalFuncs.myDelegation = "0xf24111d2";
  
  globalFuncs.transfertFrom = "0x58258353";
  globalFuncs.transfertCMFrom = "0x2ef9ade2";
@@ -53,29 +23,14 @@ var globalFuncs = function() {}
  globalFuncs.transfertOnBehalfNant = "0x1b6b1ee5";
  globalFuncs.transfertOnBehalfCM = "0x74c421fe";
  
-
- globalFuncs.myRequestCount = "0x418d0fd4";
- globalFuncs.myReqMap = "0x0becf93f";
- globalFuncs.myRequest = "0x09a15e43";
-
- globalFuncs.requestCount = "0xdebb9d28";
- globalFuncs.reqMap = "0x726d0a28";
- globalFuncs.request = "0x3537d3fa";
- 
- globalFuncs.acceptedCount = "0x8d768f84";
- globalFuncs.acceptedMap = "0x59a1921a";
- globalFuncs.accepted = "0x958cde37";
  globalFuncs.dissAccepted = "0xccf93c7a";
- 
- globalFuncs.rejectedCount = "0x20cde8fa";
- globalFuncs.rejectedMap = "0x9aa9366e";
- globalFuncs.rejected = "0xeac9dd4d";
+
  globalFuncs.dissRejected = "0x88759215";
  
 
  globalFuncs.payRequestNant = "0x132019f4";
  globalFuncs.payRequestCM = "0x1415707c";
- globalFuncs.cancelRequest = "0xaf98f757";
+ globalFuncs.cancelRequest = "0xaf98f757";*/
  
  
  globalFuncs.setAccountsContracts = "0x14ea14f5";
@@ -86,14 +41,7 @@ var globalFuncs = function() {}
  
  ///////////////////////////////////////////////////////////////////////////
  
- globalFuncs.confEndPointsOur = ["https://node-001.cchosting.org","https://node-002.cchosting.org","https://node-003.cchosting.org","https://node-004.cchosting.org","https://node-cc-001.cchosting.org/","https://api.monnaie-leman.org"];
- globalFuncs.confEndPointsOther = ["https://ipfs.io","https://ipfs.infura.io","https://ipfs.jes.xxx","https://siderus.io","https://hardbin.com","https://ipfs.infura.io","https://xmine128.tk"];
-                               
- globalFuncs.configRepo = "/ipns/Qmcir6CzDtTZvywPt9N4uXbEjp3CJeVpW6CetMG6f93QNt/configs";
- globalFuncs.nodesRepo = "/ipns/Qmb2paHChFzvU9fnDtAvmpbEcwyKfpKjaHc67j4GCmWLZv";
- globalFuncs.custoRepo = "/ipns/Qmcir6CzDtTZvywPt9N4uXbEjp3CJeVpW6CetMG6f93QNt/resources/";
 
-  
  globalFuncs.multicurr = true;
  
  globalFuncs.nonce = 0;
@@ -102,7 +50,6 @@ var globalFuncs = function() {}
   globalFuncs.ipfsCat = "/ipfscat.php";
   globalFuncs.ipfsAdd = "/ipfsadd.php";
   globalFuncs.authChallenge = "/auth.php";
-  globalFuncs.PING = globalFuncs.configRepo+'/ping.json';
   
   globalFuncs.getNumber = function(data, ratio){
         var short_data = '0x'+ data.slice(-12);
@@ -203,460 +150,6 @@ var globalFuncs = function() {}
 		});
     }  
     
- 
-
-    
-    
-     
-  
- globalFuncs.getAmountForElement = function(contract, function_address, caller_address, element_address, callback){
-    var userInfo = ethFuncs.getDataObj(contract, 
-                                       function_address, 
-                                       [ethFuncs.getNakedAddress(caller_address),ethFuncs.getNakedAddress(element_address)]);
-    ajaxReq.getEthCall(userInfo, function(data) {
-                if (!data.error) {
-			        callback(globalFuncs.getNumber(data.data, 100.).toString());    
-		        }
-	});        
-}
-
-globalFuncs.getElementInList = function(contract, map_function_address, amount_function_address, caller_address, index, list, ind_min, final_call_back){
-    if (index>=ind_min){
-        var userInfo = ethFuncs.getDataObj(contract, 
-                                        map_function_address, 
-                                        [ethFuncs.getNakedAddress(caller_address),  
-                                         ethFuncs.padLeft(new BigNumber(index).toString(16), 64) ]);
-     
-        ajaxReq.getEthCall(userInfo, function(data) {
-            if (!data.error) {
-                globalFuncs.getAmountForElement(contract, amount_function_address, caller_address, data.data, function(amount){
-                    var cleaned_add = '0x'+ data.data.substring(data.data.length-40);
-                    var element = {address:cleaned_add, amount:amount};
-                    list.unshift(element);
-                    globalFuncs.getElementInList(contract, map_function_address, amount_function_address, caller_address, index-1, list, ind_min, final_call_back);
-                    
-                });
-		    }
-		});    
-        
-    } else {
-       final_call_back(list); 
-    }      
-}
-
-globalFuncs.getAmmount = function(address,walletAddress,callback){
-        var userInfo = ethFuncs.getDataObj(globalFuncs.getContract1(),
-                                           address, 
-                                           [ethFuncs.getNakedAddress(walletAddress)]);
-		ajaxReq.getEthCall(userInfo, function(data) {
-            if (!data.error) {
-			    callback(globalFuncs.getNumber(data.data, 100.).toString());
-                   
-		    }
-		});        
-  }
-  
-  globalFuncs.getAmmountAt = function(address,walletAddress,block_nb,callback){
-        var userInfo = ethFuncs.getDataObj(globalFuncs.getContract1(),
-                                           address, 
-                                           [ethFuncs.getNakedAddress(walletAddress)]);
-        var block_hex='0x'+new BigNumber(block_nb).toString(16);
-		ajaxReq.getEthCallAt(userInfo,block_hex, function(data) {
-            if (!data.error && data.data) {
-			    callback(globalFuncs.getNumber(data.data, 100.).toString());
-                   
-		    } else {
-                callback("");
-		    }
-		});        
-  }
-  
-globalFuncs.getAccInfo = function(address,walletAddress,callback){
-        var userInfo = ethFuncs.getDataObj(globalFuncs.getContract1(),
-                                           address, 
-                                           [ethFuncs.getNakedAddress(walletAddress)]);
-		ajaxReq.getEthCall(userInfo, function(data) {
-            if (!data.error) {
-			    callback(globalFuncs.getNumber(data.data, 1.));
-                   
-		    }
-		});        
-  }
-  
-  
-  
-  
-  globalFuncs.getGlobInfo = function(address, callback){
-        var userInfo = ethFuncs.getDataObj(globalFuncs.getContract1(), address, []);
-		ajaxReq.getEthCall(userInfo, function(data) {
-            if (!data.error) {
-			    callback(data.data);  
-		    }
-		});        
-  }
-  
-  
-  
-  
-  
-globalFuncs.getInfo = function(contract, address, walletAddress,callback){
-        var userInfo = ethFuncs.getDataObj(contract, 
-                                           address, 
-                                           [ethFuncs.getNakedAddress(walletAddress)]);
-		ajaxReq.getEthCall(userInfo, function(data) {
-            if (!data.error) {
-			    callback(globalFuncs.getNumber(data.data, 1.));
-                   
-		    }
-		});        
-  }
-    
-    
-    
-    
- /* Action in Contract 1*/ 
- globalFuncs.SetAccountParam = function(wallet, account_address, acc_status, acc_type, limit_minus, limit_plus, callback){
-     var accAdd = ethFuncs.padLeft(ethFuncs.getNakedAddress(account_address), 64);
-     globalFuncs.generateTx(globalFuncs.getContract1(), 
-                            wallet, 
-                            globalFuncs.slockitSetAccountParam,
-                            [accAdd,
-                             globalFuncs.encodeNumber(acc_status),
-                             globalFuncs.encodeNumber(acc_type),
-                             globalFuncs.encodeNumber(parseInt(100*limit_plus,10)),
-                             globalFuncs.encodeNumber(parseInt(100*limit_minus,10))], 
-                            {},
-                            callback);
- }
- 
-globalFuncs.PledgeAccount = function(wallet, account_address, amount, callback){
-     var amount_cent = globalFuncs.encodeNumber(parseInt(100*amount,10));
-     var accAdd = ethFuncs.padLeft(ethFuncs.getNakedAddress(account_address), 64);
-     globalFuncs.generateTx(globalFuncs.getContract1(),
-                            wallet, 
-                            globalFuncs.slockitPledge, 
-                            [accAdd, amount_cent],
-                            {},
-                            callback);       
- }
- 
- globalFuncs.setAllowance = function (wallet, spender_address,amount,callback){
-      var acc_add = ethFuncs.padLeft(ethFuncs.getNakedAddress(spender_address), 64);
-      globalFuncs.generateTx(globalFuncs.getContract1(),
-                             wallet, 
-                             globalFuncs.approve, 
-                             [acc_add, globalFuncs.encodeNumber(parseInt(100*amount,10))], 
-                             {},
-                             callback);
-}
- 
-globalFuncs.setDelegation = function (wallet, spender_address,limit,callback){
-    
-      var acc_add = ethFuncs.padLeft(ethFuncs.getNakedAddress(spender_address), 64);
-      globalFuncs.generateTx(globalFuncs.getContract1(),
-                             wallet, 
-                             globalFuncs.delegate, 
-                             [acc_add, globalFuncs.encodeNumber(parseInt(100*limit,10))], 
-                             {},
-                             callback);
-}
-
-globalFuncs.SetTaxAmount = function(wallet, amount, callback){
-     var amount_encoded = globalFuncs.encodeNumber(parseInt(amount,10));
-     globalFuncs.generateTx(globalFuncs.getContract1(),
-                            wallet, 
-                            globalFuncs.slockitSetTax, 
-                            [amount_encoded],
-                            {},
-                            callback);       
- }
- 
- globalFuncs.SetTaxLegAmount = function(wallet, amount, callback){
-     var amount_encoded = globalFuncs.encodeNumber(parseInt(amount,10));
-     globalFuncs.generateTx(globalFuncs.getContract1(),
-                            wallet, 
-                            globalFuncs.slockitSetTaxLeg, 
-                            [amount_encoded],
-                            {},
-                            callback);       
- }
- 
- globalFuncs.SetTaxAccount = function(wallet, account_address, callback){
-   
-     var accAdd = ethFuncs.padLeft(ethFuncs.getNakedAddress(account_address), 64);
-     globalFuncs.generateTx(globalFuncs.getContract1(),
-                            wallet, 
-                            globalFuncs.slockitSetTaxAccount, 
-                            [accAdd],
-                            {},
-                            callback);       
- }
- 
- globalFuncs.SetOwnerAccount = function(wallet, account_address, callback){
-   
-     var accAdd = ethFuncs.padLeft(ethFuncs.getNakedAddress(account_address), 64);
-     globalFuncs.generateTx(globalFuncs.getContract1(),
-                            wallet, 
-                            globalFuncs.slockitSetOwnerAccount, 
-                            [accAdd],
-                            {},
-                            callback);       
- }
-
- 
-/* Lists in Contract 2*/  
- 
-globalFuncs.getAllowanceList = function(walletAddress, ind_min, ind_max, callback){
-    globalFuncs.getInfo(globalFuncs.getContract2(), globalFuncs.allowanceCount,walletAddress,function(count){
-        var list = [];
-        var index = Math.min(count-1,ind_max);
-        globalFuncs.getElementInList(globalFuncs.getContract2(), 
-                                     globalFuncs.getAllowance, 
-                                     globalFuncs.allowance, 
-                                     walletAddress, 
-                                     index, 
-                                     list, 
-                                     ind_min, 
-                                     callback);
-    });
-}
-
-
-//--myAllowance not needed
-
-globalFuncs.getRequestToApproveList = function(walletAddress, ind_min, ind_max, callback){
-    globalFuncs.getInfo(globalFuncs.getContract2(), globalFuncs.requestCount,walletAddress,function(count){
-        var list = [];
-        var index = Math.min(count-1,ind_max);
-        globalFuncs.getElementInList(globalFuncs.getContract2(),
-                                     globalFuncs.reqMap, 
-                                     globalFuncs.request, 
-                                     walletAddress, 
-                                     index, 
-                                     list, 
-                                     ind_min, 
-                                     callback);
-    });
-}
-
-globalFuncs.getPendingRequestList = function(walletAddress, ind_min, ind_max, callback){
-    globalFuncs.getInfo(globalFuncs.getContract2(), globalFuncs.myRequestCount,walletAddress,function(count){
-        var list = [];
-        var index = Math.min(count-1,ind_max);
-        globalFuncs.getElementInList(globalFuncs.getContract2(), 
-                                     globalFuncs.myReqMap, 
-                                     globalFuncs.myRequest, 
-                                     walletAddress, 
-                                     index, 
-                                     list, 
-                                     ind_min, 
-                                     callback);
-    });
-}
-
-globalFuncs.getDelegationList = function(walletAddress,ind_min,ind_max,callback){
-    globalFuncs.getInfo(globalFuncs.getContract2(), globalFuncs.delegationCount,walletAddress,function(count){
-        var list = [];
-        var index = Math.min(count-1,ind_max);
-        globalFuncs.getElementInList(globalFuncs.getContract2(), 
-                                     globalFuncs.getDelegation, 
-                                     globalFuncs.delegation, 
-                                     walletAddress, 
-                                     index, 
-                                     list, 
-                                     ind_min, 
-                                     callback);
-    });
-}
-
-
-
-globalFuncs.getMyDelegationList = function(walletAddress,callback){
-    globalFuncs.getInfo(globalFuncs.getContract2(),globalFuncs.myDelegationCount,walletAddress,function(count){
-        var list = [];
-        var index = count-1;
-        globalFuncs.getElementInList(globalFuncs.getContract2(), 
-                                     globalFuncs.getMyDelegation, 
-                                     globalFuncs.myDelegation, 
-                                     walletAddress, 
-                                     index, 
-                                     list, 
-                                     0, 
-                                     callback);
-    });
-}
-
-
-globalFuncs.getAcceptedRequestList = function(walletAddress, ind_min, ind_max, callback){
-    globalFuncs.getInfo(globalFuncs.getContract2(),globalFuncs.acceptedCount,walletAddress,function(count){
-        var list = [];
-        var index = Math.min(count-1,ind_max);
-        globalFuncs.getElementInList(globalFuncs.getContract2(),
-                                     globalFuncs.acceptedMap, 
-                                     globalFuncs.accepted, 
-                                     walletAddress, 
-                                     index, 
-                                     list, 
-                                     ind_min, 
-                                     callback);
-    });
-}
-
-globalFuncs.getRejectedRequestList = function(walletAddress, ind_min, ind_max, callback){
-    globalFuncs.getInfo(globalFuncs.getContract2(), globalFuncs.rejectedCount,walletAddress,function(count){
-        var list = [];
-        var index = Math.min(count-1,ind_max);
-        globalFuncs.getElementInList(globalFuncs.getContract2(),
-                                     globalFuncs.rejectedMap, 
-                                     globalFuncs.rejected, 
-                                     walletAddress, 
-                                     index, 
-                                     list, 
-                                     ind_min, 
-                                     callback);
-    });
-}
-
- /*Action in contract 2*/
- 
- 
-globalFuncs.TransfertNant = function (wallet, to_address, amount, additional_post_data, callback){
-      var to_add = ethFuncs.padLeft(ethFuncs.getNakedAddress(to_address), 64);
-      globalFuncs.generateTx(globalFuncs.getContract2(), 
-                             wallet, 
-                             globalFuncs.eLemTransfert, 
-                             [to_add, globalFuncs.encodeNumber(amount)],
-                             additional_post_data,
-                             callback);
-}
-
-globalFuncs.TransfertCM = function (wallet, to_address,amount,incr, additional_post_data, callback){
-      var to_add = ethFuncs.padLeft(ethFuncs.getNakedAddress(to_address), 64);
-      
-      if (incr==0){
-                globalFuncs.generateTx(globalFuncs.getContract2(), 
-                             wallet, 
-                             globalFuncs.lemanexTransfert, 
-                             [to_add, globalFuncs.encodeNumber(amount)], 
-                             additional_post_data,        
-                             callback);
-      } else {
-                globalFuncs.generateTxDelta(globalFuncs.getContract2(), 
-                             wallet, 
-                             globalFuncs.lemanexTransfert, 
-                             [to_add, globalFuncs.encodeNumber(amount)],
-                             additional_post_data,
-                             callback);
-      }
-
-}
-
-globalFuncs.TransfertOnBehalfNant = function (wallet, from_address, to_address, amount, additional_post_data, callback){
-      additional_post_data["delegate"]=globalFuncs.getWalletAddress();
-      var from_add = ethFuncs.padLeft(ethFuncs.getNakedAddress(from_address), 64);
-      var to_Add = ethFuncs.padLeft(ethFuncs.getNakedAddress(to_address), 64);
-      globalFuncs.generateTx(globalFuncs.getContract2(),
-                             wallet, 
-                             globalFuncs.transfertOnBehalfNant, 
-                             [from_add, to_Add, globalFuncs.encodeNumber(amount)], 
-                             additional_post_data, 
-                             callback);
-}
-
-globalFuncs.TransfertOnBehalfCM = function (wallet, from_address, to_address, amount, additional_post_data, callback){
-      additional_post_data["delegate"]=globalFuncs.getWalletAddress();
-      var from_add = ethFuncs.padLeft(ethFuncs.getNakedAddress(from_address), 64);
-      var to_Add = ethFuncs.padLeft(ethFuncs.getNakedAddress(to_address), 64);
-      globalFuncs.generateTx(globalFuncs.getContract2(),
-                             wallet, 
-                             globalFuncs.transfertOnBehalfCM, 
-                             [from_add, to_Add, globalFuncs.encodeNumber(amount)], 
-                             additional_post_data, 
-                             callback);
-}
-
-
- 
-globalFuncs.askTransfertFrom = function (wallet,account_address, from_address,amount,callback){
-      var from_add = ethFuncs.padLeft(ethFuncs.getNakedAddress(from_address), 64);
-      var accAdd = ethFuncs.padLeft(ethFuncs.getNakedAddress(account_address), 64);
-      globalFuncs.generateTx(globalFuncs.getContract2(),
-                             wallet, 
-                             globalFuncs.transfertFrom, 
-                             [from_add, globalFuncs.encodeNumber(amount)], 
-                             {},
-                             callback);
-}
-
-globalFuncs.askTransfertCMFrom = function (wallet,account_address, from_address,amount,callback){
-      var from_add = ethFuncs.padLeft(ethFuncs.getNakedAddress(from_address), 64);
-      var accAdd = ethFuncs.padLeft(ethFuncs.getNakedAddress(account_address), 64);
-      globalFuncs.generateTx(globalFuncs.getContract2(),
-                             wallet, 
-                             globalFuncs.transfertCMFrom, 
-                             [from_add, globalFuncs.encodeNumber(amount)], 
-                             {},
-                             callback);
-}
-
-
-
-globalFuncs.PayRequestNant = function (wallet, to_address, amount, additional_data, callback){
-      var to_Add = ethFuncs.padLeft(ethFuncs.getNakedAddress(to_address), 64);
-      globalFuncs.generateTx(globalFuncs.getContract2(),
-                             wallet, 
-                             globalFuncs.payRequestNant, 
-                             [to_Add, globalFuncs.encodeNumber(amount)], 
-                             additional_data, 
-                             callback);
-}
-
-globalFuncs.PayRequestCM = function (wallet, to_address, amount, additional_data, callback){
-      var to_Add = ethFuncs.padLeft(ethFuncs.getNakedAddress(to_address), 64);
-      globalFuncs.generateTx(globalFuncs.getContract2(),
-                             wallet, 
-                             globalFuncs.payRequestCM, 
-                             [to_Add, globalFuncs.encodeNumber(amount)],
-                             additional_data, 
-                             callback);
-}
-
-globalFuncs.RejectRequest = function (wallet, to_address, callback){
-      var to_Add = ethFuncs.padLeft(ethFuncs.getNakedAddress(to_address), 64);
-      globalFuncs.generateTx(globalFuncs.getContract2(),
-                             wallet, 
-                             globalFuncs.cancelRequest, 
-                             [to_Add],
-                             {},
-                             callback);
-}
- 
- 
-
-
-
- globalFuncs.DissmissAcceptedInfo = function(wallet, account_address, callback){
-     var accAdd = ethFuncs.padLeft(ethFuncs.getNakedAddress(account_address), 64);
-     globalFuncs.generateTx(globalFuncs.getContract2(),
-                            wallet, 
-                            globalFuncs.dissAccepted, 
-                            [accAdd], 
-                            {},
-                            callback);       
- }
- 
-  globalFuncs.DissmissRejectedInfo = function(wallet, account_address, callback){
-     var accAdd = ethFuncs.padLeft(ethFuncs.getNakedAddress(account_address), 64);
-     globalFuncs.generateTx(globalFuncs.getContract2(),
-                            wallet, 
-                            globalFuncs.dissRejected, 
-                            [accAdd], 
-                            {},
-                            callback);       
- }
- 
- 
- 
  /*** contract 3***/
  globalFuncs.setContactHash = function(wallet, contact_hash, callback){    
      var datas = []
@@ -668,7 +161,7 @@ globalFuncs.RejectRequest = function (wallet, to_address, callback){
      }
      datas.push(result)
          
-     globalFuncs.generateTx(globalFuncs.getContract3(),
+     globalFuncs.generateTx(jsc3l_customization.getContract3(),
                             wallet, 
                             globalFuncs.setAccountsContracts, 
                             datas, 
@@ -686,7 +179,7 @@ globalFuncs.RejectRequest = function (wallet, to_address, callback){
      }
      datas.push(result)
          
-     globalFuncs.generateTx(globalFuncs.getContract3(),
+     globalFuncs.generateTx(jsc3l_customization.getContract3(),
                             wallet, 
                             globalFuncs.setAccountsMemos, 
                             datas, 
@@ -695,7 +188,7 @@ globalFuncs.RejectRequest = function (wallet, to_address, callback){
  }
  
  globalFuncs.getContactHash = function(walletAddress,callback){
-        var userInfo = ethFuncs.getDataObj(globalFuncs.getContract3(),  globalFuncs.contactsOf, [ethFuncs.getNakedAddress(walletAddress)]);
+        var userInfo = ethFuncs.getDataObj(jsc3l_customization.getContract3(),  globalFuncs.contactsOf, [ethFuncs.getNakedAddress(walletAddress)]);
 		ajaxReq.getEthCall(userInfo, function(data) {
             if (!data.error) {
                 var length_str = data.data.substring(66,130);
@@ -707,7 +200,7 @@ globalFuncs.RejectRequest = function (wallet, to_address, callback){
   }
   
   globalFuncs.getMemoHash = function(walletAddress,callback){
-        var userInfo = ethFuncs.getDataObj(globalFuncs.getContract3(),  globalFuncs.memosOf, [ethFuncs.getNakedAddress(walletAddress)]);
+        var userInfo = ethFuncs.getDataObj(jsc3l_customization.getContract3(),  globalFuncs.memosOf, [ethFuncs.getNakedAddress(walletAddress)]);
 		ajaxReq.getEthCall(userInfo, function(data) {
             if (!data.error) {
 			    var length_str = data.data.substring(66,130);
@@ -723,7 +216,8 @@ globalFuncs.RejectRequest = function (wallet, to_address, callback){
   /********************************************************/
   globalFuncs.storeOnIpfs = function (crypted_data,callback){
     var xhr = new XMLHttpRequest();
-    xhr.open('GET', globalFuncs.getServerAddress()+ globalFuncs.ipfsAdd+'?data=' +encodeURIComponent(JSON.stringify(crypted_data)), true); //
+    xhr.open('POST', jsc3l_customization.getEndpointAddress()+ globalFuncs.ipfsAdd, true); //
+    xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
     xhr.onreadystatechange = function (oEvent) {  
     if (xhr.readyState === 4) {  
         if (xhr.status === 200) { 
@@ -739,12 +233,13 @@ globalFuncs.RejectRequest = function (wallet, to_address, callback){
         }  
     }; 
 
-    xhr.send();
+    var  urlEncodedDataPairs  = 'data='+encodeURIComponent(JSON.stringify(crypted_data));
+    xhr.send(urlEncodedDataPairs);
   }
   
   globalFuncs.readFromIpfs = function (hash,callback){
     var xhr = new XMLHttpRequest();
-    xhr.open('GET', globalFuncs.getServerAddress()+ globalFuncs.ipfsCat+'?addr=' +hash, true); //
+    xhr.open('GET', jsc3l_customization.getEndpointAddress()+ globalFuncs.ipfsCat+'?addr=' +hash, true); //
     xhr.responseType = 'json';
     xhr.onreadystatechange = function (oEvent) {  
     if (xhr.readyState === 4) {  
@@ -771,7 +266,7 @@ globalFuncs.RejectRequest = function (wallet, to_address, callback){
   
   globalFuncs.getChallenge = function (addr,callback){
     var xhr = new XMLHttpRequest();
-    xhr.open('GET', globalFuncs.getServerAddress()+ globalFuncs.authChallenge+'?addr=' +encodeURIComponent(addr), true); //
+    xhr.open('GET', jsc3l_customization.getEndpointAddress()+ globalFuncs.authChallenge+'?addr=' +encodeURIComponent(addr), true); //
     xhr.onreadystatechange = function (oEvent) {  
     if (xhr.readyState === 4) {  
         if (xhr.status === 200) { 
@@ -792,7 +287,7 @@ globalFuncs.RejectRequest = function (wallet, to_address, callback){
   
   globalFuncs.sendChallengeResponse = function (addr,signature,callback){
     var xhr = new XMLHttpRequest();
-    xhr.open('GET', globalFuncs.getServerAddress()+ globalFuncs.authChallenge+'?addr=' +encodeURIComponent(addr)+'&sign='+encodeURIComponent(signature), true); //
+    xhr.open('GET', jsc3l_customization.getEndpointAddress()+ globalFuncs.authChallenge+'?addr=' +encodeURIComponent(addr)+'&sign='+encodeURIComponent(signature), true); //
     xhr.onreadystatechange = function (oEvent) {  
     if (xhr.readyState === 4) {  
         if (xhr.status === 200) { 
@@ -813,7 +308,7 @@ globalFuncs.RejectRequest = function (wallet, to_address, callback){
   
   globalFuncs.sendLogOff = function (callback){
     var xhr = new XMLHttpRequest();
-    xhr.open('GET', globalFuncs.getServerAddress()+ globalFuncs.authChallenge+'?addr=' +encodeURIComponent('0x0'), true); //
+    xhr.open('GET', jsc3l_customization.getEndpointAddress()+ globalFuncs.authChallenge+'?addr=' +encodeURIComponent('0x0'), true); //
     xhr.onreadystatechange = function (oEvent) {  
     if (xhr.readyState === 4) {  
         if (xhr.status === 200) { 
@@ -835,319 +330,6 @@ globalFuncs.RejectRequest = function (wallet, to_address, callback){
   /*****************************************************************************/
   
   
-globalFuncs.isApp = function(){
-     return document.URL.indexOf( 'http://' ) === -1 && document.URL.indexOf( 'https://' ) === -1;
-}
-
-globalFuncs.isMulti = function(){
-     return globalFuncs.isApp() || globalFuncs.multicurr;
-}
-
-globalFuncs.getServerAddress = function(){
-    try{
-        return localStorage.getItem('ComChainAPI');
-    } catch(e){
-        return '';
-    }
-       
-}
-
-globalFuncs.getServerName = function(){
-    if (globalFuncs.isMulti()){
-         try{
-              return  JSON.parse(localStorage.getItem('ComChainServerConf')).server.name;
-        } catch(e){
-            return '';
-        }
-    } else {
-        return conf_locale.server.name;
-    }
-}
-
-
-globalFuncs.getContract1 = function(){
-    if (globalFuncs.isMulti()){
-        try{
-             return  JSON.parse(localStorage.getItem('ComChainServerConf')).server.contract_1;
-        } catch(e){
-            return '';
-        }
-    } else {
-        return conf_locale.server.contract_1;
-    }
-}
-
-globalFuncs.getContract2 = function(){
-    if (globalFuncs.isMulti()){
-        try{
-            return  JSON.parse(localStorage.getItem('ComChainServerConf')).server.contract_2;
-        } catch(e){
-            return '';
-        }
-    } else {
-        return conf_locale.server.contract_2;
-    }
-}
-
-globalFuncs.getContract3 = function(){
-    if (globalFuncs.isMulti()){
-        try{
-            return  JSON.parse(localStorage.getItem('ComChainServerConf')).server.contract_3;
-        } catch(e){
-            return '';
-        }
-    } else {
-        return conf_locale.server.contract_3;
-    }
-}
-
-
-globalFuncs.getCssUrl = function(){
-    if (globalFuncs.isMulti()){
-        try{
-            return localStorage.getItem('ComChainRepo') + globalFuncs.custoRepo + globalFuncs.getServerName() + '/css/etherwallet-master.min.css';
-        } catch(e){
-            return '';
-        }
-    } else {
-        return conf_locale.server.url_Css;
-    }
-}
-
-globalFuncs.getCurrencyLogoUrl = function(currency_name){
-   if (currency_name){
-        try{
-            return localStorage.getItem('ComChainRepo') + globalFuncs.custoRepo + currency_name + '/images/lem.png';
-        } catch(e){
-            return '';
-        } 
-   }
-}
-
-globalFuncs.getHelpUrl = function(){
-    if (globalFuncs.isMulti()){
-        try{
-            return  JSON.parse(localStorage.getItem('ComChainServerConf')).server.url_help;
-        } catch(e){
-            return conf_locale.server.url_help;
-        }
-    } else {
-        return conf_locale.server.url_help;
-    }
-}
-
-globalFuncs.getCondUrl = function(){
-    if (globalFuncs.isMulti()){
-        try{
-            return  JSON.parse(localStorage.getItem('ComChainServerConf')).server.url_cond;
-        } catch(e){
-            return conf_locale.server.url_cond;
-        }
-    } else {
-        return conf_locale.server.url_cond;
-    }
-}
-
-globalFuncs.getUnlockUrl = function(){
-    try{
-        if (globalFuncs.isMulti()){
-            return  JSON.parse(localStorage.getItem('ComChainServerConf')).server.url_unlock;
-         } else {
-            return conf_locale.server.url_unlock;
-        }
-    } catch(e){
-        return "";
-    }
-}
-
-globalFuncs.getLang = function(){
-    if (globalFuncs.isMulti()){
-        try{
-            return  JSON.parse(localStorage.getItem('ComChainServerConf')).server.lang;
-        } catch(e){
-            return conf_locale.server.lang; 
-        }
-    } else {
-        return conf_locale.server.lang;
-    }
-}
-
-globalFuncs.hasNant = function(){
-    if (globalFuncs.isMulti()){
-        try{
-            return  JSON.parse(localStorage.getItem('ComChainServerConf')).server.nant.toString().toLowerCase()=='true';
-        } catch(e){
-            return false; 
-        }
-    } else {
-        return conf_locale.server.nant.toString().toLowerCase()=='true';
-    }
-}
-
-globalFuncs.hasCM = function(){
-    if (globalFuncs.isMulti()){
-        try{
-            return  JSON.parse(localStorage.getItem('ComChainServerConf')).server.CM.toString().toLowerCase()=='true';
-        } catch(e){
-            return false; 
-        }
-    } else {
-        return conf_locale.server.CM.toString().toLowerCase()=='true';
-    }
-}
-
-globalFuncs.hasAutor = function(){
-    if (globalFuncs.isMulti()){
-        try{
-            return  JSON.parse(localStorage.getItem('ComChainServerConf')).server.autor.toString().toLowerCase()=='true';
-        } catch(e){
-            return false; 
-        }
-    } else {
-        return conf_locale.server.autor.toString().toLowerCase()=='true';
-    }
-}
-
-globalFuncs.hasDeleg = function(){
-    if (globalFuncs.isMulti()){
-        try{
-            return  JSON.parse(localStorage.getItem('ComChainServerConf')).server.deleg.toString().toLowerCase()=='true';
-        } catch(e){
-            return false; 
-        }
-    } else {
-        return conf_locale.server.deleg.toString().toLowerCase()=='true';
-    }
-}
-
-globalFuncs.hasPayRequest = function(){
-     if (globalFuncs.isMulti()){
-        try{
-            return  JSON.parse(localStorage.getItem('ComChainServerConf')).server.payReq.toString().toLowerCase()=='true';
-        } catch(e){
-            return true; 
-        }
-    } else {
-         try{
-            return  conf_locale.server.payReq.toString().toLowerCase()=='true';
-        } catch(e){
-            return true; 
-        }
-    }
-}
-
-globalFuncs.passwordAutocomplete = function(){
-    var number = 10000;
-    var config = conf_locale.server;
-    if (globalFuncs.isMulti()){
-        try{
-            config =  JSON.parse(localStorage.getItem('ComChainServerConf')).server;
-        } catch(e){
-            config = conf_locale.server;
-        }
-    } 
-    
-    if (config.passwordAutocomplete && config.passwordAutocomplete>2){
-        number = config.passwordAutocomplete;
-    }
-    
-    return number;
-    
-}
-
-
-
-
-
-globalFuncs.getConfJSON = function(name,callback) {
-    var xhr = new XMLHttpRequest();
-    xhr.open('GET', localStorage.getItem('ComChainRepo')+ globalFuncs.configRepo+'/' +name+'.json', true); //
-    xhr.responseType = 'json';
-    xhr.onreadystatechange = function (oEvent) {  
-    if (xhr.readyState === 4) {  
-        if (xhr.status === 200) { 
-          try{
-             var to_push = xhr.response;
-                    if(typeof to_push =='object')
-                    {
-                        to_push = JSON.stringify(xhr.response);
-                    }  
-              
-            localStorage.setItem('ComChainServerConf',to_push); 
-            callback(true);
-          } catch(e){
-            callback(false);  
-          }  
-         
-        } else {  
-           callback(false);
-        }  
-        }  
-    }; 
-
-    xhr.send();
-};
-
-globalFuncs.testApi = function(api_address,callback) {
-    var xhr = new XMLHttpRequest();
-    xhr.open('GET', api_address + '/api.php', true); 
-    xhr.responseType = 'json';
-    xhr.timeout = 5000;
-    xhr.onreadystatechange = function (oEvent) {  
-    if (xhr.readyState === 4) {  
-        if (xhr.status === 200) { 
-          try{
-              var answer = xhr.response;
-              if(typeof answer =='object'){
-                        answer = JSON.stringify(xhr.response);
-               }  
-               callback(answer && answer!="null" && !answer.error);
-          } catch(e){
-            callback(false);  
-          }  
-         
-        } else {  
-           callback(false);
-        }  
-        }  
-    }; 
-
-    xhr.send();
-};
-
-globalFuncs.testDB = function(api_address,callback) {
-    var xhr = new XMLHttpRequest();
-    xhr.open('GET', api_address + '/dbcheck.php', true); 
-    xhr.timeout = 5000;
-    xhr.onreadystatechange = function (oEvent) {  
-    if (xhr.readyState === 4) {  
-        if (xhr.status === 200 ) { 
-          try{
-            callback(xhr.response==='pong');
-          } catch(e){
-            callback(false);  
-          }  
-         
-        } else {  
-           callback(false);
-        }  
-        }  
-    }; 
-
-    xhr.send();
-};
-
-
-globalFuncs.testNode = function(api_address,callback) {
-    globalFuncs.testDB(api_address,function(result){
-        if (result){
-            globalFuncs.testApi(api_address,callback);
-        } else {
-            callback(false);
-        }
-    });
-};
-
 
 
 globalFuncs.loadWallet = function(wallet,callback){
@@ -1155,7 +337,7 @@ globalFuncs.loadWallet = function(wallet,callback){
     localStorage.removeItem("ComChainContactsInfo");
     localStorage.removeItem("ComChainMemos");
     if (!wallet.server || !wallet.server.name){
-        var new_name = globalFuncs.getServerName();
+        var new_name = jsc3l_customization.getCurencyName();
         
         if (new_name==''){    /*Fall back to avoid alreay created Monnaie-Leman account to provide the server name*/   
            new_name = "Monnaie-Leman"; 
@@ -1166,26 +348,21 @@ globalFuncs.loadWallet = function(wallet,callback){
     
     
     localStorage.setItem('ComChainWallet',JSON.stringify(wallet) ); 
-    if (globalFuncs.isMulti()){
-        var server_name = '';
-        if (wallet.server && wallet.server.name){
-            server_name = wallet.server.name;
-        }
-        if (server_name==''){
-            callback(false);
-        } else {
-            globalFuncs.getConfJSON(server_name,function(success){
-                if (success){
-                    callback(success);
-                } else {
-                     globalFuncs.getConfJSON(server_name, callback);
-                }
-            });
-            
-        }
-      
+    var server_name = '';
+    if (wallet.server && wallet.server.name){
+        server_name = wallet.server.name;
+    }
+    if (server_name==''){
+        callback(false);
     } else {
-        callback(true);
+        jsc3l_customization.getConfJSON(server_name,function(success){
+            if (success){
+                callback(success);
+            } else {
+                 jsc3l_customization.getConfJSON(server_name, callback);
+            }
+        });
+        
     }
 }
 
@@ -1194,10 +371,7 @@ globalFuncs.removeWallet = function(){
     localStorage.removeItem("ComChainContacts");
     localStorage.removeItem("ComChainContactsInfo");
     localStorage.removeItem("ComChainMemos");
-    
-    if (globalFuncs.isMulti()){
-         localStorage.removeItem('ComChainServerConf'); 
-    }
+    localStorage.removeItem('ComChainServerConf'); 
 }
 
 
@@ -1205,29 +379,8 @@ globalFuncs.removeWallet = function(){
 //////////////////////////////////////////////
 /// Note checking 
 
-globalFuncs.getNoteValues = function(){
-    if (globalFuncs.isMulti()){
-         try{
-              return  JSON.parse(localStorage.getItem('ComChainServerConf')).server.notes;
-        } catch(e){
-            return '';
-        }
-    } else {
-        return conf_locale.server.notes;
-    }
-}
-
-globalFuncs.hasBn = function(){
-    var notes = globalFuncs.getNoteValues();
-    return notes && notes.length>0;
-}
-
-globalFuncs.hasBnCheck = function(){
-    return globalFuncs.isApp() && globalFuncs.hasBn();
-}
-
 globalFuncs.isValidBNValue= function(value){
-    var notes = globalFuncs.getNoteValues();
+    var notes = jsc3l_customization.getNoteValues();
     if (notes && notes.length>0){
        for (var index in notes){
           if( Math.round(100*Number(value))== Math.round(100*Number(notes[index]))){
@@ -1245,39 +398,18 @@ globalFuncs.isValidBNValue= function(value){
 
     globalFuncs.updateCss = function(){
         // replace the CSS references into the DOM
-        var oldlink = document.getElementsByTagName("link").item(0);
-        var newlink = document.createElement("link");
-        newlink.setAttribute("rel", "stylesheet");
-        newlink.setAttribute("type", "text/css");
-        newlink.setAttribute("href", globalFuncs.getCssUrl());
-        document.getElementsByTagName("head").item(0).appendChild(newlink);
+        jsc3l_customization.updateCss();
         globalFuncs.hideLoadingWaiting();
 
     }
     
     
     globalFuncs.currencies=conf_locale.server.currencies;
-
-
     globalFuncs.getCurrencies = function(){
-        if (globalFuncs.isMulti()){
-            try{
-                  globalFuncs.currencies=JSON.parse(localStorage.getItem('ComChainServerConf')).server.currencies;
-            } catch(e){
-                
-            }
-        } else {
-           globalFuncs.currencies=conf_locale.server.currencies;
-        }
+        globalFuncs.currencies=jsc3l_customization.getCurrencies();    
     }
 
 
-    globalFuncs.configure=function(){
-      if (globalFuncs.getServerAddress()!=''){
-        globalFuncs.updateCss(); 
-        globalFuncs.getCurrencies();
-      }
-    }
    
 /// Address
    
@@ -1316,7 +448,7 @@ globalFuncs.parseAddress = function(text){
 
 globalFuncs.notify = function(title, text){
     
-    if (globalFuncs.isApp()){
+    if (jsc3l_customization.isApp()){
                 cordova.plugins.notification.local.schedule({
                     title: title,
                     message: text
@@ -1353,7 +485,7 @@ globalFuncs.notifyApproval = function(){
    /* if (document.getElementsByClassName('trans')[0]){
             if (JSON.parse(localStorage.getItem('ComChainWallet'))){
                 var addresss = JSON.parse(localStorage.getItem('ComChainWallet')).address;
-                globalFuncs.getInfo(globalFuncs.getContract1(), globalFuncs.requestCount,addresss,function(count){
+                globalFuncs.getInfo(jsc3l_customization.getContract1(), globalFuncs.requestCount,addresss,function(count){
                     if (count>0){
                         document.getElementsByClassName('trans')[0].className = "trans alrt";
                     } else {
@@ -1384,41 +516,6 @@ globalFuncs.getTransCurrency = function(nant_val,cm_val,cm_minus_lim,amount){
 }
 
 
-globalFuncs.getSplitting = function(nant_val,cm_val,cm_minus_lim,amount){
-    var nant =0;
-    var cm=0;
-    
-    var res=parseFloat(amount);
-    if (parseFloat(cm_val)>0){
-        if (parseFloat(cm_val)>=res){
-            cm = res;
-            res=0;
-        } else {
-            cm = parseFloat(cm_val);
-            res=res-parseFloat(cm_val);
-            cm_val=0;
-        }
-    }
-    
-    if (parseFloat(nant_val)>0){
-        if (parseFloat(nant_val)>=res){
-            nant=res;
-            res=0;
-        } else {
-            nant=parseFloat(nant_val);
-            res=res-parseFloat(nant_val);
-            //nant_val=0;
-        }
-    }
-    
-    if (res>0 && parseFloat(cm_val)-parseFloat(cm_minus_lim)>=res){
-        cm = cm + res;
-        res = 0;
-    }
-    
-    var possible = res==0;
-    return  {'possible': possible,'nant':nant, 'cm':cm};
-}
 
 
 
@@ -1498,11 +595,8 @@ globalFuncs.getGethMsg = function(str) {
 	}
 	return str;
 }
-globalFuncs.scrypt = {
-	n: 1024
-};
+
 globalFuncs.postDelay = 300;
-globalFuncs.kdf = "scrypt";
 globalFuncs.defaultTxGasLimit = 21000;
 globalFuncs.digixClaimTxGasLimit = 150000;
 globalFuncs.isNumeric = function(n) {
@@ -1807,14 +901,12 @@ globalFuncs.generateSavePDF = function(title, key, address, callback){
                 newImg.callback(doc);
             }
 
-            if (globalFuncs.isMulti()){
-               var the_arr = globalFuncs.getCssUrl().split('/');
-                the_arr.pop();
-                the_arr.pop();
-                newImg.src = the_arr.join('/')+"/images/lem.png";  
-            } else {
-                newImg.src = "images/lem.png";  
-            }
+            
+           var the_arr = jsc3l_customization.getCssUrl().split('/');
+           the_arr.pop();
+           the_arr.pop();
+           newImg.src = the_arr.join('/')+"/images/lem.png";  
+            
                 
 }
 
@@ -1895,14 +987,12 @@ globalFuncs.generateCrPDF = function(title, on,assigned,validity,address,dest,co
                 newImg.callback(doc);
             }
 
-            if (globalFuncs.isMulti()){
-               var the_arr = globalFuncs.getCssUrl().split('/');
-                the_arr.pop();
-                the_arr.pop();
-                newImg.src = the_arr.join('/')+"/images/lem.png";  
-            } else {
-                newImg.src = "images/lem.png";  
-            }
+            
+            var the_arr = jsc3l_customization.getCssUrl().split('/');
+            the_arr.pop();
+            the_arr.pop();
+            newImg.src = the_arr.join('/')+"/images/lem.png";  
+           
                 
 }
     
@@ -1944,14 +1034,12 @@ globalFuncs.generateSaveAdrPDF = function(walletAddress, callback){
                 newImg.callback(doc);
             }
 
-            if (globalFuncs.isMulti()){
-                var the_arr = globalFuncs.getCssUrl().split('/');
-                the_arr.pop();
-                the_arr.pop();
-                newImg.src = the_arr.join('/')+"/images/ici.png";  
-            } else {
-                newImg.src = "images/ici.png";   
-            }
+            
+            var the_arr = jsc3l_customization.getCssUrl().split('/');
+            the_arr.pop();
+            the_arr.pop();
+            newImg.src = the_arr.join('/')+"/images/ici.png";  
+           
 }
 
 
@@ -2040,14 +1128,12 @@ globalFuncs.generateTagsPDF = function(walletAddress, tags, callback){
                 newImg.callback(doc);
             }
 
-            if (globalFuncs.isMulti()){
-                var the_arr = globalFuncs.getCssUrl().split('/');
-                the_arr.pop();
-                the_arr.pop();
-                newImg.src = the_arr.join('/')+"/images/lem.png";  
-            } else {
-                newImg.src = "images/lem.png";   
-            }
+            
+            var the_arr = jsc3l_customization.getCssUrl().split('/');
+            the_arr.pop();
+            the_arr.pop();
+            newImg.src = the_arr.join('/')+"/images/lem.png";  
+            
 }
 
 
@@ -2267,14 +1353,12 @@ newImg.onload = function() {
    this.callback(doc);
 };
 
- if (globalFuncs.isMulti()){
-               var the_arr = globalFuncs.getCssUrl().split('/');
-                the_arr.pop();
-                the_arr.pop();
-                newImg.src = the_arr.join('/')+"/images/etherwallet-logo.png";  
-            } else {
-                newImg.src = "images/etherwallet-logo.png";  
-            }
+
+   var the_arr = jsc3l_customization.getCssUrl().split('/');
+    the_arr.pop();
+    the_arr.pop();
+    newImg.src = the_arr.join('/')+"/images/etherwallet-logo.png";  
+
     
 }
 
@@ -2346,130 +1430,6 @@ globalFuncs.hasConfig = function(){
     }
 }
 
-////////////////////////////////////////////////////
-
-  globalFuncs.getNodes = function(callback){
-        var xhr = new XMLHttpRequest();
-        xhr.open('GET', localStorage.getItem('ComChainRepo') + globalFuncs.nodesRepo+'?_=' + new Date().getTime(), true); 
-        xhr.responseType = 'json';
-        xhr.onreadystatechange = function (oEvent) {  
-          if (xhr.readyState === 4) {  
-            if (xhr.status === 200) { 
-                try{
-                    var to_push = xhr.response;
-                    if(typeof to_push =='object')
-                    {
-                        to_push = JSON.stringify(xhr.response);
-                    }
-                    
-                    localStorage.setItem('ComChainApiNodes',to_push); 
-                    callback(true);
-                } catch(e){
-                    callback(false);  
-                }  
-         
-            } else {  
-                callback(false);
-            }  
-          }  
-       }; 
-
-    xhr.send();
-
-  }
-
-
-
-
-globalFuncs.selectApiNode = function(nodes,callback){
-    if (nodes.length==0){
-        localStorage.removeItem('ComChainApiNodes');
-        callback(false);
-    } else {
-        //randomly select a node (poor man's load balancing)
-        var id = Math.floor((Math.random() * nodes.length));
-        var node = nodes[id];
-        
-        // check the node is up and running
-        globalFuncs.testNode(node,function(success){
-            if (success){
-                // store the node 
-                localStorage.setItem('ComChainAPI', node);
-                callback(true);
-            }else{
-                nodes.splice(id,1);
-                globalFuncs.selectApiNode(nodes,callback);      
-            }
-        });
-    }
-}
-
-
-globalFuncs.getApiNodesList = function(callback){
-     localStorage.setItem('ComChainAPI','');
-     var nodes=null;
-     try{
-          nodes = JSON.parse(localStorage.getItem('ComChainApiNodes')); 
-     } catch(e){}
-     
-     if (!nodes || !nodes.length || nodes.length==0){
-          globalFuncs.getNodes(function(){
-                                              globalFuncs.getApiNodesList(callback);
-                                          }); //TODO better error handling (?)
-     } else {
-         callback(nodes);
-     }
-}
-
-globalFuncs.checkRepo = function(repoList,callback){
-    if (!repoList || repoList.length==0){
-        callback(false);
-    } else {
-         var id = Math.floor((Math.random() * repoList.length));
-         var repo = repoList[id];
-         var xhr = new XMLHttpRequest();
-         xhr.open('GET',repo + globalFuncs.PING, true); 
-         xhr.responseType = 'json';
-         xhr.timeout = 3000;
-         xhr.onreadystatechange = function (oEvent) {  
-           if (xhr.readyState === 4) {  
-             if (xhr.status === 200) { 
-                    localStorage.setItem('ComChainRepo', repo);
-                    callback(true);
-             } else {  
-                 repoList.splice(id,1);
-                 globalFuncs.checkRepo(repoList, callback); 
-            }  
-          }  
-       }; 
-
-    xhr.send();
-    }
-   
-}
-
- globalFuncs.checkConnectivity = function(callback){
-     var storedEndPoints=[];
-     try{
-          storedEndPoints = JSON.parse(localStorage.getItem('ComChainApiNodes')); 
-     } catch(e){
-        storedEndPoints=[];
-     }
-     
-     globalFuncs.checkRepo(storedEndPoints,function (result_stored){
-         if (result_stored){
-             callback(true);
-         } else {
-             globalFuncs.checkRepo(globalFuncs.confEndPointsOur,function (result){
-                 if (result){
-                     callback(true);
-                 } else {
-                     globalFuncs.checkRepo(globalFuncs.confEndPointsOther,callback);
-                 }
-             });
-         }
-     });
- }
 
  
  /**************************************************************/
@@ -2502,7 +1462,7 @@ globalFuncs.checkRepo = function(repoList,callback){
      var show=false;
      if (!apiCheck){
          globalFuncs.doHide=false;
-         if (globalFuncs.getServerAddress()!=null && globalFuncs.getServerAddress() !='' ){
+         if (jsc3l_customization.getEndpointAddress()!=null && jsc3l_customization.getEndpointAddress() !='' ){
              show=true;
          }
      } else {

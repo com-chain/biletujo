@@ -10,8 +10,10 @@ var tabsCtrl = function($scope, $attrs, globalService, contactservice, $translat
     $scope.ng_ok=true;
     
     // Check Connectivity to the config server
- 
-    globalFuncs.checkConnectivity(function(connect_ok){
+
+    
+    $scope.loaded = false;
+    jsc3l_connection.ensureComChainRepo(function(connect_ok){
        if (!connect_ok){
           globalFuncs.hideLoadingWaiting (true);
           $scope.ng_ok=false;
@@ -21,22 +23,39 @@ var tabsCtrl = function($scope, $attrs, globalService, contactservice, $translat
           $scope.$apply();
        } else{
          
-          globalFuncs.getApiNodesList(function(nodes){
-              globalFuncs.selectApiNode(nodes,function(success){
-                  if (success){
-                       $scope.ng_ok=true;
-                       globalFuncs.hideLoadingWaiting (true);
-                       
-                  }else{
-                       $scope.ng_ok=false;
-                       globalFuncs.hideLoadingWaiting (true);
-                       document.getElementById("global_error").innerHTML='<br/><br/><br/>'+$translate.instant("GLB_No_valid_nodes_reload_them") +
-                 '<br/><br/><button type="button" class="btn btn-primary bellowmargin" onclick="location.reload();" >'+$translate.instant("GLB_Relaoad_nodes")+' </button>';
+          
+              jsc3l_connection.acquireEndPoint(function(success){
+                  if (!$scope.loaded) {
+                      if (success){
+                           $scope.ng_ok=true;
+                            jsc3l_customization.configureCurrency();
+                            globalFuncs.getCurrencies();
 
+                            globalService.configureNoteTab(jsc3l_customization.hasBn());
+
+                            if (!jsc3l_customization.hasBn() &&  ('note' in $scope.tabNames) && $scope.tabNames['note'].id==globalService.currentTab){
+                                $scope.tabClick($scope.tabNames['exchange'].id);
+                            }
+                            
+                            var currCode = globalService.getCurrCode();
+                            if (currCode!=undefined && currCode!=""){
+                                $scope.tabClick(1);
+                            }
+                            
+                           globalFuncs.hideLoadingWaiting (true);
+                           $scope.loaded=true;
+                           
+                      }else{
+                          
+                           $scope.ng_ok=false;
+                           globalFuncs.hideLoadingWaiting (true);
+                           document.getElementById("global_error").innerHTML='<br/><br/><br/>'+$translate.instant("GLB_No_valid_nodes_reload_them") +
+                     '<br/><br/><button type="button" class="btn btn-primary bellowmargin" onclick="location.reload();" >'+$translate.instant("GLB_Relaoad_nodes")+' </button>';
+
+                      }
+                      $scope.$apply();
                   }
-                  $scope.$apply();
               });
-          });
        }
     });
 
@@ -48,7 +67,7 @@ var tabsCtrl = function($scope, $attrs, globalService, contactservice, $translat
     $scope.onDeviceReady = function() {
         $scope.isIos = globalFuncs.isIos();
         
-        if (globalFuncs.isApp()){
+        if (jsc3l_customization.isApp()){
             globalFuncs.dowloadAppFileWithNameWithoutMessage('tmp.txt', {});
         }
     }
@@ -69,7 +88,7 @@ var tabsCtrl = function($scope, $attrs, globalService, contactservice, $translat
         if (!$scope.NoWallet){
              for (var id in $scope.other_wallets){
                $scope.other_wallets[id].name=contactservice.getContactName($scope.contacts, '0x'+$scope.other_wallets[id].address);
-               $scope.other_wallets[id].logo = globalFuncs.getCurrencyLogoUrl( $scope.other_wallets[id].file.server.name);
+               $scope.other_wallets[id].logo = jsc3l_customization.getCurrencyLogoUrl( $scope.other_wallets[id].file.server.name);
                $scope.other_wallets[id].has_logo = $scope.other_wallets[id].logo !='';
             }
             $scope.other_wallets.sort(function(a,b){return a.name.localeCompare(b.name); });
@@ -127,7 +146,7 @@ var tabsCtrl = function($scope, $attrs, globalService, contactservice, $translat
 
     
     var uls=document.getElementById('lg_mn');
-    var lang = globalFuncs.getLang();
+    var lang = jsc3l_customization.getLang();
     uls.innerHTML='';
     var inner='';
     
@@ -187,7 +206,7 @@ var tabsCtrl = function($scope, $attrs, globalService, contactservice, $translat
                 if ($scope.tabNames[key].url=='close'){
                     $scope.openLockPopup();
                 } else if ($scope.tabNames[key].url=='aide'){
-                    window.open( globalFuncs.getHelpUrl().replace('LANG',$scope.gelLanguageCode()), "_system");
+                    window.open( jsc3l_customization.getHelpUrl().replace('LANG',$scope.gelLanguageCode()), "_system");
                 } else{
                     if ($scope.activeTab!=id){ 
                         globalFuncs.showLoading($translate.instant("GP_Wait"));
@@ -293,17 +312,9 @@ var tabsCtrl = function($scope, $attrs, globalService, contactservice, $translat
    
     setInterval(globalFuncs.notifyApproval(), 30000);
     
-    if (globalFuncs.isMulti() && globalFuncs.hasConfig()){
-       globalFuncs.configure();
+ 
        
-       globalService.configureNoteTab(globalFuncs.hasBn());
-       
-       if (!globalFuncs.hasBn() && $scope.tabNames['note'].id==globalService.currentTab){
-            $scope.tabClick($scope.tabNames['exchange'].id);
-       }
-       
-       document.title=globalFuncs.currencies.CUR_global;
-    }
+  
    
     document.title=globalFuncs.currencies.CUR_global;
     
@@ -313,6 +324,9 @@ var tabsCtrl = function($scope, $attrs, globalService, contactservice, $translat
    
 
    
+   // https://v2.cchosting.org/index.html?address=0x9e898bc7c13ba309a412904f07aff65a13e15d32&amount=0.01&shopId=1&txId=TEST_5fc0e4a1afa18&serverName=Lemanopolis
+   // https://v2.cchosting.org/index.html?code=<code>
+ 
    $scope.checkURL = function(){
        var curr_url = window.location.href;
        if (curr_url.indexOf('?')>=0){
@@ -322,32 +336,46 @@ var tabsCtrl = function($scope, $attrs, globalService, contactservice, $translat
                 hash_part = query.substring(query.indexOf('#')); 
                 query = query.substr(0,query.indexOf('#')); 
             }
-            var result = {};
-            query.split("&").forEach(function(part) {
-                var item = part.split("=");
-                result[item[0]] = decodeURIComponent(item[1]);
-            });
             
-            if (result["address"] && result["address"].length==42){
-                var data={}
-                data["address"]=result["address"];
-                if (result["amount"] && result["amount"]>0.){
-                    data["amount"]=result["amount"];
+            if (query.startsWith('code=')) {
+                try {
+                    var code = JSON.parse(decodeURI(query.substring(5)));
+                    globalService.setCurrCode(code);
+                    globalFuncs.removeWallet();
+                    var new_url = curr_url.substr(0, curr_url.indexOf('?'))+hash_part; 
+                    window.history.replaceState({}, document.title, new_url);
+                    location.reload();
+                    
+                } catch(e) {
+                    
                 }
-                if (result["shopId"] && result["shopId"].length>0){
-                    data["shopId"]=result["shopId"];
-                }
-                if (result["txId"] && result["txId"].length>0){
-                    data["txId"]=result["txId"];
-                } 
-                if (result["serverName"] && result["serverName"].length>0){
-                    data["serverName"]=result["serverName"];
-                }
+            } else {
+                var result = {};
+                query.split("&").forEach(function(part) {
+                    var item = part.split("=");
+                    result[item[0]] = decodeURIComponent(item[1]);
+                });
                 
-                globalService.setCurrAddress(data);
+                if (result["address"] && result["address"].length==42){
+                    var data={}
+                    data["address"]=result["address"];
+                    if (result["amount"] && result["amount"]>0.){
+                        data["amount"]=result["amount"];
+                    }
+                    if (result["shopId"] && result["shopId"].length>0){
+                        data["shopId"]=result["shopId"];
+                    }
+                    if (result["txId"] && result["txId"].length>0){
+                        data["txId"]=result["txId"];
+                    } 
+                    if (result["serverName"] && result["serverName"].length>0){
+                        data["serverName"]=result["serverName"];
+                    }
+                    
+                    globalService.setCurrAddress(data);
+                }
             }
             
-             
             // remove the parameters
             var new_url = curr_url.substr(0, curr_url.indexOf('?'))+hash_part; 
             window.history.replaceState({}, document.title, new_url);
@@ -360,5 +388,7 @@ var tabsCtrl = function($scope, $attrs, globalService, contactservice, $translat
    }
    
    $scope.checkURL();
+
+   
 };
 module.exports = tabsCtrl;

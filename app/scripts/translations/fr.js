@@ -98,9 +98,9 @@ Acc_locked: 'Attention: ce compte est actuellement bloqué.',
 VIEW_address: 'Votre compte',
 VIEW_QR: 'QRcode de votre clé publique',
 VIEW_Save_title: 'Sauvegarder votre compte',
-VIEW_Save: 'Fichier de votre clef privée (.dat)',
-VIEW_print: 'QRcode contenant votre clef privée (.pdf)',
-VIEW_print_adr: 'Clé publique (.pdf)', 
+VIEW_Save: 'Votre clef privée (.dat)',
+VIEW_print: 'Votre clef privée (.pdf)',
+VIEW_print_adr: 'Clé publique (QR Code)', 
 VIEW_close_title: 'Déconnecter votre compte',
 VIEW_close: 'Verouiller',
 
@@ -471,8 +471,8 @@ BAL_Tooltip_sav: 'Sauvegarde .dat',
 BAL_Tooltip_sav_qr: 'Sauvegarde QR',
 
 LIM_limites: 'Limites',
-LIM_credit: 'Limite en positif',
-LIM_debit: 'Limite en négati:',
+LIM_credit: 'Limite en positif :',
+LIM_debit: 'Limite en négati :',
 
 /* Delegation */
 DELEG_Delegate_Tab_Title:'Vos procurations',

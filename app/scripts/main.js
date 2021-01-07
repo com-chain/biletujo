@@ -21,6 +21,24 @@ var Wallet = require('./myetherwallet');
 window.Wallet = Wallet;
 var Token = require('./tokens');
 window.Token = Token;
+
+var jsc3l_config = require('./JSC3L/jsc3l_config');
+window.jsc3l_config = jsc3l_config;
+var jsc3l_connection = require('./JSC3L/jsc3l_connection');
+window.jsc3l_connection = jsc3l_connection;
+var jsc3l_customization = require('./JSC3L/jsc3l_customization');
+window.jsc3l_customization = jsc3l_customization;
+var jsc3l_bcRead = require('./JSC3L/jsc3l_bcRead');
+window.jsc3l_bcRead = jsc3l_bcRead;
+var jsc3l_message = require('./JSC3L/jsc3l_message');
+window.jsc3l_message = jsc3l_message;
+var jsc3l_wallet = require('./JSC3L/jsc3l_wallet');
+window.jsc3l_wallet = jsc3l_wallet;
+var jsc3l_bcTransaction = require('./JSC3L/jsc3l_bcTransaction');
+window.jsc3l_bcTransaction = jsc3l_bcTransaction;
+
+
+
 var globalFuncs = require('./globalFuncs');
 window.globalFuncs = globalFuncs;
 var uiFuncs = require('./uiFuncs');
@@ -53,16 +71,12 @@ var noteCtrl = require('./controllers/noteCtrl');
 var globalCtrl = require('./controllers/globalCtrl');
 var consultRightCtrl = require('./controllers/consultRightCtrl');
 
-
-
-
 var globalService = require('./services/globalService');
 var walletService = require('./services/walletService');
 var contactService = require('./services/contactService');
 var memoService = require('./services/memoService');
 var consultService = require('./services/consultService');
 var authenticationService = require('./services/authenticationService');
-var messageService = require('./services/messageService');
 
 var walletDecryptDrtv = require('./directives/walletDecryptDrtv');
 var blockiesDrtv = require('./directives/blockiesDrtv');
@@ -85,7 +99,7 @@ app.factory('contactService', contactService);
 app.factory('memoService', memoService);
 app.factory('consultService', consultService);
 app.factory('authenticationService', authenticationService);
-app.factory('messageService', messageService);
+app.factory('messageService', jsc3l_message);
 
 
 app.directive('blockieAddress', blockiesDrtv);

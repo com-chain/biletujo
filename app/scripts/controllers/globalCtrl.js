@@ -1,7 +1,7 @@
 'use strict';
 var globalCtrl = function($scope, $locale, $sce, walletService, $translate) {
     // Check the environment
-    $scope.isApp =  globalFuncs.isApp();
+    $scope.isApp =  jsc3l_customization.isApp();
     globalFuncs.hideLoadingWaiting();  
     $scope.trans_message = $translate.instant("GP_Wait_tran");
     $scope.validateStatus='';
@@ -27,7 +27,7 @@ var globalCtrl = function($scope, $locale, $sce, walletService, $translate) {
     
     $scope.refresh = function(){
         $scope.validateStatus='';
-        globalFuncs.getAccInfo(globalFuncs.slockitIsOwner, $scope.wallet.getAddressString(), function(status){
+        jsc3l_bcRead.getIsOwner($scope.wallet.getAddressString(), function(status){
                 $scope.is_owner = status==1;
                 $scope.owner_account=$scope.wallet.getAddressString();
                 $scope.load(); 
@@ -39,10 +39,10 @@ var globalCtrl = function($scope, $locale, $sce, walletService, $translate) {
         
         $scope.CUR_nanti=globalFuncs.currencies.CUR_nanti;
         
-        globalFuncs.getAccInfo(globalFuncs.slockitTaxAmount, $scope.wallet.getAddressString(), function(amount){
-          globalFuncs.getAccInfo(globalFuncs.slockitTaxLegAmount, $scope.wallet.getAddressString(), function(amountLeg){
-           globalFuncs.getGlobInfo(globalFuncs.slockitTaxAccount, function(acc){
-                globalFuncs.getAccInfo(globalFuncs.slockitGetTotalAmount, $scope.wallet.getAddressString(), function(tot){
+        jsc3l_bcRead.getTaxAmount($scope.wallet.getAddressString(), function(amount){
+          jsc3l_bcRead.getLegTaxAmount($scope.wallet.getAddressString(), function(amountLeg){
+            jsc3l_bcRead.getTaxAccount(function(acc){
+                jsc3l_bcRead.getTotalAmount($scope.wallet.getAddressString(), function(tot){
                    $scope.taxes_amount = amount;
                    $scope.taxes_amount_leg = amountLeg;
                    $scope.total_amount = tot/100.0;
@@ -63,7 +63,7 @@ var globalCtrl = function($scope, $locale, $sce, walletService, $translate) {
     
     $scope.confirmTax = function(){
          $scope.confTaxPop.close();
-         globalFuncs.SetTaxAmount($scope.wallet, $scope.new_tax_amount, function(res){
+         jsc3l_bcTransaction.SetTaxAmount($scope.wallet, $scope.new_tax_amount, function(res){
             if (res.isError){
                 $scope.validateStatus= $sce.trustAsHtml(globalFuncs.getDangerText($translate.instant("GLB_Tax_amount_not_updated")));
             } else {
@@ -81,7 +81,7 @@ var globalCtrl = function($scope, $locale, $sce, walletService, $translate) {
     
     $scope.confirmTaxLeg = function(){
          $scope.confTaxLegPop.close();
-         globalFuncs.SetTaxLegAmount($scope.wallet, $scope.new_tax_amount_leg, function(res){
+         jsc3l_bcTransaction.SetTaxLegAmount($scope.wallet, $scope.new_tax_amount_leg, function(res){
             if (res.isError){
                 $scope.validateStatus= $sce.trustAsHtml(globalFuncs.getDangerText($translate.instant("GLB_Tax_amount_not_updated")));
             } else {
@@ -99,7 +99,7 @@ var globalCtrl = function($scope, $locale, $sce, walletService, $translate) {
     }
     
     $scope.confirmTaxAccount = function(){
-        globalFuncs.SetTaxAccount($scope.wallet, $scope.new_tax_account, function(res){
+        jsc3l_bcTransaction.SetTaxAccount($scope.wallet, $scope.new_tax_account, function(res){
            if (res.isError){
                 $scope.validateStatus= $sce.trustAsHtml(globalFuncs.getDangerText($translate.instant("GLB_Tax_account_not_updated")));
             } else {
@@ -117,7 +117,7 @@ var globalCtrl = function($scope, $locale, $sce, walletService, $translate) {
     }
     
      $scope.confirmOwnerAccount = function(){
-        globalFuncs.SetOwnerAccount($scope.wallet, $scope.new_owner_account, function(res){
+        jsc3l_bcTransaction.SetOwnerAccount($scope.wallet, $scope.new_owner_account, function(res){
            if (res.isError){
                 $scope.validateStatus= $sce.trustAsHtml(globalFuncs.getDangerText($translate.instant("GLB_Owner_account_not_updated")));
             } else {

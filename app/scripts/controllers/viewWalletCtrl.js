@@ -1,7 +1,7 @@
 'use strict';
 var viewWalletCtrl = function($scope, walletService, contactservice, $translate) {
     // Environment variables
-    $scope.isApp = globalFuncs.isApp();
+    $scope.isApp = jsc3l_customization.isApp();
     
     // Controler variables
     //  Data
@@ -36,14 +36,14 @@ var viewWalletCtrl = function($scope, walletService, contactservice, $translate)
             
         });
         
-        globalFuncs.getAccInfo(globalFuncs.slockitAccStatus, $scope.wallet.getAddressString(), function(status){
+        jsc3l_bcRead.getAccountStatus($scope.wallet.getAddressString(), function(status){
                     $scope.is_locked = status==0;
         });
         
         $scope.currentAddress = $scope.wallet.getAddressString();
         $scope.current_QR_content = $scope.currentAddress;
         $scope.getAccName($scope.wallet.getAddressString());
-        $scope.hasBnCheck=globalFuncs.hasBnCheck(); 
+        $scope.hasBnCheck=jsc3l_customization.hasBnCheck(); 
         
         
         globalFuncs.notifyApproval(); // Refresh the Payment notification
@@ -155,11 +155,11 @@ var viewWalletCtrl = function($scope, walletService, contactservice, $translate)
     // Perform the check
     $scope.do_check = function(){
         $scope.BN_Status=globalFuncs.getWarningText($translate.instant("BN_CheckingProgress"));
-        globalFuncs.getAccInfo(globalFuncs.slockitAccStatus, $scope.bnaddress, function(status){
+        jsc3l_bcRead.getAccountStatus($scope.bnaddress, function(status){
             if (status!=0){
               $scope.BN_Status=globalFuncs.getDangerText($translate.instant("BN_NotValid"));      
             } else {
-                globalFuncs.getAmmount(globalFuncs.slockitBalance, $scope.bnaddress, function(value){
+                jsc3l_bcRead.getGlobalBalance($scope.bnaddress, function(value){
                     if (globalFuncs.isValidBNValue(value)){
                        $scope.BN_Status=globalFuncs.getSuccessText($translate.instant("BN_Valid")+value+globalFuncs.currencies.CUR);    
                     } else {
