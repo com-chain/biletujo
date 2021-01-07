@@ -209,12 +209,12 @@ var Decrypt = function(privKey, encrypted) {
                 
                 var message_from = '';
                 if (from_msg_key!==undefined) {  
-                   message_from = cipherMessage(Buffer.from(from_msg_key.substring(2),'hex'), message);
+                   message_from = cipherMessage(from_msg_key, message);
                 }
                 
                 var message_to = '';
                 if (to_msg_key!==undefined) {  
-                   message_to = cipherMessage(Buffer.from(to_msg_key.substring(2),'hex'), message);
+                   message_to = cipherMessage(to_msg_key, message);
                 }
                 
                 var data_obj = {"add_req": wallet.getAddressString(),

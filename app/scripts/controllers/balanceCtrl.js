@@ -782,8 +782,7 @@ var balanceCtrl = function($scope, $locale, $sce, walletService,contactservice, 
     
    
     if ($scope.dest_keys.public_key !== undefined) {
-        var dest_public_key = Buffer.from($scope.dest_keys.public_key, 'hex');
-        var crypted_m_key = messageService.cipherMessage(dest_public_key, mess_keys.clear_priv);
+        var crypted_m_key = messageService.cipherMessage($scope.dest_keys.public_key, mess_keys.clear_priv);
         obj_content.message_key = crypted_m_key;
     }
     

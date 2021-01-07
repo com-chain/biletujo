@@ -127,7 +127,7 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, me
         
         
         var local_message_key = JSON.parse(localStorage.getItem('ComChainWallet')).message_key.priv;
-        $scope.my_message_key =Buffer.from( messageService.messageKeysFromCrypted($scope.wallet, local_message_key).clear_priv.substring(2),'hex');
+        $scope.my_message_key = messageService.messageKeysFromCrypted($scope.wallet, local_message_key).clear_priv;
 	});
     
 	$scope.setBalance = function(readyStatus) {
@@ -1401,7 +1401,7 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, me
                               if ( $scope.to_message_key === undefined) {
                                 $scope.to_message_key = "";
                               }
-                              if ($scope.to_message_key .length>0 && request.message=="") {
+                              if ($scope.to_message_key.length>0 && request.message=="") {
                                   $scope.cp_mess = true;
                               }   
                            });
