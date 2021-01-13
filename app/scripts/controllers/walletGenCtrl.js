@@ -10,8 +10,11 @@ var walletGenCtrl = function($scope, $globalService, $translate, walletService, 
     $scope.confirmCreateModal = new Modal(document.getElementById('confirmCreate'));
     
     //  UI switch
+    $scope.step1_2 = true;
+    $scope.enter_token = true;
     $scope.showSecret = false;
 	$scope.showWallet = false;
+    $scope.show_syncro = false;
     $scope.isDone = true;
     $scope.showPass = true;
     
@@ -92,6 +95,7 @@ var walletGenCtrl = function($scope, $globalService, $translate, walletService, 
                                    $scope.enrollmentToken = data.token;
                                    // Enable next step:
                                    $scope.showSecret = true;
+                                   $scope.enter_token = false;
                                    $scope.message_creation = '';
                                    // Adapt the UI to the selected server
                                    jsc3l_customization.configureCurrency();
@@ -179,6 +183,7 @@ var walletGenCtrl = function($scope, $globalService, $translate, walletService, 
                                                 // Enable next step 
                                                 $scope.showWallet = true;
                                                 $scope.showSecret = false; 
+                                                $scope.step1_2 = false;
                                                 $scope.message_creation=""; 
                                                 $scope.blobEnc = globalFuncs.getBlob("text/json;charset=UTF-8", localStorage.getItem('ComChainWallet'));
                                                 
@@ -228,6 +233,11 @@ var walletGenCtrl = function($scope, $globalService, $translate, walletService, 
        },100); 
 	} 
     
+   
+    $scope.display_synchro = function(){
+	    $scope.showWallet = false;
+        $scope.show_syncro = true;
+    } 
     
    // Send the Unlock request
     $scope.request_unlock = function(){
@@ -235,6 +245,8 @@ var walletGenCtrl = function($scope, $globalService, $translate, walletService, 
     }
 
 };
+
+
 
 
 

@@ -837,9 +837,15 @@ globalFuncs.generateSavePDF = function(title, key, address, callback){
             
                 var doc = new jsPDF();
                 doc.setFontSize(32);
-                
                 var textWidth = doc.getStringUnitWidth(title) * doc.internal.getFontSize() / doc.internal.scaleFactor;
                 var textOffset = (doc.internal.pageSize.width - textWidth) / 2;
+                
+                doc.setFontSize(22);
+                var keytextWidth = doc.getStringUnitWidth(key) * doc.internal.getFontSize() / doc.internal.scaleFactor;
+                var keytextOffset = (doc.internal.pageSize.width - keytextWidth) / 2;
+                
+                
+                doc.setFontSize(32);
                 doc.text(textOffset, 25, title);
                 doc.setLineWidth(1.0);
                 doc.line(textOffset, 27, textOffset+textWidth+3, 27);
@@ -850,33 +856,10 @@ globalFuncs.generateSavePDF = function(title, key, address, callback){
                 var linesAdd = doc.splitTextToSize(address, 30, {});
                 doc.text(130, 37, linesAdd);
                
-                
-                
                 doc.setFontSize(22);
-                var keytextWidth = doc.getStringUnitWidth(key) * doc.internal.getFontSize() / doc.internal.scaleFactor;
-                var keytextOffset = (doc.internal.pageSize.width - keytextWidth) / 2;
-         
-                doc.text(keytextOffset, 71, key);
-                //doc.addImage(imgData, 'PNG', 15, 75, 180, 180);
-                doc.setFontSize(12);
-                var lines = doc.splitTextToSize(localStorage.getItem('ComChainWallet'), 180, {});
-                doc.text(15, 80, lines);
-                
-                doc.addPage();
-                
-                doc.setFontSize(32);
-                doc.text(textOffset, 25, title);
-                doc.setLineWidth(1.0);
-                doc.line(textOffset, 27, textOffset+textWidth+3, 27);
-                
-                doc.addImage(imgAddData, 'PNG', 90, 32, 30, 30);
-                doc.addImage(logoData, 'PNG', 50, 32, 30, 30);
-                doc.setFontSize(15);
-                doc.text(130, 37, linesAdd);
-              
-                doc.setFontSize(22);
-                
                 doc.text(keytextOffset, 81, key);
+  
+                
                 var imgData = document.getElementById("qrcode_print0").getElementsByTagName('img')[0].src;
                 doc.addImage(imgData, 'PNG', 15, 95, 80, 80);
                 doc.addImage(imgAddData, 'PNG', 50, 130, 10, 10);
@@ -897,6 +880,25 @@ globalFuncs.generateSavePDF = function(title, key, address, callback){
                 doc.addImage(imgAddData, 'PNG', 150, 230, 10, 10);
                 doc.text(153, 238, "4");
                 
+                doc.addPage();
+                
+                doc.setFontSize(32);
+                doc.text(textOffset, 25, title);
+                doc.setLineWidth(1.0);
+                doc.line(textOffset, 27, textOffset+textWidth+3, 27);
+                
+                doc.addImage(imgAddData, 'PNG', 90, 32, 30, 30);
+                doc.addImage(logoData, 'PNG', 50, 32, 30, 30);
+                doc.setFontSize(15);
+                doc.text(130, 37, linesAdd);
+              
+                doc.setFontSize(22);
+                
+                doc.text(keytextOffset, 81, key);
+                
+                doc.setFontSize(12);
+                var lines = doc.splitTextToSize(localStorage.getItem('ComChainWallet'), 180, {});
+                doc.text(15, 90, lines);
                 
                 newImg.callback(doc);
             }
