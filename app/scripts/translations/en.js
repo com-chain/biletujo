@@ -70,9 +70,14 @@ GEN_Create: 'Create',
 GEN_No_config: 'The code provided does not contain any reference to an existing server. Please check.',
 GEN_No_server: 'There is no server as referenced in the code provided. Please check.',
 GEN_Save_title: 'Download and keep in a safe place the following files:',
+GEN_Save_alrt:'Please dowload the files first!',
+GEN_HowTo:'How To',
 
 GEN_Synchro:'Wallet creation (4/4):<br/> Wallet synchronization',
 GEN_Access:'Access my wallet',
+GEN_Syn_phone:'On your SMARTPHONE:<br/>&nbsp;1. Download the "Biletujo" app on the store,<br/>&nbsp;2. Go to "Import a wallet",<br/>&nbsp;3. Scann the QR Codes from the .pdf "Private key" file that you just downloaded.<br/><br/>',
+GEN_Syn_computer1:'On another COMPUTER:<br/>&nbsp;1. Open &nbsp;',
+GEN_Syn_computer2:'<br/>&nbsp;2. Go to "Import a wallet",<br/>&nbsp;3. Import the .dat "Private key" file<br/><br/>',
 
 
 /* Open Panel */
@@ -93,7 +98,7 @@ OPEN_Frag_Read:'The QR has been read',
 OPEN_Frag_Already_Know:'This QR has already been read',
 OPEN_Frag_Not_Frag:'This QR do not contains a wallet',
 
-Acc_locked: 'Caution: this wallet is currently blocked.',
+Acc_locked: 'Caution: this wallet is waiting to be unlocked.',
 
 /* View Wallet*/
 VIEW_address: 'Your wallet’s identicon',

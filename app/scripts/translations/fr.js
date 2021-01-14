@@ -72,9 +72,15 @@ GEN_Create: 'Créer',
 GEN_No_config: 'Le code fournit ne contient pas de référence à un server. Merci de le vérifier.',
 GEN_No_server: 'Le code fournit ne correspond à aucun server. Merci de le vérifier.',
 GEN_Save_title:'Télécharger et conserver en lieu sûr les fichiers ci-dessous:',
+GEN_Save_alrt:'Veuillez télécharger les fichiers avant de poursuivre',
+
+GEN_HowTo:'Marche à suivre',
+
 GEN_Synchro:'Création de compte (4/4):<br/> Synchronisation de ce compte',
 GEN_Access:'Accéder à mon compte',
-
+GEN_Syn_phone:'Sur votre SMARTPHONE:<br/>&nbsp;1. Téléchargez l\'app "Biletujo" sur le store,<br/>&nbsp;2. Allez sur "Importer un compte",<br/>&nbsp;3. Scannez les QR Codes du fichier "Clef Privée" en format .pdf que vous venez de télécharger.<br/><br/>',
+GEN_Syn_computer1:'Sur un autre ORDINATEUR:<br/>&nbsp;1. Ouvrez &nbsp;',
+GEN_Syn_computer2:'<br/>&nbsp;2. Allez sur "Importer un compte",<br/>&nbsp;3. Importez le fichier "Clef Privée" en format .dat<br/><br/>',
 
 /* Open Panel */
 OPEN_Choose_bak: 'Sélectionner une sauvegarde (fichier de compte .dat)',
@@ -94,7 +100,7 @@ OPEN_Frag_Read:'Le QR a été lù',
 OPEN_Frag_Already_Know:'Ce QR a déjà été scanné',
 OPEN_Frag_Not_Frag:'Ce QR ne correspond pas à un compte',
 
-Acc_locked: 'Attention: ce compte est actuellement bloqué.',
+Acc_locked: 'Attention: Compte en attente d\'être débloqué.',
 
 /* View Wallet*/
 VIEW_address: 'Votre compte',
