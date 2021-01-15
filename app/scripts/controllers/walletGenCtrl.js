@@ -10,10 +10,20 @@ var walletGenCtrl = function($scope, $globalService, $translate, walletService, 
     $scope.confirmCreateModal = new Modal(document.getElementById('confirmCreate'));
     
     //  UI switch
+    $scope.step1_2 = true;
+    $scope.enter_token = true;
     $scope.showSecret = false;
 	$scope.showWallet = false;
+    $scope.show_syncro = false;
     $scope.isDone = true;
     $scope.showPass = true;
+    $scope.wallet_address = "https://wallet.cchosting.org";
+    
+    $scope.downloaded_dat=false;
+    $scope.downloaded_pdf=false;
+    $scope.downloaded_howto=false;
+    $scope.howtoUrl ='';
+    $scope.has_howto=false;
     
     //  UI message
     $scope.message_creation='';
@@ -28,7 +38,6 @@ var walletGenCtrl = function($scope, $globalService, $translate, walletService, 
     $scope.cond2=false;
     
     $scope.unlock_url = jsc3l_customization.getUnlockUrl();
-    $scope.has_unlock = false; //$scope.unlock_url.length;
     //////////////////////
     
     // Look for code
@@ -92,6 +101,7 @@ var walletGenCtrl = function($scope, $globalService, $translate, walletService, 
                                    $scope.enrollmentToken = data.token;
                                    // Enable next step:
                                    $scope.showSecret = true;
+                                   $scope.enter_token = false;
                                    $scope.message_creation = '';
                                    // Adapt the UI to the selected server
                                    jsc3l_customization.configureCurrency();
@@ -179,7 +189,17 @@ var walletGenCtrl = function($scope, $globalService, $translate, walletService, 
                                                 // Enable next step 
                                                 $scope.showWallet = true;
                                                 $scope.showSecret = false; 
+                                                $scope.step1_2 = false;
                                                 $scope.message_creation=""; 
+                                                
+                                                $scope.downloaded_dat=false;
+                                                $scope.downloaded_pdf=false;
+                                                $scope.downloaded_howto=false;
+                                                
+                                                $scope.howtoUrl = jsc3l_customization.getHowToUrl();
+                                                
+                                                $scope.has_howto=$scope.howtoUrl!='';
+                                                
                                                 $scope.blobEnc = globalFuncs.getBlob("text/json;charset=UTF-8", localStorage.getItem('ComChainWallet'));
                                                 
                                                 $scope.$apply();
@@ -189,21 +209,24 @@ var walletGenCtrl = function($scope, $globalService, $translate, walletService, 
                                                 contacts = contactService.ensureContact(contacts, $scope.wallet.getChecksumAddressString());
                                                 contactService.storeIpfsContact(contacts, $scope.wallet,$scope.password);
                                                 
-                                                var message = jsc3l_customization.getCreationMessage();
-                                                if (message != undefined && message!="") {
-                                                    alert(message);
-                                                }
+                                                $scope.isDone = true;
+                                                globalFuncs.hideLoadingWaiting();  // hide the waiting overlay 
                                             }); 
                         } else {
                             $scope.message_creation=globalFuncs.getDangerText($translate.instant("GEN_Enrollment_KO"));
+                            $scope.isDone = true;
+                            globalFuncs.hideLoadingWaiting();  // hide the waiting overlay 
+                             
                         }
+                      
                     });
                 } catch (e) {
                     $scope.message_creation=globalFuncs.getDangerText($translate.instant("GEN_Enrollment_Error"));  
+                    $scope.isDone = true;
+                    globalFuncs.hideLoadingWaiting();  // hide the waiting overlay 
                 }
           
-                $scope.isDone = true;
-                globalFuncs.hideLoadingWaiting();  // hide the waiting overlay
+               
             });   
 	    }
     }
@@ -224,17 +247,50 @@ var walletGenCtrl = function($scope, $globalService, $translate, walletService, 
                                      function(pdf_doc){
                 var file_name = globalFuncs.cleanName($translate.instant("PDF_Priv_file")) +'_'+$scope.wallet.getAddressString()+'.pdf';
                 pdf_doc.save(file_name); 
+                $scope.downloaded_pdf= true;
           });
        },100); 
 	} 
     
-    
-   // Send the Unlock request
-    $scope.request_unlock = function(){
-        ajaxReq.requestUnlock($scope.wallet.getAddressString(),$scope.unlock_url,function(data){alert($translate.instant("GEN_Unlock_confirm"))});
+    $scope.saveDat = function(){
+        $scope.downloaded_dat = true;
+        document.getElementById("btn_dat").click();
     }
+    
+    $scope.saveHow = function () {
+        $scope.downloaded_howto = true;
+        document.getElementById("btn_how").click();
+    }
+   
+    $scope.display_synchro = function(){
+        if (!$scope.downloaded_pdf || !$scope.downloaded_dat || ($scope.has_howto && !$scope.downloaded_howto)) {
+            alert($translate.instant("GEN_Save_alrt")); 
+        } else {
+            var wallet = jsc3l_customization.getWalletAddress();
+            if (wallet!='') {
+                $scope.wallet_address = wallet;
+            }
+	        $scope.showWallet = false;
+            $scope.show_syncro = true;
+        }
+        
+        
+    } 
+    
+    $scope.reload_acc = function() {
+        var message = jsc3l_customization.getCreationMessage();
+        if (message != undefined && message!="") {
+            alert(message);
+        }
+        
+        location.reload(); 
+    }
+    
+
 
 };
+
+
 
 
 

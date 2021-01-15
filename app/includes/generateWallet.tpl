@@ -1,33 +1,35 @@
 <div class="tab-pane active"  ng-controller='viewCtrl' >
     <!-- Ecran initial: creation du porte-feuille -->
     <div ng-if="globalService.currentTab==globalService.tabs.generateWallet.id" ng-controller='walletGenCtrl'>
-     <div class="row grp" ng-hide="showWallet"> 
-      <div class="col-md-12 ">
-       <div class="row "> 
-        <div class="col-md-12 "> 
-         <label translate="GEN_Enter_Token" ></label>
-        </div>
-       </div>
-       <div class="row" ng-if="isApp"> 
-        <div class="col-md-12 "> 
-         <label translate="GEN_USE_BROWSER" ></label>
-        <!-- <a class="btn btn-primary btn-block btnAction" ng-click="startScanToken()" translate="GEN_Scan">QR</a>-->
-        </div>
-       </div>
-       <div class="row" ng-if="isApp"> 
-        <div class="col-md-12 "> 
-         &nbsp;
-        </div>
-       </div>
-       <div class="row" > 
-        <div class="col-md-12 "> 
-         <input class="form-control" type="text" ng-model="token" /><br/>
-        </div>
-       </div>
-       <div class="row" > 
-        <div class="col-md-12 "> 
-         <a class="btn btn-primary btn-block btnAction"  ng-click="validateToken()" translate="GEN_Token_validation">Token</a>
-        </div>
+      <div class="row grp" ng-show="step1_2"> 
+        <div class="col-md-12 " >    
+          <div class="col-md-12 " ng-show="enter_token">
+           <div class="row "> 
+            <div class="col-md-12 "> 
+             <label translate="GEN_Enter_Token" ></label>
+            </div>
+           </div>
+           <div class="row" ng-if="isApp"> 
+            <div class="col-md-12 "> 
+             <label translate="GEN_USE_BROWSER" ></label>
+            <!-- <a class="btn btn-primary btn-block btnAction" ng-click="startScanToken()" translate="GEN_Scan">QR</a>-->
+            </div>
+           </div>
+           <div class="row" ng-if="isApp"> 
+            <div class="col-md-12 "> 
+             &nbsp;
+            </div>
+           </div>
+           <div class="row" ng-hide="isApp"> 
+            <div class="col-md-12 "> 
+             <input class="form-control" type="text" ng-model="token" /><br/>
+            </div>
+           </div>
+           <div class="row" ng-hide="isApp"> 
+            <div class="col-md-12 "> 
+             <a class="btn btn-primary btn-block btnAction"  ng-click="validateToken()" translate="GEN_Token_validation">Token</a>
+            </div>
+           </div>
        </div>
        
        <div ng-show="showSecret">
@@ -107,19 +109,16 @@
        
        <div class="row "> 
         <div class="col-md-12 ">
-         <label translate="VIEW_Save_title" >Sauvegarde de votre portefeuille : </label>
+         <label translate="GEN_Save_title" >Sauvegarde de votre portefeuille : </label>
         </div>
        </div>
        <div class="row "> 
         <div class="col-md-12 ">
-         <a class="btn btn-info btn-block" href="{{blobEnc}}" download="{{CUR}}_{{wallet.getAddressString()}}.dat" translate="VIEW_Save" ng-hide="isApp" > Faire une sauvgarde de votre portefeuille </a>
+          <a class="btn btn-info btn-block" ng-click="saveDat()" translate="VIEW_Save"  > backup </a>
+          <a style="display:none;" id="btn_dat" href="{{blobEnc}}" download="{{CUR}}_{{wallet.getAddressString()}}.dat"> </a>
         </div>
        </div>
-       <div class="row "> 
-        <div class="col-md-12 ">
-         <a class="btn btn-info btn-block" ng-click="dowloadAppFile()"  translate="VIEW_Save" ng-show="isApp" > Télécharger la Sauvegarde </a>
-        </div>
-       </div>
+  
        <div class="row"> 
         <div class="col-md-12 "> 
          &nbsp;
@@ -127,7 +126,7 @@
        </div>
        <div class="row "> 
         <div class="col-md-12 ">
-         <a class="btn btn-info btn-block" ng-click="printQRCode()" translate="VIEW_print" ng-if="!isApp"  > Imprimer une sauvegarde de votre portefeuille </a>
+         <a class="btn btn-info btn-block" ng-click="printQRCode()" translate="VIEW_print"  > Imprimer une sauvegarde de votre portefeuille </a>
         </div>
        </div>
 
@@ -137,35 +136,60 @@
 	    </div>
        </div>
        
+       <div class="row " ng-show="has_howto"> 
+        <div class="col-md-12 ">
+	      <a class="btn btn-info btn-block" ng-click="saveHow()" translate="GEN_HowTo"  > backup </a>
+          <a style="display:none;" id="btn_how" href="{{howtoUrl}}" download target="_blanck"> </a>
+	    </div>
+       </div>
+       
+      <div class="row"  ng-show="has_howto"> 
+        <div class="col-md-12 "> 
+         &nbsp;
+        </div>
+       </div>
+       
       <div id="qrcode_print"></div>
       <div id="qrcode_print0"></div>
       <div id="qrcode_print1"></div>
       <div id="qrcode_print2"></div>
       <div id="qrcode_print3"></div>
       
-       <div class="row " ng-show="has_unlock"> 
-         <div class="col-md-12 "> 
-         &nbsp;
-        </div>
-        <div class="col-md-12 ">
-         <label translate="GEN_Unlock_title" >UnlockTitle : </label>
-        </div>
-         <div class="col-md-12 ">
-         <a class="btn btn-info btn-block btnAction" ng-click="request_unlock()" translate="GEN_btn_Unlock">Unlock</a>
-        </div>
-         <div class="col-md-12 ">
-         &nbsp;
-         </div>
-       </div>
-      
        
        <div class="row "> 
         <div class="col-md-12 ">
-         <a class="btn btn-info btn-block btnAction" onClick="location.reload()" translate="GEN_OK">OK</a>
+         <a class="btn btn-info btn-block btnAction" ng-click="display_synchro()"  translate="GEN_OK">OK</a>
         </div>
        </div>
       </div>
      </div>
+     
+    <div class="row grp" ng-show="show_syncro"> 
+     <div class="col-md-12 ">
+      <div class="row "> 
+        <div class="col-md-12 ">
+         <label translate="GEN_Synchro" >Synchro de votre compte </label>
+        </div>
+       </div>
+       <div class="row "> 
+         <div class="col-md-12 ">
+           <div translate="GEN_Syn_phone"> </div>
+         </div>
+          <div class="col-md-12 ">
+           <span translate="GEN_Syn_computer1"> </span>{{wallet_address}}
+           <span translate="GEN_Syn_computer2"> </span>
+         </div>
+       </div>
+       <div class="row "> 
+        <div class="col-md-12 ">
+         <a class="btn btn-info btn-block btnAction" ng-click="reload_acc()"  translate="GEN_Access">OK</a>
+        </div>
+       </div>
+      </div>
+     </div>
+     
+     
+     
          <!-- confirm Modal -->
          <div class="modal fade" id="confirmCreate" tabindex="-1" role="dialog" aria-labelledby="sendTransactionLabel">
               <div class="modal-dialog" role="document">

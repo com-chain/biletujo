@@ -45,21 +45,21 @@ PDF_Pub_file:'PublicKey',
 
 
 /* Generate Wallets */
-GEN_Enter_Token: 'Insert your authorization code',
-GEN_USE_BROWSER: 'In order to have multiple copy of the backup, we invite you to create your account using a browser.',
+GEN_Enter_Token: 'Wallet creation (1/4):<br/> Authorization code',
+GEN_USE_BROWSER: 'In order to have multiple copy of the backup, we invite you to create your account using a Web browser on your computer.',
 GEN_Scan: 'Scan your QR authorization code',
 OPEN_Paper_selected: 'File backup selected.', 
 GEN_Token_validation: 'Confirm the authorization code',
 GEN_Token_validation_error: 'Please check your authorization code, it is either invalid or incomplete.',
 GEN_Token_validation_KO: 'The server is either unavailable or the authorization code you typed is invalid',
 GEN_Cancel: 'Cancel operation',
-GEN_pswd: 'Type your password  (at least 8 characters, use a mix of upper/lower-case letters and numbers and one symbol)',
+GEN_pswd: 'Wallet creation (2/4):<br/>Password  (at least 8 characters, use a mix of upper/lower-case letters and numbers and one symbol)',
 GEN_Placeholder_psw: 'Please immediately safely store this password!',
 GEN_Enrollment_KO: 'The server is either unavailable or the creation of your wallet was denied.',
 GEN_Enrollment_Error: 'An error occurred during the creation of your wallet.',
 GEN_Warning_1: 'Beware: If you forget this password, you will lose all funds in this wallet.',
 GEN_Create_1: 'Create my wallet',
-GEN_Result: 'Your wallet has been created.',
+GEN_Result: 'Wallet creation (3/4): Backup this account',
 GEN_Warning_2: 'Beware: If you lose your private key, you will lose all funds in this wallet', 
 GEN_OK: 'OK',
 GEN_ConfirmCreate: 'Conditions of Use',
@@ -69,7 +69,15 @@ GEN_LostPass: 'I have understood that if my password or my backup file (private 
 GEN_Create: 'Create',
 GEN_No_config: 'The code provided does not contain any reference to an existing server. Please check.',
 GEN_No_server: 'There is no server as referenced in the code provided. Please check.',
+GEN_Save_title: 'Download and keep in a safe place the following files:',
+GEN_Save_alrt:'Please dowload the files first!',
+GEN_HowTo:'How To',
 
+GEN_Synchro:'Wallet creation (4/4):<br/> Wallet synchronization',
+GEN_Access:'Access my wallet',
+GEN_Syn_phone:'On your SMARTPHONE:<br/>&nbsp;1. Download the "Biletujo" app on the store,<br/>&nbsp;2. Go to "Import a wallet",<br/>&nbsp;3. Scann the QR Codes from the .pdf "Private key" file that you just downloaded.<br/><br/>',
+GEN_Syn_computer1:'On another COMPUTER:<br/>&nbsp;1. Open &nbsp;',
+GEN_Syn_computer2:'<br/>&nbsp;2. Go to "Import a wallet",<br/>&nbsp;3. Import the .dat "Private key" file<br/><br/>',
 
 
 /* Open Panel */
@@ -90,12 +98,12 @@ OPEN_Frag_Read:'The QR has been read',
 OPEN_Frag_Already_Know:'This QR has already been read',
 OPEN_Frag_Not_Frag:'This QR do not contains a wallet',
 
-Acc_locked: 'Caution: this wallet is currently blocked.',
+Acc_locked: 'Caution: this wallet is waiting to be unlocked.',
 
 /* View Wallet*/
 VIEW_address: 'Your wallet’s identicon',
 VIEW_QR: 'Public QRcode of your wallet',
-VIEW_Save_title: 'Backup options for this wallet',
+VIEW_Save_title: 'Backup this wallet',
 VIEW_Save: 'DAT private key file backup (.dat)',
 VIEW_print: 'PDF private key file backup (.pdf)',
 VIEW_print_adr: 'Public address (.pdf)', 

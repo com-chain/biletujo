@@ -16,7 +16,7 @@ var jsc3l_customization = function() {}
 ///
 jsc3l_customization.getConfJSON = function(name, callback) {
     var xhr = new XMLHttpRequest();
-    xhr.open('GET', localStorage.getItem('ComChainRepo')+ jsc3l_config.configRepo+'/' +name+'.json', true); //
+    xhr.open('GET', localStorage.getItem('ComChainRepo')+ jsc3l_config.configRepo+'/' +name+'.json'+'?_=' + new Date().getTime(), true); //
     xhr.responseType = 'json';
     xhr.onreadystatechange = function (oEvent) {  
       if (xhr.readyState === 4) {  
@@ -84,6 +84,15 @@ jsc3l_customization.getCondUrl = function(){
 
 jsc3l_customization.getUnlockUrl = function(){
     return getServerConfig('url_unlock');  
+}
+
+
+jsc3l_customization.getHowToUrl = function(){
+    return getServerConfig('url_howto');  
+}
+
+jsc3l_customization.getWalletAddress = function(){
+    return getServerConfig('address');  
 }
 
 jsc3l_customization.getCreationMessage = function(){
