@@ -71,7 +71,7 @@ GEN_LostPass: 'J\'ai bien compris que si je perds mon mot de passe ou mon fichie
 GEN_Create: 'Créer',
 GEN_No_config: 'Le code fournit ne contient pas de référence à un server. Merci de le vérifier.',
 GEN_No_server: 'Le code fournit ne correspond à aucun server. Merci de le vérifier.',
-GEN_Save_title:'Télécharger et conserver en lieu sûr les fichiers ci-dessous:',
+GEN_Save_title:'Téléchargez et conservez en lieu sûr les fichiers ci-dessous:',
 GEN_Save_alrt:'Veuillez télécharger les fichiers avant de poursuivre',
 
 GEN_HowTo:'Marche à suivre',
@@ -480,7 +480,7 @@ BAL_Tooltip_sav_qr: 'Sauvegarde QR',
 
 LIM_limites: 'Limites',
 LIM_credit: 'Limite en positif :',
-LIM_debit: 'Limite en négati :',
+LIM_debit: 'Limite en négatif :',
 
 /* Delegation */
 DELEG_Delegate_Tab_Title:'Vos procurations',
