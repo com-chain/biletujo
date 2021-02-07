@@ -261,7 +261,7 @@ TRAN_rejected_request_text: 'You rejected a payment request',
 TRAN_tans_id: 'Transaction ID:',
 TRAN_NotPossible: 'Insufficient funding for payment',
 TRAN_NotPossibleWithoutSplit: 'Online payment can not be made in several transactions. Insufficient funding for a single payment.',
-TRAN_SplitedTrans: 'Payment will be made in several transactions',
+TRAN_SplitedTrans: 'Please pay in 2 transactions first with amount of ',
 TRAN_CurrSelBtn:'*',
 TRAN_Change_rep:'Change repartition',
 

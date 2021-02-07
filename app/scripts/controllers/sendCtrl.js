@@ -357,7 +357,8 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, me
                 if ($scope.splitted['cm']>0){
                     if ($scope.splitted['nant']>0){
                          $scope.typeTrans=globalFuncs.currencies.CUR_nanti+"/"+globalFuncs.currencies.CUR_credit_mut;
-                         $scope.err_message=$sce.trustAsHtml(globalFuncs.getWarningText($translate.instant('TRAN_SplitedTrans')));
+                         $scope.err_message=$sce.trustAsHtml(globalFuncs.getDangerText($translate.instant('TRAN_SplitedTrans') + ($scope.splitted['cm']/100))); 
+                         $scope.typeTrans="no"
                     } else {
                         $scope.typeTrans=globalFuncs.currencies.CUR_credit_mut;
                     }
@@ -434,8 +435,10 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, me
         $scope.val_cm = (value_cent - Math.round($scope.val_nant * 100))/100.0;
             
         if ($scope.val_nant>0 && $scope.val_cm>0) {
-            $scope.err_message=$sce.trustAsHtml(globalFuncs.getWarningText($translate.instant('TRAN_SplitedTrans')));
+            $scope.err_message=$sce.trustAsHtml(globalFuncs.getDangerText($translate.instant('TRAN_SplitedTrans')+( $scope.val_cm)));
             $scope.typeTrans=globalFuncs.currencies.CUR_nanti+"/"+globalFuncs.currencies.CUR_credit_mut;
+            
+            $scope.typeTrans="no"
         } else {
             $scope.err_message="";
             if ($scope.val_nant>0) {
@@ -462,8 +465,9 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, me
         $scope.val_nant = (value_cent - Math.round($scope.val_cm * 100))/100.0;
         
         if ($scope.val_nant>0 && $scope.val_cm>0) {
-            $scope.err_message=$sce.trustAsHtml(globalFuncs.getWarningText($translate.instant('TRAN_SplitedTrans')));
+            $scope.err_message=$sce.trustAsHtml(globalFuncs.getDangerText($translate.instant('TRAN_SplitedTrans')+( $scope.val_cm)));
             $scope.typeTrans=globalFuncs.currencies.CUR_nanti+"/"+globalFuncs.currencies.CUR_credit_mut;
+            $scope.typeTrans="no"
         } else {
             $scope.err_message="";
             if ($scope.val_nant>0) {
