@@ -263,7 +263,7 @@ TRAN_rejected_request_text: 'Vous avez refusé de payer',
 TRAN_tans_id: 'Identifiant de la transaction',
 TRAN_NotPossible: 'Avoir insuffisant pour la transaction',
 TRAN_NotPossibleWithoutSplit: 'Les payement en ligne ne peuvent pas être passé en plusieurs transaction. Avoir insuffisant pour une transaction unique.',
-TRAN_SplitedTrans: 'Merci de payer en 2 transactions en commençant par un montant de ',
+TRAN_SplitedTrans: 'Le paiement sera passé en plusieurs transactions',
 TRAN_CurrSelBtn:'*',
 TRAN_Change_rep:'Changer la répartition',
 
