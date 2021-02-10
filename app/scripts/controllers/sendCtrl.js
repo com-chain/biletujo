@@ -6,6 +6,7 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, me
     // Popup
 	$scope.sendTxModal = new Modal(document.getElementById('sendTransaction'));
 	$scope.executedTransModal = new Modal(document.getElementById('executedTrans'));
+    $scope.executingSplittedTrans = new Modal(document.getElementById('executingSplittedTrans'));
 	$scope.chooseOrigineModal = new Modal(document.getElementById('chooseOrigine'));
 	$scope.alrtNotSameCurrModal = new Modal(document.getElementById('alrtNotSameCurr'));
     
@@ -281,7 +282,8 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, me
             data['memo_to']= messageService.cipherMessage($scope.to_message_key.substring(2), $scope.message_to);
         }
     
-        jsc3l_bcTransaction.TransfertNant($scope.wallet, $scope.tokenTx.to, $scope.elemanAmmount/100, data,  function(res){
+        ajaxReq.currBlock(function(blk_number) {
+                 jsc3l_bcTransaction.TransfertNant($scope.wallet, $scope.tokenTx.to, $scope.elemanAmmount/100, data,  function(res){
                     if (res.isError){
                         globalFuncs.hideLoadingWaiting();  
 				        $scope.err_message = $sce.trustAsHtml(globalFuncs.getDangerText($translate.instant(res.error)));
@@ -289,7 +291,9 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, me
                     } else {
 
                         if ($scope.lemanexAmmount>0){
-                             $scope.generatelTx(1, res.data);
+                             $scope.executingSplittedTrans.open();
+                             $scope.splitedSecondPart(blk_number,0, res.data);
+                             
                         } else {
                             $scope.waitTransaction(res.data);
                             $scope.err_message = $translate.instant("TRAN_Done");
@@ -299,10 +303,32 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, me
                     }
                  
 		        });
+        });
+   
+     }
+     
+     
+    $scope.splitted_second_ready = function(hash_first){
+        $scope.executingSplittedTrans.close();
+        $scope.generatelTx(hash_first);  
+    }
+  
+    // Wait at least 5 sec (and the next block) before to send the second part of the splitted transaction
+     $scope.splitedSecondPart = function(curr_block, attempt, hash_first) {
+         setTimeout(function(){
+              ajaxReq.currBlock( function(new_block){
+                 if (new_block != curr_block || attempt > 3) {
+                     $scope.splitted_second_ready(hash_first);
+                 } else {
+                    $scope.splitedSecondPart(curr_block, attempt+1, hash_first); 
+                 }
+             });
+          },5000);  
+          
      }
     
     
-    $scope.generatelTx = function(incr, parent_hash){
+    $scope.generatelTx = function(parent_hash){
         var data={};
         if ($scope.isShopTx){
             data = $scope.shopTxInfo;
@@ -320,7 +346,7 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, me
             data['parent_hash']=parent_hash;
         }
         
-        jsc3l_bcTransaction.TransfertCM($scope.wallet, $scope.tokenTx.to, $scope.lemanexAmmount/100,incr, data, function(res){
+        jsc3l_bcTransaction.TransfertCM($scope.wallet, $scope.tokenTx.to, $scope.lemanexAmmount/100, data, function(res){
                     if (res.isError){
                         globalFuncs.hideLoadingWaiting();  
 				        $scope.err_message = $sce.trustAsHtml(globalFuncs.getDangerText($translate.instant(res.error)));
@@ -341,7 +367,7 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, me
         if ($scope.elemanAmmount>0){
              $scope.generateeTx();
         } else if ($scope.lemanexAmmount>0){
-             $scope.generatelTx(0, undefined);
+             $scope.generatelTx(undefined);
         } 
 	}
     

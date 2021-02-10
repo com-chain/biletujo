@@ -253,6 +253,9 @@ TRAN_Message_from:'Note/Mémo',
 TRAN_Message_from_Placeholder:'Pour celui qui envoie',
 TRAN_Message_copy:'Copier',
 
+TRAN_executed_partial_text: 'La première partie de votre payement a été transmise',
+TRAN_waiting_partial_text: 'En attente du prochain bloque pour l\'envoi de la seconde partie...',
+
 
 TRAN_Done: 'La transaction a été transmise et est en traitement',
 TRAN_Wait: '(...)',
@@ -727,6 +730,7 @@ STR_LockCancel: 'Annuler',
 /********************************************************/
 /* server Error Messages */
 Account_Locked_Error: 'L\'autre compte n\'est pas un compte actif.',
+Incompatible_Amount:  'Les montants ne sont pas compatibles.',
 
 /* Error Messages */
 ERROR_1: 'Veuillez entrer un montant valide.',

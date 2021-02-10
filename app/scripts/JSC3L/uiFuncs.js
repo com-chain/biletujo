@@ -45,40 +45,6 @@ uiFuncs.generateTx = function(txData, callback) {
 }
 
 
-uiFuncs.generateTxDelta = function(txData, callback) {
-	try {
-		uiFuncs.isTxDataValid(txData);
-		ajaxReq.getTransactionData(txData.from, function(data) {
-			if (data.error) throw data.msg;
-			data = data.data;
-			var rawTx = {
-				nonce: ethFuncs.sanitizeHex('0x'+new BigNumber(parseInt(data.nonce, 16)+1).toString(16)),
-				gasPrice: ethFuncs.sanitizeHex(ethFuncs.addTinyMoreToGas(data.gasprice)),
-				gasLimit: ethFuncs.sanitizeHex(ethFuncs.decimalToHex(txData.gasLimit)),
-				to: ethFuncs.sanitizeHex(txData.to),
-				value: ethFuncs.sanitizeHex(ethFuncs.decimalToHex(etherUnits.toWei(txData.value, txData.unit))),
-				data: ethFuncs.sanitizeHex(txData.data)
-			}
-			var eTx = new ethUtil.Tx.constructor(rawTx);
-            
-            
-			eTx.sign(new Buffer(txData.key, 'hex'));
-			rawTx.rawTx = JSON.stringify(rawTx);
-			rawTx.signedTx = '0x' + eTx.serialize().toString('hex');
-			rawTx.isError = false;
-			if (callback !== undefined) callback(rawTx);
-		});
-	} catch (e) {
-		if (callback !== undefined) callback({
-			isError: true,
-			error: e
-		});
-	}
-}
-
-
-
-
 uiFuncs.sendTx = function(signedTx, additional_data, callback) {
 	ajaxReq.sendRawTx(signedTx, additional_data, function(data) {
 		var resp = {};

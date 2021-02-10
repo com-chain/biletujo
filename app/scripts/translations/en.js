@@ -252,6 +252,10 @@ TRAN_Message_from:'Note/Memo',
 TRAN_Message_from_Placeholder:'For the sender',
 TRAN_Message_copy:'Copy',
 
+TRAN_executed_partial_text: 'The first part of your orderhas been sent',
+TRAN_waiting_partial_text: 'Waiting the next block for the second part...',
+
+
 TRAN_Done: 'The transaction has been sent and is being processed',
 TRAN_Wait: '(...)',
 TRAN_Ongoing: 'Processing transaction  -',
@@ -728,6 +732,7 @@ STR_LockCancel: 'Cancel',
 
 /* server Error Messages */
 Account_Locked_Error: 'The other account is not active.',
+Incompatible_Amount:  'Account not compatible.',
 
   /* Error Messages */
   ERROR_1:              'Please enter valid amount.',

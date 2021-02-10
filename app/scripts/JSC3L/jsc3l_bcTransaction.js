@@ -103,24 +103,14 @@ jsc3l_bcTransaction.TransfertNant = function (wallet, to_address, amount, additi
                              callback);
 }
 
-jsc3l_bcTransaction.TransfertCM = function (wallet, to_address,amount,incr, additional_post_data, callback){
+jsc3l_bcTransaction.TransfertCM = function (wallet, to_address,amount, additional_post_data, callback){
       var to_add = padLeft(getNakedAddress(to_address), 64);
-      
-      if (incr==0){
-                generateTx(jsc3l_customization.getContract2(), 
-                             wallet, 
-                             "0x60ca9c4c", 
-                             [to_add, encodeNumber(parseInt(100*amount,10))], 
-                             additional_post_data,        
-                             callback);
-      } else {
-                generateTxDelta(jsc3l_customization.getContract2(), 
-                             wallet, 
-                             "0x60ca9c4c", 
-                             [to_add, encodeNumber(parseInt(100*amount,10))],
-                             additional_post_data,
-                             callback);
-      }
+      generateTx(jsc3l_customization.getContract2(), 
+                     wallet, 
+                     "0x60ca9c4c", 
+                     [to_add, encodeNumber(parseInt(100*amount,10))], 
+                     additional_post_data,        
+                     callback);
 }
 
 jsc3l_bcTransaction.TransfertOnBehalfNant = function (wallet, from_address, to_address, amount, additional_post_data, callback){
@@ -283,7 +273,7 @@ var encodeNumber=function(number){
 }
 
 
-var internalGenTx = function(contract, wallet, fuct_address, values, additional_post_data, callback, add_delta){
+var internalGenTx = function(contract, wallet, fuct_address, values, additional_post_data, callback){
     var tx = {
         gasLimit: 500000,
         data: '',
@@ -300,41 +290,25 @@ var internalGenTx = function(contract, wallet, fuct_address, values, additional_
         var valueHex = values[index];
         concatenated_variable = concatenated_variable + valueHex;
     }
-    
     tx.data = fuct_address + concatenated_variable;
     tx.from = wallet.getAddressString();
     tx.key = wallet.getPrivateKeyString(); 
+    uiFuncs.generateTx(tx, function(rawTx){
+        if (!rawTx.isError){
+            uiFuncs.sendTx(rawTx.signedTx, additional_post_data, function(res){
+               callback(res);    
+            });
+        } else { 
+            callback(rawTx);
+        }
+    });
     
-    if (add_delta) {
-        uiFuncs.generateTxDelta(tx, function(rawTx){
-            if (!rawTx.isError){
-             uiFuncs.sendTx(rawTx.signedTx, additional_post_data, function(res){
-                 callback(res);    
-             });
-            } else { 
-                callback(rawTx);
-            }
-	    });    
-    } else {
-        uiFuncs.generateTx(tx, function(rawTx){
-            if (!rawTx.isError){
-                uiFuncs.sendTx(rawTx.signedTx, additional_post_data, function(res){
-                   callback(res);    
-                });
-            } else { 
-                callback(rawTx);
-            }
-	    });
-    }
 }  
 
 var generateTx = function(contract, wallet, fuct_address, values, additional_post_data, callback){
-    internalGenTx(contract, wallet, fuct_address, values, additional_post_data, callback, false);
+    internalGenTx(contract, wallet, fuct_address, values, additional_post_data, callback);
 }  
 
-var generateTxDelta = function(contract, wallet, fuct_address, values, additional_post_data, callback){
-    internalGenTx(contract, wallet, fuct_address, values, additional_post_data, callback, true);
-}  
 
 ////////////////////////////////////////////////////////////////////////////////
 

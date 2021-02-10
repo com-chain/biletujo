@@ -350,6 +350,29 @@
         </div>
        <!-- / Send Modal -->
        
+        <div class="modal fade"  style="z-index:400;" id="executingSplittedTrans" tabindex="-1" role="dialog" aria-labelledby="sendTransactionLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <div align="center">
+                            <div >   
+                                <div class="coche" ></div>
+                            </div>
+                            <h4>
+                                <label translate="TRAN_executed_partial_text" >Vous avez envoyé</label>
+                            </h4>
+                            <strong class="text-primary">
+                            <span ng-show="elemanAmmount>0"> {{elemanAmmount/100.| number : 2}} {{CUR_nanti}}  </span> 
+                             <h4>
+                                <label translate="TRAN_waiting_partial_text" >En attente</label>
+                            </h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        
            <div class="modal fade"  style="z-index:400;" id="executedTrans" tabindex="-1" role="dialog" aria-labelledby="sendTransactionLabel">
               <div class="modal-dialog" role="document">
                   <div class="modal-content">
@@ -392,9 +415,6 @@
                   </div>
               </div>
         </div>
-        
-        
-        
         
         
         

@@ -41,13 +41,13 @@ window.jsc3l_bcTransaction = jsc3l_bcTransaction;
 
 var globalFuncs = require('./globalFuncs');
 window.globalFuncs = globalFuncs;
-var uiFuncs = require('./uiFuncs');
+var uiFuncs = require('./JSC3L/uiFuncs');
 window.uiFuncs = uiFuncs;
-var etherUnits = require('./etherUnits');
+var etherUnits = require('./JSC3L/etherUnits');
 window.etherUnits = etherUnits;
-var ajaxReq = require('./ajaxReq');
+var ajaxReq = require('./JSC3L/ajaxReq');
 window.ajaxReq = ajaxReq;
-var ethFuncs = require('./ethFuncs');
+var ethFuncs = require('./JSC3L/ethFuncs');
 window.ethFuncs = ethFuncs;
 var translate = require('./translations/translate.js');
 
