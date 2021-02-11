@@ -1403,7 +1403,7 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, me
                            $scope.tr_err_message='';
                            $scope.trStatus='';
                            globalFuncs.hideLoadingWaiting();  
-                           $scope.transaction_amount =  request.amount/100;
+                           $scope.transaction_amount =  request.amount;
                            $scope.transaction_to = request.address;
                            $scope.selectedName = request.name;
                            $scope.typeTrans='no';
@@ -1470,7 +1470,7 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, me
         $scope.sendTransactionModal.close();
         globalFuncs.showLoading($translate.instant("GP_Wait"));
         if ($scope.typeTrans==globalFuncs.currencies.CUR_credit_mut){
-            jsc3l_bcTransaction.PayRequestCM($scope.wallet, $scope.transaction_to ,  Math.round($scope.transaction_amount*100), data,  function(res){
+            jsc3l_bcTransaction.PayRequestCM($scope.wallet, $scope.transaction_to ,  Math.round($scope.transaction_amount), data,  function(res){
                    globalFuncs.hideLoadingWaiting();  
                    if (res.isError){
                        $scope.tr_err_message=$sce.trustAsHtml(globalFuncs.getDangerText($translate.instant(res.error)));
@@ -1484,7 +1484,7 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, me
                    }
             });
         } else if ($scope.typeTrans==globalFuncs.currencies.CUR_nanti){
-            jsc3l_bcTransaction.PayRequestNant($scope.wallet, $scope.transaction_to ,  Math.round($scope.transaction_amount*100), data, function(res){
+            jsc3l_bcTransaction.PayRequestNant($scope.wallet, $scope.transaction_to ,  Math.round($scope.transaction_amount), data, function(res){
                    globalFuncs.hideLoadingWaiting();  
                    if (res.isError){
                        $scope.tr_err_message=$sce.trustAsHtml(globalFuncs.getDangerText($translate.instant(res.error)));

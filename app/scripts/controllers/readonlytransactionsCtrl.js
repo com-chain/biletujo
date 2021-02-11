@@ -321,7 +321,7 @@ var readonlytransactionsCtrl = function($scope, $locale, $sce, walletService,con
     $scope.start_time =  0;
     $scope.end_time = 24;
     
-    $scope.addBalance = function(walletAddress,list,index){
+    $scope.addBalance = function(walletAddress,list,add_b, index){
         if (index>=list.length){
             globalFuncs.generateTransPDF(walletAddress,
                                          list, 
@@ -353,10 +353,16 @@ var readonlytransactionsCtrl = function($scope, $locale, $sce, walletService,con
             
             
         } else {
-            jsc3l_bcRead.getHistoricalGlobalBalance(walletAddress, list[index].data.block, function(value){
-                list[index].data.balance = value;
-                $scope.addBalance(walletAddress,list,index+1);
-            });
+            if (add_b) {
+               jsc3l_bcRead.getHistoricalGlobalBalance(walletAddress, list[index].data.block, function(value){
+                    list[index].data.balance = value;
+                    $scope.addBalance(walletAddress,list,add_b, index+1);
+                });
+            } else {
+                 list[index].data.balance = '';
+                 $scope.addBalance(walletAddress,list,add_b, index+1);
+            }
+          
         }
     }
     
@@ -411,9 +417,8 @@ var readonlytransactionsCtrl = function($scope, $locale, $sce, walletService,con
                   } 
             }
             
-            if ($scope.show_bal){
-                $scope.addBalance($scope.watched_address,trans,0);
-            }
+            $scope.addBalance($scope.watched_address,trans,$scope.show_bal,0);
+            
             
             var cvs='"'+$translate.instant("CVS_COL_id").replace(/[\n\r]+/g, '')+'","'
                        +$translate.instant("CVS_COL_date").replace(/[\n\r]+/g, '')+'","'

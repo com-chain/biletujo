@@ -271,7 +271,7 @@
                               </h4> 
                               <strong id="confirmAmount" class="text-primary"> {{tokenTx.value| number : 2}} </strong>
                               <strong id="confirmCurrancy" class="text-primary"> {{CUR}} <br/>
-                              <div ng-hide="is_request_mode"><strong ng-hide="typeTrans=='no'" class="text-primary"> {{typeTrans}}</strong></strong><button type="button" class="btn btn-primary btn_small" ng-click="showCurrSel()" ng-show="display_curr_btn" translate="TRAN_CurrSelBtn">*</button></div><br/>
+                              <div ng-show="mode=='fromMe'"><strong ng-hide="typeTrans=='no'" class="text-primary"> {{typeTrans}}</strong></strong><button type="button" class="btn btn-primary btn_small" ng-click="showCurrSel()" ng-show="display_curr_btn" translate="TRAN_CurrSelBtn">*</button></div><br/>
                               
                                
                               <div ng-show="show_curr_sel" class="popup_pannel">
