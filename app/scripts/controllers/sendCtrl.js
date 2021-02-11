@@ -1403,7 +1403,7 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, me
                            $scope.tr_err_message='';
                            $scope.trStatus='';
                            globalFuncs.hideLoadingWaiting();  
-                           $scope.transaction_amount =  request.amount;
+                           $scope.transaction_amount =  request.amount/100;
                            $scope.transaction_to = request.address;
                            $scope.selectedName = request.name;
                            $scope.typeTrans='no';
