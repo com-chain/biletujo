@@ -6,6 +6,7 @@
         </div>
 
         <div  ng-show="wallet!=null" ng-controller='sendCtrl'>
+          <blocked-currency-drtv> </blocked-currency-drtv>
           <blocked-account-drtv> </blocked-account-drtv>
         
          <section class="row" >

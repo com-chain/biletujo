@@ -83,6 +83,7 @@ var blockiesDrtv = require('./directives/blockiesDrtv');
 var QRCodeDrtv = require('./directives/QRCodeDrtv');
 var fileReaderDrtv = require('./directives/fileReaderDrtv');
 var blockedAccountDrtv = require('./directives/blockedAccountDrtv');
+var blockedCurrencyDrtv = require('./directives/blockedCurrencyDrtv');
 var waitingDrtv = require('./directives/waitingDrtv');
 
 var app = angular.module('mewApp', ['pascalprecht.translate', 'ngSanitize']);
@@ -107,6 +108,7 @@ app.directive('qrCode', QRCodeDrtv);
 app.directive('onReadFile', fileReaderDrtv);
 app.directive('walletDecryptDrtv', walletDecryptDrtv);
 app.directive('blockedAccountDrtv', blockedAccountDrtv);
+app.directive('blockedCurrencyDrtv', blockedCurrencyDrtv);
 app.directive('waitingDrtv', waitingDrtv);
 
 app.controller('tabsCtrl', ['$scope','$attrs','globalService','contactService', '$translate','$compile', 'authenticationService',tabsCtrl]);

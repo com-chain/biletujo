@@ -8,6 +8,8 @@ var viewWalletCtrl = function($scope, walletService, contactservice, $translate)
     $scope.currentAddress = globalFuncs.getWalletAddress();
     $scope.acc_name= $translate.instant("TRAN_Address");
     $scope.is_locked=false;
+    $scope.is_curr_locked=false;
+    
     $scope.qr_reference="";
     
     // Popup
@@ -45,6 +47,9 @@ var viewWalletCtrl = function($scope, walletService, contactservice, $translate)
         $scope.getAccName($scope.wallet.getAddressString());
         $scope.hasBnCheck=jsc3l_customization.hasBnCheck(); 
         
+        jsc3l_bcRead.getContractStatus(function(status){
+                    $scope.is_curr_locked = status==0;
+        });
         
         globalFuncs.notifyApproval(); // Refresh the Payment notification
 	});

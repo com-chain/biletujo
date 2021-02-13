@@ -9,9 +9,11 @@ var globalCtrl = function($scope, $locale, $sce, walletService, $translate) {
 	$scope.confTaxLegPop = new Modal(document.getElementById('confTaxLeg'));
 	$scope.confTaxAccountPop = new Modal(document.getElementById('confTaxAccount'));
 	$scope.confOwnerAccountPop = new Modal(document.getElementById('confOwnerAccount'));
+	$scope.confStatusPopup = new Modal(document.getElementById('confStatus'));
    
 
     $scope.is_owner=false;
+    $scope.is_curr_locked=false;
     
   
     
@@ -43,16 +45,19 @@ var globalCtrl = function($scope, $locale, $sce, walletService, $translate) {
           jsc3l_bcRead.getLegTaxAmount($scope.wallet.getAddressString(), function(amountLeg){
             jsc3l_bcRead.getTaxAccount(function(acc){
                 jsc3l_bcRead.getTotalAmount($scope.wallet.getAddressString(), function(tot){
-                   $scope.taxes_amount = amount;
-                   $scope.taxes_amount_leg = amountLeg;
-                   $scope.total_amount = tot/100.0;
+                    jsc3l_bcRead.getContractStatus(function(curr_status){
+                       $scope.is_curr_locked = curr_status==0;
+                       $scope.taxes_amount = amount;
+                       $scope.taxes_amount_leg = amountLeg;
+                       $scope.total_amount = tot/100.0;
 
-                   $scope.tax_account = '0x'+acc.substring(26, 67);
-                   globalFuncs.hideLoadingWaiting();  
+                       $scope.tax_account = '0x'+acc.substring(26, 67);
+                       globalFuncs.hideLoadingWaiting();  
+                    });
                  });
-           });
-        });
-        });
+             });
+          });
+       });
     }
      
     
@@ -110,6 +115,25 @@ var globalCtrl = function($scope, $locale, $sce, walletService, $translate) {
         });
         $scope.confTaxAccountPop.close();
     }
+    
+    $scope.lockUnlockTransfert = function() {
+        $scope.confStatusPopup.open();
+    }
+    
+    
+    $scope.confirmStatus = function() {
+        jsc3l_bcTransaction.SetContractStatus($scope.wallet, $scope.is_curr_locked,function(res){
+           if (res.isError){
+                $scope.validateStatus= $sce.trustAsHtml(globalFuncs.getDangerText($translate.instant("GLB_status_not_updated")));
+            } else {
+                $scope.validateStatus= $sce.trustAsHtml(globalFuncs.getSuccessText($translate.instant("GLB_status_updated")));
+                
+                $scope.trans_message = $translate.instant("GLB_status_updated");
+                $scope.waitTransaction(res.data); 
+            } 
+        });
+    }
+    
     
     $scope.updateOwnAcc = function(){
         $scope.new_owner_account = $scope.owner_account;

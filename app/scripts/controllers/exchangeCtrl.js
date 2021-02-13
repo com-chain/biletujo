@@ -15,6 +15,7 @@ var exchangeCtrl = function($scope, $locale, $sce, walletService,messageService,
     $scope.valid_acc = false;
     $scope.trans_message = $translate.instant("GP_Wait_tran");
     
+    $scope.is_curr_locked=false;
     
     $scope.is_lock=1;
     $scope.lock_status = "";
@@ -113,6 +114,10 @@ var exchangeCtrl = function($scope, $locale, $sce, walletService,messageService,
             
             $scope.has_nant=jsc3l_customization.hasNant();
             $scope.has_credit_mut=jsc3l_customization.hasCM();
+            
+            jsc3l_bcRead.getContractStatus(function(status){
+                    $scope.is_curr_locked = status==0;
+            });
         });
     
       

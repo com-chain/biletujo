@@ -33,6 +33,12 @@ for (var key in account_function) {
     jsc3l_bcRead[key] = function(walletAddress, callback){getAccInfo(address, walletAddress, callback);};
 }
 
+// Get Global status of the contract 
+jsc3l_bcRead.getContractStatus = function(callback) {
+    var contractStatusAddress = "0x8b3c7c69"; 
+    getGlobInfo(contractStatusAddress, callback);
+}
+
 // Get Global infos: Tax destinary Account
 jsc3l_bcRead.getTaxAccount = function(callback) {
     var taxAccountAddress = "0x4f2eabe0"; 

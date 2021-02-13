@@ -91,6 +91,21 @@ jsc3l_bcTransaction.SetOwnerAccount = function(wallet, account_address, callback
                             {},
                             callback);       
  }
+ 
+// if set to 0 block all the transferts  
+jsc3l_bcTransaction.SetContractStatus = function(wallet, status, callback){
+     var value = parseInt(status,10);
+     if (value!=0) {
+         value = 1;
+     }
+     var accAdd = padLeft(getNakedAddress(account_address), 64);
+     generateTx(jsc3l_customization.getContract1(),
+                            wallet, 
+                            "0x88b8084f", 
+                            [encodeNumber(value)],
+                            {},
+                            callback);       
+ }
 
 /*Action in contract 2*/
 jsc3l_bcTransaction.TransfertNant = function (wallet, to_address, amount, additional_post_data, callback){

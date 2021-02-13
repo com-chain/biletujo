@@ -5,6 +5,7 @@
   </div>
         
   <div ng-show="wallet!=null" ng-controller='exchangeCtrl'>
+     <blocked-currency-drtv> </blocked-currency-drtv>
      <!-- <section class="row" >
           <div class="col-md-12 ">
               <div class="row grp"> 

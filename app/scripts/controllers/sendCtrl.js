@@ -46,6 +46,7 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, me
     $scope.reference = "";
     
     $scope.is_locked=false;
+    $scope.is_curr_locked=false;
     
     $scope.contacts = [];
     $scope.lock_address_reading=false;
@@ -112,6 +113,10 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, me
         
         globalFuncs.canUseFingerprint(function(result){
              $scope.fingerprint = result;
+        });
+        
+        jsc3l_bcRead.getContractStatus(function(status){
+                    $scope.is_curr_locked = status==0;
         });
         
         ////////////////////////////////////////////

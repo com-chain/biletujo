@@ -92,6 +92,23 @@
                                       
               </div>
               
+              
+              <div class="row grp"> 
+                 <div class="col-md-12 ">
+                     <label translate="GLB_status" >Status :</label>
+                  </div>
+                     
+                  <div  class="col-md-6 col-xs-6">
+                       <span translate="GLB_status_actif" ng-hide="is_curr_locked"> </span>
+                       <span translate="GLB_status_locked" ng-show="is_curr_locked"> </span> 
+
+                  </div>
+                  <div  class="col-md-6 col-xs-6">
+                    <a class="btn btn-primary btn-block" ng-click="lockUnlockTransfert()" translate="GLB_status_btn_change">change </a>
+                  </div>
+              </div>
+              
+              
               <div class="row grp"> 
                  <div class="col-md-12 ">
                      <label translate="GLB_Ownership" >Ownership :</label>
@@ -113,6 +130,33 @@
               
           </div>
       </section> 
+      
+     <!-- Confrim Status -->
+     <div class="modal fade" id="confStatus" tabindex="-1" role="dialog" aria-labelledby="sendTransactionLabel">
+              <div class="modal-dialog" role="document">
+                  <div class="modal-content">
+                      <div class="modal-header">
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                      </div>
+                      <div class="modal-body">
+                          <h4 align="center">
+                           <p><label translate="GLB_status_confirm_title">Confirm changement</label></p>
+                           <p> <span translate="GLB_status_new" ></span> 
+                               <span class="text-primary"> 
+                                    <span translate="GLB_status_actif" ng-show="is_curr_locked"> </span>
+                                    <span translate="GLB_status_locked" ng-hide="is_curr_locked"> </span> 
+                               </span>  
+                            </p>
+                             
+                          </h4>
+                      </div>
+                      <div class="modal-footer text-center">
+                          <button type="button" class="btn btn-default" data-dismiss="modal" translate="GLB_cancel">Annuler </button>
+                          <button type="button" class="btn btn-primary" ng-click="confirmStatus()" translate="GLB_confirm"" >Sauver</button>
+                      </div>
+                  </div>
+              </div>
+       </div> 
        
      <!-- Confrim Taxes -->
      <div class="modal fade" id="confTax" tabindex="-1" role="dialog" aria-labelledby="sendTransactionLabel">

@@ -4,6 +4,9 @@ var en = function() {}
 en.code = 'en';
 en.data = {
 Version:'&middot; v2.2.11 &middot;&nbsp;',
+
+
+CURR_locked: 'WARNING: THIS CURRENCY IS CURRENTLY DISABLED',
 GP_Wait: 'Please wait… If this message persists, check your connection and click here',
 GP_Wait_tran: 'Your request is being processed (approx. 30 sec.). You may click on the arrow and continue using the app.',
 ID_placeholder: 'Type a public address here (ex..0x88b..)',
@@ -405,6 +408,18 @@ GLB_update_Own_acc: 'Change account ownership',
 GLB_Change_owner_Account: 'New account ownership',
 GLB_Owner_account_not_updated: 'An error occurred, your order could not be processed.',
 GLB_Owner_account_updated: 'Your account ownership modification order has been processed.',
+
+GLB_status: 'SmartContract Status (PANIC LOCK):',
+GLB_status_actif: 'Contract ACTIF: normal operation',
+GLB_status_locked: 'CONTRAT LOCKED: MONEY TRANSFER DISABLED!',
+GLB_status_btn_change:'Change',
+GLB_status_confirm_title:'WARNING: you are changing the SmartContract status, when locked money transfert between any account is disabled!',
+GLB_status_new:'Change for new status:',
+GLB_status_not_updated:'An error occurred, your order could not be processed.',
+GLB_status_updated:'Your contract status modification order has been processed.',
+
+
+
 
 EXC_unknow_address: 'Invalid or unknown account address.',
 
