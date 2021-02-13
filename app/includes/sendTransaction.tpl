@@ -137,7 +137,7 @@
                     <div ng-bind-html="validateTxStatus"></div>
                </div>
              </div>
-             <div class="row "> 
+             <div class="row " ng-hide="is_locked || is_curr_locked"> 
                <div class=" col-md-12" ng-show="showRaw && tokenTx.to!=origine_address">
                     <a class="btn btn-primary btn-block" ng-click="confirmPop()" ng-hide="is_request_mode" translate="TRAN_Send" >PAYER</a>
                     <a class="btn btn-primary btn-block" ng-click="confirmPop()" ng-show="is_request_mode" translate="TRAN_Request" >REQUEST</a>
@@ -516,8 +516,8 @@
                             {{pa.amount}} {{CUR}}
                         </td>
                        <td >
-                              <button type="button" class="btn btn-primary" translate="TRA_pay" style="margin: 4px;" ng-click="payRequest(pa)">Payer </button>
-	                          <button type="button" class="btn btn-primary" translate="TRA_reject" style="margin: 4px;" ng-click="rejectRequest(pa)">refuser </button>
+                              <button type="button" class="btn btn-primary" translate="TRA_pay" style="margin: 4px;" ng-click="payRequest(pa)" ng-hide="is_locked || is_curr_locked">Payer </button>
+	                          <button type="button" class="btn btn-primary" translate="TRA_reject" style="margin: 4px;" ng-click="rejectRequest(pa)" ng-hide="is_locked || is_curr_locked">refuser </button>
                         </td>
                        
                         
