@@ -206,6 +206,12 @@
                            <p> <span translate="EXC_CreditAmount" ></span> <span class="text-primary"> {{credit_amount}} {{CUR}}</span>   </p>
                              
                           </h4>
+                          <div>
+                                  <div ng-show="to_message_key.length>0">
+                                    <div><label translate="TRAN_Message_to" >Message</label><label>&nbsp;({{message_to.length}}/50)</label></div>
+                                    <input class="form-control" type="text" placeholder="{{ 'TRAN_Message_to_Placeholder' | translate }}" ng-model="message_to"  maxlength="50" /> </br>
+                                  </div>
+                          </div>
                       </div>
                       <div class="modal-footer text-center">
                           <button type="button" class="btn btn-default" data-dismiss="modal" translate="EXC_cancel">Annuler </button>

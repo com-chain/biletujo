@@ -23,14 +23,14 @@ jsc3l_bcTransaction.SetAccountParam = function(wallet, account_address, acc_stat
                 callback);
  }
  
-jsc3l_bcTransaction.PledgeAccount = function(wallet, account_address, amount, callback){
+jsc3l_bcTransaction.PledgeAccount = function(wallet, account_address, amount, additional_post_data, callback){
      var amount_cent = encodeNumber(parseInt(100*amount,10));
      var accAdd = padLeft(getNakedAddress(account_address), 64);
      generateTx(jsc3l_customization.getContract1(),
                 wallet, 
                 "0x6c343eef", 
                 [accAdd, amount_cent],
-                {},
+                additional_post_data,
                 callback);       
  }
  
