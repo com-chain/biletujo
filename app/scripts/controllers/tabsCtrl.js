@@ -30,13 +30,12 @@ var tabsCtrl = function($scope, $attrs, globalService, contactservice, $translat
                            $scope.ng_ok=true;
                             jsc3l_customization.configureCurrency();
                             globalFuncs.getCurrencies();
-
-                            globalService.configureNoteTab(jsc3l_customization.hasBn());
-
-                            if (!jsc3l_customization.hasBn() &&  ('note' in $scope.tabNames) && $scope.tabNames['note'].id==globalService.currentTab){
-                                $scope.tabClick($scope.tabNames['exchange'].id);
-                            }
                             
+  /*                          if (jsc3l_customization.hasBn()){
+                                globalService.configureNoteTab(true);
+                            }
+*/
+
                             var currCode = globalService.getCurrCode();
                             if (currCode!=undefined && currCode!=""){
                                 $scope.tabClick(1);

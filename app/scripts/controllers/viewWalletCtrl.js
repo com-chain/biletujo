@@ -42,14 +42,16 @@ var viewWalletCtrl = function($scope, walletService, contactservice, $translate)
                     $scope.is_locked = status==0;
         });
         
-        $scope.currentAddress = $scope.wallet.getAddressString();
-        $scope.current_QR_content = $scope.currentAddress;
-        $scope.getAccName($scope.wallet.getAddressString());
-        $scope.hasBnCheck=jsc3l_customization.hasBnCheck(); 
-        
         jsc3l_bcRead.getContractStatus(function(status){
                     $scope.is_curr_locked = status==0;
         });
+        
+        $scope.currentAddress = $scope.wallet.getAddressString();
+        $scope.current_QR_content = $scope.currentAddress;
+        $scope.getAccName($scope.wallet.getAddressString());
+        $scope.hasBnCheck=false; //jsc3l_customization.hasBnCheck();  not ready yet
+        
+        
         
         globalFuncs.notifyApproval(); // Refresh the Payment notification
 	});

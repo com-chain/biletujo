@@ -25,6 +25,7 @@
                <div class="col-md-6 col-xs-6">
                  <label >{{acc_name}}</label>
                </div>
+               <div class="col-md-12 ">
                 <div class="col-md-6 col-xs-6">
                 
                   <a Id="bal_opt" class="btn btn-primary bellowmargin option_btn" ng-click="openOptions()"  >&nbsp; </a>
@@ -33,6 +34,9 @@
                   <a Id="bal_down_app" class="btn btn-primary bellowmargin file_btn" ng-click="dowloadAppFile()"  ng-if="isApp">&nbsp; </a>
                   <a Id="bal_qr" class="btn btn-primary bellowmargin qr_btn" ng-click="printQRCode()">&nbsp; </a>
                 </div>
+               </div>
+            
+                
                 
                 
                <div  class="col-md-6 col-xs-6">
@@ -117,7 +121,7 @@
           <div class="col-md-12 ">
 	       <div class="row grp"> 
 	         <div  class="col-md-12">  
-	            <label translate="DELEG_Delegate_Tab_Title"></label>
+	            <label translate="DELEG_Delegate_Tab_Title" class="tab_title_lim"></label>
 	            <button type="button" class="btn btn-primary" ng-click="closeDelegation()" style="float:right;" translate="DELEG_CloseTab">Close</button>
 	             <!--<button type="button" class="btn btn-primary btn_refresh" style="float:right; margin-right:10px;"   ng-click="refreshDel()" translate="TRA_Refresh">Refresh </button>-->
 	   
@@ -376,7 +380,7 @@
           <div class="col-md-12 ">
 	       <div class="row grp"> 
 	         <div  class="col-md-12">  
-	            <label translate="ALLOW_Allowance_Tab_Title"></label>
+	            <label translate="ALLOW_Allowance_Tab_Title" class="tab_title_lim"></label>
 	            <button type="button" class="btn btn-primary" ng-click="closeAllowance()" style="float:right;" translate="ALLOW_CloseTab">Close</button>
 	             <!--<button type="button" class="btn btn-primary btn_refresh" style="float:right; margin-right:10px;"   ng-click="refreshAllowance()" translate="TRA_Refresh">Refresh </button>-->
 	   
@@ -671,7 +675,7 @@
 	        <div class="row grp"> 
 	        
 	          <div  class="col-md-12">  
-	            <label translate="CRI_Tab_Title"></label>
+	            <label translate="CRI_Tab_Title" class="tab_title_lim"></label>
                       <button type="button" class="btn btn-primary bellowmargin" ng-click="closeCRI()" style="float:right;" translate="DELEG_CloseTab">Close</button>
 	        
 	          </div> 

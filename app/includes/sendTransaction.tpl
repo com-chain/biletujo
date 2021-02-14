@@ -386,6 +386,7 @@
                               </h4>
                               <strong class="text-primary">
                                     <span ng-show="elemanAmmount>0"> {{elemanAmmount/100.| number : 2}} {{CUR_nanti}}  </span> 
+                                    <span ng-show="lemanexAmmount>0 && elemanAmmount>0" >&nbsp;+&nbsp;</span>
                                     <span ng-show="lemanexAmmount>0"> {{lemanexAmmount/100.| number : 2}} {{CUR_credit_mut}}   </span> 
                                     <br ng-show="lemanexAmmount>0 && elemanAmmount>0" />
                                     <span ng-show="lemanexAmmount>0 && elemanAmmount>0">( {{ 'TRAN_total' | translate }} {{(elemanAmmount+lemanexAmmount)/100.| number : 2}} {{CUR}}  ) </span>
@@ -474,7 +475,7 @@
           <div class="col-md-12 ">
 	       <div class="row grp"> 
 	         <div  class="col-md-12">  
-	            <label translate="TRA_Approval_Tab_Title"></label>
+	            <label translate="TRA_Approval_Tab_Title" class="tab_title_lim"></label>
 	            <button type="button" class="btn btn-primary" ng-click="closeApproval()" style="float:right;" translate="TRA_CloseTab">Close</button>
 	           <!--  <button type="button" class="btn btn-primary" style="float:right; margin-right:10px;"   ng-click="refreshApproval()" translate="TRA_Refresh">Refresh </button>-->
 	   
@@ -710,7 +711,7 @@
           <div class="col-md-12 ">
 	       <div class="row grp"> 
 	         <div  class="col-md-12">  
-	            <label translate="TRA_Pending_Tab_Title"></label>
+	            <label translate="TRA_Pending_Tab_Title" class="tab_title_lim"></label>
 	            <button type="button" class="btn btn-primary" ng-click="closePending()" style="float:right;" translate="TRA_CloseTab">Close</button>
 	            <!-- <button type="button" class="btn btn-primary" style="float:right; margin-right:10px;"   ng-click="refreshPending()" translate="TRA_Refresh">Refresh </button> -->
 	   

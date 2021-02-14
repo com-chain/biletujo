@@ -593,6 +593,7 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, me
                     
                } else if ($scope.mode == "fromDeleg"){
                    $scope.refreshDeleg(function(){
+                      globalFuncs.showLoading($translate.instant("GP_Wait"));
                       $scope.elemanAmmount=0;
                       $scope.lemanexAmmount=0;
                       var value_cent = Math.round($scope.tokenTx.value * 100);

@@ -120,7 +120,7 @@
               </div>
      </div>
     
-            <div class="row grp"  ng-hide="acc_type_obj.is_admin || !has_nant"> 
+            <div class="row grp"  ng-hide="acc_type_obj.is_admin || !has_nant || is_curr_locked"> 
                 <div class="col-md-12 ">
                    <label translate="EXC_Credit_1" >Credit</label><label  >&nbsp; {{CUR_nanti}} </label>   <label translate="EXC_Credit_2" >on account Account :</label>  
                </div>

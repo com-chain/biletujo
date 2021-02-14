@@ -8,7 +8,7 @@ fr.data = {
 /****************************************/
 Version:'&middot; v2.2.11 &middot;&nbsp;',
 /****************************************/
-CURR_locked: 'ATTENTION: LES TRANSFERTs DANS CETTE MONNAIE SONT ACTUELLEMENT BLOQUE',
+CURR_locked: 'ATTENTION: LES TRANSFERTS DANS CETTE MONNAIE SONT ACTUELLEMENT BLOQUÉS',
 GP_Wait: 'En attente du serveur... Si ce message persiste vérifiez votre connexion puis cliquez ici',
 GP_Wait_tran: 'Votre requête est actuellement en traitement (environ 30 sec.). Vous pouvez cliquer sur la flèche et continuer à utiliser l’application.',
 ID_placeholder: 'Tapez une clé publique ici (p.ex. 0x88b..)',
@@ -224,7 +224,7 @@ WALL_missing_message_key:'La sauvegarde de ce compte est dans une ancienne versi
 TRAN_Address: 'Votre compte',
 TRAN_Solde: 'Solde',
 TRAN_Dest: 'Destinataire',
-TRAN_PayShop: 'Payement vers un magasin',
+TRAN_PayShop: 'Paiement vers un magasin',
 TRAN_ShopId: 'ID du magasin ',
 TRAN_txId: 'ID de la transaction ',
 TRAN_cancelShop: 'Annuler',
@@ -253,8 +253,8 @@ TRAN_Message_from:'Note/Mémo',
 TRAN_Message_from_Placeholder:'Pour celui qui envoie',
 TRAN_Message_copy:'Copier',
 
-TRAN_executed_partial_text: 'La première partie de votre payement a été transmise',
-TRAN_waiting_partial_text: 'En attente du prochain bloque pour l\'envoi de la seconde partie...',
+TRAN_executed_partial_text: 'La première partie de votre paiement a été transmise',
+TRAN_waiting_partial_text: 'En attente du prochain bloc pour l\'envoi de la seconde partie (~30")...',
 
 
 TRAN_Done: 'La transaction a été transmise et est en traitement',
@@ -265,7 +265,7 @@ TRAN_executed_text: 'Vous avez transmis l\'ordre de payer',
 TRAN_rejected_request_text: 'Vous avez refusé de payer',
 TRAN_tans_id: 'Identifiant de la transaction',
 TRAN_NotPossible: 'Avoir insuffisant pour la transaction',
-TRAN_NotPossibleWithoutSplit: 'Les payement en ligne ne peuvent pas être passé en plusieurs transaction. Avoir insuffisant pour une transaction unique.',
+TRAN_NotPossibleWithoutSplit: 'Les paiement en ligne ne peuvent pas être passé en plusieurs transaction. Avoir insuffisant pour une transaction unique.',
 TRAN_SplitedTrans: 'Le paiement sera passé en plusieurs transactions',
 TRAN_CurrSelBtn:'*',
 TRAN_Change_rep:'Changer la répartition',
@@ -410,7 +410,7 @@ GLB_Owner_account_updated: 'L\'ordre de modification du détenteur du contrat a 
 
 GLB_status: 'Status du SmartContract (EN CAS DE PANIQUE: VEROUILLER ICI):',
 GLB_status_actif: 'Contrat ACTIF: les transferts de fond sont possible (opération normale)',
-GLB_status_locked: 'CONTRAT BLOQUE: PAS DE TRANSFERT DE FOND POSSIBLE!',
+GLB_status_locked: 'CONTRAT BLOQUÉ: PAS DE TRANSFERT DE FOND POSSIBLE!',
 GLB_status_btn_change:'Changer',
 GLB_status_confirm_title:'ATTENTION: vous êtes en train de changer le status du contrat. Quand un contrat est bloqué aucun transfert de monnaie n\'est possible pour aucun des comptes!',
 GLB_status_new:'Changer pour le status:',
@@ -682,7 +682,7 @@ CTC_cancelChoose: 'Annuler',
 CTC_ConfirmChoose: 'Confirmer',
 
 CTC_NotSameCurrTitle: 'Monnaie Incompatible',
-CTC_NotSameCurrTxt: 'Ce contact est associé à une autre monnaie que votre compte. Il ne peut donc pas être choisi comme destinataire d\'un payement.',
+CTC_NotSameCurrTxt: 'Ce contact est associé à une autre monnaie que votre compte. Il ne peut donc pas être choisi comme destinataire d\'un paiement.',
 
 
 CTC_import:  '&#x1f4c2;',

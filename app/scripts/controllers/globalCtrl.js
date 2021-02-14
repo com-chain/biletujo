@@ -132,6 +132,7 @@ var globalCtrl = function($scope, $locale, $sce, walletService, $translate) {
                 $scope.waitTransaction(res.data); 
             } 
         });
+        $scope.confStatusPopup.close();
     }
     
     
