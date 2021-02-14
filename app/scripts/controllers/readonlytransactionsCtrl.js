@@ -186,6 +186,7 @@ var readonlytransactionsCtrl = function($scope, $locale, $sce, walletService,con
                       $scope.transactions[ind].data.from_name = contactservice.getContactName($scope.contacts, $scope.transactions[ind].data.addr_from);
                       $scope.transactions[ind].data.memo = $scope.getTransactionMessage($scope.transactions[ind].data);
                       $scope.transactions[ind].data.currency='';
+                      $scope.transactions[ind].data.delegate_name=contactservice.getContactName($scope.contacts, $scope.transactions[ind].data.delegate);
                       if ($scope.transactions[ind].data.type=='Transfer' || $scope.transactions[ind].data.type=='Pledge'){
                           $scope.transactions[ind].data.currency=globalFuncs.currencies.CUR_nanti;
                       } else if ($scope.transactions[ind].data.type=='TransferCredit'){

@@ -214,6 +214,24 @@
                             <div><label translate="TRA_details_date">date</label> {{selectedTrans.time*1000 | date : 'yyyy-MM-dd HH:mm' }}</div>
                             
                             <div ng-show="selectedTrans.addr_from==watched_address"> 
+                                
+                            
+                            <div ng-show="selectedTrans.delegate">
+                              <div><strong translate="TRA_Delegated"></strong></div>
+                              <div> {{selectedTrans.delegate_name }}</div>
+                              <span> 
+                                     <div  class="identiconWrapper without_text_tr">
+                                        <div id="addressIdenticon" title="Address Indenticon" img="1" blockie-address="{{selectedTrans.delegate }}"  watch-var="selectedTrans" ></div>
+                                     </div>
+                                 </span>
+                                <textarea cols="9" rows="5" class="adrtxtSml" readonly="readonly"  >{{selectedTrans.delegate }} </textarea>
+                                 
+                            </div>
+                            
+                            
+                            
+                            
+                            
                                 <div><strong><span translate="TRA_Paid" class="paid"></span> &nbsp;{{(selectedTrans.recieved + selectedTrans.tax)/100. | number : 2}}  {{selectedTrans.currency}}</strong></div>
                                 <div><strong translate="TRA_To"></strong> {{selectedTrans.to_name }}</div>
                                 <span> 
