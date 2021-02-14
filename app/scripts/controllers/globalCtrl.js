@@ -5,15 +5,81 @@ var globalCtrl = function($scope, $locale, $sce, walletService, $translate) {
     globalFuncs.hideLoadingWaiting();  
     $scope.trans_message = $translate.instant("GP_Wait_tran");
     $scope.validateStatus='';
-	$scope.confTaxPop = new Modal(document.getElementById('confTax'));
-	$scope.confTaxLegPop = new Modal(document.getElementById('confTaxLeg'));
-	$scope.confTaxAccountPop = new Modal(document.getElementById('confTaxAccount'));
+	$scope.confRateEPop = new Modal(document.getElementById('confRateE'));
+	$scope.confRateAPop = new Modal(document.getElementById('confRateA'));
+	$scope.confRateFPop = new Modal(document.getElementById('confRateF'));
+	$scope.confMeltPop = new Modal(document.getElementById('confMelt'));
 	$scope.confOwnerAccountPop = new Modal(document.getElementById('confOwnerAccount'));
 	$scope.confStatusPopup = new Modal(document.getElementById('confStatus'));
    
 
     $scope.is_owner=false;
     $scope.is_curr_locked=false;
+    
+    
+    
+
+
+  /****************** Coeur Specific ********************/
+  
+ $scope.AddCoeurGetRateA = "0x2d7811fa"; 
+ $scope.AddCoeurGetRateE = "0x9a0d87b6"; 
+ $scope.AddCoeurGetRateF = "0xb9d22929"; 
+ 
+ $scope.AddCoeurSetRateA = "0xad2b5716"; 
+ $scope.AddCoeurSetRateE = "0x49ca1ed2"; 
+ $scope.AddCoeurSetRateF = "0x735f79fc"; 
+ 
+ $scope.AddCoeurMelt = "0x5220f510"; 
+ 
+ $scope.CoeurSetRateA = function(wallet, rate, callback){
+     var rate_encoded = globalFuncs.encodeNumber(parseInt(rate,10));
+     jsc3l_bcTransaction.generateTx(jsc3l_customization.getContract1(),
+                            wallet, 
+                            $scope.AddCoeurSetRateA, 
+                            [rate_encoded],
+                            {},
+                            callback);       
+ }
+ 
+  $scope.CoeurSetRateE = function(wallet, rate, callback){
+     var rate_encoded = globalFuncs.encodeNumber(parseInt(rate,10));
+     jsc3l_bcTransaction.generateTx(jsc3l_customization.getContract1(),
+                            wallet, 
+                            $scope.AddCoeurSetRateE, 
+                            [rate_encoded],
+                            {},
+                            callback);       
+ }
+ 
+ $scope.CoeurSetRateF = function(wallet, rate, callback){
+     var rate_encoded = globalFuncs.encodeNumber(parseInt(rate,10));
+     jsc3l_bcTransaction.generateTx(jsc3l_customization.getContract1(),
+                            wallet, 
+                            $scope.AddCoeurSetRateF, 
+                            [rate_encoded],
+                            {},
+                            callback);       
+ }
+ 
+  $scope.CoeurMelt = function(wallet, callback){
+     jsc3l_bcTransaction.generateTx(jsc3l_customization.getContract1(),
+                            wallet, 
+                            $scope.AddCoeurMelt, 
+                            [],
+                            {},
+                            callback);       
+ }
+ 
+  
+  
+  /****************** /Coeur Specific ********************/
+
+    
+    
+    
+    
+    
     
   
     
@@ -41,80 +107,23 @@ var globalCtrl = function($scope, $locale, $sce, walletService, $translate) {
         
         $scope.CUR_nanti=globalFuncs.currencies.CUR_nanti;
         
-        jsc3l_bcRead.getTaxAmount($scope.wallet.getAddressString(), function(amount){
-          jsc3l_bcRead.getLegTaxAmount($scope.wallet.getAddressString(), function(amountLeg){
-            jsc3l_bcRead.getTaxAccount(function(acc){
-                jsc3l_bcRead.getTotalAmount($scope.wallet.getAddressString(), function(tot){
-                    jsc3l_bcRead.getContractStatus(function(curr_status){
-                       $scope.is_curr_locked = curr_status==0;
-                       $scope.taxes_amount = amount;
-                       $scope.taxes_amount_leg = amountLeg;
-                       $scope.total_amount = tot/100.0;
+         jsc3l_bcRead.getGlobInfo($scope.AddCoeurGetRateE, function(rateE){
+          jsc3l_bcRead.getGlobInfo($scope.AddCoeurGetRateA, function(rateA){
+           jsc3l_bcRead.getGlobInfo($scope.AddCoeurGetRateF, function(rateF){
+            jsc3l_bcRead.getTotalAmount($scope.wallet.getAddressString(), function(tot){
+               $scope.total_amount = tot/100.0;
+               $scope.transfert_employe = globalFuncs.getNumber(rateE, 1.);
+               $scope.transfert_asso = globalFuncs.getNumber(rateA, 1.);
+               $scope.fonte = globalFuncs.getNumber(rateF, 1.);
 
-                       $scope.tax_account = '0x'+acc.substring(26, 67);
-                       globalFuncs.hideLoadingWaiting();  
-                    });
-                 });
-             });
-          });
-       });
+               globalFuncs.hideLoadingWaiting();  
+            });
+           });
+         });
+        });
     }
      
     
-    $scope.updateTax = function(){
-        $scope.new_tax_amount =  $scope.taxes_amount;
-        $scope.confTaxPop.open();
-    }
-    
-    $scope.confirmTax = function(){
-         $scope.confTaxPop.close();
-         jsc3l_bcTransaction.SetTaxAmount($scope.wallet, $scope.new_tax_amount, function(res){
-            if (res.isError){
-                $scope.validateStatus= $sce.trustAsHtml(globalFuncs.getDangerText($translate.instant("GLB_Tax_amount_not_updated")));
-            } else {
-                $scope.validateStatus= $sce.trustAsHtml(globalFuncs.getSuccessText($translate.instant("GLB_Tax_amount_updated")));
-                $scope.trans_message = $translate.instant("GLB_Tax_amount_updated");
-                $scope.waitTransaction(res.data); 
-            }
-         });   
-    }
-    
-    $scope.updateTaxLeg = function(){
-        $scope.new_tax_amount_leg =  $scope.taxes_amount_leg;
-        $scope.confTaxLegPop.open();
-    }
-    
-    $scope.confirmTaxLeg = function(){
-         $scope.confTaxLegPop.close();
-         jsc3l_bcTransaction.SetTaxLegAmount($scope.wallet, $scope.new_tax_amount_leg, function(res){
-            if (res.isError){
-                $scope.validateStatus= $sce.trustAsHtml(globalFuncs.getDangerText($translate.instant("GLB_Tax_amount_not_updated")));
-            } else {
-                $scope.validateStatus= $sce.trustAsHtml(globalFuncs.getSuccessText($translate.instant("GLB_Tax_amount_updated")));
-                $scope.trans_message = $translate.instant("GLB_Tax_amount_updated");
-                $scope.waitTransaction(res.data); 
-            }
-         });   
-    }
-    
-    
-    $scope.updateTaxAcc = function(){
-        $scope.new_tax_account =  $scope.tax_account;
-        $scope.confTaxAccountPop.open();
-    }
-    
-    $scope.confirmTaxAccount = function(){
-        jsc3l_bcTransaction.SetTaxAccount($scope.wallet, $scope.new_tax_account, function(res){
-           if (res.isError){
-                $scope.validateStatus= $sce.trustAsHtml(globalFuncs.getDangerText($translate.instant("GLB_Tax_account_not_updated")));
-            } else {
-                $scope.validateStatus= $sce.trustAsHtml(globalFuncs.getSuccessText($translate.instant("GLB_Tax_account_updated")));
-                $scope.trans_message = $translate.instant("GLB_Tax_account_updated");
-                $scope.waitTransaction(res.data); 
-            } 
-        });
-        $scope.confTaxAccountPop.close();
-    }
     
     $scope.lockUnlockTransfert = function() {
         $scope.confStatusPopup.open();
@@ -155,6 +164,87 @@ var globalCtrl = function($scope, $locale, $sce, walletService, $translate) {
         $scope.confOwnerAccountPop.close();
         
     }
+    
+    
+    
+    $scope.updateRateE = function(){
+        $scope.new_rate_E_amount =  $scope.transfert_employe;
+        $scope.confRateEPop.open();
+    }
+    
+    $scope.confirmRateE = function(){
+         $scope.confRateEPop.close();
+         globalFuncs.CoeurSetRateE($scope.wallet, $scope.new_rate_E_amount, function(res){
+            if (res.isError){
+                $scope.validateStatus= $sce.trustAsHtml(globalFuncs.getDangerText("Echeque de la mise &agrave; jour du taux"));
+            } else {
+                $scope.validateStatus= $sce.trustAsHtml(globalFuncs.getSuccessText("Taux mis &agrave; jour."));
+                $scope.trans_message = "Taux mis &agrave; jour.";
+                $scope.waitTransaction(res.data); 
+            }
+         }); 
+    }
+    
+    $scope.updateRateA = function(){
+        $scope.new_rate_A_amount =  $scope.transfert_asso;
+        $scope.confRateAPop.open();
+    }
+    
+    $scope.confirmRateA = function(){
+         $scope.confRateAPop.close();
+         globalFuncs.CoeurSetRateA($scope.wallet, $scope.new_rate_A_amount, function(res){
+             if (res.isError){
+                $scope.validateStatus= $sce.trustAsHtml(globalFuncs.getDangerText("Echeque de la mise &agrave; jour du taux"));
+            } else {
+                $scope.validateStatus= $sce.trustAsHtml(globalFuncs.getSuccessText("Taux mis &agrave; jour."));
+                $scope.trans_message = "Taux mis &agrave; jour.";
+                $scope.waitTransaction(res.data); 
+            }
+         }); 
+    }
+    
+    $scope.updateRateF = function(){
+        $scope.new_rate_F_amount =  $scope.fonte;
+        $scope.confRateFPop.open();
+    }
+    
+    $scope.confirmRateF = function(){
+         $scope.confRateFPop.close();
+         globalFuncs.CoeurSetRateF($scope.wallet, $scope.new_rate_F_amount, function(res){
+            if (res.isError){
+                $scope.validateStatus= $sce.trustAsHtml(globalFuncs.getDangerText("Echeque de la mise &agrave; jour du taux"));
+            } else {
+                $scope.validateStatus= $sce.trustAsHtml(globalFuncs.getSuccessText("Taux mis &agrave; jour."));
+                $scope.trans_message = "Taux mis &agrave; jour.";
+                $scope.waitTransaction(res.data); 
+            }
+         }); 
+    }
+    
+  
+    $scope.melt = function(){
+        $scope.confMeltPop.open();
+    }
+    
+    $scope.doMelt = function(){
+        $scope.confMeltPop.close();
+        globalFuncs.CoeurMelt($scope.wallet, function(res){
+            if (res.isError){
+                $scope.validateStatus= $sce.trustAsHtml(globalFuncs.getDangerText("La Fonte a &eacute;chou&eacute;"));
+            } else {
+                $scope.validateStatus= $sce.trustAsHtml(globalFuncs.getSuccessText("La fonte est d&eacute;clanch&eacute;e"));
+                $scope.trans_message = "La fonte est d&eacute;clanch&eacute;e";
+                $scope.waitTransaction(res.data); 
+            }
+         }); 
+    }
+    
+    
+    
+    
+    
+    
+    
     
   $scope.interval_id=null;
   

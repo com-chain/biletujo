@@ -3,7 +3,7 @@
 var en = function() {}
 en.code = 'en';
 en.data = {
-Version:'&middot; v2.2.11 &middot;&nbsp;',
+Version:'&middot; v2.3.6 &middot;&nbsp;',
 
 
 CURR_locked: 'WARNING: THIS CURRENCY IS CURRENTLY DISABLED',

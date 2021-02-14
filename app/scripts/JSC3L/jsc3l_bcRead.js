@@ -204,5 +204,9 @@ var getElementInList = function(contract, map_function_address, amount_function_
 
 ////////////////////////////////////////////////////////////////////////////////
 
+jsc3l_bcRead.getGlobInfo  = function(address, callback){
+    getGlobInfo(address, callback);
+}
+
 module.exports = jsc3l_bcRead;
 

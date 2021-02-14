@@ -44,18 +44,22 @@ var exchangeCtrl = function($scope, $locale, $sce, walletService,messageService,
     $scope.acc_type_obj = new $scope.AccountType();
     $scope.acc_type=0;
     $scope.acc_type_obj.setType = function (type_val) {
-       this.tp=type_val;
-       $scope.acc_typ=type_val;
-       this.is_admin = type_val==2;
-       this.is_legal= type_val==1;
-       this.is_person= type_val==0;
+        this.tp=type_val;
+        $scope.acc_typ=type_val;
+        this.is_person= type_val==0;
+        this.is_legal= type_val==1;
+        this.is_admin = type_val==2;
+        this.is_asso= type_val==3;
+        this.can_nant = this.is_asso;
         if (type_val==0){
            this.tp_name = $translate.instant("EXC_Account_Type_physical");
         } else if (type_val==1){
            this.tp_name = $translate.instant("EXC_Account_Type_legal");
         } else if (type_val==2){
            this.tp_name = $translate.instant("EXC_Account_Type_admin");
-        } 
+        }  else if (type_val==3){
+            this.tp_name = "Association";
+        }
     };
     
     
