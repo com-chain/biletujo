@@ -328,6 +328,10 @@ var tabsCtrl = function($scope, $attrs, globalService, contactservice, $translat
  
    $scope.checkURL = function(){
        var curr_url = window.location.href;
+       $scope.doCheckURL (curr_url);
+   }
+       
+  $scope.doCheckURL = function(curr_url){
        if (curr_url.indexOf('?')>=0){
             var hash_part='';
             var query =  curr_url.substring(curr_url.indexOf('?')+1); 
@@ -380,13 +384,14 @@ var tabsCtrl = function($scope, $attrs, globalService, contactservice, $translat
             window.history.replaceState({}, document.title, new_url);
 
             
-       }
-      
-       
-       
+       } 
    }
    
    $scope.checkURL();
+   
+   function handleOpenURL(url) {
+      $scope.doCheckURL(url);
+   }
 
    
 };
