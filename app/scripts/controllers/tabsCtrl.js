@@ -388,14 +388,6 @@ var tabsCtrl = function($scope, $attrs, globalService, contactservice, $translat
    }
    
    $scope.checkURL();
-   
-  window.addEventListener('CalledFromOutside', function (event) {
-    var currAddress = globalService.getCurrAddress();
-    if (currAddress!=null){
-       globalService.navigateToPay(currAddress);
-    }
-     event.stopPropagation();
- },true);
 
    
 };

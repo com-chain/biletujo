@@ -42,7 +42,7 @@
                 }
                 
                 localStorage.setItem('ComChainPayRequest',JSON.stringify(data)); 
-                window.dispatchEvent( new Event('CalledFromOutside') );
+                location.reload();  
             }  
        }  
    }
