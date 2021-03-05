@@ -389,9 +389,7 @@ var tabsCtrl = function($scope, $attrs, globalService, contactservice, $translat
    
    $scope.checkURL();
    
-   function handleOpenURL(url) {
-      $scope.doCheckURL(url);
-   }
+  
 
    
 };

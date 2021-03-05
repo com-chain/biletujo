@@ -41,7 +41,7 @@
                     data["serverName"]=result["serverName"];
                 }
                 
-                 localStorage.setItem('ComChainPayRequest',data); 
+                localStorage.setItem('ComChainPayRequest',JSON.stringify(data)); 
             }  
        }  
    }
@@ -53,7 +53,7 @@
    function handleOpenURL(url) {
     setTimeout(function() {
         checkOpenURL(url);
-      }, 0);
+      }, 100);
      }
   </script>
 
