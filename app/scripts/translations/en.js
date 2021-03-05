@@ -28,6 +28,7 @@ NAV_Exchange: 'Wallet',
 NAV_Global: 'Overview',
 
 FILE_pickWallet: 'Select a wallet file',
+FILE_pastWallet: 'Or past the content of a file',
 FILE_pickContact: 'Select a contact file',
 FILE_pickMemo: 'Select a notes file',
 FILE_selectedFile: 'Selected file',
