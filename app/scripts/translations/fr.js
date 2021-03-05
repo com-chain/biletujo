@@ -30,6 +30,7 @@ NAV_Exchange: 'Compte',
 NAV_Global: 'Général',
 
 FILE_pickWallet: 'Choisir un fichier de compte',
+FILE_pastWallet: 'Ou coller le contenu d\'un fichier',
 FILE_pickContact: 'Choisir un fichier de contacts',
 FILE_pickMemo: 'Choisir un fichier de mémos',
 FILE_selectedFile: 'Fichier sélectionné',

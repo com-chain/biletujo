@@ -13,6 +13,7 @@ var decryptWalletCtrl = function($scope, $sce, $translate, walletService, contac
     $scope.showFDecrypt  = false;
 	$scope.hideWalletSelector = false;
     $scope.showFragements = false;
+    $scope.pasted_content = '';
     
     
     $scope.hasServerAddress = true;
@@ -192,6 +193,12 @@ var decryptWalletCtrl = function($scope, $sce, $translate, walletService, contac
         }
     }
     
+    $scope.openPastedWallFile = function() {
+         $scope.pickWalletFileModal.close();
+         $scope.showContent($scope.pasted_content);        
+         $scope.$apply(); 
+    }
+    
     $scope.success = function(entries) {
         var address_regex = /0x[a-z0-9]{40}/i;
         $scope.dir_entries=[];
@@ -211,7 +218,7 @@ var decryptWalletCtrl = function($scope, $sce, $translate, walletService, contac
         $scope.len= $scope.dir_entries.length;
         $scope.SelectedFileIndex=-1;
         $scope.SelectedFileName='';
-        $scope.$apply();
+       // $scope.$apply();
         $scope.pickWalletFileModal.open();
     }
     
@@ -220,11 +227,12 @@ var decryptWalletCtrl = function($scope, $sce, $translate, walletService, contac
     
     
 	$scope.openFileDialog = function($fileContent) {
-        if (!$scope.isApp){
+       /* if (!$scope.isApp){
 		    document.getElementById('fselector').click();
         } else {
            globalFuncs.readCordovaDir($scope.success);  
-       } 
+       }*/
+       $scope.success();
 	};
     
 	$scope.onFilePassChange = function() {

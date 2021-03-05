@@ -79,6 +79,16 @@
                           <button type="button" class="btn btn-default" data-dismiss="modal" translate="CTC_editNameCancel">Annuler </button>
                           <button type="button" class="btn btn-primary" ng-click="openWallFile()" translate="FILE_open" ng_hide="SelectedFileIndex==-1">open</button>
                       </div>
+                      <div class="modal-body">
+                      <h4 align="center">
+                           <label translate="FILE_pastWallet">Past Wallet</label>
+                           <textarea  rows="4" class="input_textarea" ng-model="pasted_content"></textarea>
+                      </h4>
+                      </div>
+                      <div class="modal-footer text-center">
+                          <button type="button" class="btn btn-default" data-dismiss="modal" translate="CTC_editNameCancel">Annuler </button>
+                          <button type="button" class="btn btn-primary" ng-click="openPastedWallFile()" translate="FILE_open" ng_hide="pasted_content==''">open</button>
+                      </div>
                   </div>
               </div>
         </div>
