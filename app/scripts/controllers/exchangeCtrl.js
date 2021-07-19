@@ -1,7 +1,7 @@
 'use strict';
 var exchangeCtrl = function($scope, $locale, $sce, walletService, $translate) {
     // Check the environment
-    $scope.isApp =  jsc3l_customization.isApp();
+    $scope.isApp =  jsc3l.customization.isApp();
     $scope.currentWalletAddress=globalFuncs.getWalletAddress();
     $scope.blobEnc = globalFuncs.getBlob("text/json;charset=UTF-8", localStorage.getItem('ComChainWallet'));
     
@@ -60,24 +60,25 @@ var exchangeCtrl = function($scope, $locale, $sce, walletService, $translate) {
     
     
     $scope.setBalance = function() {
-        jsc3l_bcRead.getGlobalBalance($scope.selected_account, function(value){$scope.balance = value;});
-        jsc3l_bcRead.getNantBalance($scope.selected_account, function(value){$scope.balanceEL = value;});
-        jsc3l_bcRead.getCmBalance($scope.selected_account, function(value){$scope.balanceCM = value;});
-        jsc3l_bcRead.getAccountType($scope.selected_account, function(value){ $scope.acc_type_obj.setType(value);});
-        jsc3l_bcRead.getAccountStatus($scope.selected_account, function(value){
-                                                                                                         if (value==1){
-                                                                                                            $scope.lock_status = $translate.instant("EXC_Unlocked");
-                                                                                                            $scope.lock_button = $translate.instant("EXC_Lock");
-                                                                                                            $scope.is_lock = false;
-                                                                                                         } else {
-                                                                                                            $scope.lock_status = $translate.instant("EXC_Locked");
-                                                                                                            $scope.lock_button = $translate.instant("EXC_Unlock");
-                                                                                                            $scope.is_lock = true;
-                                                                                                         }
-                                                                                                     });
-        jsc3l_bcRead.getCmLimitBelow($scope.selected_account, function(value){$scope.limitCMm = value;});
-        jsc3l_bcRead.getCmLimitAbove($scope.selected_account, function(value){$scope.limitCMp = value; globalFuncs.hideLoadingWaiting(); });
+        $scope.balance = await jsc3l.bcRead.getGlobalBalance($scope.selected_account);
+        $scope.balanceEL = await jsc3l.bcRead.getNantBalance($scope.selected_account);
+        $scope.balanceCM = await jsc3l.bcRead.getCmBalance($scope.selected_account);
+        let acc_type_value = await jsc3l.bcRead.getAccountType($scope.selected_account);
+        $scope.acc_type_obj.setType(acc_type_value);
+        let account_status = await jsc3l.bcRead.getAccountStatus($scope.selected_account);
+        if (account_status==1){
+            $scope.lock_status = $translate.instant("EXC_Unlocked");
+            $scope.lock_button = $translate.instant("EXC_Lock");
+            $scope.is_lock = false;
+        } else {
+            $scope.lock_status = $translate.instant("EXC_Locked");
+            $scope.lock_button = $translate.instant("EXC_Unlock");
+            $scope.is_lock = true;
+        }
+        $scope.limitCMm = await jsc3l.bcRead.getCmLimitBelow($scope.selected_account);
+        $scope.limitCMp = await jsc3l.bcRead.getCmLimitAbove($scope.selected_account);
         let keys = await jsc3l.message.getMessageKey($scope.selected_account, false);
+        globalFuncs.hideLoadingWaiting();
         $scope.to_message_key = keys.public_message_key;
         if ( $scope.to_message_key === undefined) {
             $scope.to_message_key = "";
@@ -99,23 +100,21 @@ var exchangeCtrl = function($scope, $locale, $sce, walletService, $translate) {
 	    }, function() {
 		    if (walletService.wallet == null) return;
 		    $scope.wallet = walletService.wallet;
-            jsc3l_bcRead.getAccountType($scope.wallet.getAddressString(), function(type){
-              
-               jsc3l_bcRead.getAccountStatus($scope.wallet.getAddressString(), function(status){
-                    $scope.is_admin = type==2 && status==1;
-               });
-            });
+            let type = await jsc3l.bcRead.getAccountType($scope.wallet.getAddressString());
+            let status = await jsc3l.bcRead.getAccountStatus($scope.wallet.getAddressString());
+            $scope.is_admin = type==2 && status==1;
+      
             
             $scope.CUR=globalFuncs.currencies.CUR;
             $scope.CUR_nanti=globalFuncs.currencies.CUR_nanti;
             $scope.CUR_credit_mut=globalFuncs.currencies.CUR_credit_mut;
             
-            $scope.has_nant=jsc3l_customization.hasNant();
-            $scope.has_credit_mut=jsc3l_customization.hasCM();
+            $scope.has_nant=jsc3l.customization.hasNant();
+            $scope.has_credit_mut=jsc3l.customization.hasCM();
             
-            jsc3l_bcRead.getContractStatus(function(status){
-                    $scope.is_curr_locked = status==0;
-            });
+            let curr_astatus = await jsc3l.bcRead.getContractStatus();
+            $scope.is_curr_locked = curr_astatus==0;
+         
         });
     
       
@@ -231,26 +230,21 @@ var exchangeCtrl = function($scope, $locale, $sce, walletService, $translate) {
              $scope.pop_limitCMm =0;
         }
         
-        jsc3l_bcTransaction.SetAccountParam($scope.wallet, 
+        let data = await jsc3l.bcTransaction.SetAccountParam($scope.wallet, 
                                     $scope.selected_account, 
                                     status, 
                                     $scope.pop_acc_type,  
                                     $scope.pop_limitCMm,  
-                                    $scope.pop_limitCMp, 
-                                    function(data){
-                                         if (data.isError){
-                                            $scope.acc_message = $sce.trustAsHtml(globalFuncs.getDangerText(data.error));
-                                            $scope.pop_message = $scope.acc_message;
-                                         } else {
-
-                                            $scope.acc_message = $sce.trustAsHtml(globalFuncs.getSuccessText($translate.instant("EXC_Account_updated")));
-                                            $scope.trans_message = $translate.instant("EXC_Account_updated");
-                                            $scope.updatePop.close();
-                                            $scope.waitTransaction(data.data); 
-
-                                           
-                                         }
-                                    });
+                                    $scope.pop_limitCMp); 
+        if (data.isError){
+            $scope.acc_message = $sce.trustAsHtml(globalFuncs.getDangerText(data.error));
+            $scope.pop_message = $scope.acc_message;
+        } else {
+            $scope.acc_message = $sce.trustAsHtml(globalFuncs.getSuccessText($translate.instant("EXC_Account_updated")));
+            $scope.trans_message = $translate.instant("EXC_Account_updated");
+            $scope.updatePop.close();
+            $scope.waitTransaction(data.data); 
+        }
         
     }
     
@@ -270,26 +264,25 @@ var exchangeCtrl = function($scope, $locale, $sce, walletService, $translate) {
         if ($scope.to_message_key.length>0 && $scope.message_to.length>0) {
             data['memo_to']= jsc3l.message.cipherMessage($scope.to_message_key.substring(2), $scope.message_to);
         }
-       
-       jsc3l_bcTransaction.PledgeAccount($scope.wallet, $scope.selected_account, $scope.credit_amount, data, function(rawTx){
-             if (rawTx.isError){
-                 $scope.acc_message = $sce.trustAsHtml(globalFuncs.getDangerText(rawTx.error));
-             } else {
-                 $scope.acc_message = $sce.trustAsHtml(globalFuncs.getSuccessText($translate.instant("EXC_Account_credited_with")+$scope.credit_amount+globalFuncs.currencies.CUR));
-                 $scope.trans_message = $translate.instant("EXC_Account_credited_with")+$scope.credit_amount+globalFuncs.currencies.CUR;
-                 $scope.waitTransaction(rawTx.data); 
-             }
-             jsc3l_bcRead.getGlobalBalance($scope.selected_account, function(value){
-                  $scope.balance = value;
-                  jsc3l_bcRead.getCmBalance($scope.selected_account, function(value){
-                      $scope.balanceEL = value;
-                      $scope.credit_amount=null;
-                      $scope.confCreditPop.close();
-                      
-                  });
-              });
+
+        let rawTx = jsc3l.bcTransaction.PledgeAccount($scope.wallet, $scope.selected_account, $scope.credit_amount, data);
+
+        if (rawTx.isError){
+            $scope.acc_message = $sce.trustAsHtml(globalFuncs.getDangerText(rawTx.error));
+        } else {
+            $scope.acc_message = $sce.trustAsHtml(globalFuncs.getSuccessText($translate.instant("EXC_Account_credited_with")+$scope.credit_amount+globalFuncs.currencies.CUR));
+            $scope.trans_message = $translate.instant("EXC_Account_credited_with")+$scope.credit_amount+globalFuncs.currencies.CUR;
+            $scope.waitTransaction(rawTx.data); 
+        }
         
-       });
+        $scope.balance = await jsc3l.bcRead.getGlobalBalance($scope.selected_account);
+        $scope.balanceEL = await jsc3l.bcRead.getCmBalance($scope.selected_account);
+        $scope.credit_amount=null;
+        $scope.confCreditPop.close();
+
+              
+        
+     
     }
 
 

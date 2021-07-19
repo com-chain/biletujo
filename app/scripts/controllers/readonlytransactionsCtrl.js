@@ -1,7 +1,7 @@
 'use strict';
 var readonlytransactionsCtrl = function($scope, $locale, $sce, walletService,contactservice,consultService, memoService, messageService, $translate, $filter) {
     // Check the environment
-    $scope.isApp =  jsc3l_customization.isApp();
+    $scope.isApp =  jsc3l.customization.isApp();
     $scope.currentWalletAddress=globalFuncs.getWalletAddress();
     $scope.fingerprint=false;
     
@@ -92,8 +92,8 @@ var readonlytransactionsCtrl = function($scope, $locale, $sce, walletService,con
         $scope.CUR=globalFuncs.currencies.CUR;
         $scope.CUR_nanti=globalFuncs.currencies.CUR_nanti;
         $scope.CUR_credit_mut=globalFuncs.currencies.CUR_credit_mut;
-        $scope.has_nant=jsc3l_customization.hasNant();
-        $scope.has_credit_mut=jsc3l_customization.hasCM();
+        $scope.has_nant=jsc3l.customization.hasNant();
+        $scope.has_credit_mut=jsc3l.customization.hasCM();
         
         $scope.possible_wallets = consultService.loadRightFor($scope.currentWalletAddress);
         
@@ -115,8 +115,8 @@ var readonlytransactionsCtrl = function($scope, $locale, $sce, walletService,con
             $scope.lock_date = false;
         }
         
-        jsc3l_bcRead.getNantBalance($scope.watched_address, function(value){$scope.balanceEL = value;});
-        jsc3l_bcRead.getCmBalance($scope.watched_address, function(value){$scope.balanceCM = value;});
+        $scope.balanceEL = await jsc3l.bcRead.getNantBalance($scope.watched_address);
+        $scope.balanceCM = await jsc3l.bcRead.getCmBalance($scope.watched_address);
         
         $scope.current_message_key = messageService.messageKeysFromCrypted($scope.wallet, $scope.possible_wallets[$scope.watched_address].messageKey);
         
@@ -355,10 +355,10 @@ var readonlytransactionsCtrl = function($scope, $locale, $sce, walletService,con
             
         } else {
             if (add_b) {
-               jsc3l_bcRead.getHistoricalGlobalBalance(walletAddress, list[index].data.block, function(value){
-                    list[index].data.balance = value;
-                    $scope.addBalance(walletAddress,list,add_b, index+1);
-                });
+                let value = await jsc3l.bcRead.getHistoricalGlobalBalance(walletAddress, list[index].data.block);
+                list[index].data.balance = value;
+                $scope.addBalance(walletAddress,list,add_b, index+1);
+           
             } else {
                  list[index].data.balance = '';
                  $scope.addBalance(walletAddress,list,add_b, index+1);

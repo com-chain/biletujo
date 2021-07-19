@@ -2,7 +2,7 @@
 var contactesCtrl = function($scope, $sce, walletService, contactservice, globalService, $translate) {
     
     // Check the environment
-    $scope.isApp = jsc3l_customization.isApp();
+    $scope.isApp = jsc3l.customization.isApp();
     
     // Create the modal popups
 	$scope.editNameModal = new Modal(document.getElementById('editName'));
@@ -53,8 +53,8 @@ var contactesCtrl = function($scope, $sce, walletService, contactservice, global
 
       for (var id in $scope.contacts){
           try{
-              $scope.contacts[id].logo = jsc3l_customization.getCurrencyLogoUrl( $scope.contacts[id].servername);
-              $scope.contacts[id].has_logo = $scope.contacts[id].logo !='' && $scope.contacts[id].servername!=jsc3l_customization.getCurencyName();
+              $scope.contacts[id].logo = jsc3l.customization.getCurrencyLogoUrl( $scope.contacts[id].servername);
+              $scope.contacts[id].has_logo = $scope.contacts[id].logo !='' && $scope.contacts[id].servername!=jsc3l.customization.getCurencyName();
           } catch(e){}
       }
       

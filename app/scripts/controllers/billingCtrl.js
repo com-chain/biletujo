@@ -1,7 +1,7 @@
 'use strict';
 var billingCtrl = function($scope, $locale, $sce, walletService, $translate) {
     // Check the environment
-    $scope.isApp =  jsc3l_customization.isApp();
+    $scope.isApp =  jsc3l.customization.isApp();
     $scope.currentWalletAddress=globalFuncs.getWalletAddress();
     $scope.CUR='';
     $scope.CUR_nanti='';
@@ -51,19 +51,17 @@ var billingCtrl = function($scope, $locale, $sce, walletService, $translate) {
 	    }, function() {
 		    if (walletService.wallet == null) return;
 		    $scope.wallet = walletService.wallet;
-            jsc3l_bcRead.getAccountType($scope.wallet.getAddressString(), function(type){
+            let type = jsc3l.bcRead.getAccountType($scope.wallet.getAddressString());
+            let status = jsc3l.bcRead.getAccountStatus($scope.wallet.getAddressString());
+            $scope.is_admin = type==2 && status==1;
               
-               jsc3l_bcRead.getAccountStatus($scope.wallet.getAddressString(), function(status){
-                    $scope.is_admin = type==2 && status==1;
-               });
-            });
             
             $scope.CUR=globalFuncs.currencies.CUR;
             $scope.CUR_nanti=globalFuncs.currencies.CUR_nanti;
             $scope.CUR_credit_mut=globalFuncs.currencies.CUR_credit_mut;
             
-            $scope.has_nant=jsc3l_customization.hasNant();
-            $scope.has_credit_mut=jsc3l_customization.hasCM();
+            $scope.has_nant=jsc3l.customization.hasNant();
+            $scope.has_credit_mut=jsc3l.customization.hasCM();
         });
     
     ///////////////////////////////////
@@ -103,13 +101,11 @@ var billingCtrl = function($scope, $locale, $sce, walletService, $translate) {
         if (index>=address_list.length){
             callback(address_list);
         } else {
-             jsc3l_bcRead.getAccountStatus(address_list[index].add, function(status){
-                    if ( status==1){
-                         address_list[index].stat = $translate.instant("EXC_Unlocked");
-                    }
-                    $scope.getAccStatus(address_list,index+1, callback);
-               });
-            
+            let status = jsc3l.bcRead.getAccountStatus(address_list[index].add);
+            if ( status==1){
+                 address_list[index].stat = $translate.instant("EXC_Unlocked");
+            }
+            $scope.getAccStatus(address_list,index+1, callback);
         }
     }
     
@@ -298,11 +294,11 @@ var billingCtrl = function($scope, $locale, $sce, walletService, $translate) {
     
     $scope.addAccountToTypeDict = function(address,callback){
         if (!(address in $scope.account_type)){
-            jsc3l_bcRead.getAccountType(address, function(type){
-                // peron=0 / legal=1/ admin=2
-                $scope.account_type[address] = type;
-                callback();
-            });
+            let type = jsc3l.bcRead.getAccountType(address);
+            // peron=0 / legal=1/ admin=2
+            $scope.account_type[address] = type;
+            callback();
+        
         } else {
             callback();
         }
@@ -332,7 +328,7 @@ var billingCtrl = function($scope, $locale, $sce, walletService, $translate) {
         var signature = ethUtil.ecsign(message_hash, $scope.wallet.getPrivateKey());
         var sign = ethUtil.bufferToHex(Buffer.concat([signature.r, signature.s, ethUtil.toBuffer(signature.v)]));
         
-         ajaxReq.getCodesFromAddresses(add, jsc3l_customization.getCurencyName(),caller, sign, function(data){
+         ajaxReq.getCodesFromAddresses(add, jsc3l.customization.getCurencyName(),caller, sign, function(data){
             for(var add_index=0; add_index<addresses.length; ++add_index){
                 var address = addresses[add_index];
                 if (address in data){
@@ -352,7 +348,7 @@ var billingCtrl = function($scope, $locale, $sce, walletService, $translate) {
         var signature = ethUtil.ecsign(message_hash, $scope.wallet.getPrivateKey());
         var sign = ethUtil.bufferToHex(Buffer.concat([signature.r, signature.s, ethUtil.toBuffer(signature.v)]));
         
-         ajaxReq.getAddressesFromCode(code, jsc3l_customization.getCurencyName(), caller, sign, function(data){
+         ajaxReq.getAddressesFromCode(code, jsc3l.customization.getCurencyName(), caller, sign, function(data){
             var add_list = [];
             for (var ind = 0; ind < data.length; ++ind) {
                 if (data[ind].startsWith('0x')){

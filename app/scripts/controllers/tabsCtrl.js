@@ -13,50 +13,46 @@ var tabsCtrl = function($scope, $attrs, globalService, contactservice, $translat
 
     
     $scope.loaded = false;
-    jsc3l_connection.ensureComChainRepo(function(connect_ok){
-       if (!connect_ok){
-          globalFuncs.hideLoadingWaiting (true);
-          $scope.ng_ok=false;
-          document.getElementById("global_error").innerHTML='<br/><br/><br/>'+$translate.instant("GLB_Connection_error") +
-                 '<br/><br/><button type="button" class="btn btn-primary bellowmargin" onclick="location.reload();" >'+$translate.instant("TRA_Refresh")+' </button>';
-      
-          $scope.$apply();
-       } else{
-         
-          
-              jsc3l_connection.acquireEndPoint(function(success){
-                  if (!$scope.loaded) {
-                      if (success){
-                           $scope.ng_ok=true;
-                            jsc3l_customization.configureCurrency();
-                            globalFuncs.getCurrencies();
-                            
-  /*                          if (jsc3l_customization.hasBn()){
-                                globalService.configureNoteTab(true);
-                            }
-*/
+    let connect_ok = await jsc3l.connection.ensureComChainRepo();
+    if (!connect_ok){
+        globalFuncs.hideLoadingWaiting (true);
+        $scope.ng_ok=false;
+        document.getElementById("global_error").innerHTML='<br/><br/><br/>'+$translate.instant("GLB_Connection_error") +
+             '<br/><br/><button type="button" class="btn btn-primary bellowmargin" onclick="location.reload();" >'+$translate.instant("TRA_Refresh")+' </button>';
 
-                            var currCode = globalService.getCurrCode();
-                            if (currCode!=undefined && currCode!=""){
-                                $scope.tabClick(1);
-                            }
-                            
-                           globalFuncs.hideLoadingWaiting (true);
-                           $scope.loaded=true;
-                           
-                      }else{
-                          
-                           $scope.ng_ok=false;
-                           globalFuncs.hideLoadingWaiting (true);
-                           document.getElementById("global_error").innerHTML='<br/><br/><br/>'+$translate.instant("GLB_No_valid_nodes_reload_them") +
-                     '<br/><br/><button type="button" class="btn btn-primary bellowmargin" onclick="location.reload();" >'+$translate.instant("GLB_Relaoad_nodes")+' </button>';
+        $scope.$apply();
+    } else{
+        let success = await jsc3l.connection.acquireEndPoint();
+        if (!$scope.loaded) {
+           if (success){
+                   $scope.ng_ok=true;
+                    jsc3l.customization.configureCurrency();
+                    globalFuncs.getCurrencies();
+                    
+    /*                          if (jsc3l.customization.hasBn()){
+                        globalService.configureNoteTab(true);
+                    }
+    */
 
-                      }
-                      $scope.$apply();
-                  }
-              });
-       }
-    });
+                    var currCode = globalService.getCurrCode();
+                    if (currCode!=undefined && currCode!=""){
+                        $scope.tabClick(1);
+                    }
+                    
+                   globalFuncs.hideLoadingWaiting (true);
+                   $scope.loaded=true;
+                   
+            }else{
+                  
+                   $scope.ng_ok=false;
+                   globalFuncs.hideLoadingWaiting (true);
+                   document.getElementById("global_error").innerHTML='<br/><br/><br/>'+$translate.instant("GLB_No_valid_nodes_reload_them") +
+             '<br/><br/><button type="button" class="btn btn-primary bellowmargin" onclick="location.reload();" >'+$translate.instant("GLB_Relaoad_nodes")+' </button>';
+
+            }
+              $scope.$apply();
+        }
+    }
 
 
     
@@ -66,7 +62,7 @@ var tabsCtrl = function($scope, $attrs, globalService, contactservice, $translat
     $scope.onDeviceReady = function() {
         $scope.isIos = globalFuncs.isIos();
         
-        if (jsc3l_customization.isApp()){
+        if (jsc3l.customization.isApp()){
             globalFuncs.dowloadAppFileWithNameWithoutMessage('tmp.txt', {});
         }
     }
@@ -87,7 +83,7 @@ var tabsCtrl = function($scope, $attrs, globalService, contactservice, $translat
         if (!$scope.NoWallet){
              for (var id in $scope.other_wallets){
                $scope.other_wallets[id].name=contactservice.getContactName($scope.contacts, '0x'+$scope.other_wallets[id].address);
-               $scope.other_wallets[id].logo = jsc3l_customization.getCurrencyLogoUrl( $scope.other_wallets[id].file.server.name);
+               $scope.other_wallets[id].logo = jsc3l.customization.getCurrencyLogoUrl( $scope.other_wallets[id].file.server.name);
                $scope.other_wallets[id].has_logo = $scope.other_wallets[id].logo !='';
             }
             $scope.other_wallets.sort(function(a,b){return a.name.localeCompare(b.name); });
@@ -145,7 +141,7 @@ var tabsCtrl = function($scope, $attrs, globalService, contactservice, $translat
 
     
     var uls=document.getElementById('lg_mn');
-    var lang = jsc3l_customization.getLang();
+    var lang = jsc3l.customization.getLang();
     uls.innerHTML='';
     var inner='';
     
@@ -205,7 +201,7 @@ var tabsCtrl = function($scope, $attrs, globalService, contactservice, $translat
                 if ($scope.tabNames[key].url=='close'){
                     $scope.openLockPopup();
                 } else if ($scope.tabNames[key].url=='aide'){
-                    window.open( jsc3l_customization.getHelpUrl().replace('LANG',$scope.gelLanguageCode()), "_system");
+                    window.open( jsc3l.customization.getHelpUrl().replace('LANG',$scope.gelLanguageCode()), "_system");
                 } else{
                     if ($scope.activeTab!=id){ 
                         globalFuncs.showLoading($translate.instant("GP_Wait"));
