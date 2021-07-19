@@ -1,5 +1,5 @@
 'use strict';
-var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, messageService, globalService, $translate) {
+var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, globalService, $translate) {
     $locale.NUMBER_FORMATS.GROUP_SEP = "'";
     $scope.limitWithoutPass=0;
     
@@ -133,7 +133,7 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, me
         
         
         var local_message_key = JSON.parse(localStorage.getItem('ComChainWallet')).message_key.priv;
-        $scope.my_message_key = messageService.messageKeysFromCrypted($scope.wallet, local_message_key).clear_priv;
+        $scope.my_message_key = jsc3l.message.messageKeysFromCrypted($scope.wallet, local_message_key).clear_priv;
 	});
     
 	$scope.setBalance = function(readyStatus) {
@@ -280,11 +280,11 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, me
         }
         
         if ($scope.from_message_key.length>0 && $scope.message_from.length>0) {
-            data['memo_from']= messageService.cipherMessage($scope.from_message_key.substring(2), $scope.message_from);
+            data['memo_from']= jsc3l.message.cipherMessage($scope.from_message_key.substring(2), $scope.message_from);
         }
         
         if ($scope.to_message_key.length>0 && $scope.message_to.length>0) {
-            data['memo_to']= messageService.cipherMessage($scope.to_message_key.substring(2), $scope.message_to);
+            data['memo_to']= jsc3l.message.cipherMessage($scope.to_message_key.substring(2), $scope.message_to);
         }
     
         ajaxReq.currBlock(function(blk_number) {
@@ -340,11 +340,11 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, me
         }
         
         if ($scope.from_message_key.length>0 && $scope.message_from.length>0) {
-            data['memo_from']= messageService.cipherMessage($scope.from_message_key.substring(2), $scope.message_from);
+            data['memo_from']= jsc3l.message.cipherMessage($scope.from_message_key.substring(2), $scope.message_from);
         }
         
         if ($scope.to_message_key.length>0 && $scope.message_to.length>0) {
-            data['memo_to']= messageService.cipherMessage($scope.to_message_key.substring(2), $scope.message_to);
+            data['memo_to']= jsc3l.message.cipherMessage($scope.to_message_key.substring(2), $scope.message_to);
         }
         
         if (parent_hash!==undefined){
@@ -422,29 +422,25 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, me
        }
        $scope.cp_mess = false;
        $scope.to_message_key = "";
-       messageService.getMessageKey($scope.tokenTx.to, false, function(keys) {
-          $scope.to_message_key = keys.public_message_key;
-          if ( $scope.to_message_key === undefined) {
-            $scope.to_message_key = "";
-          } 
-          if ( $scope.to_message_key .length>0) {
-              $scope.cp_mess = $scope.reference.length==0 && !$scope.isShopTx;
-          }   
-       });
+       let keys_to = await jsc3l.message.getMessageKey($scope.tokenTx.to, false);
+       $scope.to_message_key = keys_to.public_message_key;
+       if ( $scope.to_message_key === undefined) {
+         $scope.to_message_key = "";
+       } 
+       if ( $scope.to_message_key .length>0) {
+           $scope.cp_mess = $scope.reference.length==0 && !$scope.isShopTx;
+       }   
+     
        
        $scope.from_message_key = "";
-       messageService.getMessageKey($scope.origine_address, false, function(keys) {
-          $scope.from_message_key = keys.public_message_key; 
-          if ($scope.from_message_key===undefined) {  
-            $scope.from_message_key = "";
-          }
-       });
+       let keys_from = await jsc3l.message.getMessageKey($scope.origine_address, false);
+       $scope.from_message_key = keys_from.public_message_key; 
+       if ($scope.from_message_key===undefined) {  
+         $scope.from_message_key = "";
+       }
        
        if ($scope.mode == "toMe"){
-           ////////////////////
-           messageService.getReqMessage($scope.wallet, $scope.origine_address, $scope.my_message_key, true, function(message) {
-               $scope.message_to=message;
-           });
+           $scope.message_to = await jsc3l.message.getReqMessage($scope.wallet, $scope.origine_address, $scope.my_message_key, true);
        }
        
        $scope.show_curr_sel = false;
@@ -605,11 +601,11 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, me
                       }
                       
                       if ($scope.from_message_key.length>0 && $scope.message_from.length>0) {
-                        data['memo_from']= messageService.cipherMessage($scope.from_message_key.substring(2), $scope.message_from);
+                        data['memo_from']= jsc3l.message.cipherMessage($scope.from_message_key.substring(2), $scope.message_from);
                       }
 
                       if ($scope.to_message_key.length>0 && $scope.message_to.length>0) {
-                        data['memo_to']= messageService.cipherMessage($scope.to_message_key.substring(2), $scope.message_to);
+                        data['memo_to']= jsc3l.message.cipherMessage($scope.to_message_key.substring(2), $scope.message_to);
                       }
                       
                       if (cur_tran_type=='nant'){
@@ -637,7 +633,7 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, me
                    $scope.refreshFrom(function(){
                        
                       
-                      messageService.publishReqMessages($scope.wallet, $scope.curr_from_add, $scope.message_to, function(data){});
+                      let data = await jsc3l.message.publishReqMessages($scope.wallet, $scope.curr_from_add, $scope.message_to);
 
                        
                       $scope.elemanAmmount=0;
@@ -1050,10 +1046,9 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, me
     }
     
     $scope.addMessagePending = function(item){
-         messageService.getReqMessage($scope.wallet, item.address, $scope.my_message_key, false, function(message) {
-                    item['message'] = message;
-                    $scope.pendingApproval.unshift(item);
-                });
+        let message =  await jsc3l.message.getReqMessage($scope.wallet, item.address, $scope.my_message_key, false);
+        item['message'] = message;
+        $scope.pendingApproval.unshift(item);      
     }
     
     
@@ -1428,24 +1423,21 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, me
                            $scope.message_from = request.message===undefined?"":request.message;
                            $scope.cp_mess = false;
                            $scope.to_message_key = "";
-                           messageService.getMessageKey($scope.transaction_to, false, function(keys) {
-                              $scope.to_message_key = keys.public_message_key;
-                              if ( $scope.to_message_key === undefined) {
-                                $scope.to_message_key = "";
-                              }
-                              if ($scope.to_message_key.length>0 && request.message=="") {
-                                  $scope.cp_mess = true;
-                              }   
-                           });
+                           let keys_to =  await jsc3l.message.getMessageKey($scope.transaction_to, false);
+                           $scope.to_message_key = keys_to.public_message_key;
+                           if ( $scope.to_message_key === undefined) {
+                              $scope.to_message_key = "";
+                           }
+                           if ($scope.to_message_key.length>0 && request.message=="") {
+                                $scope.cp_mess = true;
+                           }  
                            
                            $scope.from_message_key = "";
-                           messageService.getMessageKey($scope.wallet.getAddressString(), false, function(keys) {
-                              $scope.from_message_key = keys.public_message_key;
-                              if ($scope.from_message_key===undefined) {
-                                 $scope.from_message_key = "";
-                              }
-                           });
-                           
+                           let keys_from =  await jsc3l.message.getMessageKey($scope.wallet.getAddressString(), false);
+                           $scope.from_message_key = keys_from.public_message_key;
+                           if ($scope.from_message_key===undefined) {
+                              $scope.from_message_key = "";
+                           }
                            
                            $scope.sendTransactionModal.open();
                        });
@@ -1460,13 +1452,13 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, me
   }
   
   $scope.sendReqTx = function(){
-        var data= {};
+        var data= {}; 
         if ($scope.from_message_key.length>0 && $scope.message_from.length>0) {
-            data['memo_from']= messageService.cipherMessage($scope.from_message_key.substring(2), $scope.message_from);
+            data['memo_from']= jsc3l.message.cipherMessage($scope.from_message_key.substring(2), $scope.message_from);
         }
 
         if ($scope.to_message_key.length>0 && $scope.message_to.length>0) {
-            data['memo_to']= messageService.cipherMessage($scope.to_message_key.substring(2), $scope.message_to);
+            data['memo_to']= jsc3l.message.cipherMessage($scope.to_message_key.substring(2), $scope.message_to);
         }
 
       

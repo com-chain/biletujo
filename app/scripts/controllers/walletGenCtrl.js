@@ -1,5 +1,5 @@
 'use strict';
-var walletGenCtrl = function($scope, $globalService, $translate, walletService, contactService, messageService) {
+var walletGenCtrl = function($scope, $globalService, $translate, walletService, contactService) {
     // Environment variables
     $scope.isApp = jsc3l_customization.isApp();
     $scope.trans_message = $translate.instant("GP_Wait");

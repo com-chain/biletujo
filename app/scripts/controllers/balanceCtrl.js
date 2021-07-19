@@ -1,5 +1,5 @@
 'use strict';
-var balanceCtrl = function($scope, $locale, $sce, walletService,contactservice, consultService, messageService, $translate) {
+var balanceCtrl = function($scope, $locale, $sce, walletService,contactservice, consultService, $translate) {
     // Environment variables
     $scope.isApp =  jsc3l_customization.isApp();
     $scope.currentWalletAddress=globalFuncs.getWalletAddress();
@@ -769,7 +769,7 @@ var balanceCtrl = function($scope, $locale, $sce, walletService,contactservice, 
         child = container.lastElementChild; 
     }
     
-    var mess_keys = messageService.messageKeysFromWallet($scope.wallet);
+    var mess_keys = jsc3l.message.messageKeysFromWallet($scope.wallet);
     
     var obj_content = {"address":$scope.wallet.getAddressString(), 
               "server":jsc3l_customization.getCurencyName(), 
@@ -782,7 +782,7 @@ var balanceCtrl = function($scope, $locale, $sce, walletService,contactservice, 
     
    
     if ($scope.dest_keys.public_key !== undefined) {
-        var crypted_m_key = messageService.cipherMessage($scope.dest_keys.public_key, mess_keys.clear_priv);
+        var crypted_m_key = jsc3l.message.cipherMessage($scope.dest_keys.public_key, mess_keys.clear_priv);
         obj_content.message_key = crypted_m_key;
     }
     
@@ -834,37 +834,32 @@ var balanceCtrl = function($scope, $locale, $sce, walletService,contactservice, 
            walletService.setUsed();       
            $scope.createRightModal.close();
            $scope.trPass="";
-           messageService.getMessageKey($scope.dest, false, function(dest_keys) {
-               $scope.dest_keys = dest_keys;
-               // processing
-               $scope.generateSaveQRPiece(-1);
-               $scope.generateSaveQRPiece(0);
-               $scope.dislayQRModal.open();
+           $scope.dest_keys = await jsc3l.message.getMessageKey($scope.dest, false); 
 
-               if (!$scope.isApp) {
-                   // export .dat file
-                   $scope.blobCrEnc = globalFuncs.getBlob("text/json;charset=UTF-8", $scope.qr_cr_content);
-                   document.getElementById('dwonloadBtn').click();
-                       
-                   // export pdf 
-                   setTimeout(function(){ 
-                         globalFuncs.generateCrPDF(
-                            $translate.instant("PDF_CR_Title"),
-                            $translate.instant("PDF_CR_On"),
-                            $translate.instant("PDF_CR_Assigned"),
-                            globalFuncs.cleanName($translate.instant("PDF_CR_Validity")) + " " + $scope.start_date.getFullYear()+ "/" + $scope.start_date.getMonth()+"/" + $scope.start_date.getDate() +"-"+
-                            $scope.end_date.getFullYear()+ "/" + $scope.end_date.getMonth()+"/" + $scope.end_date.getDate(), 
-                            $scope.currentWalletAddress,
-                            $scope.dest,
-                            $scope.qr_cr_content,                       
-                            $scope.callback_consult);
-                     },100); 
-               }
-          
-          });
-           
-           
-           
+           // processing
+           $scope.generateSaveQRPiece(-1);
+           $scope.generateSaveQRPiece(0);
+           $scope.dislayQRModal.open();
+
+           if (!$scope.isApp) {
+               // export .dat file
+               $scope.blobCrEnc = globalFuncs.getBlob("text/json;charset=UTF-8", $scope.qr_cr_content);
+               document.getElementById('dwonloadBtn').click();
+                   
+               // export pdf 
+               setTimeout(function(){ 
+                     globalFuncs.generateCrPDF(
+                        $translate.instant("PDF_CR_Title"),
+                        $translate.instant("PDF_CR_On"),
+                        $translate.instant("PDF_CR_Assigned"),
+                        globalFuncs.cleanName($translate.instant("PDF_CR_Validity")) + " " + $scope.start_date.getFullYear()+ "/" + $scope.start_date.getMonth()+"/" + $scope.start_date.getDate() +"-"+
+                        $scope.end_date.getFullYear()+ "/" + $scope.end_date.getMonth()+"/" + $scope.end_date.getDate(), 
+                        $scope.currentWalletAddress,
+                        $scope.dest,
+                        $scope.qr_cr_content,                       
+                        $scope.callback_consult);
+                 },100); 
+           }
        } else {
            document.getElementById('createStatus').innerHTML = $sce.trustAsHtml(globalFuncs.getDangerText($translate.instant("TRAN_WrongPass")));
 

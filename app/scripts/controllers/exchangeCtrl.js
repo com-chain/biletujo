@@ -1,5 +1,5 @@
 'use strict';
-var exchangeCtrl = function($scope, $locale, $sce, walletService,messageService, $translate) {
+var exchangeCtrl = function($scope, $locale, $sce, walletService, $translate) {
     // Check the environment
     $scope.isApp =  jsc3l_customization.isApp();
     $scope.currentWalletAddress=globalFuncs.getWalletAddress();
@@ -77,13 +77,11 @@ var exchangeCtrl = function($scope, $locale, $sce, walletService,messageService,
                                                                                                      });
         jsc3l_bcRead.getCmLimitBelow($scope.selected_account, function(value){$scope.limitCMm = value;});
         jsc3l_bcRead.getCmLimitAbove($scope.selected_account, function(value){$scope.limitCMp = value; globalFuncs.hideLoadingWaiting(); });
-        messageService.getMessageKey($scope.selected_account, false, function(keys) {
-                              $scope.to_message_key = keys.public_message_key;
-                              if ( $scope.to_message_key === undefined) {
-                                $scope.to_message_key = "";
-                              }  
-                           });
-        
+        let keys = await jsc3l.message.getMessageKey($scope.selected_account, false);
+        $scope.to_message_key = keys.public_message_key;
+        if ( $scope.to_message_key === undefined) {
+            $scope.to_message_key = "";
+        }  
 	}
     
     $scope.refresh = function() {
@@ -270,7 +268,7 @@ var exchangeCtrl = function($scope, $locale, $sce, walletService,messageService,
         var data= {};
 
         if ($scope.to_message_key.length>0 && $scope.message_to.length>0) {
-            data['memo_to']= messageService.cipherMessage($scope.to_message_key.substring(2), $scope.message_to);
+            data['memo_to']= jsc3l.message.cipherMessage($scope.to_message_key.substring(2), $scope.message_to);
         }
        
        jsc3l_bcTransaction.PledgeAccount($scope.wallet, $scope.selected_account, $scope.credit_amount, data, function(rawTx){

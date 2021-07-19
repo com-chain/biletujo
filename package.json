@@ -1,6 +1,6 @@
 {
-  "name": "mew-custom",
-  "version": "0.3.0",
+  "name": "biletujo",
+  "version": "2.0.0",
   "description": "",
   "main": "gulpfile.js",
   "author": "ComChain",
@@ -10,12 +10,6 @@
     "angular-sanitize": "^1.5.8",
     "angular-translate": "^2.11.1",
     "angular-translate-handler-log": "^2.11.1",
-    "babel-polyfill": "^6.8.0",
-    "babel-preset-env": "^1.1.8",
-    "bignumber.js": "^2.3.0",
-    "browserify": "^13.0.1",
-    "ethereumjs-abi": "^0.6.1",
-    "ethereumjs-tx": "^1.1.1",
     "gulp": "^3.9.1",
     "gulp-autoprefixer": "^3.1.0",
     "gulp-babel": "^6.1.2",
@@ -32,11 +26,10 @@
     "gulp-uglify": "^1.5.3",
     "gulp-util": "^3.0.7",
     "install": "^0.6.1",
-    "npm": "^6.13.4",
-    "scryptsy": "^1.2.1",
-    "uuid": "^2.0.1"
+    "npm": "^6.13.4"
   },
   "dependencies": {
+    "@com-chain.org/jsc3l": "file:..",
     "fs": "0.0.1-security"
   }
 }

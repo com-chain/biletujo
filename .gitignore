@@ -5,6 +5,8 @@ dist/fonts/*
 dist/html/*
 dist/js/*
 
+package-lock.json
+
 node_modules/*
 
 cordova_dist/www/*

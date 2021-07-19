@@ -1,5 +1,5 @@
 'use strict';
-var decryptWalletCtrl = function($scope, $sce, $translate, walletService, contactService, memoService, authenticationService, messageService, globalService) {
+var decryptWalletCtrl = function($scope, $sce, $translate, walletService, contactService, memoService, authenticationService, globalService) {
     $scope.isApp =  jsc3l_customization.isApp();
     globalFuncs.hideLoadingWaiting();
     
@@ -278,14 +278,14 @@ var decryptWalletCtrl = function($scope, $sce, $translate, walletService, contac
             walletService.password = $scope.filePassword;
             walletService.wallet = $scope.wallet;
             
-            messageService.ensureWalletMessageKey($scope.wallet, $translate.instant('WALL_missing_message_key'),  function(complete_wall) {
-                $scope.wallet = complete_wall;
-                walletService.wallet = complete_wall;
-                
-                localStorage.setItem('ComChainWallet',JSON.stringify(jsc3l_wallet.encryptWallet($scope.wallet, $scope.filePassword)));
+            
+            complete_wall = await jsc3l.ensureWalletMessageKey($scope.wallet, $translate.instant('WALL_missing_message_key'));
+            $scope.wallet = complete_wall;
+            walletService.wallet = complete_wall;
+            
+            localStorage.setItem('ComChainWallet',JSON.stringify(jsc3l_wallet.encryptWallet($scope.wallet, $scope.filePassword)));
 
-                globalFuncs.loadWallets(true);
-            });
+            globalFuncs.loadWallets(true);
             
             walletService.setUsed();
             walletService.next_ok=true;
