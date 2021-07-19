@@ -161,7 +161,7 @@ var globalFuncs = function() {}
      }
      datas.push(result)
          
-     globalFuncs.generateTx(jsc3l_customization.getContract3(),
+     globalFuncs.generateTx(jsc3l.customization.getContract3(),
                             wallet, 
                             globalFuncs.setAccountsContracts, 
                             datas, 
@@ -179,7 +179,7 @@ var globalFuncs = function() {}
      }
      datas.push(result)
          
-     globalFuncs.generateTx(jsc3l_customization.getContract3(),
+     globalFuncs.generateTx(jsc3l.customization.getContract3(),
                             wallet, 
                             globalFuncs.setAccountsMemos, 
                             datas, 
@@ -188,7 +188,7 @@ var globalFuncs = function() {}
  }
  
  globalFuncs.getContactHash = function(walletAddress,callback){
-        var userInfo = ethFuncs.getDataObj(jsc3l_customization.getContract3(),  globalFuncs.contactsOf, [ethFuncs.getNakedAddress(walletAddress)]);
+        var userInfo = ethFuncs.getDataObj(jsc3l.customization.getContract3(),  globalFuncs.contactsOf, [ethFuncs.getNakedAddress(walletAddress)]);
 		ajaxReq.getEthCall(userInfo, function(data) {
             if (!data.error) {
                 var length_str = data.data.substring(66,130);
@@ -200,7 +200,7 @@ var globalFuncs = function() {}
   }
   
   globalFuncs.getMemoHash = function(walletAddress,callback){
-        var userInfo = ethFuncs.getDataObj(jsc3l_customization.getContract3(),  globalFuncs.memosOf, [ethFuncs.getNakedAddress(walletAddress)]);
+        var userInfo = ethFuncs.getDataObj(jsc3l.customization.getContract3(),  globalFuncs.memosOf, [ethFuncs.getNakedAddress(walletAddress)]);
 		ajaxReq.getEthCall(userInfo, function(data) {
             if (!data.error) {
 			    var length_str = data.data.substring(66,130);
@@ -216,7 +216,7 @@ var globalFuncs = function() {}
   /********************************************************/
   globalFuncs.storeOnIpfs = function (crypted_data,callback){
     var xhr = new XMLHttpRequest();
-    xhr.open('POST', jsc3l_customization.getEndpointAddress()+ globalFuncs.ipfsAdd, true); //
+    xhr.open('POST', jsc3l.customization.getEndpointAddress()+ globalFuncs.ipfsAdd, true); //
     xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
     xhr.onreadystatechange = function (oEvent) {  
     if (xhr.readyState === 4) {  
@@ -239,7 +239,7 @@ var globalFuncs = function() {}
   
   globalFuncs.readFromIpfs = function (hash,callback){
     var xhr = new XMLHttpRequest();
-    xhr.open('GET', jsc3l_customization.getEndpointAddress()+ globalFuncs.ipfsCat+'?addr=' +hash, true); //
+    xhr.open('GET', jsc3l.customization.getEndpointAddress()+ globalFuncs.ipfsCat+'?addr=' +hash, true); //
     xhr.responseType = 'json';
     xhr.onreadystatechange = function (oEvent) {  
     if (xhr.readyState === 4) {  
@@ -266,7 +266,7 @@ var globalFuncs = function() {}
   
   globalFuncs.getChallenge = function (addr,callback){
     var xhr = new XMLHttpRequest();
-    xhr.open('GET', jsc3l_customization.getEndpointAddress()+ globalFuncs.authChallenge+'?addr=' +encodeURIComponent(addr), true); //
+    xhr.open('GET', jsc3l.customization.getEndpointAddress()+ globalFuncs.authChallenge+'?addr=' +encodeURIComponent(addr), true); //
     xhr.onreadystatechange = function (oEvent) {  
     if (xhr.readyState === 4) {  
         if (xhr.status === 200) { 
@@ -287,7 +287,7 @@ var globalFuncs = function() {}
   
   globalFuncs.sendChallengeResponse = function (addr,signature,callback){
     var xhr = new XMLHttpRequest();
-    xhr.open('GET', jsc3l_customization.getEndpointAddress()+ globalFuncs.authChallenge+'?addr=' +encodeURIComponent(addr)+'&sign='+encodeURIComponent(signature), true); //
+    xhr.open('GET', jsc3l.customization.getEndpointAddress()+ globalFuncs.authChallenge+'?addr=' +encodeURIComponent(addr)+'&sign='+encodeURIComponent(signature), true); //
     xhr.onreadystatechange = function (oEvent) {  
     if (xhr.readyState === 4) {  
         if (xhr.status === 200) { 
@@ -308,7 +308,7 @@ var globalFuncs = function() {}
   
   globalFuncs.sendLogOff = function (callback){
     var xhr = new XMLHttpRequest();
-    xhr.open('GET', jsc3l_customization.getEndpointAddress()+ globalFuncs.authChallenge+'?addr=' +encodeURIComponent('0x0'), true); //
+    xhr.open('GET', jsc3l.customization.getEndpointAddress()+ globalFuncs.authChallenge+'?addr=' +encodeURIComponent('0x0'), true); //
     xhr.onreadystatechange = function (oEvent) {  
     if (xhr.readyState === 4) {  
         if (xhr.status === 200) { 
@@ -337,7 +337,7 @@ globalFuncs.loadWallet = function(wallet,callback){
     localStorage.removeItem("ComChainContactsInfo");
     localStorage.removeItem("ComChainMemos");
     if (!wallet.server || !wallet.server.name){
-        var new_name = jsc3l_customization.getCurencyName();
+        var new_name = jsc3l.customization.getCurencyName();
         
         if (new_name==''){    /*Fall back to avoid alreay created Monnaie-Leman account to provide the server name*/   
            new_name = "Monnaie-Leman"; 
@@ -355,11 +355,11 @@ globalFuncs.loadWallet = function(wallet,callback){
     if (server_name==''){
         callback(false);
     } else {
-        jsc3l_customization.getConfJSON(server_name,function(success){
+        jsc3l.customization.getConfJSON(server_name,function(success){
             if (success){
                 callback(success);
             } else {
-                 jsc3l_customization.getConfJSON(server_name, callback);
+                 jsc3l.customization.getConfJSON(server_name, callback);
             }
         });
         
@@ -380,7 +380,7 @@ globalFuncs.removeWallet = function(){
 /// Note checking 
 
 globalFuncs.isValidBNValue= function(value){
-    var notes = jsc3l_customization.getNoteValues();
+    var notes = jsc3l.customization.getNoteValues();
     if (notes && notes.length>0){
        for (var index in notes){
           if( Math.round(100*Number(value))== Math.round(100*Number(notes[index]))){
@@ -398,7 +398,7 @@ globalFuncs.isValidBNValue= function(value){
 
     globalFuncs.updateCss = function(){
         // replace the CSS references into the DOM
-        jsc3l_customization.updateCss();
+        jsc3l.customization.updateCss();
         globalFuncs.hideLoadingWaiting();
 
     }
@@ -406,7 +406,7 @@ globalFuncs.isValidBNValue= function(value){
     
     globalFuncs.currencies=conf_locale.server.currencies;
     globalFuncs.getCurrencies = function(){
-        globalFuncs.currencies=jsc3l_customization.getCurrencies();    
+        globalFuncs.currencies=jsc3l.customization.getCurrencies();    
     }
 
 
@@ -448,7 +448,7 @@ globalFuncs.parseAddress = function(text){
 
 globalFuncs.notify = function(title, text){
     
-    if (jsc3l_customization.isApp()){
+    if (jsc3l.customization.isApp()){
                 cordova.plugins.notification.local.schedule({
                     title: title,
                     message: text
@@ -485,7 +485,7 @@ globalFuncs.notifyApproval = function(){
    /* if (document.getElementsByClassName('trans')[0]){
             if (JSON.parse(localStorage.getItem('ComChainWallet'))){
                 var addresss = JSON.parse(localStorage.getItem('ComChainWallet')).address;
-                globalFuncs.getInfo(jsc3l_customization.getContract1(), globalFuncs.requestCount,addresss,function(count){
+                globalFuncs.getInfo(jsc3l.customization.getContract1(), globalFuncs.requestCount,addresss,function(count){
                     if (count>0){
                         document.getElementsByClassName('trans')[0].className = "trans alrt";
                     } else {
@@ -904,7 +904,7 @@ globalFuncs.generateSavePDF = function(title, key, address, callback){
             }
 
             
-           var the_arr = jsc3l_customization.getCssUrl().split('/');
+           var the_arr = jsc3l.customization.getCssUrl().split('/');
            the_arr.pop();
            the_arr.pop();
            newImg.src = the_arr.join('/')+"/images/lem.png";  
@@ -990,7 +990,7 @@ globalFuncs.generateCrPDF = function(title, on,assigned,validity,address,dest,co
             }
 
             
-            var the_arr = jsc3l_customization.getCssUrl().split('/');
+            var the_arr = jsc3l.customization.getCssUrl().split('/');
             the_arr.pop();
             the_arr.pop();
             newImg.src = the_arr.join('/')+"/images/lem.png";  
@@ -1037,7 +1037,7 @@ globalFuncs.generateSaveAdrPDF = function(walletAddress, callback){
             }
 
             
-            var the_arr = jsc3l_customization.getCssUrl().split('/');
+            var the_arr = jsc3l.customization.getCssUrl().split('/');
             the_arr.pop();
             the_arr.pop();
             newImg.src = the_arr.join('/')+"/images/ici.png";  
@@ -1131,7 +1131,7 @@ globalFuncs.generateTagsPDF = function(walletAddress, tags, callback){
             }
 
             
-            var the_arr = jsc3l_customization.getCssUrl().split('/');
+            var the_arr = jsc3l.customization.getCssUrl().split('/');
             the_arr.pop();
             the_arr.pop();
             newImg.src = the_arr.join('/')+"/images/lem.png";  
@@ -1356,7 +1356,7 @@ newImg.onload = function() {
 };
 
 
-   var the_arr = jsc3l_customization.getCssUrl().split('/');
+   var the_arr = jsc3l.customization.getCssUrl().split('/');
     the_arr.pop();
     the_arr.pop();
     newImg.src = the_arr.join('/')+"/images/etherwallet-logo.png";  
@@ -1464,7 +1464,7 @@ globalFuncs.hasConfig = function(){
      var show=false;
      if (!apiCheck){
          globalFuncs.doHide=false;
-         if (jsc3l_customization.getEndpointAddress()!=null && jsc3l_customization.getEndpointAddress() !='' ){
+         if (jsc3l.customization.getEndpointAddress()!=null && jsc3l.customization.getEndpointAddress() !='' ){
              show=true;
          }
      } else {

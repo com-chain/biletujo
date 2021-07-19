@@ -13,7 +13,7 @@ var tabsCtrl = function($scope, $attrs, globalService, contactservice, $translat
 
     
     $scope.loaded = false;
-    let connect_ok = await jsc3l.connection.ensureComChainRepo();
+    jsc3l.connection.ensureComChainRepo().then(async function(connect_ok) {
     if (!connect_ok){
         globalFuncs.hideLoadingWaiting (true);
         $scope.ng_ok=false;
@@ -22,7 +22,7 @@ var tabsCtrl = function($scope, $attrs, globalService, contactservice, $translat
 
         $scope.$apply();
     } else{
-        let success = await jsc3l.connection.acquireEndPoint();
+        const success = await jsc3l.connection.acquireEndPoint();
         if (!$scope.loaded) {
            if (success){
                    $scope.ng_ok=true;
@@ -53,7 +53,7 @@ var tabsCtrl = function($scope, $attrs, globalService, contactservice, $translat
               $scope.$apply();
         }
     }
-
+    });
 
     
    

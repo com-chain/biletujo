@@ -27,27 +27,27 @@ var globalCtrl = function($scope, $locale, $sce, walletService, $translate) {
             $scope.refresh();
     });
     
-    $scope.refresh = function(){
+    $scope.refresh = async function(){
         $scope.validateStatus='';
-        let status = await jsc3l.bcRead.getIsOwner($scope.wallet.getAddressString());
+        const status = await jsc3l.bcRead.getIsOwner($scope.wallet.getAddressString());
         $scope.is_owner = status==1;
         $scope.owner_account=$scope.wallet.getAddressString();
         $scope.load(); 
     }
     
-    $scope.load = function(){
+    $scope.load = async function(){
         globalFuncs.showLoading($translate.instant("GP_Wait"));
 
         $scope.CUR_nanti=globalFuncs.currencies.CUR_nanti;
 
         $scope.taxes_amount = await jsc3l.bcRead.getTaxAmount($scope.wallet.getAddressString());
         $scope.taxes_amount_leg = await jsc3l.bcRead.getLegTaxAmount($scope.wallet.getAddressString());
-        let acc = await jsc3l.bcRead.getTaxAccount();
-        let tot = await jsc3l.bcRead.getTotalAmount($scope.wallet.getAddressString());
-        let curr_status = await jsc3l.bcRead.getContractStatus();
-        $scope.is_curr_locked = curr_status==0;
-        $scope.total_amount = tot/100.0;
+        const acc = await jsc3l.bcRead.getTaxAccount();
         $scope.tax_account = '0x'+acc.substring(26, 67);
+        const tot = await jsc3l.bcRead.getTotalAmount($scope.wallet.getAddressString());
+        $scope.total_amount = tot/100.0;
+        const curr_status = await jsc3l.bcRead.getContractStatus();
+        $scope.is_curr_locked = curr_status==0;
         globalFuncs.hideLoadingWaiting();         
     }
      
@@ -57,9 +57,9 @@ var globalCtrl = function($scope, $locale, $sce, walletService, $translate) {
         $scope.confTaxPop.open();
     }
     
-    $scope.confirmTax = function(){
+    $scope.confirmTax = async function(){
         $scope.confTaxPop.close();
-        let res = await jsc3l.bcTransaction.SetTaxAmount($scope.wallet, $scope.new_tax_amount);
+        const res = await jsc3l.bcTransaction.SetTaxAmount($scope.wallet, $scope.new_tax_amount);
         if (res.isError){
             $scope.validateStatus= $sce.trustAsHtml(globalFuncs.getDangerText($translate.instant("GLB_Tax_amount_not_updated")));
         } else {
@@ -74,9 +74,9 @@ var globalCtrl = function($scope, $locale, $sce, walletService, $translate) {
         $scope.confTaxLegPop.open();
     }
     
-    $scope.confirmTaxLeg = function(){
+    $scope.confirmTaxLeg = async function(){
         $scope.confTaxLegPop.close();
-        let res = await jsc3l.bcTransaction.SetTaxLegAmount($scope.wallet, $scope.new_tax_amount_leg);
+        const res = await jsc3l.bcTransaction.SetTaxLegAmount($scope.wallet, $scope.new_tax_amount_leg);
         if (res.isError){
             $scope.validateStatus= $sce.trustAsHtml(globalFuncs.getDangerText($translate.instant("GLB_Tax_amount_not_updated")));
         } else {
@@ -92,8 +92,8 @@ var globalCtrl = function($scope, $locale, $sce, walletService, $translate) {
         $scope.confTaxAccountPop.open();
     }
     
-    $scope.confirmTaxAccount = function(){
-        let res = await jsc3l.bcTransaction.SetTaxAccount($scope.wallet, $scope.new_tax_account);
+    $scope.confirmTaxAccount = async function(){
+        const res = await jsc3l.bcTransaction.SetTaxAccount($scope.wallet, $scope.new_tax_account);
         if (res.isError){
             $scope.validateStatus= $sce.trustAsHtml(globalFuncs.getDangerText($translate.instant("GLB_Tax_account_not_updated")));
         } else {
@@ -109,8 +109,8 @@ var globalCtrl = function($scope, $locale, $sce, walletService, $translate) {
     }
     
     
-    $scope.confirmStatus = function() {
-       let res = await jsc3l.bcTransaction.SetContractStatus($scope.wallet, $scope.is_curr_locked);
+    $scope.confirmStatus = async function() {
+       const res = await jsc3l.bcTransaction.SetContractStatus($scope.wallet, $scope.is_curr_locked);
        if (res.isError){
             $scope.validateStatus= $sce.trustAsHtml(globalFuncs.getDangerText($translate.instant("GLB_status_not_updated")));
        } else {
@@ -127,8 +127,8 @@ var globalCtrl = function($scope, $locale, $sce, walletService, $translate) {
         $scope.confOwnerAccountPop.open();
     }
     
-     $scope.confirmOwnerAccount = function(){
-       let res = await jsc3l.bcTransaction.SetOwnerAccount($scope.wallet, $scope.new_owner_account);
+     $scope.confirmOwnerAccount = async function(){
+       const res = await jsc3l.bcTransaction.SetOwnerAccount($scope.wallet, $scope.new_owner_account);
        if (res.isError){
             $scope.validateStatus= $sce.trustAsHtml(globalFuncs.getDangerText($translate.instant("GLB_Owner_account_not_updated")));
        } else {

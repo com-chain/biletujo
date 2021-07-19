@@ -86,15 +86,15 @@ var walletGenCtrl = function($scope, $globalService, $translate, walletService, 
     };
     
     //  Validate autorization token
-    $scope.validateToken =function(){
+    $scope.validateToken = async function(){
         globalFuncs.showWaiting($scope.trans_message); // display the waiting overlay
         $scope.message_creation=''; // reset status message
         try {
             var enrollmentLetter = JSON.parse($scope.token); 
             if (enrollmentLetter.servername){
-                     let success = await jsc3l.customization.getConfJSON(enrollmentLetter.servername);
+                     const success = await jsc3l.customization.getConfJSON(enrollmentLetter.servername);
                      if (success){
-                     let data = await jsc3l_wallet.validateEnrollment(enrollmentLetter.id, enrollmentLetter.signature);
+                       const data = await jsc3l.wallet.validateEnrollment(enrollmentLetter.id, enrollmentLetter.signature).then(function(data) {
                         globalFuncs.hideLoadingWaiting(); // hide the waiting overlay
                         if (data.result=="OK"){
                            $scope.enrollmentLetter = enrollmentLetter; 
@@ -117,7 +117,8 @@ var walletGenCtrl = function($scope, $globalService, $translate, walletService, 
                            $scope.has_unlock  = false; //$scope.unlock_url.length;
                        }  else {
                            $scope.message_creation=globalFuncs.getDangerText($translate.instant("GEN_Token_validation_KO"));
-                       } 
+                       }
+                       });
                     }  else {
                          globalFuncs.hideLoadingWaiting(); // hide the waiting overlay
                          $scope.message_creation=globalFuncs.getDangerText($translate.instant("GEN_No_server"));
@@ -160,7 +161,7 @@ var walletGenCtrl = function($scope, $globalService, $translate, walletService, 
     }
     
     //  Create and enroll the wallet
-	$scope.createWallet = function() {
+	$scope.createWallet = async function() {
 		if (!$scope.isStrongPass()){
 			alert($translate.instant('ERROR_2'));
 		} else if($scope.isDone){ // protect against multiple click
@@ -169,16 +170,16 @@ var walletGenCtrl = function($scope, $globalService, $translate, walletService, 
             $scope.isDone = false;
             
             // local wallet generation & encryption with the provided password
+            // TODO: why these 2 assignation in a row ?
 			$scope.wallet = Wallet.generate(false); 
-			$scope.wallet = await jsc3l_wallet.createWallet();
-                $scope.wallet = wallet;
+			$scope.wallet = await jsc3l.wallet.createWallet();
                 try {
                     //Send (public) address to API (enroll the wallet)
-                    let success = await jsc3l.wallet.enrollAddress($scope.wallet, $scope.enrollmentLetter.id, $scope.enrollmentToken);
+                    const success = await jsc3l.wallet.enrollAddress($scope.wallet, $scope.enrollmentLetter.id, $scope.enrollmentToken);
                         if (sucess) {
                             
                             if ($scope.unlock_url != undefined && $scope.unlock_url!="") {
-                                   ajaxReq.requestUnlock($scope.wallet.getAddressString(),$scope.unlock_url,function(data){});
+                                   ajaxReq.requestUnlock($scope.wallet.getAddressString(),$scope.unlock_url);
                             }
                             
                             globalFuncs.loadWallet(jsc3l.wallet.encryptWallet($scope.wallet, $scope.password),function(success){
@@ -217,7 +218,6 @@ var walletGenCtrl = function($scope, $globalService, $translate, walletService, 
                              
                         }
                       
-                    });
                 } catch (e) {
                     $scope.message_creation=globalFuncs.getDangerText($translate.instant("GEN_Enrollment_Error"));  
                     $scope.isDone = true;
@@ -225,7 +225,6 @@ var walletGenCtrl = function($scope, $globalService, $translate, walletService, 
                 }
           
                
-            });   
 	    }
     }
     

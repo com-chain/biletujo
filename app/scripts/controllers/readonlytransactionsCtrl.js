@@ -109,7 +109,7 @@ var readonlytransactionsCtrl = function($scope, $locale, $sce, walletService,con
 	});
     
     
-    $scope.loadWatchedWallet = function() {
+    $scope.loadWatchedWallet = async function() {
         if ($scope.currentWalletAddress.toLowerCase() == $scope.watched_address.toLowerCase()) {
             $scope.show_bal=true;
             $scope.lock_date = false;
@@ -322,7 +322,7 @@ var readonlytransactionsCtrl = function($scope, $locale, $sce, walletService,con
     $scope.start_time =  0;
     $scope.end_time = 24;
     
-    $scope.addBalance = function(walletAddress,list,add_b, index){
+    $scope.addBalance = async function(walletAddress,list,add_b, index){
         if (index>=list.length){
             globalFuncs.generateTransPDF(walletAddress,
                                          list, 
@@ -355,7 +355,7 @@ var readonlytransactionsCtrl = function($scope, $locale, $sce, walletService,con
             
         } else {
             if (add_b) {
-                let value = await jsc3l.bcRead.getHistoricalGlobalBalance(walletAddress, list[index].data.block);
+                const value = await jsc3l.bcRead.getHistoricalGlobalBalance(walletAddress, list[index].data.block);
                 list[index].data.balance = value;
                 $scope.addBalance(walletAddress,list,add_b, index+1);
            
