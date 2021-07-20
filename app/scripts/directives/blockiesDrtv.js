@@ -8,7 +8,7 @@ var blockiesDrtv = function() {
             
              var img_add =img_id==1 ? 'images/lem.png' : 'images/qrclick.png';
              
-            var the_arr = jsc3l_customization.getCssUrl().split('/');
+            var the_arr = jsc3l.customization.getCssUrl().split('/');
             the_arr.pop();
             the_arr.pop();
             if (img_id==1){

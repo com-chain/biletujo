@@ -38,13 +38,14 @@ var viewWalletCtrl = function($scope, walletService, contactservice, $translate)
             
         });
         
-        let status = await jsc3l.bcRead.getAccountStatus($scope.wallet.getAddressString());
+        jsc3l.bcRead.getAccountStatus($scope.wallet.getAddressString()).then(function (status) {
         $scope.is_locked = status==0;
+        });
   
         
-        let curr_status = await jsc3l.bcRead.getContractStatus();
-        $scope.is_curr_locked = curr_status==0;
- 
+        jsc3l.bcRead.getContractStatus().then(function(status) {
+        $scope.is_curr_locked = status==0;
+        });
         
         $scope.currentAddress = $scope.wallet.getAddressString();
         $scope.current_QR_content = $scope.currentAddress;
@@ -160,13 +161,13 @@ var viewWalletCtrl = function($scope, walletService, contactservice, $translate)
     }
     
     // Perform the check
-    $scope.do_check = function(){
+    $scope.do_check = async function(){
         $scope.BN_Status=globalFuncs.getWarningText($translate.instant("BN_CheckingProgress"));
-        let status= await jsc3l.bcRead.getAccountStatus($scope.bnaddress);
+        const status= await jsc3l.bcRead.getAccountStatus($scope.bnaddress);
         if (status!=0){
           $scope.BN_Status=globalFuncs.getDangerText($translate.instant("BN_NotValid"));      
         } else {
-            let valuue = await jsc3l.bcRead.getGlobalBalance($scope.bnaddress);
+            const valuue = await jsc3l.bcRead.getGlobalBalance($scope.bnaddress);
             if (globalFuncs.isValidBNValue(value)){
                $scope.BN_Status=globalFuncs.getSuccessText($translate.instant("BN_Valid")+value+globalFuncs.currencies.CUR);    
             } else {

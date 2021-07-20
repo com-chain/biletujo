@@ -155,8 +155,8 @@ var decryptWalletCtrl = function($scope, $sce, $translate, walletService, contac
        
     }
     
-    $scope.setAPINode = function(){
-        let success = await jsc3l.connection.testNode($scope.api);
+    $scope.setAPINode = async function(){
+        const success = await jsc3l.connection.testNode($scope.api);
         if (success){
             // store the node 
             localStorage.setItem('ComChainAPI', $scope.api);
@@ -249,7 +249,7 @@ var decryptWalletCtrl = function($scope, $sce, $translate, walletService, contac
         location.reload();
     }
     
-	$scope.decryptWallet = function() {
+	$scope.decryptWallet = async function() {
         if (document.getElementById('passwdField').value=="SetApiNode"){
             document.getElementById('passwdField').value='';
              if (document.getElementById('setApiNode')){
@@ -277,9 +277,8 @@ var decryptWalletCtrl = function($scope, $sce, $translate, walletService, contac
             walletService.wallet = $scope.wallet;
             
             
-            complete_wall = await jsc3l.ensureWalletMessageKey($scope.wallet, $translate.instant('WALL_missing_message_key'));
-            $scope.wallet = complete_wall;
-            walletService.wallet = complete_wall;
+            $scope.wallet = await jsc3l.message.ensureWalletMessageKey($scope.wallet, $translate.instant('WALL_missing_message_key'));
+            walletService.wallet = $scope.wallet;
             
             localStorage.setItem('ComChainWallet',JSON.stringify(jsc3l.wallet.encryptWallet($scope.wallet, $scope.filePassword)));
 

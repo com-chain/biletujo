@@ -59,13 +59,12 @@ var exchangeCtrl = function($scope, $locale, $sce, walletService, $translate) {
     };
     
     
-    $scope.setBalance = function() {
+    $scope.setBalance = async function() {
         $scope.balance = await jsc3l.bcRead.getGlobalBalance($scope.selected_account);
         $scope.balanceEL = await jsc3l.bcRead.getNantBalance($scope.selected_account);
         $scope.balanceCM = await jsc3l.bcRead.getCmBalance($scope.selected_account);
-        let acc_type_value = await jsc3l.bcRead.getAccountType($scope.selected_account);
-        $scope.acc_type_obj.setType(acc_type_value);
-        let account_status = await jsc3l.bcRead.getAccountStatus($scope.selected_account);
+        $scope.acc_type_obj.setType(await jsc3l.bcRead.getAccountType($scope.selected_account));
+        const account_status = await jsc3l.bcRead.getAccountStatus($scope.selected_account);
         if (account_status==1){
             $scope.lock_status = $translate.instant("EXC_Unlocked");
             $scope.lock_button = $translate.instant("EXC_Lock");
@@ -77,7 +76,7 @@ var exchangeCtrl = function($scope, $locale, $sce, walletService, $translate) {
         }
         $scope.limitCMm = await jsc3l.bcRead.getCmLimitBelow($scope.selected_account);
         $scope.limitCMp = await jsc3l.bcRead.getCmLimitAbove($scope.selected_account);
-        let keys = await jsc3l.message.getMessageKey($scope.selected_account, false);
+        const keys = await jsc3l.message.getMessageKey($scope.selected_account, false);
         globalFuncs.hideLoadingWaiting();
         $scope.to_message_key = keys.public_message_key;
         if ( $scope.to_message_key === undefined) {
@@ -97,11 +96,11 @@ var exchangeCtrl = function($scope, $locale, $sce, walletService, $translate) {
 		    if (walletService.wallet == null) return null;
 
 		    return walletService.wallet.getAddressString();
-	    }, function() {
+	    }, async function() {
 		    if (walletService.wallet == null) return;
 		    $scope.wallet = walletService.wallet;
-            let type = await jsc3l.bcRead.getAccountType($scope.wallet.getAddressString());
-            let status = await jsc3l.bcRead.getAccountStatus($scope.wallet.getAddressString());
+            const type = await jsc3l.bcRead.getAccountType($scope.wallet.getAddressString());
+            const status = await jsc3l.bcRead.getAccountStatus($scope.wallet.getAddressString());
             $scope.is_admin = type==2 && status==1;
       
             
@@ -112,7 +111,7 @@ var exchangeCtrl = function($scope, $locale, $sce, walletService, $translate) {
             $scope.has_nant=jsc3l.customization.hasNant();
             $scope.has_credit_mut=jsc3l.customization.hasCM();
             
-            let curr_astatus = await jsc3l.bcRead.getContractStatus();
+            const curr_astatus = await jsc3l.bcRead.getContractStatus();
             $scope.is_curr_locked = curr_astatus==0;
          
         });
@@ -198,7 +197,7 @@ var exchangeCtrl = function($scope, $locale, $sce, walletService, $translate) {
         
     }
     
-    $scope.confirmUpdate = function(){
+    $scope.confirmUpdate = async function(){
        $scope.pop_message=''; 
        // check that the CM balance is compatible with the new type
        if ($scope.pop_acc_type==1 && $scope.balanceCM<0){
@@ -230,7 +229,7 @@ var exchangeCtrl = function($scope, $locale, $sce, walletService, $translate) {
              $scope.pop_limitCMm =0;
         }
         
-        let data = await jsc3l.bcTransaction.SetAccountParam($scope.wallet, 
+        const data = await jsc3l.bcTransaction.SetAccountParam($scope.wallet, 
                                     $scope.selected_account, 
                                     status, 
                                     $scope.pop_acc_type,  
@@ -257,7 +256,7 @@ var exchangeCtrl = function($scope, $locale, $sce, walletService, $translate) {
        }
    }
       
-   $scope.confirmCreditAccount = function(){
+   $scope.confirmCreditAccount = async function(){
        
         var data= {};
 
@@ -265,7 +264,7 @@ var exchangeCtrl = function($scope, $locale, $sce, walletService, $translate) {
             data['memo_to']= jsc3l.message.cipherMessage($scope.to_message_key.substring(2), $scope.message_to);
         }
 
-        let rawTx = jsc3l.bcTransaction.PledgeAccount($scope.wallet, $scope.selected_account, $scope.credit_amount, data);
+        const rawTx = await jsc3l.bcTransaction.PledgeAccount($scope.wallet, $scope.selected_account, $scope.credit_amount, data);
 
         if (rawTx.isError){
             $scope.acc_message = $sce.trustAsHtml(globalFuncs.getDangerText(rawTx.error));

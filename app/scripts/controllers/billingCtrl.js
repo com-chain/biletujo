@@ -48,20 +48,19 @@ var billingCtrl = function($scope, $locale, $sce, walletService, $translate) {
 		    if (walletService.wallet == null) return null;
 
 		    return walletService.wallet.getAddressString();
-	    }, function() {
+	    }, async function() {
 		    if (walletService.wallet == null) return;
 		    $scope.wallet = walletService.wallet;
-            let type = jsc3l.bcRead.getAccountType($scope.wallet.getAddressString());
-            let status = jsc3l.bcRead.getAccountStatus($scope.wallet.getAddressString());
-            $scope.is_admin = type==2 && status==1;
-              
-            
             $scope.CUR=globalFuncs.currencies.CUR;
             $scope.CUR_nanti=globalFuncs.currencies.CUR_nanti;
             $scope.CUR_credit_mut=globalFuncs.currencies.CUR_credit_mut;
             
             $scope.has_nant=jsc3l.customization.hasNant();
             $scope.has_credit_mut=jsc3l.customization.hasCM();
+
+            const type = await jsc3l.bcRead.getAccountType($scope.wallet.getAddressString());
+            const status = await jsc3l.bcRead.getAccountStatus($scope.wallet.getAddressString());
+            $scope.is_admin = type==2 && status==1;
         });
     
     ///////////////////////////////////
@@ -79,10 +78,10 @@ var billingCtrl = function($scope, $locale, $sce, walletService, $translate) {
         $scope.getAddressFromCode_popup.open();
     }
     
-    $scope.searchAddfromCode= function(){
+    $scope.searchAddfromCode= async function(){
         $scope.showCodeSearch = false;
         $scope.searchStatus=$translate.instant("BIL_SearchingCode");
-        $scope.getAddresses($scope.input_code, function(addre_list){
+        const addre_list = await $scope.getAddresses($scope.input_code)
             var loc_addressCode_list=[];
             for (var index=0; index<addre_list.length;index++){
                 loc_addressCode_list.push({"add":addre_list[index],"stat":$translate.instant("EXC_Locked")});
@@ -94,14 +93,13 @@ var billingCtrl = function($scope, $locale, $sce, walletService, $translate) {
                 $scope.searchStatus="";
             });
 
-        });
     }
     
-    $scope.getAccStatus = function(address_list,index,callback){
+    $scope.getAccStatus = async function(address_list,index,callback){
         if (index>=address_list.length){
             callback(address_list);
         } else {
-            let status = jsc3l.bcRead.getAccountStatus(address_list[index].add);
+            const status = await jsc3l.bcRead.getAccountStatus(address_list[index].add);
             if ( status==1){
                  address_list[index].stat = $translate.instant("EXC_Unlocked");
             }
@@ -292,23 +290,19 @@ var billingCtrl = function($scope, $locale, $sce, walletService, $translate) {
     $scope.account_type={};
     $scope.codes={};
     
-    $scope.addAccountToTypeDict = function(address,callback){
+    $scope.addAccountToTypeDict = async function(address){
         if (!(address in $scope.account_type)){
-            let type = jsc3l.bcRead.getAccountType(address);
+            const type = await jsc3l.bcRead.getAccountType(address);
             // peron=0 / legal=1/ admin=2
             $scope.account_type[address] = type;
-            callback();
         
-        } else {
-            callback();
         }
     }
     
-    $scope.addAccountListType = function(list, index, callback){
-        if (index >= list.length){
-            callback();
-        } else {
-            $scope.addAccountToTypeDict(list[index],function(){$scope.addAccountListType(list, index+1, callback);});
+    $scope.addAccountListType = async function(list, index){
+        if (index < list.length){
+          await $scope.addAccountToTypeDict(list[index])
+          $scope.addAccountListType(list, index+1);
         }
     }
     
@@ -319,8 +313,9 @@ var billingCtrl = function($scope, $locale, $sce, walletService, $translate) {
             callback($scope.account_type[address]);
         }  
     }
-    
-    $scope.getCodes = function(addresses,callback){
+    // TODO: doesn't seem to use it's callback
+    // TODO: consider to move to jsc3l
+    $scope.getCodes = async function(addresses,callback){
         var caller = $scope.wallet.getAddressString();
         var add= addresses.join(',');
         
@@ -328,7 +323,7 @@ var billingCtrl = function($scope, $locale, $sce, walletService, $translate) {
         var signature = ethUtil.ecsign(message_hash, $scope.wallet.getPrivateKey());
         var sign = ethUtil.bufferToHex(Buffer.concat([signature.r, signature.s, ethUtil.toBuffer(signature.v)]));
         
-         ajaxReq.getCodesFromAddresses(add, jsc3l.customization.getCurencyName(),caller, sign, function(data){
+        const data = await ajaxReq.getCodesFromAddresses(add, jsc3l.customization.getCurencyName(),caller, sign)
             for(var add_index=0; add_index<addresses.length; ++add_index){
                 var address = addresses[add_index];
                 if (address in data){
@@ -339,16 +334,16 @@ var billingCtrl = function($scope, $locale, $sce, walletService, $translate) {
             }
             $scope.code_completed = true;
             callback();
-         });      
     }
     
-     $scope.getAddresses = function(code, callback){
+    // TODO: consider to move to jsc3l
+     $scope.getAddresses = async function(code, callback){
         var caller = $scope.wallet.getAddressString();
         var message_hash = ethUtil.hashPersonalMessage(new Buffer(code));
         var signature = ethUtil.ecsign(message_hash, $scope.wallet.getPrivateKey());
         var sign = ethUtil.bufferToHex(Buffer.concat([signature.r, signature.s, ethUtil.toBuffer(signature.v)]));
         
-         ajaxReq.getAddressesFromCode(code, jsc3l.customization.getCurencyName(), caller, sign, function(data){
+       const  data = await jsc3l.ajaxReq.getAddressesFromCode(code, jsc3l.customization.getCurencyName(), caller, sign)
             var add_list = [];
             for (var ind = 0; ind < data.length; ++ind) {
                 if (data[ind].startsWith('0x')){
@@ -356,7 +351,6 @@ var billingCtrl = function($scope, $locale, $sce, walletService, $translate) {
                 }
             }
             callback(add_list);
-         });      
     }
     
     
@@ -447,7 +441,7 @@ var billingCtrl = function($scope, $locale, $sce, walletService, $translate) {
     
     
     
-    $scope.initializeExport = function(){
+    $scope.initializeExport = async function(){
         $scope.ExportData=[];
         
         $scope.start_date=new Date($scope.start_date.getFullYear(), $scope.start_date.getMonth(),  $scope.start_date.getDate(), 0, 0, 0, 0);
@@ -482,7 +476,7 @@ var billingCtrl = function($scope, $locale, $sce, walletService, $translate) {
             }
             
             
-            $scope.addAccountListType(add_list, 0, function(){
+            await $scope.addAccountListType(add_list, 0)
                 var current_result = {"Address":caller_add, "Code":'', 
                            "InPlNb":0, "InPlTot":0,
                            "InPerNaNb":0, "InPerNaTot": 0,
@@ -497,7 +491,6 @@ var billingCtrl = function($scope, $locale, $sce, walletService, $translate) {
                $scope.addTrans(caller_add, result, current_result, 0, function(final_res){
                    $scope.ExportData.push(final_res);
                });
-            });
          });
         }
         
