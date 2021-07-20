@@ -280,7 +280,7 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, gl
         }
         // TODO: access to ajaxReq to remove ?
         const blk_number = await jsc3l.ajaxReq.currBlock()
-            const res = await jsc3l.bcTransaction.TransfertNant($scope.wallet, $scope.tokenTx.to, $scope.elemanAmmount/100, data);
+            const res = await jsc3l.bcTransaction.TransferNant($scope.wallet, $scope.tokenTx.to, $scope.elemanAmmount/100, data);
             if (res.isError){
                 globalFuncs.hideLoadingWaiting();  
 		        $scope.err_message = $sce.trustAsHtml(globalFuncs.getDangerText($translate.instant(res.error)));
