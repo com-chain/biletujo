@@ -339,7 +339,7 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, gl
             data['parent_hash']=parent_hash;
         }
         
-        const res = await jsc3l.bcTransaction.TransfertCM($scope.wallet, $scope.tokenTx.to, $scope.lemanexAmmount/100, data);
+        const res = await jsc3l.bcTransaction.TransferCM($scope.wallet, $scope.tokenTx.to, $scope.lemanexAmmount/100, data);
         if (res.isError){
             globalFuncs.hideLoadingWaiting();  
 	        $scope.err_message = $sce.trustAsHtml(globalFuncs.getDangerText($translate.instant(res.error)));
@@ -605,7 +605,7 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, gl
                            $scope.delegationSendCallBack(res);
                       } else if (cur_tran_type=='cm'){
                              $scope.lemanexAmmount=value_cent;
-                             const res = await jsc3l.bcTransaction.TransfertOnBehalfCM($scope.wallet,
+                             const res = await jsc3l.bcTransaction.TransferOnBehalfCM($scope.wallet,
                                                                 $scope.origine_address, 
                                                                 $scope.tokenTx.to, 
                                                                 $scope.tokenTx.value,   
@@ -629,7 +629,7 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, gl
                       var cur_tran_type = globalFuncs.getTransCurrency($scope.from_nant_bal, $scope.from_cm_bal, $scope.from_cm_lim, value_cent);
                       if (cur_tran_type=='cm'){
                              $scope.lemanexAmmount=value_cent;
-                             const res = await jsc3l.bcTransaction.askTransfertCMFrom($scope.wallet, 
+                             const res = await jsc3l.bcTransaction.askTransferCMFrom($scope.wallet, 
                                                           $scope.wallet.getAddressString(), 
                                                           $scope.curr_from_add, 
                                                           $scope.tokenTx.value);
@@ -637,7 +637,7 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, gl
                       } else {
                           
                               $scope.elemanAmmount=value_cent;
-                              const res = await jsc3l.bcTransaction.askTransfertFrom($scope.wallet, 
+                              const res = await jsc3l.bcTransaction.askTransferFrom($scope.wallet, 
                                                           $scope.wallet.getAddressString(), 
                                                           $scope.curr_from_add, 
                                                           $scope.tokenTx.value);
