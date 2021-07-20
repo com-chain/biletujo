@@ -94,7 +94,7 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, gl
 		$scope.wallet = walletService.wallet;
        
         contactservice.loadContacts($scope.wallet, walletService.password, function(contact_list){
-            $scope.contacts = contactservice.filterContactForCurr(contact_list, jsc3l.customization.getCurencyName());
+            $scope.contacts = contactservice.filterContactForCurr(contact_list, jsc3l.customization.getCurrencyName());
             $scope.contacts_without_me = contactservice.hideContact($scope.contacts, $scope.wallet.getAddressString());
             $scope.filtered_contacts=$scope.contacts_without_me.slice();
             
@@ -876,7 +876,7 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, gl
            alert($translate.instant("EXC_unknow_address"));
       } else {
       
-          if ( add_obj.serverName &&  add_obj.serverName!=jsc3l.customization.getCurencyName()){
+          if ( add_obj.serverName &&  add_obj.serverName!=jsc3l.customization.getCurrencyName()){
               $scope.alrtNotSameCurrModal.open();
               return;
           }

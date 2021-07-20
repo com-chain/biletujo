@@ -166,7 +166,7 @@ var consultRightCtrl = function($scope, $sce, walletService, contactservice, con
     
     
     var obj_content = {"address":$scope.currentAddress, 
-              "server":jsc3l.customization.getCurencyName(), 
+              "server":jsc3l.customization.getCurrencyName(), 
               "destinary":$scope.dest,
               "begin":$scope.start_date.getFullYear()+ "/" + $scope.start_date.getMonth()+"/" + $scope.start_date.getDate(), 
               "end":$scope.end_date.getFullYear()+ "/" + $scope.end_date.getMonth()+"/" + $scope.end_date.getDate(), 

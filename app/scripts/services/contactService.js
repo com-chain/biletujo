@@ -127,7 +127,7 @@ var contactService = function() {
             contacts[index].name = name;
           }
       } else {
-          contacts.push( {name:name,address:address,servername:jsc3l.customization.getCurencyName()});
+          contacts.push( {name:name,address:address,servername:jsc3l.customization.getCurrencyName()});
       }
       
       contacts.sort(function(a,b){return a.name.localeCompare(b.name); });

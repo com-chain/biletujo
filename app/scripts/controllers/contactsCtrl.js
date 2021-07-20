@@ -54,7 +54,7 @@ var contactesCtrl = function($scope, $sce, walletService, contactservice, global
       for (var id in $scope.contacts){
           try{
               $scope.contacts[id].logo = jsc3l.customization.getCurrencyLogoUrl( $scope.contacts[id].servername);
-              $scope.contacts[id].has_logo = $scope.contacts[id].logo !='' && $scope.contacts[id].servername!=jsc3l.customization.getCurencyName();
+              $scope.contacts[id].has_logo = $scope.contacts[id].logo !='' && $scope.contacts[id].servername!=jsc3l.customization.getCurrencyName();
           } catch(e){}
       }
       

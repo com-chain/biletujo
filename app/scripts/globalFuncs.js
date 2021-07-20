@@ -337,7 +337,7 @@ globalFuncs.loadWallet = function(wallet,callback){
     localStorage.removeItem("ComChainContactsInfo");
     localStorage.removeItem("ComChainMemos");
     if (!wallet.server || !wallet.server.name){
-        var new_name = jsc3l.customization.getCurencyName();
+        var new_name = jsc3l.customization.getCurrencyName();
         
         if (new_name==''){    /*Fall back to avoid alreay created Monnaie-Leman account to provide the server name*/   
            new_name = "Monnaie-Leman"; 

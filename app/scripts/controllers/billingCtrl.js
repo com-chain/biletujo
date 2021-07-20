@@ -323,7 +323,7 @@ var billingCtrl = function($scope, $locale, $sce, walletService, $translate) {
         var signature = ethUtil.ecsign(message_hash, $scope.wallet.getPrivateKey());
         var sign = ethUtil.bufferToHex(Buffer.concat([signature.r, signature.s, ethUtil.toBuffer(signature.v)]));
         
-        const data = await ajaxReq.getCodesFromAddresses(add, jsc3l.customization.getCurencyName(),caller, sign)
+        const data = await ajaxReq.getCodesFromAddresses(add, jsc3l.customization.getCurrencyName(),caller, sign)
             for(var add_index=0; add_index<addresses.length; ++add_index){
                 var address = addresses[add_index];
                 if (address in data){
@@ -343,7 +343,7 @@ var billingCtrl = function($scope, $locale, $sce, walletService, $translate) {
         var signature = ethUtil.ecsign(message_hash, $scope.wallet.getPrivateKey());
         var sign = ethUtil.bufferToHex(Buffer.concat([signature.r, signature.s, ethUtil.toBuffer(signature.v)]));
         
-       const  data = await jsc3l.ajaxReq.getAddressesFromCode(code, jsc3l.customization.getCurencyName(), caller, sign)
+       const  data = await jsc3l.ajaxReq.getAddressesFromCode(code, jsc3l.customization.getCurrencyName(), caller, sign)
             var add_list = [];
             for (var ind = 0; ind < data.length; ++ind) {
                 if (data[ind].startsWith('0x')){

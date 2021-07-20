@@ -90,7 +90,7 @@ var balanceCtrl = function($scope, $locale, $sce, walletService,contactservice, 
 		$scope.wallet = walletService.wallet;
         $scope.wallet.message_key = JSON.parse(localStorage.getItem('ComChainWallet')).message_key;
         contactservice.loadContacts($scope.wallet, walletService.password, function(contact_list){
-            var filtered_list = contactservice.filterContactForCurr(contact_list, jsc3l.customization.getCurencyName());
+            var filtered_list = contactservice.filterContactForCurr(contact_list, jsc3l.customization.getCurrencyName());
             
             var my_name =  contactservice.getContactName(filtered_list, $scope.wallet.getAddressString());
             if (my_name!=''){
@@ -756,7 +756,7 @@ var balanceCtrl = function($scope, $locale, $sce, walletService,contactservice, 
     var mess_keys = jsc3l.message.messageKeysFromWallet($scope.wallet);
     
     var obj_content = {"address":$scope.wallet.getAddressString(), 
-              "server":jsc3l.customization.getCurencyName(), 
+              "server":jsc3l.customization.getCurrencyName(), 
               "destinary":$scope.dest,
               "begin":$scope.start_date.getFullYear()+ "/" + ($scope.start_date.getMonth()+1)+"/" + $scope.start_date.getDate(), 
               "end":$scope.end_date.getFullYear()+ "/" + ($scope.end_date.getMonth()+1)+"/" + $scope.end_date.getDate(), 
@@ -875,7 +875,7 @@ $scope.showContent = function(content) {
            // check the validity 
            if (obj.data.destinary!=$scope.wallet.getAddressString()){
                $scope.openStatus = $sce.trustAsHtml(globalFuncs.getDangerText($translate.instant('OPEN_right_not_for_you'))); 
-           } else if (obj.data.server!=jsc3l.customization.getCurencyName()){
+           } else if (obj.data.server!=jsc3l.customization.getCurrencyName()){
                $scope.openStatus = $sce.trustAsHtml(globalFuncs.getDangerText($translate.instant('OPEN_right_not_right_server'))); 
            } else if ((new Date(obj.data.end)).getTime()< (new Date()).getTime()){   
                 $scope.openStatus = $sce.trustAsHtml(globalFuncs.getDangerText($translate.instant('OPEN_too_old_right'))); 
