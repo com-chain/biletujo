@@ -597,7 +597,7 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, gl
                       
                       if (cur_tran_type=='nant'){
                             $scope.elemanAmmount=value_cent;
-                            const res = await jsc3l.bcTransaction.TransfertOnBehalfNant($scope.wallet,
+                            const res = await jsc3l.bcTransaction.TransferOnBehalfNant($scope.wallet,
                                                                 $scope.origine_address, 
                                                                 $scope.tokenTx.to, 
                                                                 $scope.tokenTx.value,  
