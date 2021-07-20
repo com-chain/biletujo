@@ -4,7 +4,7 @@ var contactService = function() {
  
 
     
-    function loadContacts(wallet, pass, callback){
+    async function loadContacts(wallet, pass){
       // load local
       try{
           var contacts = JSON.parse(localStorage.getItem('ComChainContacts')); 
@@ -22,13 +22,12 @@ var contactService = function() {
           infos = {"hash":"","length":"0"};
       }
       
-      //  get remote infos
-      globalFuncs.getContactHash(wallet.getAddressString(), function(hash){
+           //  get remote infos
            // get the crypted data
-           var str_hash = hexa_to_ascii(hash);
+           var str_hash = hexa_to_ascii(await globalFuncs.getContactHash(wallet.getAddressString()));
           // console.log("Contacts are locally stored with hash "+infos.hash+" and remotely with hash : "+ str_hash)
            if (infos.hash == str_hash && infos.length>0 && contacts.length==infos.length){
-              callback(contacts);
+              return contacts;
            } else {
               globalFuncs.readFromIpfs(str_hash,function(crypted_list){
                if (crypted_list && crypted_list.data){
@@ -39,16 +38,15 @@ var contactService = function() {
                        var ipfs_contacts = JSON.parse(decodeURIComponent(escape(window.atob( uncypher))));
                        console.log("Retrieved "+ipfs_contacts.length+" contacts with hash  : "+ str_hash)
                        storeContacts(ipfs_contacts, str_hash);
-                       callback(ipfs_contacts);
+                       return ipfs_contacts;
                    } catch(e){
-                    callback(contacts);
+                    return contacts;
                    }
                } else {
-                callback(contacts);
+                return contacts;
                }
            }) 
          }
-      });
     }
     
     function storeContacts(contacts, hash){

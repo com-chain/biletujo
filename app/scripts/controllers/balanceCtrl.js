@@ -89,7 +89,7 @@ var balanceCtrl = function($scope, $locale, $sce, walletService,contactservice, 
 		if (walletService.wallet == null) return;
 		$scope.wallet = walletService.wallet;
         $scope.wallet.message_key = JSON.parse(localStorage.getItem('ComChainWallet')).message_key;
-        contactservice.loadContacts($scope.wallet, walletService.password, function(contact_list){
+        contactservice.loadContacts($scope.wallet, walletService.password).then(function(contact_list){
             var filtered_list = contactservice.filterContactForCurr(contact_list, jsc3l.customization.getCurrencyName());
             
             var my_name =  contactservice.getContactName(filtered_list, $scope.wallet.getAddressString());
@@ -684,13 +684,13 @@ var balanceCtrl = function($scope, $locale, $sce, walletService,contactservice, 
 
       globalFuncs.showWaiting($scope.trans_message);
       
-      $scope.interval_id = setInterval(function(){
-          ajaxReq.getBlock(transaction_ash, function(block_json){
+      $scope.interval_id = setInterval(async function(){
+
+          const block_json = await ajaxReq.getBlock(transaction_ash)
               // CHANGE BEHAVIOR: HIDE DIRECTLY THE WEELS
               // if (block_json.blockNumber && block_json.blockNumber.startsWith('0x')){
                  $scope.recievedTransaction();
               //}
-          });
       },5000);  
   }  
   

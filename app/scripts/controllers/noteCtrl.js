@@ -188,12 +188,11 @@ var noteCtrl = function($scope, $locale, $sce, walletService, $translate) {
           $scope.interval_id=null;
       }
       
-      $scope.interval_id = setInterval(function(){
-          ajaxReq.getBlock(transaction_ash, function(block_json){
+      $scope.interval_id = setInterval(async function(){
+          const block_json = await jsc3l.ajaxReq.getBlock(transaction_ash)
               if (block_json.blockNumber && block_json.blockNumber.startsWith('0x')){
                  $scope.recievedTransaction();
               }
-          });
       },5000);  
   }  
 

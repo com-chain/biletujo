@@ -187,21 +187,20 @@ var globalFuncs = function() {}
                             callback);       
  }
  
- globalFuncs.getContactHash = function(walletAddress,callback){
+ globalFuncs.getContactHash = async function(walletAddress,callback){
         var userInfo = ethFuncs.getDataObj(jsc3l.customization.getContract3(),  globalFuncs.contactsOf, [ethFuncs.getNakedAddress(walletAddress)]);
-		ajaxReq.getEthCall(userInfo, function(data) {
+        const data = await jsc3l.ajaxReq.getEthCall(userInfo)
             if (!data.error) {
                 var length_str = data.data.substring(66,130);
                 var length = 2*globalFuncs.getNumber(length_str,1);
                 var hash = data.data.substring(130,130+length);
 			    callback(hash);  
 		    }
-		});        
   }
   
   globalFuncs.getMemoHash = function(walletAddress,callback){
         var userInfo = ethFuncs.getDataObj(jsc3l.customization.getContract3(),  globalFuncs.memosOf, [ethFuncs.getNakedAddress(walletAddress)]);
-		ajaxReq.getEthCall(userInfo, function(data) {
+	    jsc3l.ajaxReq.getEthCall(userInfo).then(function(data) {
             if (!data.error) {
 			    var length_str = data.data.substring(66,130);
                 var length = 2*globalFuncs.getNumber(length_str,1);

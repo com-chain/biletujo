@@ -323,7 +323,7 @@ var billingCtrl = function($scope, $locale, $sce, walletService, $translate) {
         var signature = ethUtil.ecsign(message_hash, $scope.wallet.getPrivateKey());
         var sign = ethUtil.bufferToHex(Buffer.concat([signature.r, signature.s, ethUtil.toBuffer(signature.v)]));
         
-        const data = await ajaxReq.getCodesFromAddresses(add, jsc3l.customization.getCurrencyName(),caller, sign)
+        const data = await jsc3l.ajaxReq.getCodesFromAddresses(add, jsc3l.customization.getCurrencyName(),caller, sign)
             for(var add_index=0; add_index<addresses.length; ++add_index){
                 var address = addresses[add_index];
                 if (address in data){
@@ -459,7 +459,7 @@ var billingCtrl = function($scope, $locale, $sce, walletService, $translate) {
         
         for(var add_index=0; add_index<$scope.addree_list.length; ++add_index){
             var add = $scope.addree_list[add_index];
-            ajaxReq.getExportTransListWithId(add,d_start,d_end, function(result,caller_add){
+            jsc3l.ajaxReq.getExportTransListWithId(add,d_start,d_end).then(async function(result,caller_add){
              
             // get the account types:
 

@@ -93,7 +93,6 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, gl
 		if (walletService.wallet == null) return;
 		$scope.wallet = walletService.wallet;
        
-        contactservice.loadContacts($scope.wallet, walletService.password, function(contact_list){
             $scope.contacts = contactservice.filterContactForCurr(contact_list, jsc3l.customization.getCurrencyName());
             $scope.contacts_without_me = contactservice.hideContact($scope.contacts, $scope.wallet.getAddressString());
             $scope.filtered_contacts=$scope.contacts_without_me.slice();
@@ -308,14 +307,13 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, gl
   
     // Wait at least 5 sec (and the next block) before to send the second part of the splitted transaction
      $scope.splitedSecondPart = function(curr_block, attempt, hash_first) {
-         setTimeout(function(){
-              ajaxReq.currBlock( function(new_block){
+         setTimeout(async function(){
+             const new_block = await jsc3l.ajaxReq.currBlock()
                  if (new_block != curr_block || attempt > 3) {
                      $scope.splitted_second_ready(hash_first);
                  } else {
                     $scope.splitedSecondPart(curr_block, attempt+1, hash_first); 
                  }
-             });
           },5000);  
           
      }
@@ -983,14 +981,13 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, gl
       
       globalFuncs.showWaiting($scope.trans_message);
       
-      $scope.interval_id = setInterval(function(){
-          ajaxReq.getBlock(transaction_ash, function(block_json){
+      $scope.interval_id = setInterval(async function(){
+          const block_json = await jsc3l.ajaxReq.getBlock(transaction_ash)
               // CHANGE BEHAVIOR: HIDE DIRECTLY THE WEELS
               //if (block_json.blockNumber && block_json.blockNumber.startsWith('0x')){
               
                  $scope.recievedTransaction();
               //}
-          });
       },5000);  
   }  
   

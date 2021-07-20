@@ -31,12 +31,12 @@ Token.prototype.getBalanceBN = function() {
 Token.prototype.setBalance = function() {
 	var balanceCall = ethFuncs.getDataObj(this.contractAddress, Token.balanceHex, [ethFuncs.getNakedAddress(this.userAddress)]);
 	var parentObj = this;
-	ajaxReq.getEthCall(balanceCall, function(data) {
+    jsc3l.ajaxReq.getEthCall(balanceCall).then(function(data) {
 		if (!data.error) {
 			parentObj.balance = new BigNumber(data.data).div(new BigNumber(10).pow(parentObj.getDecimal())).toString();
 			parentObj.balanceBN = new BigNumber(data.data).toString();
 		}
-	});
+    });
 }
 Token.prototype.getData = function(toAdd, value) {
 	try {

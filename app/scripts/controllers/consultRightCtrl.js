@@ -37,7 +37,7 @@ var consultRightCtrl = function($scope, $sce, walletService, contactservice, con
 		if (walletService.wallet == null) return;
 		$scope.wallet = walletService.wallet;
         $scope.currentAddress = $scope.wallet.getAddressString();
-        contactservice.loadContacts($scope.wallet, walletService.password, function(contact_list){
+        contactservice.loadContacts($scope.wallet, walletService.password).then(function(contact_list){
             $scope.contacts = contact_list; 
             $scope.getAccName($scope.wallet.getAddressString());
             
