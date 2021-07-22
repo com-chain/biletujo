@@ -156,15 +156,19 @@ gulp.task('css',['less','copy-images'], function () {
 var htmlPages = "./app/layouts/*.html";
 var tplFiles = "./app/includes/*.tpl";
 
-gulp.task('buildHTML', function () {
-    gulp.src(htmlPages)
+
+gulp.task('distHTML', function () {
+    return gulp.src(htmlPages)
       .pipe(fileinclude({
         prefix: '@@',
         basepath: '@file'
       }))
     .pipe(gulp.dest('./dist/html/'));
-    
-    gulp.src('./dist/html/index.html')
+});
+
+gulp.task('buildHTML', ['distHTML'], function () {
+
+  gulp.src('./dist/html/index.html')
     .pipe(gulp.dest(output_android +'www/')) 
     .pipe(notify({message:'Cordova HTML Pages Complete', onLast:true}));;
     
