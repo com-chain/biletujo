@@ -16,6 +16,10 @@ var uglify = require('gulp-uglify');
 var shell = require('gulp-shell');
 var fileinclude = require('gulp-file-include');
 var babel = require("gulp-babel");
+const sourcemaps = require('gulp-sourcemaps');
+const browserify = require('browserify');
+var source = require('vinyl-source-stream');
+var buffer = require('vinyl-buffer');
 
 
 var output_android =  './cordova_dist/';
@@ -76,8 +80,9 @@ gulp.task('staticJS', function () {
 gulp.task('minJS',['browserify'],function () {
   return gulp
     .src('./dist/js/etherwallet-master.js')
-      .pipe(babel())
+      .pipe(sourcemaps.init({loadMaps: true}))
       .pipe(concat('etherwallet-master-min.js'))
+      .pipe(sourcemaps.write('.'))
       .pipe(gulp.dest(output_android+jsOutputFolder))
       .pipe(gulp.dest(output_exchange_office+jsOutputFolder))
       .pipe(notify('Cordova MinJS Complete'));
@@ -85,6 +90,7 @@ gulp.task('minJS',['browserify'],function () {
 
 gulp.task('babelify', () => {
   return gulp.src(AllJsFiles)
+    .pipe(sourcemaps.init())
 	.pipe(babel({
 	  presets: ['@babel/preset-env'],
       "plugins": [
@@ -93,15 +99,20 @@ gulp.task('babelify', () => {
         }]
       ]
 	}))
+    .pipe(sourcemaps.write('.'))
 	.pipe(gulp.dest('build'))
 });
 
 
-// Browserify
-gulp.task('browserify', ['babelify'], shell.task([
-  'mkdir -p dist/js',
-  'browserify '+mainjs+' -o dist/js/etherwallet-master.js'
-]));
+gulp.task('browserify', ['babelify'], () => {
+  return browserify(mainjs, { debug: true }).bundle()
+    .pipe(source(mainjs))
+    .pipe(buffer())
+    .pipe(sourcemaps.init({loadMaps: true}))
+    .pipe(concat('etherwallet-master.js'))
+    .pipe(sourcemaps.write('.'))
+	.pipe(gulp.dest('dist/js'))
+});
 
 
 // Copy Images
