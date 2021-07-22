@@ -99,7 +99,7 @@ var memoService = function() {
     
      function loadIpfsMemos(wallet,pass){
        // get the hash storing the crypted data
-       globalFuncs.getMemoHash(wallet.getAddressString(), function(hash){
+       globalFuncs.getMemoHash(wallet.getAddressString()).then(function(hash){
            // get the crypted data
            var str_hash = hexa_to_ascii(hash);
            globalFuncs.readFromIpfs(str_hash,function(crypted_list){

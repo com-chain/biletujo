@@ -190,24 +190,19 @@ var globalFuncs = function() {}
  globalFuncs.getContactHash = async function(walletAddress,callback){
         var userInfo = jsc3l.ethFuncs.getDataObj(jsc3l.customization.getContract3(),  globalFuncs.contactsOf, [jsc3l.ethFuncs.getNakedAddress(walletAddress)]);
         const data = await jsc3l.ajaxReq.getEthCall(userInfo)
-            if (!data.error) {
-                var length_str = data.data.substring(66,130);
+                var length_str = data.substring(66,130);
                 var length = 2*globalFuncs.getNumber(length_str,1);
-                var hash = data.data.substring(130,130+length);
-			    callback(hash);  
-		    }
+                var hash = data.substring(130,130+length);
+			    return hash;
   }
   
-  globalFuncs.getMemoHash = function(walletAddress,callback){
+  globalFuncs.getMemoHash = async function(walletAddress,callback){
         var userInfo = jsc3l.ethFuncs.getDataObj(jsc3l.customization.getContract3(),  globalFuncs.memosOf, [jsc3l.ethFuncs.getNakedAddress(walletAddress)]);
-	    jsc3l.ajaxReq.getEthCall(userInfo).then(function(data) {
-            if (!data.error) {
-			    var length_str = data.data.substring(66,130);
+	    const data = await jsc3l.ajaxReq.getEthCall(userInfo)
+			    var length_str = data.substring(66,130);
                 var length = 2*globalFuncs.getNumber(length_str,1);
-                var hash = data.data.substring(130,130+length);
-			    callback(hash);  
-		    }
-		});        
+                var hash = data.substring(130,130+length);
+			    return hash;
   }
   
  

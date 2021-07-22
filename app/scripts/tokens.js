@@ -32,10 +32,8 @@ Token.prototype.setBalance = function() {
 	var balanceCall = jsc3l.ethFuncs.getDataObj(this.contractAddress, Token.balanceHex, [jsc3l.ethFuncs.getNakedAddress(this.userAddress)]);
 	var parentObj = this;
     jsc3l.ajaxReq.getEthCall(balanceCall).then(function(data) {
-		if (!data.error) {
-			parentObj.balance = new BigNumber(data.data).div(new BigNumber(10).pow(parentObj.getDecimal())).toString();
-			parentObj.balanceBN = new BigNumber(data.data).toString();
-		}
+			parentObj.balance = new BigNumber(data).div(new BigNumber(10).pow(parentObj.getDecimal())).toString();
+			parentObj.balanceBN = new BigNumber(data).toString();
     });
 }
 Token.prototype.getData = function(toAdd, value) {
