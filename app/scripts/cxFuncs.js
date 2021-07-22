@@ -23,7 +23,7 @@ cxFuncs.addWalletToStorage = function(address, encStr, nickname, callback) {
 		priv: encStr,
 		type: 'wallet'
 	};
-	var keyname = ethUtil.toChecksumAddress(address);
+	var keyname = jsc3l.ethUtil.toChecksumAddress(address);
 	var obj = {};
 	obj[keyname] = JSON.stringify(value);
 	this.storage.set(obj, callback);
@@ -34,7 +34,7 @@ cxFuncs.addWatchOnlyAddress = function(address, nickname, callback) {
 		nick: nickname,
 		type: 'watchOnly'
 	};
-	var keyname = ethUtil.toChecksumAddress(address);;
+	var keyname = jsc3l.ethUtil.toChecksumAddress(address);;
 	var obj = {};
 	obj[keyname] = JSON.stringify(value);
 	this.storage.set(obj, callback);

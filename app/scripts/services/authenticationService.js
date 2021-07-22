@@ -23,10 +23,10 @@ var authenticationService = function() {
 	           }
 	           var address = addr.getAddressString();
 	           var challenge = authChallenge
-	           var msg=ethUtil.toBuffer(challenge);
-	           var msgHash = ethUtil.hashPersonalMessage(msg);
-	           var signature = ethUtil.ecsign(msgHash,addr.getPrivateKey());
-               var sign = ethUtil.bufferToHex(Buffer.concat([ signature.r, signature.s, ethUtil.toBuffer(signature.v) ]))
+	           var msg=jsc3l.ethUtil.toBuffer(challenge);
+	           var msgHash = jsc3l.ethUtil.hashPersonalMessage(msg);
+	           var signature = jsc3l.ethUtil.ecsign(msgHash,addr.getPrivateKey());
+               var sign = jsc3l.ethUtil.bufferToHex(Buffer.concat([ signature.r, signature.s, jsc3l.ethUtil.toBuffer(signature.v) ]))
 	           console.log('Signature: ' + sign);
 	           sendAuthResponse(address,sign);
            });

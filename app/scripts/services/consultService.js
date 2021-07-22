@@ -44,11 +44,11 @@ var consultService = function() {
 
                 // get the hash
                 var str_content = JSON.stringify(consult.data);
-                var hash = ethUtil.sha3(str_content);
+                var hash = jsc3l.ethUtil.sha3(str_content);
                 
                 // check the signature
-                var public_sign_key = ethUtil.ecrecover(hash, v, r, s);
-                var rec_address = ethUtil.bufferToHex(ethUtil.publicToAddress(public_sign_key));
+                var public_sign_key = jsc3l.ethUtil.ecrecover(hash, v, r, s);
+                var rec_address = jsc3l.ethUtil.bufferToHex(jsc3l.ethUtil.publicToAddress(public_sign_key));
                 
                 if (rec_address == consult.data.address && 
                     consult.data.destinary == address && 

@@ -319,9 +319,9 @@ var billingCtrl = function($scope, $locale, $sce, walletService, $translate) {
         var caller = $scope.wallet.getAddressString();
         var add= addresses.join(',');
         
-        var message_hash = ethUtil.hashPersonalMessage(new Buffer(add));
-        var signature = ethUtil.ecsign(message_hash, $scope.wallet.getPrivateKey());
-        var sign = ethUtil.bufferToHex(Buffer.concat([signature.r, signature.s, ethUtil.toBuffer(signature.v)]));
+        var message_hash = jsc3l.ethUtil.hashPersonalMessage(new Buffer(add));
+        var signature = jsc3l.ethUtil.ecsign(message_hash, $scope.wallet.getPrivateKey());
+        var sign = jsc3l.ethUtil.bufferToHex(Buffer.concat([signature.r, signature.s, jsc3l.ethUtil.toBuffer(signature.v)]));
         
         const data = await jsc3l.ajaxReq.getCodesFromAddresses(add, jsc3l.customization.getCurrencyName(),caller, sign)
             for(var add_index=0; add_index<addresses.length; ++add_index){
@@ -339,9 +339,9 @@ var billingCtrl = function($scope, $locale, $sce, walletService, $translate) {
     // TODO: consider to move to jsc3l
      $scope.getAddresses = async function(code, callback){
         var caller = $scope.wallet.getAddressString();
-        var message_hash = ethUtil.hashPersonalMessage(new Buffer(code));
-        var signature = ethUtil.ecsign(message_hash, $scope.wallet.getPrivateKey());
-        var sign = ethUtil.bufferToHex(Buffer.concat([signature.r, signature.s, ethUtil.toBuffer(signature.v)]));
+        var message_hash = jsc3l.ethUtil.hashPersonalMessage(new Buffer(code));
+        var signature = jsc3l.ethUtil.ecsign(message_hash, $scope.wallet.getPrivateKey());
+        var sign = jsc3l.ethUtil.bufferToHex(Buffer.concat([signature.r, signature.s, jsc3l.ethUtil.toBuffer(signature.v)]));
         
        const  data = await jsc3l.ajaxReq.getAddressesFromCode(code, jsc3l.customization.getCurrencyName(), caller, sign)
             var add_list = [];

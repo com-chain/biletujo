@@ -772,8 +772,8 @@ var balanceCtrl = function($scope, $locale, $sce, walletService,contactservice, 
     
     
     var str_content = JSON.stringify(obj_content);
-    var hash = ethUtil.sha3(str_content);
-    var signature = ethUtil.ecsign(hash, $scope.wallet.privKey);
+    var hash = jsc3l.ethUtil.sha3(str_content);
+    var signature = jsc3l.ethUtil.ecsign(hash, $scope.wallet.privKey);
     var output = {"data":obj_content, "signature":{ "v":signature.v,
     "r":'0x' + signature.r.toString('hex'),
     "s":'0x' + signature.s.toString('hex')}};
@@ -864,11 +864,11 @@ $scope.showContent = function(content) {
 
         // get the hash
         var str_content = JSON.stringify(obj.data);
-        var hash = ethUtil.sha3(str_content);
+        var hash = jsc3l.ethUtil.sha3(str_content);
         
         // check the signature
-        var public_sign_key = ethUtil.ecrecover(hash, v, r, s);
-        var rec_address = ethUtil.bufferToHex(ethUtil.publicToAddress(public_sign_key));
+        var public_sign_key = jsc3l.ethUtil.ecrecover(hash, v, r, s);
+        var rec_address = jsc3l.ethUtil.bufferToHex(jsc3l.ethUtil.publicToAddress(public_sign_key));
         if (rec_address != obj.data.address) {
             $scope.openStatus = $sce.trustAsHtml(globalFuncs.getDangerText($translate.instant('OPEN_not_right_sign')));    
         } else {
