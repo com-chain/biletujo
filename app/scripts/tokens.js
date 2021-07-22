@@ -29,7 +29,7 @@ Token.prototype.getBalanceBN = function() {
 	return this.balanceBN;
 }
 Token.prototype.setBalance = function() {
-	var balanceCall = ethFuncs.getDataObj(this.contractAddress, Token.balanceHex, [ethFuncs.getNakedAddress(this.userAddress)]);
+	var balanceCall = jsc3l.ethFuncs.getDataObj(this.contractAddress, Token.balanceHex, [jsc3l.ethFuncs.getNakedAddress(this.userAddress)]);
 	var parentObj = this;
     jsc3l.ajaxReq.getEthCall(balanceCall).then(function(data) {
 		if (!data.error) {
@@ -40,10 +40,10 @@ Token.prototype.setBalance = function() {
 }
 Token.prototype.getData = function(toAdd, value) {
 	try {
-		if (!ethFuncs.validateEtherAddress(toAdd)) throw 'ERROR_6';
+		if (!jsc3l.ethFuncs.validateEtherAddress(toAdd)) throw 'ERROR_6';
 		else if (!globalFuncs.isNumeric(value) || parseFloat(value) < 0) throw 'ERROR_8';
-		var value = ethFuncs.padLeft(new BigNumber(value).times(new BigNumber(10).pow(this.getDecimal())).toString(16), 64);
-		var toAdd = ethFuncs.padLeft(ethFuncs.getNakedAddress(toAdd), 64);
+		var value = jsc3l.ethFuncs.padLeft(new BigNumber(value).times(new BigNumber(10).pow(this.getDecimal())).toString(16), 64);
+		var toAdd = jsc3l.ethFuncs.padLeft(jsc3l.ethFuncs.getNakedAddress(toAdd), 64);
 		var data = Token.transferHex + toAdd + value;
 		return {
 			isError: false,

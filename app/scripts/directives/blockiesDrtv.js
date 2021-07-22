@@ -19,7 +19,7 @@ var blockiesDrtv = function() {
              
              element.css({'background-image': 'url(' + img_add +')' });
                 
-             if(ethFuncs.validateEtherAddress(address)){
+             if(jsc3l.ethFuncs.validateEtherAddress(address)){
                    element.css({'background-image': 'url(' + globalFuncs.getBlockie(address) +')' });
              }
            

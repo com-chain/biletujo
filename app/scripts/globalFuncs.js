@@ -68,9 +68,9 @@ var globalFuncs = function() {}
     globalFuncs.encodeNumber=function(number){
          var valueHex;
          if (number<0){
-            valueHex = ethFuncs.padLeft(new BigNumber(16).pow(64).plus(number).toString(16), 64);
+            valueHex = jsc3l.ethFuncs.padLeft(new BigNumber(16).pow(64).plus(number).toString(16), 64);
          } else{
-            valueHex = ethFuncs.padLeft(new BigNumber(number).toString(16), 64);
+            valueHex = jsc3l.ethFuncs.padLeft(new BigNumber(number).toString(16), 64);
          }
          
          return valueHex;
@@ -153,8 +153,8 @@ var globalFuncs = function() {}
  /*** contract 3***/
  globalFuncs.setContactHash = function(wallet, contact_hash, callback){    
      var datas = []
-     datas.push(ethFuncs.padLeft('20', 64))
-     datas.push(ethFuncs.padLeft('2e', 64))
+     datas.push(jsc3l.ethFuncs.padLeft('20', 64))
+     datas.push(jsc3l.ethFuncs.padLeft('2e', 64))
      var result = contact_hash
      for (var i=contact_hash.length ;i<128;++i){
          result = result+'0';
@@ -171,8 +171,8 @@ var globalFuncs = function() {}
  
  globalFuncs.setMemoHash = function(wallet, memo_hash, callback){     
      var datas = []
-     datas.push(ethFuncs.padLeft('20', 64))
-     datas.push(ethFuncs.padLeft('2e', 64))
+     datas.push(jsc3l.ethFuncs.padLeft('20', 64))
+     datas.push(jsc3l.ethFuncs.padLeft('2e', 64))
      var result = memo_hash
      for (var i=memo_hash.length ;i<128;++i){
          result = result+'0';
@@ -188,7 +188,7 @@ var globalFuncs = function() {}
  }
  
  globalFuncs.getContactHash = async function(walletAddress,callback){
-        var userInfo = ethFuncs.getDataObj(jsc3l.customization.getContract3(),  globalFuncs.contactsOf, [ethFuncs.getNakedAddress(walletAddress)]);
+        var userInfo = jsc3l.ethFuncs.getDataObj(jsc3l.customization.getContract3(),  globalFuncs.contactsOf, [jsc3l.ethFuncs.getNakedAddress(walletAddress)]);
         const data = await jsc3l.ajaxReq.getEthCall(userInfo)
             if (!data.error) {
                 var length_str = data.data.substring(66,130);
@@ -199,7 +199,7 @@ var globalFuncs = function() {}
   }
   
   globalFuncs.getMemoHash = function(walletAddress,callback){
-        var userInfo = ethFuncs.getDataObj(jsc3l.customization.getContract3(),  globalFuncs.memosOf, [ethFuncs.getNakedAddress(walletAddress)]);
+        var userInfo = jsc3l.ethFuncs.getDataObj(jsc3l.customization.getContract3(),  globalFuncs.memosOf, [jsc3l.ethFuncs.getNakedAddress(walletAddress)]);
 	    jsc3l.ajaxReq.getEthCall(userInfo).then(function(data) {
             if (!data.error) {
 			    var length_str = data.data.substring(66,130);

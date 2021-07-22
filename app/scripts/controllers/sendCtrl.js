@@ -240,7 +240,7 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, gl
             
             if (!$scope.is_request_mode && $scope.tokenTx.to.toUpperCase() == $scope.wallet.getAddressString().toUpperCase()) throw 'ERROR_6';
             
-            if (!ethFuncs.validateEtherAddress($scope.tokenTx.to)) throw 'ERROR_6';
+            if (!jsc3l.ethFuncs.validateEtherAddress($scope.tokenTx.to)) throw 'ERROR_6';
 		    else if (!globalFuncs.isNumeric($scope.tokenTx.value) || parseFloat($scope.tokenTx.value) <= 0) throw 'ERROR_8';
 		
             if ($scope.tokenTx.value % 1 >0){
