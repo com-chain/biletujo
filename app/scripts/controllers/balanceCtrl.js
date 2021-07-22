@@ -596,7 +596,7 @@ var balanceCtrl = function($scope, $locale, $sce, walletService,contactservice, 
             if (isNaN($scope.currAllowAmount)  || $scope.currAllowAmount<=0){
                  document.getElementById('allowEditStatus').innerHTML=$sce.trustAsHtml(globalFuncs.getDangerText($translate.instant("ALLOW_InvalidAmount")));
             } else {
-                const res = await jsc3l.bcTransaction..setAllowance($scope.wallet, $scope.curraddress,$scope.currAllowAmount);
+                const res = await jsc3l.bcTransaction.setAllowance($scope.wallet, $scope.curraddress,$scope.currAllowAmount);
                 if (res.isError){
                     globalFuncs.hideLoadingWaiting();
 		            document.getElementById('allowEditStatus').innerHTML= $sce.trustAsHtml(globalFuncs.getDangerText(res.error));
@@ -628,7 +628,7 @@ var balanceCtrl = function($scope, $locale, $sce, walletService,contactservice, 
      $scope.saveDeleteAllowance = async function(){
         if ($scope.trPass==walletService.password){
            walletService.setUsed();
-           const res = await jsc3l.bcTransaction..setAllowance($scope.wallet, $scope.curraddress,-1);
+           const res = await jsc3l.bcTransaction.setAllowance($scope.wallet, $scope.curraddress,-1);
            if (res.isError){
                 globalFuncs.hideLoadingWaiting();
 		        document.getElementById('allowDeleteStatus').innerHTML= $sce.trustAsHtml(globalFuncs.getDangerText(res.error));
@@ -686,7 +686,7 @@ var balanceCtrl = function($scope, $locale, $sce, walletService,contactservice, 
       
       $scope.interval_id = setInterval(async function(){
 
-          const block_json = await ajaxReq.getBlock(transaction_ash)
+          const block_json = await jsc3l.ajaxReq.getBlock(transaction_ash)
               // CHANGE BEHAVIOR: HIDE DIRECTLY THE WEELS
               // if (block_json.blockNumber && block_json.blockNumber.startsWith('0x')){
                  $scope.recievedTransaction();

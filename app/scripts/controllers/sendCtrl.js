@@ -97,8 +97,6 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, gl
             $scope.contacts_without_me = contactservice.hideContact($scope.contacts, $scope.wallet.getAddressString());
             $scope.filtered_contacts=$scope.contacts_without_me.slice();
             
-        });
-        
 
         $scope.setOrigineAddress($scope.wallet.getAddressString());
         $scope.lockDestinationAddress(false);
