@@ -92,11 +92,12 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, gl
 	}, async function() {
 		if (walletService.wallet == null) return;
 		$scope.wallet = walletService.wallet;
-       
+
+        contactservice.loadContacts($scope.wallet, walletService.password).then(function(contact_list) {
             $scope.contacts = contactservice.filterContactForCurr(contact_list, jsc3l.customization.getCurrencyName());
             $scope.contacts_without_me = contactservice.hideContact($scope.contacts, $scope.wallet.getAddressString());
             $scope.filtered_contacts=$scope.contacts_without_me.slice();
-            
+        });
 
         $scope.setOrigineAddress($scope.wallet.getAddressString());
         $scope.lockDestinationAddress(false);
