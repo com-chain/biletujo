@@ -49,7 +49,7 @@ gulp.task('less', function (cb) {
 // Compile and Minify JS Files
 var jsFiles = "./app/scripts/*.js";
 var AllJsFiles = "./app/scripts/**/*.js";
-var mainjs = "./app/scripts/main.js";
+var mainjs = "./build/main.js";
 var staticjsFiles = "./app/scripts/staticJS/*.js";
 var copiedjsFiles = "./app/scripts/copied/*.js";
 var staticjsOutputFile = 'etherwallet-static.min.js';
@@ -83,9 +83,18 @@ gulp.task('minJS',['browserify'],function () {
       .pipe(notify('Cordova MinJS Complete'));
 });
 
+gulp.task('babelify', () => {
+  return gulp.src(AllJsFiles)
+	.pipe(babel({
+	  presets: ['@babel/preset-env']
+	}))
+	.pipe(gulp.dest('build'))
+});
+
 
 // Browserify
-gulp.task('browserify', shell.task([
+gulp.task('browserify', ['babelify'], shell.task([
+  'mkdir -p dist/js',
   'browserify '+mainjs+' -o dist/js/etherwallet-master.js'
 ]));
 
