@@ -1,8 +1,9 @@
 'use strict';
 var globalService = function($http, $httpParamSerializerJQLike) {
 
-    ajaxReq.http = $http;
-    ajaxReq.postSerializer = $httpParamSerializerJQLike;
+    // TODO: ouch, remove this injection towards jsc3l
+    // jsc3l.ajaxReq.http = $http;
+    // jsc3l.ajaxReq.postSerializer = $httpParamSerializerJQLike;
     if (localStorage.getItem('ComChainWallet') == null) {
   var tabs = {
      openFromStorage: {
