@@ -1,6 +1,7 @@
  'use strict';
   var en = require('./en');
   var fr = require('./fr');
+var marked = require('../customMarked');
 
  var translate = function($translateProvider) {
   
