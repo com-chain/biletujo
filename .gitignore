@@ -11,6 +11,7 @@ package-lock.json
 
 node_modules/*
 
+cordova_dist/node_modules/*
 cordova_dist/www/*
 cordova_dist/platforms/browser/www/*
 cordova_dist/platforms/android/build
