@@ -1,5 +1,5 @@
 'use strict';
-var readonlytransactionsCtrl = function($scope, $locale, $sce, walletService,contactservice,consultService, memoService, messageService, $translate, $filter) {
+var readonlytransactionsCtrl = function($scope, $locale, $sce, walletService,contactservice,consultService, memoService, $translate, $filter) {
     // Check the environment
     $scope.isApp =  jsc3l.customization.isApp();
     $scope.currentWalletAddress=globalFuncs.getWalletAddress();
@@ -118,7 +118,7 @@ var readonlytransactionsCtrl = function($scope, $locale, $sce, walletService,con
         $scope.balanceEL = await jsc3l.bcRead.getNantBalance($scope.watched_address);
         $scope.balanceCM = await jsc3l.bcRead.getCmBalance($scope.watched_address);
         
-        $scope.current_message_key = messageService.messageKeysFromCrypted($scope.wallet, $scope.possible_wallets[$scope.watched_address].messageKey);
+        $scope.current_message_key = jsc3l.message.messageKeysFromCrypted($scope.wallet, $scope.possible_wallets[$scope.watched_address].messageKey);
         
         $scope.index=0;
         $scope.loadTransactions($scope.tra_number,$scope.index*$scope.tra_number + $scope.tra_offset);
@@ -138,11 +138,11 @@ var readonlytransactionsCtrl = function($scope, $locale, $sce, walletService,con
             var key =$scope.current_message_key.clear_priv;
             if (memo=="") {
               if (transaction_data.addr_to == $scope.watched_address.toLowerCase() && transaction_data.message_to != '') {
-                  memo = messageService.decipherMessage(key, transaction_data.message_to);
+                  memo = jsc3l.message.decipherMessage(key, transaction_data.message_to);
               }
               
               if (transaction_data.addr_from == $scope.watched_address.toLowerCase() && transaction_data.message_from != '') {
-                  memo = messageService.decipherMessage(key, transaction_data.message_from);
+                  memo = jsc3l.message.decipherMessage(key, transaction_data.message_from);
               }
             }
         } catch (e) {}
