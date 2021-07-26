@@ -35,6 +35,7 @@ var viewWalletCtrl = function($scope, walletService, contactservice, $translate)
         
         contactservice.loadContacts($scope.wallet, walletService.password).then(function(contact_list){
             $scope.contacts = contact_list;
+            $scope.getAccName($scope.wallet.getAddressString());
             
         });
         
@@ -49,7 +50,6 @@ var viewWalletCtrl = function($scope, walletService, contactservice, $translate)
         
         $scope.currentAddress = $scope.wallet.getAddressString();
         $scope.current_QR_content = $scope.currentAddress;
-        $scope.getAccName($scope.wallet.getAddressString());
         $scope.hasBnCheck=false; //jsc3l.customization.hasBnCheck();  not ready yet
         
         
