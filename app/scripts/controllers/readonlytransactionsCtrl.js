@@ -128,7 +128,7 @@ var readonlytransactionsCtrl = function($scope, $locale, $sce, walletService,con
    
         if ($scope.watching != stored) {
             $scope.watch_click();
-        } 
+        }
     }
     
     
@@ -213,6 +213,8 @@ var readonlytransactionsCtrl = function($scope, $locale, $sce, walletService,con
                   $scope.showNone = false;
               }
               
+              
+              $scope.$apply();   
               globalFuncs.hideLoadingWaiting();  
       
         
