@@ -39,3 +39,34 @@ also change the css skin and icons to reflet the currency colors.
 If you can think of any other features or run into bugs, let us
 know. You can drop a line at it {at} monnaie {-} leman dot org.
 
+## Developing
+
+We recommend you to install and use ``nvm``, this will let you change
+``node`` version easily for this project.
+
+```sh
+nvm use  ## will read the ~/.nvmrc and switch to compatible version of node
+
+npm install
+```
+
+We are using ``gulp``, so you can have a look in gulpfile to see the targets.
+
+To launch a target, use: ``npx gulp TARGET``. ``npx`` allows you to
+switch to your directory-local binaries (installed thanks to ``npm
+install``), and launch ``gulp`` from it.
+
+```sh
+npx gulp  ## gulp default is to build, and watch
+```
+
+The watching mode allows to trigger a build each time a file is modified.
+
+To run the browser version of the app, you should:
+
+```sh
+cd cordova_dist
+npx cordova run browser
+```
+
+This should launch your browser automatically on the app.
