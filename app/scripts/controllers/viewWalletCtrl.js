@@ -33,7 +33,7 @@ var viewWalletCtrl = function($scope, walletService, contactservice, $translate)
 		if (walletService.wallet == null) return;
 		$scope.wallet = walletService.wallet;
         
-            contactservice.loadContacts($scope.wallet, walletService.password).then(function(contact_list){
+        contactservice.loadContacts($scope.wallet, walletService.password).then(function(contact_list){
             $scope.contacts = contact_list;
             $scope.getAccName($scope.wallet.getAddressString());
             
@@ -55,7 +55,6 @@ var viewWalletCtrl = function($scope, walletService, contactservice, $translate)
         
         
         globalFuncs.notifyApproval(); // Refresh the Payment notification
-
 	});
     
     

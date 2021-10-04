@@ -60,7 +60,6 @@ var contactesCtrl = function($scope, $sce, walletService, contactservice, global
       
       $scope.filtered_contacts=$scope.contacts.slice();
       $scope.NoCtc= $scope.filtered_contacts.length==0;
-      $scope.$apply();  
       globalFuncs.hideLoadingWaiting();  
     }
     

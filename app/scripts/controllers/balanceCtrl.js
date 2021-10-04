@@ -17,7 +17,7 @@ var balanceCtrl = function($scope, $locale, $sce, walletService,contactservice, 
     
     // Popup 
 	$scope.qrModal = new Modal(document.getElementById('QR_pop'));
-
+    
 	$scope.addDelegationModal = new Modal(document.getElementById('addDelegation'));
 	$scope.editDelegationModal = new Modal(document.getElementById('editDelegation'));
     $scope.deleteDelegationModal = new Modal(document.getElementById('deleteDelegation'));
@@ -133,7 +133,6 @@ var balanceCtrl = function($scope, $locale, $sce, walletService,contactservice, 
         $scope.token.balanceCM = await jsc3l.bcRead.getCmBalance($scope.currentWalletAddress);
         $scope.token.limitCMm = await jsc3l.bcRead.getCmLimitBelow($scope.currentWalletAddress);
         $scope.token.limitCMp = await jsc3l.bcRead.getCmLimitAbove($scope.currentWalletAddress); 
-        $scope.$apply();  
         globalFuncs.hideLoadingWaiting();
 	}
     

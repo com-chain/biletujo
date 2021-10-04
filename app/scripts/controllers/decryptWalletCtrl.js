@@ -288,6 +288,7 @@ var decryptWalletCtrl = function($scope, $sce, $translate, walletService, contac
             walletService.next_ok=true;
             
             $scope.hideWalletSelector = true;
+            
 		} catch (e) {
             $scope.decryptStatus = $sce.trustAsHtml(globalFuncs.getDangerText($translate.instant('ERROR_7')));
 		}
@@ -304,11 +305,7 @@ var decryptWalletCtrl = function($scope, $sce, $translate, walletService, contac
         var currAddress = globalService.getCurrAddress();
         if (currAddress!=null){
            globalService.navigateToPay(currAddress);
-        } else {
-      	  $scope.$apply(); 
         }
-        
-                 
 	};
     
     $scope.loadWallet = function() {
