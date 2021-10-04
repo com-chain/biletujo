@@ -29,7 +29,7 @@ var contactService = function() {
            if (infos.hash == str_hash && infos.length>0 && contacts.length==infos.length){
               return contacts;
            } else {
-              globalFuncs.readFromIpfs(str_hash,function(crypted_list){
+             var crypted_list = await globalFuncs.readFromIpfs(str_hash);
                if (crypted_list && crypted_list.data){
                    try{
                        // decrypte
@@ -45,7 +45,6 @@ var contactService = function() {
                } else {
                 return contacts;
                }
-           }) 
          }
     }
     

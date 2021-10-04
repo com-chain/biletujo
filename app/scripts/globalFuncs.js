@@ -231,7 +231,9 @@ var globalFuncs = function() {}
     xhr.send(urlEncodedDataPairs);
   }
   
-  globalFuncs.readFromIpfs = function (hash,callback){
+  globalFuncs.readFromIpfs = async function (hash) {
+    return new Promise(function (resolve, reject) {
+
     var xhr = new XMLHttpRequest();
     xhr.open('GET', jsc3l.customization.getEndpointAddress()+ globalFuncs.ipfsCat+'?addr=' +hash, true); //
     xhr.responseType = 'json';
@@ -243,17 +245,18 @@ var globalFuncs = function() {}
              if(typeof to_push !='object'){
                 to_push = JSON.parse(xhr.response);
              }  
-             callback(to_push);
+             resolve(to_push);
           } catch(e){
-            callback(null);  
+            resolve(null);  
           }  
         } else {  
-           callback(null);
+           resolve(null);
         }  
         }  
     }; 
 
     xhr.send();
+    });
   }
   
    /*******************************************************/
