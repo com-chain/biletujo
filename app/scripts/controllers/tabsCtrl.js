@@ -121,10 +121,10 @@ var tabsCtrl = function($scope, $attrs, globalService, contactservice, $translat
                authenticationService.logOff();
               
                globalFuncs.removeWallet(); 
-               setTimeout(function() {
-               globalFuncs.loadWallet(selected_wallet.file, function(success){ 
+               setTimeout(async function() {
+               await globalFuncs.loadWallet(selected_wallet.file);
                    location.reload();
-               });},100);
+               },100);
                break;
               
                       

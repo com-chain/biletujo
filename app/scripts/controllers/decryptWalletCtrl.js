@@ -137,10 +137,11 @@ var decryptWalletCtrl = function($scope, $sce, $translate, walletService, contac
 		}
 	};
     
-    $scope.openFile = function(){              
+
+    $scope.openFile = async function () {
        globalFuncs.showLoading($translate.instant("GP_Wait"));
        $scope.fileContent = $scope.fileContent.replace(/(\n|\r|\ )/gm, "");
-       globalFuncs.loadWallet(JSON.parse($scope.fileContent),function(success){
+       var success = await globalFuncs.loadWallet(JSON.parse($scope.fileContent));
            if (success){
 
                globalFuncs.loadWallets(true);
@@ -151,7 +152,6 @@ var decryptWalletCtrl = function($scope, $sce, $translate, walletService, contac
            } else { 
              globalFuncs.hideLoadingWaiting();
            }
-       });
        
     }
     
@@ -364,20 +364,19 @@ var decryptWalletCtrl = function($scope, $sce, $translate, walletService, contac
 	    );
     };
     
-      $scope.validateToken =function(){
+      $scope.validateToken = async function(){
         var enr_txt=document.getElementById("enr_tk2").value;
         try {
             enr_txt = enr_txt.replace(/(\n|\r|\ )/gm, "");
             var enrollmentLetter = JSON.parse(enr_txt);  
             if (enrollmentLetter.servername){
-                jsc3l.customization.getConfJSON(enrollmentLetter.servername,function(success){
+              var success = await jsc3l.customization.getConfJSON(enrollmentLetter.servername);
                     if (success){
                          location.reload();  
                     } else {
                          $scope.message_creation=globalFuncs.getDangerText($translate.instant("GEN_No_server"));
                          $scope.$apply();      
                     }
-                })
             } else {
                 $scope.message_creation=globalFuncs.getDangerText($translate.instant("GEN_No_config"));
             }

@@ -176,13 +176,13 @@ var walletGenCtrl = function($scope, $globalService, $translate, walletService, 
                 try {
                     //Send (public) address to API (enroll the wallet)
                     const success = await jsc3l.wallet.enrollAddress($scope.wallet, $scope.enrollmentLetter.id, $scope.enrollmentToken);
-                        if (sucess) {
+                        if (success) {
                             
                             if ($scope.unlock_url != undefined && $scope.unlock_url!="") {
                                   jsc3l.ajaxReq.requestUnlock($scope.wallet.getAddressString()).then($scope.unlock_url);
                             }
                             
-                            globalFuncs.loadWallet(jsc3l.wallet.encryptWallet($scope.wallet, $scope.password),function(success){
+                            await globalFuncs.loadWallet(jsc3l.wallet.encryptWallet($scope.wallet, $scope.password));
                                                 globalFuncs.loadWallets(true);
                                                 
                                                 // Enable next step 
@@ -210,7 +210,6 @@ var walletGenCtrl = function($scope, $globalService, $translate, walletService, 
                                                 
                                                 $scope.isDone = true;
                                                 globalFuncs.hideLoadingWaiting();  // hide the waiting overlay 
-                                            }); 
                         } else {
                             $scope.message_creation=globalFuncs.getDangerText($translate.instant("GEN_Enrollment_KO"));
                             $scope.isDone = true;

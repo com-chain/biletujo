@@ -74,12 +74,13 @@ var storageCtrl = function($scope, $sce, walletService, contactservice, $transla
         localStorage.setItem('ComChainPrivateComputer',JSON.stringify( $scope.private_cmp));
     }
     
-    $scope.openWallet = function(address){
+    $scope.openWallet = async function(address){
       
       for (var id in $scope.wallets){
            if ($scope.wallets[id].address==address){
                 globalFuncs.showLoading($translate.instant("GP_Wait"));
-                globalFuncs.loadWallet($scope.wallets[id].file,function(success){location.reload(); });
+                await globalFuncs.loadWallet($scope.wallets[id].file);
+                location.reload();
                      
           }
        }         

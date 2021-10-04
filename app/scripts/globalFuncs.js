@@ -329,7 +329,7 @@ var globalFuncs = function() {}
   
 
 
-globalFuncs.loadWallet = function(wallet,callback){
+globalFuncs.loadWallet = async function(wallet){
     localStorage.removeItem("ComChainContacts");
     localStorage.removeItem("ComChainContactsInfo");
     localStorage.removeItem("ComChainMemos");
@@ -350,15 +350,15 @@ globalFuncs.loadWallet = function(wallet,callback){
         server_name = wallet.server.name;
     }
     if (server_name==''){
-        callback(false);
+        return false;
     } else {
-        jsc3l.customization.getConfJSON(server_name,function(success){
-            if (success){
-                callback(success);
+        var result = await jsc3l.customization.getConfJSON(server_name);
+            if (result) {
+                return result;
             } else {
-                 jsc3l.customization.getConfJSON(server_name, callback);
+                var result = await jsc3l.customization.getConfJSON(server_name);
+                return result;
             }
-        });
         
     }
 }
