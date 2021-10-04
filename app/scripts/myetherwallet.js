@@ -66,7 +66,7 @@ Wallet.prototype.toV3 = function(password, opts) {
 		throw new Error('Unsupported cipher')
 	}
 	var ciphertext = Buffer.concat([cipher.update(this.privKey), cipher.final()])
-	var mac = ethUtil.sha3(Buffer.concat([derivedKey.slice(16, 32), new Buffer(ciphertext, 'hex')]))
+	var mac = ethUtil.keccak(Buffer.concat([derivedKey.slice(16, 32), new Buffer(ciphertext, 'hex')]))
         
         
 	var obj = {
@@ -106,7 +106,7 @@ Wallet.prototype.cipher = function(password, data) {
 	var cipher = ethUtil.crypto.createCipheriv( 'aes-128-ctr', derivedKey.slice(0, 16), iv);
 	
 	var ciphertext = Buffer.concat([cipher.update(data), cipher.final()]);
-	var mac = ethUtil.sha3(Buffer.concat([derivedKey.slice(16, 32), new Buffer(ciphertext, 'hex')]));
+	var mac = ethUtil.keccak(Buffer.concat([derivedKey.slice(16, 32), new Buffer(ciphertext, 'hex')]));
 	return {
 		crypto: {
 			ciphertext: ciphertext.toString('hex'),
@@ -128,7 +128,7 @@ Wallet.prototype.decifer = function(input, password) {
 	var derivedKey = ethUtil.scrypt(new Buffer(password), new Buffer(kdfparams.salt, 'hex'), kdfparams.n, kdfparams.r, kdfparams.p, kdfparams.dklen);
 	
 	var ciphertext = new Buffer(json.crypto.ciphertext, 'hex');
-	var mac = ethUtil.sha3(Buffer.concat([derivedKey.slice(16, 32), ciphertext]));
+	var mac = ethUtil.keccak(Buffer.concat([derivedKey.slice(16, 32), ciphertext]));
 	if (mac.toString('hex') !== json.crypto.mac) {
 		throw new Error('Key derivation failed - possibly wrong passphrase');
 	}
@@ -199,7 +199,7 @@ Wallet.fromEthSale = function(input, password) {
 	var derivedKey = ethUtil.crypto.pbkdf2Sync(Buffer(password), Buffer(password), 2000, 32, 'sha256').slice(0, 16)
 	var decipher = ethUtil.crypto.createDecipheriv('aes-128-cbc', derivedKey, encseed.slice(0, 16))
 	var seed = Wallet.decipherBuffer(decipher, encseed.slice(16))
-	var wallet = new Wallet(ethUtil.sha3(seed))
+	var wallet = new Wallet(ethUtil.keccak(seed))
 	if (wallet.getAddress().toString('hex') !== json.ethaddr) {
 		throw new Error('Decoded key mismatch - possibly wrong passphrase')
 	}
@@ -237,7 +237,7 @@ Wallet.fromV3 = function(input, password, nonStrict) {
 		throw new Error('Unsupported key derivation scheme')
 	}
 	var ciphertext = new Buffer(json.crypto.ciphertext, 'hex')
-	var mac = ethUtil.sha3(Buffer.concat([derivedKey.slice(16, 32), ciphertext]))
+	var mac = ethUtil.keccak(Buffer.concat([derivedKey.slice(16, 32), ciphertext]))
 	if (mac.toString('hex') !== json.crypto.mac) {
 		throw new Error('Key derivation failed - possibly wrong passphrase')
 	}
