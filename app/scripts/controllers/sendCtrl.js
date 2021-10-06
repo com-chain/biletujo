@@ -89,7 +89,7 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, gl
 	$scope.$watch(function() {
 		if (walletService.wallet == null) return null;
 		return walletService.wallet.getAddressString();
-	}, async function() {
+	}, function() {
 		if (walletService.wallet == null) return;
 		$scope.wallet = walletService.wallet;
 
@@ -97,14 +97,17 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, gl
             $scope.contacts = contactservice.filterContactForCurr(contact_list, jsc3l.customization.getCurrencyName());
             $scope.contacts_without_me = contactservice.hideContact($scope.contacts, $scope.wallet.getAddressString());
             $scope.filtered_contacts=$scope.contacts_without_me.slice();
+
         });
+
 
         $scope.setOrigineAddress($scope.wallet.getAddressString());
         $scope.lockDestinationAddress(false);
-        const status = await jsc3l.bcRead.getAccountStatus($scope.wallet.getAddressString());
-        $scope.is_locked = status==0;
-      
-        await $scope.setBalance(true);
+        jsc3l.bcRead.getAccountStatus($scope.wallet.getAddressString()).then(function(status) {
+                    $scope.is_locked = status==0;
+        });
+
+        $scope.setBalance(true);
         $scope.CUR=globalFuncs.currencies.CUR;
         $scope.CUR_nanti=globalFuncs.currencies.CUR_nanti;
         $scope.CUR_credit_mut=globalFuncs.currencies.CUR_credit_mut;
@@ -113,9 +116,9 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, gl
              $scope.fingerprint = result;
         });
         
-        const curr_status = await jsc3l.bcRead.getContractStatus();
-        $scope.is_curr_locked = curr_status==0;
-  
+        jsc3l.bcRead.getContractStatus().then(function(status) {
+                    $scope.is_curr_locked = status==0;
+        });
         
         ////////////////////////////////////////////
         // Check if an address is registered 
@@ -134,27 +137,27 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, gl
         $scope.my_message_key = jsc3l.message.messageKeysFromCrypted($scope.wallet, local_message_key).clear_priv;
 	});
     
-	$scope.setBalance = async function(readyStatus) {
+	$scope.setBalance = function(readyStatus) {
         var wallet_address = $scope.wallet.getAddressString();
         
         jsc3l.bcRead.getGlobalBalance(wallet_address).then(function(value){$scope.token.balance = value;});
         jsc3l.bcRead.getNantBalance(wallet_address).then(function(value){$scope.balanceEL = Math.round(value * 100);});
         jsc3l.bcRead.getCmBalance(wallet_address).then(function(value){$scope.balanceCM =  Math.round(value * 100);});
 
-      jsc3l.bcRead.getAccountType(wallet_address).then(function(value){
-                $scope.display_curr_btn = jsc3l.customization.hasNant() && jsc3l.customization.hasCM()  && !$scope.isApp  && value!=0; // only available when 2 currency and not a personal account
-      });
-      
+        jsc3l.bcRead.getAccountType(wallet_address).then(function(value){
+                 $scope.display_curr_btn = jsc3l.customization.hasNant() && jsc3l.customization.hasCM()  && !$scope.isApp  && value!=0; // only available when 2 currency and not a personal account
+        });
+
         // only available when 2 currency and not a personal account
-                   
+
         
-        const limit_b = await jsc3l.bcRead.getCmLimitBelow(wallet_address);
-        $scope.limitCMm = Math.round(limit_b * 100);
-        if (readyStatus){   
-           globalFuncs.hideLoadingWaiting();  
-        }else {
-           globalFuncs.showLoading($translate.instant("GP_Wait"));
-        }
+        jsc3l.bcRead.getCmLimitBelow(wallet_address).then(function(limit_b) {
+            $scope.limitCMm = Math.round(limit_b * 100);
+            if (readyStatus){   
+               globalFuncs.hideLoadingWaiting();  
+            }else {
+               globalFuncs.showLoading($translate.instant("GP_Wait"));
+            }});
 
 	}
     
@@ -170,13 +173,13 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, gl
          $scope.refreshPending();
     }
     
-    $scope.refreshSend = async function(){
+    $scope.refreshSend = function(){
          globalFuncs.showLoading($translate.instant("GP_Wait"));
          $scope.validateTxStatus ='';
          $scope.isShopTx =false;
          $scope.hasFrom = jsc3l.customization.hasPayRequest();
          $scope.shopTxInfo=null;
-         await $scope.setBalance(true);
+         $scope.setBalance(true);
     }
     
     $scope.refreshDeleg = async function(){
@@ -278,24 +281,24 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, gl
         }
         // TODO: access to ajaxReq to remove ?
         const blk_number = await jsc3l.ajaxReq.currBlock()
-            const res = await jsc3l.bcTransaction.TransferNant($scope.wallet, $scope.tokenTx.to, $scope.elemanAmmount/100, data);
-            if (res.isError){
-                globalFuncs.hideLoadingWaiting();  
-		        $scope.err_message = $sce.trustAsHtml(globalFuncs.getDangerText($translate.instant(res.error)));
-                $scope.sendTxModal.open();
-            } else {
+                 const res = await jsc3l.bcTransaction.TransferNant($scope.wallet, $scope.tokenTx.to, $scope.elemanAmmount/100, data);
+                    if (res.isError){
+                        globalFuncs.hideLoadingWaiting();  
+		                        $scope.err_message = $sce.trustAsHtml(globalFuncs.getDangerText($translate.instant(res.error)));
+                        $scope.sendTxModal.open();
+                    } else {
 
-                if ($scope.lemanexAmmount>0){
-                     $scope.executingSplittedTrans.open();
-                     $scope.splitedSecondPart(blk_number,0, res.data);
-                     
-                } else {
-                    $scope.waitTransaction(res.data);
-                    $scope.err_message = $translate.instant("TRAN_Done");
-                    $scope.openConf();
-                }
-              
-            }
+                        if ($scope.lemanexAmmount>0){
+                             $scope.executingSplittedTrans.open();
+                             $scope.splitedSecondPart(blk_number,0, res.data);
+                             
+                        } else {
+                            $scope.waitTransaction(res.data);
+                            $scope.err_message = $translate.instant("TRAN_Done");
+                            $scope.openConf();
+                        }
+                      
+                    }
      }
      
      
@@ -337,15 +340,15 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, gl
         }
         
         const res = await jsc3l.bcTransaction.TransferCM($scope.wallet, $scope.tokenTx.to, $scope.lemanexAmmount/100, data);
-        if (res.isError){
-            globalFuncs.hideLoadingWaiting();  
-	        $scope.err_message = $sce.trustAsHtml(globalFuncs.getDangerText($translate.instant(res.error)));
-            $scope.sendTxModal.open();
-        } else {
-            $scope.waitTransaction(res.data);
-            $scope.err_message = $translate.instant("TRAN_Done");
-            $scope.openConf();
-        }           
+                    if (res.isError){
+                        globalFuncs.hideLoadingWaiting();  
+                                       $scope.err_message = $sce.trustAsHtml(globalFuncs.getDangerText($translate.instant(res.error)));
+                        $scope.sendTxModal.open();
+                    } else {
+                        $scope.waitTransaction(res.data);
+                        $scope.err_message = $translate.instant("TRAN_Done");
+                        $scope.openConf();
+                    }
     }
     
     
@@ -362,7 +365,7 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, gl
     $scope.confirmPop = async function() {
        $scope.trPass=walletService.getPass();
        if ($scope.mode == "fromMe"){
-           await $scope.setBalance(true);
+           $scope.setBalance(true);
            $scope.typeTrans="no"
            $scope.err_message='';
            var value_cent = Math.round($scope.tokenTx.value * 100);
@@ -405,25 +408,28 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, gl
        }
        $scope.cp_mess = false;
        $scope.to_message_key = "";
-       const keys_to = await jsc3l.message.getMessageKey($scope.tokenTx.to, false);
-       $scope.to_message_key = keys_to.public_message_key;
-       if ( $scope.to_message_key === undefined) {
-         $scope.to_message_key = "";
-       } 
-       if ( $scope.to_message_key .length>0) {
+       jsc3l.message.getMessageKey($scope.tokenTx.to, false).then(function(keys_to) {
+         $scope.to_message_key = keys_to.public_message_key;
+         if ( $scope.to_message_key === undefined) {
+           $scope.to_message_key = "";
+         } 
+         if ( $scope.to_message_key .length>0) {
            $scope.cp_mess = $scope.reference.length==0 && !$scope.isShopTx;
-       }   
-     
+         }   
+       });     
        
        $scope.from_message_key = "";
-       const keys_from = await jsc3l.message.getMessageKey($scope.origine_address, false);
-       $scope.from_message_key = keys_from.public_message_key; 
-       if ($scope.from_message_key===undefined) {  
-         $scope.from_message_key = "";
-       }
+       jsc3l.message.getMessageKey($scope.origine_address, false).then(function(keys_from) {
+         $scope.from_message_key = keys_from.public_message_key; 
+         if ($scope.from_message_key===undefined) {  
+           $scope.from_message_key = "";
+         }
+       });
        
        if ($scope.mode == "toMe"){
-           $scope.message_to = await jsc3l.message.getReqMessage($scope.wallet, $scope.origine_address, $scope.my_message_key, true);
+         jsc3l.message.getReqMessage($scope.wallet, $scope.origine_address, $scope.my_message_key, true).then(function(message) {
+           $scope.message_to=message;
+         });
        }
        
        $scope.show_curr_sel = false;
@@ -540,7 +546,7 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, gl
            globalFuncs.showLoading($translate.instant("GP_Wait"));
            try {
                 if ($scope.mode == "fromMe"){
-                   await $scope.setBalance(false);
+                   $scope.setBalance(false);
                    // Compute the splitting 
                    var value_cent = Math.round($scope.tokenTx.value * 100);
                    
@@ -614,10 +620,10 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, gl
                    });
                
                } else if ($scope.mode == "toMe"){
-                 $scope.refreshFrom().then(async function(){
+                   $scope.refreshFrom().then(async function(){
                        
                       
-                      await jsc3l.message.publishReqMessages($scope.wallet, $scope.curr_from_add, $scope.message_to);
+                      jsc3l.message.publishReqMessages($scope.wallet, $scope.curr_from_add, $scope.message_to);
 
                        
                       $scope.elemanAmmount=0;
@@ -824,7 +830,7 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, gl
                 $scope.tokenTx.value='';
             }
             
-            $scope.refreshDeleg(function(){});
+            $scope.refreshDeleg();
             $scope.generateTokenTx();
             $scope.chooseOrigineModal.close();
         }
@@ -994,19 +1000,10 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, gl
   
  ///////////////////////////////////////////////
  ///////////////////////////////////////////////
-    $scope.loadPendingTransactions = async function(){
+    $scope.loadPendingTransactions = function(){
         globalFuncs.notifyApproval();
-        jsc3l.bcRead.getRequestToApproveList($scope.wallet.getAddressString(),0,1).then(function(list) {
-          $scope.pendingApproval = [];
-          for (var index=0; index<list.length; index++) {
-              try {
-                  $scope.addMessagePending(list[index]);
-              } catch (e){
-                  $scope.pendingApproval.unshift(list[index]); 
-              }
-          }
-        })
-        $scope.pendingRequest = await jsc3l.bcRead.getPendingRequestList($scope.wallet.getAddressString(),0,1);
+        jsc3l.bcRead.getPendingRequestList($scope.wallet.getAddressString(),0,1).then(async function(list) {
+            $scope.pendingRequest=list;
         if ( $scope.pendingRequest.length>0){
              $scope.request_tab=2;
         }
@@ -1019,13 +1016,26 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, gl
         if ( $scope.acceptedRequest.length>0){
              $scope.request_tab=0;
         }
+        });
+
+        jsc3l.bcRead.getRequestToApproveList($scope.wallet.getAddressString(),0,1).then(function(list) {
+          $scope.pendingApproval = [];
+          for (var index=0; index<list.length; index++) {
+              try {
+                  $scope.addMessagePending(list[index]);
+              } catch (e){
+                  $scope.pendingApproval.unshift(list[index]); 
+              }
+          }
+        });
         
     }
     
-    $scope.addMessagePending = async function(item){
-        const message = await jsc3l.message.getReqMessage($scope.wallet, item.address, $scope.my_message_key, false);
+    $scope.addMessagePending = function(item){
+      jsc3l.message.getReqMessage($scope.wallet, item.address, $scope.my_message_key, false).then(function(message) {
         item['message'] = message;
-        $scope.pendingApproval.unshift(item);      
+        $scope.pendingApproval.unshift(item);
+                });
     }
     
     
@@ -1121,7 +1131,7 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, gl
 
     
       
-    $scope.loadPendingRequests= async function(count,offset){
+    $scope.loadPendingRequests= function(count,offset){
 
          $scope.noMorePending = true;
          if (offset>0){
@@ -1135,8 +1145,9 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, gl
          document.getElementById("nextPending").style.display = 'none';
         
           
-         $scope.pendingRequest = await jsc3l.bcRead.getPendingRequestList($scope.wallet.getAddressString(),offset,offset+count-1 );
-                                     
+      jsc3l.bcRead.getPendingRequestList($scope.wallet.getAddressString(),offset,offset+count-1 ).then(
+                                  function(list) {
+                                      $scope.pendingRequest = list;
          $scope.noMorePending = $scope.pendingRequest.length<count;
          
          if (!$scope.noMorePending){
@@ -1150,12 +1161,11 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, gl
           // $scope.$apply();
          $scope.transPendingStatus='';
          globalFuncs.hideLoadingWaiting();  
-                                
-        
+                                     });
     }
     
     
-      $scope.loadRejectedRequests= async function(count,offset){
+      $scope.loadRejectedRequests= function(count,offset){
 
         $scope.noMoreRejected = true;
         if (offset>0){
@@ -1169,8 +1179,9 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, gl
          document.getElementById("nextRejected").style.display = 'none';
         
           
-         $scope.rejectedRequest = await jsc3l.bcRead.getRejectedRequestList($scope.wallet.getAddressString(),offset,offset+count-1);
-                                     
+         jsc3l.bcRead.getRejectedRequestList($scope.wallet.getAddressString(),offset,offset+count-1).then(
+                                     function(list) {
+                                         $scope.rejectedRequest = list;
          $scope.noMoreRejected = $scope.rejectedRequest.length<count;
          
          if (!$scope.noMoreRejected){
@@ -1184,11 +1195,11 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, gl
           // $scope.$apply();
          $scope.transPendingStatus='';
          globalFuncs.hideLoadingWaiting();  
+                                     });
                       
-        
     }
     
-     $scope.loadApprovedRequests= async function(count,offset){
+     $scope.loadApprovedRequests= function(count,offset){
 
          $scope.noMoreAccepted = true;
          if (offset>0){
@@ -1200,7 +1211,9 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, gl
          document.getElementById("nextAccepted").style.display = 'none';
         
           
-         $scope.acceptedRequest = await jsc3l.bcRead.getAcceptedRequestList($scope.wallet.getAddressString(),offset,offset+count-1 );
+       jsc3l.bcRead.getAcceptedRequestList($scope.wallet.getAddressString(),offset,offset+count-1 ).then(
+                                    function(list) {
+                                        $scope.acceptedRequest = list;
                                     
          $scope.noMoreAccepted = $scope.acceptedRequest.length<count;
          
@@ -1215,13 +1228,14 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, gl
           // $scope.$apply();
          $scope.transPendingStatus='';
          globalFuncs.hideLoadingWaiting();  
+         });
                              
         
     }
     
     
-    $scope.dissmissRejected = async function(address){
-        const res = await jsc3l.bcTransaction.DissmissRejectedInfo($scope.wallet,address);
+    $scope.dissmissRejected = function(address){
+        jsc3l.bcTransaction.DissmissRejectedInfo($scope.wallet,address).then(function(res) {
         if (res.isError){
                 $scope.transPendingStatus=$sce.trustAsHtml(globalFuncs.getDangerText($translate.instant(res.error)));
         } else {
@@ -1231,10 +1245,11 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, gl
             $scope.trans_message = $translate.instant("TRA_Accepted_dissmissed") + " "+ $translate.instant("GP_Wait_tran");
             $scope.waitTransaction(res.data);
         }
+        });
     }
     
-    $scope.dissmissAccepted = async function(address){
-         const res = await jsc3l.bcTransaction.DissmissAcceptedInfo($scope.wallet,address);
+    $scope.dissmissAccepted = function(address){
+        jsc3l.bcTransaction.DissmissAcceptedInfo($scope.wallet,address).then(function(res) {
          if (res.isError){
                 $scope.transPendingStatus=$sce.trustAsHtml(globalFuncs.getDangerText($translate.instant(res.error)));
          } else {
@@ -1242,7 +1257,8 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, gl
             $scope.trans_message = $translate.instant("TRA_Accepted_dissmissed") + " "+ $translate.instant("GP_Wait_tran");
             //$scope.conf_dissModal.open();
             $scope.waitTransaction(res.data);
-        }
+         }
+         });
     }
     
     
@@ -1299,7 +1315,7 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, gl
     }
     
       
-    $scope.loadPendingApprovals= async function(count,offset){
+    $scope.loadPendingApproval= function(count,offset){
 
          $scope.noMoreApproval = true;
          if (offset>0){
@@ -1311,7 +1327,8 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, gl
          document.getElementById("nextApproval").style.display = 'none';
         
           
-         const list = await jsc3l.bcRead.getRequestToApproveList($scope.wallet.getAddressString(),offset,offset+count-1);
+         jsc3l.bcRead.getRequestToApproveList($scope.wallet.getAddressString(),offset,offset+count-1).then(
+                                     function(list) {
                                      
          $scope.pendingApproval = [];
          $scope.noMoreApproval = list.length<count;
@@ -1331,11 +1348,10 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, gl
                 $scope.pendingApproval.unshift(item); 
             } 
          }
-         
          $scope.transApprovalStatus='';
          globalFuncs.hideLoadingWaiting();  
+                                     });
                               
-        
     }
     
     
@@ -1384,22 +1400,23 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, gl
        $scope.message_from = request.message===undefined?"":request.message;
        $scope.cp_mess = false;
        $scope.to_message_key = "";
-       const keys_to = await jsc3l.message.getMessageKey($scope.transaction_to, false);
-       $scope.to_message_key = keys_to.public_message_key;
-       if ( $scope.to_message_key === undefined) {
-          $scope.to_message_key = "";
-       }
-       if ($scope.to_message_key.length>0 && request.message=="") {
-            $scope.cp_mess = true;
-       }  
-       
+       jsc3l.message.getMessageKey($scope.transaction_to, false).then(function(keys_to) {
+         $scope.to_message_key = keys_to.public_message_key;
+         if ( $scope.to_message_key === undefined) {
+            $scope.to_message_key = "";
+         }
+         if ($scope.to_message_key.length>0 && request.message=="") {
+              $scope.cp_mess = true;
+         }  
+       });
+      
        $scope.from_message_key = "";
-       const keys_from = await jsc3l.message.getMessageKey($scope.wallet.getAddressString(), false);
+       jsc3l.message.getMessageKey($scope.wallet.getAddressString(), false).then(function(keys_from) {
        $scope.from_message_key = keys_from.public_message_key;
        if ($scope.from_message_key===undefined) {
           $scope.from_message_key = "";
        }
-       
+       });
        $scope.sendTransactionModal.open();              
     }
     

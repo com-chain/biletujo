@@ -277,13 +277,14 @@ var decryptWalletCtrl = function($scope, $sce, $translate, walletService, contac
             walletService.wallet = $scope.wallet;
             
             
-            $scope.wallet = await jsc3l.message.ensureWalletMessageKey($scope.wallet, $translate.instant('WALL_missing_message_key'));
+          jsc3l.message.ensureWalletMessageKey($scope.wallet, $translate.instant('WALL_missing_message_key')).then(function(complete_wall) {
+            $scope.wallet = complete_wall;
             walletService.wallet = $scope.wallet;
             
             localStorage.setItem('ComChainWallet',JSON.stringify(jsc3l.wallet.encryptWallet($scope.wallet, $scope.filePassword)));
 
             globalFuncs.loadWallets(true);
-            
+          });
             walletService.setUsed();
             walletService.next_ok=true;
             

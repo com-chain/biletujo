@@ -109,14 +109,14 @@ var readonlytransactionsCtrl = function($scope, $locale, $sce, walletService,con
 	});
     
     
-    $scope.loadWatchedWallet = async function() {
+    $scope.loadWatchedWallet = function() {
         if ($scope.currentWalletAddress.toLowerCase() == $scope.watched_address.toLowerCase()) {
             $scope.show_bal=true;
             $scope.lock_date = false;
         }
-        
-        $scope.balanceEL = await jsc3l.bcRead.getNantBalance($scope.watched_address);
-        $scope.balanceCM = await jsc3l.bcRead.getCmBalance($scope.watched_address);
+
+        jsc3l.bcRead.getNantBalance($scope.watched_address).then(function(value){$scope.balanceEL = value;});
+        jsc3l.bcRead.getCmBalance($scope.watched_address).then(function(value){$scope.balanceCM = value;});
         
         $scope.current_message_key = jsc3l.message.messageKeysFromCrypted($scope.wallet, $scope.possible_wallets[$scope.watched_address].messageKey);
         
@@ -150,7 +150,7 @@ var readonlytransactionsCtrl = function($scope, $locale, $sce, walletService,con
         return memo;
     }
     
-    $scope.loadTransactions= async function(count,offset){
+    $scope.loadTransactions= function(count,offset){
          $scope.memos = memoService.getMemos(false);
          if(!$scope.isApp){
              $scope.blobMemo = memoService.getMemoBlob($scope.memos)
@@ -168,7 +168,7 @@ var readonlytransactionsCtrl = function($scope, $locale, $sce, walletService,con
           document.getElementById("addTransactions").style.display = 'none';
         
         
-          const result = await jsc3l.ajaxReq.getTransList($scope.watched_address,count,offset)
+      jsc3l.ajaxReq.getTransList($scope.watched_address,count,offset).then(function(result) {
               $scope.transactions= null;
               $scope.transactions= {};
               $scope.tot_in=0;
@@ -213,10 +213,11 @@ var readonlytransactionsCtrl = function($scope, $locale, $sce, walletService,con
                   $scope.showNone = false;
               }
               
-              globalFuncs.hideLoadingWaiting();  
+        globalFuncs.hideLoadingWaiting();
+        $scope.$apply();
+      });
       
         
-
     }
     
 
@@ -321,7 +322,7 @@ var readonlytransactionsCtrl = function($scope, $locale, $sce, walletService,con
     $scope.start_time =  0;
     $scope.end_time = 24;
     
-    $scope.addBalance = async function(walletAddress,list,add_b, index){
+    $scope.addBalance = function(walletAddress,list,add_b, index){
         if (index>=list.length){
             globalFuncs.generateTransPDF(walletAddress,
                                          list, 
@@ -354,9 +355,10 @@ var readonlytransactionsCtrl = function($scope, $locale, $sce, walletService,con
             
         } else {
             if (add_b) {
-                const value = await jsc3l.bcRead.getHistoricalGlobalBalance(walletAddress, list[index].data.block);
+               jsc3l.bcRead.getHistoricalGlobalBalance(walletAddress, list[index].data.block).then(function(value) {
                 list[index].data.balance = value;
                 $scope.addBalance(walletAddress,list,add_b, index+1);
+                });
            
             } else {
                  list[index].data.balance = '';
@@ -366,7 +368,7 @@ var readonlytransactionsCtrl = function($scope, $locale, $sce, walletService,con
         }
     }
     
-    $scope.ExportTra= async function(){
+    $scope.ExportTra= function(){
         $scope.start_time=Math.round($scope.start_time);
         if ($scope.start_time <0){
             $scope.start_time=0;
@@ -402,7 +404,7 @@ var readonlytransactionsCtrl = function($scope, $locale, $sce, walletService,con
         
        
         
-      const result = await jsc3l.ajaxReq.getExportTransList($scope.watched_address,d_start,d_end)
+        jsc3l.ajaxReq.getExportTransList($scope.watched_address,d_start,d_end).then(function(result) {
             var trans=[];
             for (var ind = 0; ind < result.length; ++ind) {
                   trans[ind]={'id': (ind), 'data':JSON.parse(result[ind])};
@@ -505,7 +507,7 @@ var readonlytransactionsCtrl = function($scope, $locale, $sce, walletService,con
            }
            
            $scope.exportTraModal.close();
-            
+      });
     }
   
     
@@ -524,7 +526,7 @@ var readonlytransactionsCtrl = function($scope, $locale, $sce, walletService,con
   $scope.last_trans_id=null;
   $scope.last_trans_status=-1;
   
-  $scope.watch_click = async function(){
+  $scope.watch_click = function(){
      
       $scope.watching = !$scope.watching;
       localStorage.setItem('ComChainWatchTransaction',JSON.stringify($scope.watching));
@@ -541,8 +543,8 @@ var readonlytransactionsCtrl = function($scope, $locale, $sce, walletService,con
             }
          });
          
-         $scope.check_interval_id = setInterval(async function(){
-             const result = await jsc3l.ajaxReq.getTransList($scope.watched_address,1,0)
+         $scope.check_interval_id = setInterval(function(){
+           jsc3l.ajaxReq.getTransList($scope.watched_address,1,0).then(function(result) {
                 if (result.length==1){
                     var new_tra=JSON.parse(result[0]);
                     if ($scope.last_trans_id!=new_tra.hash || $scope.last_trans_status!=new_tra.status){
@@ -567,7 +569,7 @@ var readonlytransactionsCtrl = function($scope, $locale, $sce, walletService,con
                     }
                    
                 }
-            
+           });
          },15000);  
       }
       
@@ -575,14 +577,14 @@ var readonlytransactionsCtrl = function($scope, $locale, $sce, walletService,con
   
   /// check
   
-   $scope.helloToTran = async function(text){
+   $scope.helloToTran = function(text){
       try{
           var tran_hash = JSON.parse(text) 
           if (!tran_hash || !tran_hash.transactionHash){
               throw "notValid";
           }
           
-          const result = await jsc3l.ajaxReq.getTransCheck(tran_hash.transactionHash)
+          jsc3l.ajaxReq.getTransCheck(tran_hash.transactionHash).then(function(result) {
              
               if (result.error){
                   if (result.msg.length>0){
@@ -612,7 +614,7 @@ var readonlytransactionsCtrl = function($scope, $locale, $sce, walletService,con
               
               $scope.verifyModal.open();
               
-          
+        });
           
       } catch(e){
           alert($translate.instant("TRA_NotValidCode").replace("\n",""));

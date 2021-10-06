@@ -85,7 +85,7 @@ var balanceCtrl = function($scope, $locale, $sce, walletService,contactservice, 
 	$scope.$watch(function() {
 		if (walletService.wallet == null) return null;
 		return walletService.wallet.getAddressString();
-	}, async function() {
+	}, function() {
 		if (walletService.wallet == null) return;
 		$scope.wallet = walletService.wallet;
         $scope.wallet.message_key = JSON.parse(localStorage.getItem('ComChainWallet')).message_key;
@@ -102,8 +102,9 @@ var balanceCtrl = function($scope, $locale, $sce, walletService,contactservice, 
         });
         
        
-        const status =  await jsc3l.bcRead.getAccountStatus($scope.wallet.getAddressString());
+        jsc3l.bcRead.getAccountStatus($scope.wallet.getAddressString()).then(function(status) {
         $scope.is_locked = status==0;
+        });
 
         
         
@@ -127,13 +128,17 @@ var balanceCtrl = function($scope, $locale, $sce, walletService,contactservice, 
         
 	});
     
-	$scope.setBalance = async function() {
-        $scope.token.balance = await jsc3l.bcRead.getGlobalBalance($scope.currentWalletAddress);
-        $scope.token.balanceEL = await jsc3l.bcRead.getNantBalance($scope.currentWalletAddress);
-        $scope.token.balanceCM = await jsc3l.bcRead.getCmBalance($scope.currentWalletAddress);
-        $scope.token.limitCMm = await jsc3l.bcRead.getCmLimitBelow($scope.currentWalletAddress);
-        $scope.token.limitCMp = await jsc3l.bcRead.getCmLimitAbove($scope.currentWalletAddress); 
-        globalFuncs.hideLoadingWaiting();
+  $scope.setBalance = function() {
+    Promise.all([
+      jsc3l.bcRead.getGlobalBalance($scope.currentWalletAddress).then(function(value){$scope.token.balance = value;}),
+      jsc3l.bcRead.getNantBalance($scope.currentWalletAddress).then(function(value){$scope.token.balanceEL = value;}),
+      jsc3l.bcRead.getCmBalance($scope.currentWalletAddress).then(function(value){$scope.token.balanceCM = value;}),
+      jsc3l.bcRead.getCmLimitBelow($scope.currentWalletAddress).then(function(value){$scope.token.limitCMm = value;}),
+      jsc3l.bcRead.getCmLimitAbove($scope.currentWalletAddress).then(function(value){$scope.token.limitCMp = value;}),
+    ]).then(function() {
+      $scope.$apply();
+      globalFuncs.hideLoadingWaiting();
+    });
 	}
     
     $scope.setBalance();
@@ -147,7 +152,7 @@ var balanceCtrl = function($scope, $locale, $sce, walletService,contactservice, 
     
     $scope.refreshBal=function(){
         globalFuncs.showLoading($translate.instant("GP_Wait"));
-        $scope.setBalance();
+      $scope.setBalance();
     }
 
     $scope.dowloadAppFile = function(){
@@ -217,7 +222,7 @@ var balanceCtrl = function($scope, $locale, $sce, walletService,contactservice, 
     }
     
     
-      $scope.loadDelegations = async function(count,offset){
+      $scope.loadDelegations = function(count,offset){
 
         $scope.noDelegation = true;
         $scope.noMoreDelegation = true;
@@ -232,7 +237,8 @@ var balanceCtrl = function($scope, $locale, $sce, walletService,contactservice, 
         document.getElementById("nextDeleg").style.display = 'none';
 
 
-        const list = await jsc3l.bcRead.getDelegationList($scope.wallet.getAddressString(),offset,offset+count-1);
+        jsc3l.bcRead.getDelegationList($scope.wallet.getAddressString(),offset,offset+count-1).then(
+                                   function(list){
         $scope.delegations = list;
         $scope.noDelegation = $scope.delegations.length==0 && offset==0;
         $scope.noMoreDelegation = !$scope.noDelegation && $scope.delegations.length<count;
@@ -249,6 +255,7 @@ var balanceCtrl = function($scope, $locale, $sce, walletService,contactservice, 
         document.getElementById('transDelStatus').innerHTML='';
         document.getElementById('delStatus').innerHTML='';
         globalFuncs.hideLoadingWaiting();
+        });
                                  
         
     }
@@ -296,7 +303,7 @@ var balanceCtrl = function($scope, $locale, $sce, walletService,contactservice, 
         });
    }  
     
-    $scope.saveNewDeleg = async function(){
+    $scope.saveNewDeleg = function(){
         if ($scope.trPass==walletService.password){
             walletService.setUsed();
           
@@ -306,7 +313,7 @@ var balanceCtrl = function($scope, $locale, $sce, walletService,contactservice, 
             } else if (isNaN($scope.currDelLimit)  || $scope.currDelLimit<=0){
                  document.getElementById('delStatus').innerHTML=$sce.trustAsHtml(globalFuncs.getDangerText($translate.instant("DELEG_InvalidDelegationLimit")));
             } else {
-               const res = await jsc3l.bcTransaction.setDelegation($scope.wallet, $scope.curraddress,$scope.currDelLimit);
+              jsc3l.bcTransaction.setDelegation($scope.wallet, $scope.curraddress,$scope.currDelLimit).then(function(res) {
                if (res.isError){
                     globalFuncs.hideLoadingWaiting();
 			        document.getElementById('delStatus').innerHTML= $sce.trustAsHtml(globalFuncs.getDangerText(res.error));
@@ -318,6 +325,7 @@ var balanceCtrl = function($scope, $locale, $sce, walletService,contactservice, 
                    
                    $scope.trans_message = $translate.instant("Deleg_order_create_send")+ " " +$translate.instant("GP_Wait_tran");
                 }
+              });
             }
         } else {
               document.getElementById('delStatus').innerHTML=$sce.trustAsHtml(globalFuncs.getDangerText($translate.instant("WIEW_WrongPass")));
