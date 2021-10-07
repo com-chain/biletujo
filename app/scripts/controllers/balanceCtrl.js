@@ -251,7 +251,7 @@ var balanceCtrl = function($scope, $locale, $sce, walletService,contactservice, 
         for(var ind =0;ind<$scope.delegations.length;ind++){
             $scope.delegations[ind].name =  contactservice.getContactName($scope.contacts, $scope.delegations[ind].address); 
         }
-        // $scope.$apply();
+        $scope.$apply();
         document.getElementById('transDelStatus').innerHTML='';
         document.getElementById('delStatus').innerHTML='';
         globalFuncs.hideLoadingWaiting();
@@ -524,7 +524,7 @@ var balanceCtrl = function($scope, $locale, $sce, walletService,contactservice, 
          for(var ind =0;ind<$scope.allowances.length;ind++){
             $scope.allowances[ind].name =  contactservice.getContactName($scope.contacts, $scope.allowances[ind].address); 
          }
-          // $scope.$apply();
+         $scope.$apply();
          document.getElementById('transAllowStatus').innerHTML='';
          document.getElementById('allowStatus').innerHTML='';
          globalFuncs.hideLoadingWaiting();

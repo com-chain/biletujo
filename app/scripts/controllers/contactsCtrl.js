@@ -39,7 +39,7 @@ var contactesCtrl = function($scope, $sce, walletService, contactservice, global
         contactservice.loadContacts($scope.wallet, walletService.password).then(function(contact_list){
             $scope.contacts = contact_list; 
             $scope.loadContacts();
-            //$scope.$apply();
+            $scope.$apply();
         });
         
         globalFuncs.notifyApproval(); // Refresh the Payment notification
