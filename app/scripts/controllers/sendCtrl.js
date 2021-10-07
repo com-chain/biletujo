@@ -139,14 +139,14 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, gl
     
 	$scope.setBalance = function(readyStatus) {
         var wallet_address = $scope.wallet.getAddressString();
-        
-        jsc3l.bcRead.getGlobalBalance(wallet_address).then(function(value){$scope.token.balance = value;});
-        jsc3l.bcRead.getNantBalance(wallet_address).then(function(value){$scope.balanceEL = Math.round(value * 100);});
-        jsc3l.bcRead.getCmBalance(wallet_address).then(function(value){$scope.balanceCM =  Math.round(value * 100);});
+      return Promise.all([
+        jsc3l.bcRead.getGlobalBalance(wallet_address).then(function(value){$scope.token.balance = value;}),
+        jsc3l.bcRead.getNantBalance(wallet_address).then(function(value){$scope.balanceEL = Math.round(value * 100);}),
+        jsc3l.bcRead.getCmBalance(wallet_address).then(function(value){$scope.balanceCM =  Math.round(value * 100);}),
 
         jsc3l.bcRead.getAccountType(wallet_address).then(function(value){
                  $scope.display_curr_btn = jsc3l.customization.hasNant() && jsc3l.customization.hasCM()  && !$scope.isApp  && value!=0; // only available when 2 currency and not a personal account
-        });
+        }),
 
         // only available when 2 currency and not a personal account
 
@@ -157,8 +157,10 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, gl
                globalFuncs.hideLoadingWaiting();  
             }else {
                globalFuncs.showLoading($translate.instant("GP_Wait"));
-            }});
-
+            }}),
+      ]).then(function() {
+        $scope.$digest();
+      });
 	}
     
     
