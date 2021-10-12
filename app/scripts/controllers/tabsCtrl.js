@@ -13,8 +13,10 @@ var tabsCtrl = function($scope, $attrs, globalService, contactservice, $translat
 
     
     $scope.loaded = false;
-    jsc3l.connection.ensureComChainRepo().then(async function(connect_ok) {
-    if (!connect_ok){
+    var storedEndPoints = JSON.parse(localStorage.getItem('ComChainApiNodes'));
+
+    jsc3l.connection.lookupAvailableComChainRepo(storedEndPoints).then(async function(repo) {
+    if (!repo){
         globalFuncs.hideLoadingWaiting (true);
         $scope.ng_ok=false;
         document.getElementById("global_error").innerHTML='<br/><br/><br/>'+$translate.instant("GLB_Connection_error") +
@@ -22,8 +24,18 @@ var tabsCtrl = function($scope, $attrs, globalService, contactservice, $translat
 
         $scope.$apply();
     } else{
-        const success = await jsc3l.connection.acquireEndPoint();
+        localStorage.setItem('ComChainRepo', repo)
+        const success = await jsc3l.connection.acquireEndPoint(repo);
         if (!$scope.loaded) {
+           if (success){
+              var { apiNodes, endpoint } = success;
+              if (endpoint) {
+                localStorage.setItem('ComChainAPI', endpoint)
+                localStorage.setItem('ComChainApiNodes', JSON.stringify(apiNodes))
+              } else {
+                success = false;
+              }
+           }
            if (success){
                    $scope.ng_ok=true;
                     jsc3l.customization.configureCurrency();
