@@ -267,7 +267,7 @@ var decryptWalletCtrl = function($scope, $sce, $translate, walletService, contac
 		try {
             // toujours dans le cas d'un file dans le storage local
 			$scope.fileContent = localStorage.getItem('ComChainWallet');
-		    $scope.wallet = jsc3l.Wallet.getWalletFromPrivKeyFile($scope.fileContent, document.getElementById('passwdField').value);
+		    $scope.wallet = jsc3l.wallet.getWalletFromPrivKeyFile($scope.fileContent, document.getElementById('passwdField').value);
             var parsed =  JSON.parse($scope.fileContent);
             if (parsed.message_key !== undefined) {
                  $scope.wallet.message_key = parsed.message_key;
@@ -316,7 +316,7 @@ var decryptWalletCtrl = function($scope, $sce, $translate, walletService, contac
 		    try {
                 // toujours dans le cas d'un file dans le storage local
 			    $scope.fileContent = localStorage.getItem('ComChainWallet');
-		        $scope.wallet = jsc3l.Wallet.getWalletFromPrivKeyFile($scope.fileContent, $scope.filePassword);
+		        $scope.wallet = jsc3l.wallet.getWalletFromPrivKeyFile($scope.fileContent, $scope.filePassword);
                 walletService.password = $scope.filePassword;
 			
                 walletService.wallet = $scope.wallet;

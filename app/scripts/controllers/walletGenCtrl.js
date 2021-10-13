@@ -170,8 +170,6 @@ var walletGenCtrl = function($scope, $globalService, $translate, walletService, 
             $scope.isDone = false;
             
             // local wallet generation & encryption with the provided password
-            // TODO: why these 2 assignation in a row ?
-			$scope.wallet = jsc3l.Wallet.generate(false);
 			$scope.wallet = await jsc3l.wallet.createWallet();
                 try {
                     //Send (public) address to API (enroll the wallet)
