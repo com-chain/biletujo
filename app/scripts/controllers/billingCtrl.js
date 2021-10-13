@@ -78,10 +78,10 @@ var billingCtrl = function($scope, $locale, $sce, walletService, $translate) {
         $scope.getAddressFromCode_popup.open();
     }
     
-    $scope.searchAddfromCode= async function(){
+    $scope.searchAddfromCode = function(){
         $scope.showCodeSearch = false;
         $scope.searchStatus=$translate.instant("BIL_SearchingCode");
-        const addre_list = await $scope.getAddresses($scope.input_code)
+        $scope.getAddresses($scope.input_code).then(function(addre_list) {
             var loc_addressCode_list=[];
             for (var index=0; index<addre_list.length;index++){
                 loc_addressCode_list.push({"add":addre_list[index],"stat":$translate.instant("EXC_Locked")});
@@ -92,7 +92,7 @@ var billingCtrl = function($scope, $locale, $sce, walletService, $translate) {
                 $scope.no_acc = addre_list.length ==0;
                 $scope.searchStatus="";
             });
-
+        });
     }
     
     $scope.getAccStatus = async function(address_list,index,callback){
@@ -313,15 +313,12 @@ var billingCtrl = function($scope, $locale, $sce, walletService, $translate) {
             callback($scope.account_type[address]);
         }  
     }
-    // TODO: doesn't seem to use it's callback
-    // TODO: consider to move to jsc3l
-    $scope.getCodes = async function(addresses,callback){
-        var caller = $scope.wallet.getAddressString();
+
+    $scope.getCodes = async function(addresses){
         var add= addresses.join(',');
-        
-        var message_hash = jsc3l.ethUtil.hashPersonalMessage(new Buffer(add));
-        var signature = jsc3l.ethUtil.ecsign(message_hash, $scope.wallet.getPrivateKey());
-        var sign = jsc3l.ethUtil.bufferToHex(Buffer.concat([signature.r, signature.s, jsc3l.ethUtil.toBuffer(signature.v)]));
+
+        var caller = $scope.wallet.getAddressString();
+        var sign = $scope.wallet.signMessage(add);
         
         const data = await jsc3l.ajaxReq.getCodesFromAddresses(add, jsc3l.customization.getCurrencyName(),caller, sign)
             for(var add_index=0; add_index<addresses.length; ++add_index){
@@ -333,15 +330,11 @@ var billingCtrl = function($scope, $locale, $sce, walletService, $translate) {
                 }
             }
             $scope.code_completed = true;
-            callback();
     }
     
-    // TODO: consider to move to jsc3l
-     $scope.getAddresses = async function(code, callback){
+     $scope.getAddresses = async function(code){
         var caller = $scope.wallet.getAddressString();
-        var message_hash = jsc3l.ethUtil.hashPersonalMessage(new Buffer(code));
-        var signature = jsc3l.ethUtil.ecsign(message_hash, $scope.wallet.getPrivateKey());
-        var sign = jsc3l.ethUtil.bufferToHex(Buffer.concat([signature.r, signature.s, jsc3l.ethUtil.toBuffer(signature.v)]));
+        var sign = $scope.wallet.signMessage(code);
         
        const  data = await jsc3l.ajaxReq.getAddressesFromCode(code, jsc3l.customization.getCurrencyName(), caller, sign)
             var add_list = [];
@@ -350,7 +343,7 @@ var billingCtrl = function($scope, $locale, $sce, walletService, $translate) {
                   add_list.push(data[ind]);  
                 }
             }
-            callback(add_list);
+        return add_list;
     }
     
     
@@ -367,7 +360,7 @@ var billingCtrl = function($scope, $locale, $sce, walletService, $translate) {
         $scope.exportCurrent = 0;
         $scope.progress_popup.open();
         $scope.code_completed=false;
-        $scope.getCodes($scope.addree_list,$scope.initializeExport);
+        $scope.getCodes($scope.addree_list).then($scope.initializeExport);
 
     }
     
