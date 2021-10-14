@@ -132,22 +132,17 @@ var readonlytransactionsCtrl = function($scope, $locale, $sce, walletService,con
     }
     
     
-    $scope.getTransactionMessage = function(transaction_data) {
-        var memo = memoService.getMemo($scope.memos,transaction_data.hash);
+    $scope.getTransactionMessage = function(transaction) {
+      var memo = memoService.getMemo($scope.memos,transaction.hash);
+      if (memo == "") {
         try {
-            var key =$scope.current_message_key.clear_priv;
-            if (memo=="") {
-              if (transaction_data.addr_to == $scope.watched_address.toLowerCase() && transaction_data.message_to != '') {
-                  memo = jsc3l.message.decipherMessage(key, transaction_data.message_to);
-              }
-              
-              if (transaction_data.addr_from == $scope.watched_address.toLowerCase() && transaction_data.message_from != '') {
-                  memo = jsc3l.message.decipherMessage(key, transaction_data.message_from);
-              }
-            }
+           memo = jsc3l.message.getTransactionMemo(
+            transaction,
+            $scope.watched_address.toLowerCase(),
+            $scope.current_message_key.clear_priv)
         } catch (e) {}
-        
-        return memo;
+      }
+      return memo;
     }
     
     $scope.loadTransactions= function(count,offset){
