@@ -257,12 +257,9 @@ var exchangeCtrl = function($scope, $locale, $sce, walletService, $translate) {
    }
       
    $scope.confirmCreditAccount = async function(){
-       
-        var data= {};
-
-        if ($scope.to_message_key.length>0 && $scope.message_to.length>0) {
-            data['memo_to']= jsc3l.message.cipherMessage($scope.to_message_key.substring(2), $scope.message_to);
-        }
+     var data = jsc3l.message.getTxMemoCipheredData(
+       null, $scope.to_message_key,
+       null, $scope.message_to);
 
         const rawTx = await jsc3l.bcTransaction.PledgeAccount($scope.wallet, $scope.selected_account, $scope.credit_amount, data);
 

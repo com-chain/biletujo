@@ -273,14 +273,11 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, gl
         if ($scope.isShopTx){
             data = $scope.shopTxInfo;
         }
-        
-        if ($scope.from_message_key.length>0 && $scope.message_from.length>0) {
-            data['memo_from']= jsc3l.message.cipherMessage($scope.from_message_key.substring(2), $scope.message_from);
-        }
-        
-        if ($scope.to_message_key.length>0 && $scope.message_to.length>0) {
-            data['memo_to']= jsc3l.message.cipherMessage($scope.to_message_key.substring(2), $scope.message_to);
-        }
+      data = Object.assign(data, jsc3l.message.getTxMemoCipheredData(
+        $scope.from_message_key, $scope.to_message_key,
+        $scope.message_from, $scope.message_to
+      ))
+
         // TODO: access to ajaxReq to remove ?
         const blk_number = await jsc3l.ajaxReq.currBlock()
                  const res = await jsc3l.bcTransaction.TransferNant($scope.wallet, $scope.tokenTx.to, $scope.elemanAmmount/100, data);
@@ -328,15 +325,11 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, gl
         if ($scope.isShopTx){
             data = $scope.shopTxInfo;
         }
-        
-        if ($scope.from_message_key.length>0 && $scope.message_from.length>0) {
-            data['memo_from']= jsc3l.message.cipherMessage($scope.from_message_key.substring(2), $scope.message_from);
-        }
-        
-        if ($scope.to_message_key.length>0 && $scope.message_to.length>0) {
-            data['memo_to']= jsc3l.message.cipherMessage($scope.to_message_key.substring(2), $scope.message_to);
-        }
-        
+      data = Object.assign(data, jsc3l.message.getTxMemoCipheredData(
+        $scope.from_message_key, $scope.to_message_key,
+        $scope.message_from, $scope.message_to
+      ))
+
         if (parent_hash!==undefined){
             data['parent_hash']=parent_hash;
         }
@@ -591,15 +584,11 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, gl
                       if ($scope.isShopTx){
                             data = $scope.shopTxInfo;
                       }
-                      
-                      if ($scope.from_message_key.length>0 && $scope.message_from.length>0) {
-                        data['memo_from']= jsc3l.message.cipherMessage($scope.from_message_key.substring(2), $scope.message_from);
-                      }
+                   data = Object.assign(data, jsc3l.message.getTxMemoCipheredData(
+                     $scope.from_message_key, $scope.to_message_key,
+                     $scope.message_from, $scope.message_to
+                   ))
 
-                      if ($scope.to_message_key.length>0 && $scope.message_to.length>0) {
-                        data['memo_to']= jsc3l.message.cipherMessage($scope.to_message_key.substring(2), $scope.message_to);
-                      }
-                      
                       if (cur_tran_type=='nant'){
                             $scope.elemanAmmount=value_cent;
                             const res = await jsc3l.bcTransaction.TransferOnBehalfNant($scope.wallet,
@@ -1429,17 +1418,11 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, gl
   }
   
   $scope.sendReqTx = async function(){
-        var data= {}; 
-        if ($scope.from_message_key.length>0 && $scope.message_from.length>0) {
-            data['memo_from']= jsc3l.message.cipherMessage($scope.from_message_key.substring(2), $scope.message_from);
-        }
+    var data = jsc3l.message.getTxMemoCipheredData(
+      $scope.from_message_key, $scope.to_message_key,
+      $scope.message_from, $scope.message_to
+    )
 
-        if ($scope.to_message_key.length>0 && $scope.message_to.length>0) {
-            data['memo_to']= jsc3l.message.cipherMessage($scope.to_message_key.substring(2), $scope.message_to);
-        }
-
-      
-      
       if ($scope.trPass==walletService.password){
         walletService.setUsed();
         $scope.sendTransactionModal.close();
