@@ -760,39 +760,27 @@ var balanceCtrl = function($scope, $locale, $sce, walletService,contactservice, 
         container.removeChild(child); 
         child = container.lastElementChild; 
     }
-    
-    var mess_keys = jsc3l.message.messageKeysFromWallet($scope.wallet);
-    
-    var obj_content = {"address":$scope.wallet.getAddressString(), 
-              "server":jsc3l.customization.getCurrencyName(), 
-              "destinary":$scope.dest,
-              "begin":$scope.start_date.getFullYear()+ "/" + ($scope.start_date.getMonth()+1)+"/" + $scope.start_date.getDate(), 
-              "end":$scope.end_date.getFullYear()+ "/" + ($scope.end_date.getMonth()+1)+"/" + $scope.end_date.getDate(), 
-              "viewbalance": ($scope.balanceView == 1),
-              "viewoldtran": ($scope.oldTran == 1)
-    };
-    
-   
-    if ($scope.dest_keys.public_key !== undefined) {
-        var crypted_m_key = jsc3l.message.cipherMessage($scope.dest_keys.public_key, mess_keys.clear_priv);
-        obj_content.message_key = crypted_m_key;
-    }
-    
-    
-    var str_content = JSON.stringify(obj_content);
-    var hash = jsc3l.ethUtil.sha3(str_content);
-    var signature = jsc3l.ethUtil.ecsign(hash, $scope.wallet.privKey);
-    var output = {"data":obj_content, "signature":{ "v":signature.v,
-    "r":'0x' + signature.r.toString('hex'),
-    "s":'0x' + signature.s.toString('hex')}};
-    $scope.qr_cr_content =  JSON.stringify(output);
-    
-    
-    
-    
+
+     // TODO: this will probably need to be in JSC3L
+     // Check the message_key is correctly passed !
+
+     var obj_content = {
+       server: jsc3l.customization.getCurrencyName(),
+       destinary: $scope.dest,
+       begin: $scope.start_date,
+       end: $scope.end_date,
+       viewbalance: ($scope.balanceView == 1),
+       viewoldtran: ($scope.oldTran == 1),
+     }
+
+     var { signature, qrContent } = message.makeSignedQRWithPubKey(
+       $scope.wallet, obj_content, $scope.dest_keys.public_key
+     );
+     $scope.qr_cr_content = qrContent;
+
     var full= $scope.qr_cr_content;
     var chunk_length = Math.ceil(full.length/$scope.CR_frag_number);
-        
+
     if (piece <0){
         var qrcode = new QRCode(document.getElementById("qrCR_print"), $scope.qr_cr_content);
         document.getElementById("qrCR_print").style.display = "none";
@@ -858,57 +846,42 @@ var balanceCtrl = function($scope, $locale, $sce, walletService,contactservice, 
        }
     };
 
-    
+
 
 $scope.showContent = function(content) {
     $scope.openStatus = "";
-    try {
-        // decode the Json
-        var obj = JSON.parse(content);
-        // extract the signature
-        var v = obj.signature.v;
-        var r = obj.signature.r; 
-        var s = obj.signature.s; 
-
-        // get the hash
-        var str_content = JSON.stringify(obj.data);
-        var hash = jsc3l.ethUtil.sha3(str_content);
-        
-        // check the signature
-        var public_sign_key = jsc3l.ethUtil.ecrecover(hash, v, r, s);
-        var rec_address = jsc3l.ethUtil.bufferToHex(jsc3l.ethUtil.publicToAddress(public_sign_key));
-        if (rec_address != obj.data.address) {
-            $scope.openStatus = $sce.trustAsHtml(globalFuncs.getDangerText($translate.instant('OPEN_not_right_sign')));    
-        } else {
-           // check the validity 
-           if (obj.data.destinary!=$scope.wallet.getAddressString()){
-               $scope.openStatus = $sce.trustAsHtml(globalFuncs.getDangerText($translate.instant('OPEN_right_not_for_you'))); 
-           } else if (obj.data.server!=jsc3l.customization.getCurrencyName()){
-               $scope.openStatus = $sce.trustAsHtml(globalFuncs.getDangerText($translate.instant('OPEN_right_not_right_server'))); 
-           } else if ((new Date(obj.data.end)).getTime()< (new Date()).getTime()){   
-                $scope.openStatus = $sce.trustAsHtml(globalFuncs.getDangerText($translate.instant('OPEN_too_old_right'))); 
-           } else {    
-               // OK we can close the popup
-               $scope.openRightModal.close();  
-               // add to the right
-               consultService.addConsult(obj);
-               //reload the grid
-               $scope.consult_rights = consultService.loadConsults($scope.wallet.getAddressString()); 
-               $scope.loadRights();
-           }
-        }
-        
-    
-    } catch (e) {
-         $scope.openStatus = $sce.trustAsHtml(globalFuncs.getDangerText($translate.instant('OPEN_not_right_format'))); 
+  let txt = (transId) => $sce.trustAsHtml(globalFuncs.getDangerText($translate.instant()))
+  var result = $scope.wallet.checkSignedQRFromString(content, $scope.wallet.getAddressString())
+  switch (result) {
+  case 'InvalidSignature':
+    $scope.openStatus = txt('OPEN_not_right_sign')
+    return
+  case 'NotForYou':
+    $scope.openStatus = txt('OPEN_right_not_for_you')
+    return
+  case 'Expired':
+    $scope.openStatus = txt('OPEN_too_old_right')
+    return
+  case 'InvalidFormat':
+    $scope.openStatus = txt('OPEN_not_right_format')
+    return
+  default:
+    // result is {signature, data}
+    if (result.data.server !== jsc3l.customization.getCurrencyName()){
+      $scope.openStatus = txt('OPEN_right_not_right_server');
+      return;
     }
-    
-  
-    
-    
-}  
-    
-    
+    // OK we can close the popup
+    $scope.openRightModal.close()
+    // add to the right
+    consultService.addConsult(result);
+    //reload the grid
+    $scope.consult_rights = consultService.loadConsults($scope.wallet.getAddressString());
+    $scope.loadRights();
+  }
+
+}
+
 $scope.importRightPop = function() {
     $scope.cancelFragment();
     $scope.openRightModal.open();

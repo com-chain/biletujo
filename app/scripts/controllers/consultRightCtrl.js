@@ -164,25 +164,15 @@ var consultRightCtrl = function($scope, $sce, walletService, contactservice, con
         child = container.lastElementChild; 
     }
     
-    
-    var obj_content = {"address":$scope.currentAddress, 
-              "server":jsc3l.customization.getCurrencyName(), 
-              "destinary":$scope.dest,
-              "begin":$scope.start_date.getFullYear()+ "/" + $scope.start_date.getMonth()+"/" + $scope.start_date.getDate(), 
-              "end":$scope.end_date.getFullYear()+ "/" + $scope.end_date.getMonth()+"/" + $scope.end_date.getDate(), 
-              "viewbalance": ($scope.balanceView == 1),
-              "viewoldtran": ($scope.oldTran == 1)
-    };
-
-    var str_content = JSON.stringify(obj_content);
-    var hash = jsc3l.ethUtil.sha3(str_content);
-    var signature = jsc3l.ethUtil.ecsign(hash, $scope.wallet.privKey);
-    var output = {"data":obj_content, "signature":{ "v":signature.v,
-    "r":'0x' + signature.r.toString('hex'),
-    "s":'0x' + signature.s.toString('hex')}};
-    $scope.qr_content =  JSON.stringify(output);
-    
-    
+     var { signature, qrContent } =  $scope.wallet.makeSignedQR({
+       "server":jsc3l.customization.getCurrencyName(),
+       "destinary":$scope.dest,
+       "begin":$scope.start_date,
+       "end":$scope.end_date,
+       "viewbalance": ($scope.balanceView == 1),
+       "viewoldtran": ($scope.oldTran == 1)
+     });
+     $scope.qr_content = qrContent;
     
     
     var full= $scope.qr_content;
@@ -262,51 +252,36 @@ var consultRightCtrl = function($scope, $sce, walletService, contactservice, con
 
 $scope.showContent = function(content) {
 
-    try {
-        // decode the Json
-        var obj = JSON.parse(content);
-        // extract the signature
-        var v = obj.signature.v;
-        var r = obj.signature.r; 
-        var s = obj.signature.s; 
+  let txt = (transId) => $sce.trustAsHtml(globalFuncs.getDangerText($translate.instant()))
+  var result = $scope.wallet.checkSignedQRFromString(
+    content, $scope.wallet.getAddressString())
+  switch (result) {
+  case 'InvalidSignature':
+    $scope.openStatus = txt('OPEN_not_right_sign')
+    return
+  case 'NotForYou':
+    $scope.openStatus = txt('OPEN_right_not_for_you')
+    return
+  case 'Expired':
+    $scope.openStatus = txt('OPEN_too_old_right')
+    return
+  case 'InvalidFormat':
+    $scope.openStatus = txt('OPEN_not_right_format')
+    return
+  default:
+    // result is {signature, data}
 
-        // get the hash
-        var str_content = JSON.stringify(obj.data);
-        var hash = jsc3l.ethUtil.sha3(str_content);
-        
-        // check the signature
-        var public_sign_key = jsc3l.ethUtil.ecrecover(hash, v, r, s);
-        var rec_address = jsc3l.ethUtil.bufferToHex(jsc3l.ethUtil.publicToAddress(public_sign_key));
-        if (rec_address != obj.data.address) {
-            $scope.openStatus = $sce.trustAsHtml(globalFuncs.getDangerText($translate.instant('OPEN_not_right_sign')));    
-        } else {
-           // check the validity 
-           if (obj.data.destinary!=$scope.currentAddress){
-               $scope.openStatus = $sce.trustAsHtml(globalFuncs.getDangerText($translate.instant('OPEN_right_not_for_you'))); 
-           } else if ((new Date(obj.data.end)).getTime()< (new Date()).getTime()){   
-                $scope.openStatus = $sce.trustAsHtml(globalFuncs.getDangerText($translate.instant('OPEN_too_old_right'))); 
-           } else {    
-               // OK we can close the popup
-               $scope.openRightModal.close();  
-               // add to the right
-               consultService.addConsult(obj);
-               //reload the grid
-               $scope.consult_rights = consultService.loadConsults($scope.currentAddress); 
-               $scope.loadRights();
-           }
-        }
-        
-    
-    } catch (e) {
-         $scope.openStatus = $sce.trustAsHtml(globalFuncs.getDangerText($translate.instant('OPEN_not_right_format'))); 
-    }
-    
-  
-    
-    
-}  
-    
-    
+    // OK we can close the popup
+    $scope.openRightModal.close()
+    // add to the right
+    consultService.addConsult(result);
+    //reload the grid
+    $scope.consult_rights = consultService.loadConsults($scope.currentAddress);
+    $scope.loadRights();
+  }
+}
+
+
 $scope.importRightPop = function() {
     $scope.cancelFragment();
     $scope.openRightModal.open();
