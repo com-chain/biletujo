@@ -1317,7 +1317,7 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, gl
     }
     
       
-    $scope.loadPendingApproval= function(count,offset){
+    $scope.loadPendingApprovals= function(count,offset){
 
          $scope.noMoreApproval = true;
          if (offset>0){
