@@ -403,7 +403,7 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, gl
        }
        $scope.cp_mess = false;
        $scope.to_message_key = "";
-       jsc3l.message.getMessageKey($scope.tokenTx.to, false).then(function(keys_to) {
+       jsc3l.ajaxReq.getMessageKey($scope.tokenTx.to, false).then(function(keys_to) {
          $scope.to_message_key = keys_to.public_message_key;
          if ( $scope.to_message_key === undefined) {
            $scope.to_message_key = "";
@@ -414,7 +414,7 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, gl
        });     
        
        $scope.from_message_key = "";
-       jsc3l.message.getMessageKey($scope.origine_address, false).then(function(keys_from) {
+       jsc3l.ajaxReq.getMessageKey($scope.origine_address, false).then(function(keys_from) {
          $scope.from_message_key = keys_from.public_message_key; 
          if ($scope.from_message_key===undefined) {  
            $scope.from_message_key = "";
@@ -1391,7 +1391,7 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, gl
        $scope.message_from = request.message===undefined?"":request.message;
        $scope.cp_mess = false;
        $scope.to_message_key = "";
-       jsc3l.message.getMessageKey($scope.transaction_to, false).then(function(keys_to) {
+       jsc3l.ajaxReq.getMessageKey($scope.transaction_to, false).then(function(keys_to) {
          $scope.to_message_key = keys_to.public_message_key;
          if ( $scope.to_message_key === undefined) {
             $scope.to_message_key = "";
@@ -1402,7 +1402,7 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, gl
        });
       
        $scope.from_message_key = "";
-       jsc3l.message.getMessageKey($scope.wallet.getAddressString(), false).then(function(keys_from) {
+       jsc3l.ajaxReq.getMessageKey($scope.wallet.getAddressString(), false).then(function(keys_from) {
        $scope.from_message_key = keys_from.public_message_key;
        if ($scope.from_message_key===undefined) {
           $scope.from_message_key = "";

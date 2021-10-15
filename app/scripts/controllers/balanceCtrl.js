@@ -814,7 +814,7 @@ var balanceCtrl = function($scope, $locale, $sce, walletService,contactservice, 
            walletService.setUsed();       
            $scope.createRightModal.close();
            $scope.trPass="";
-           $scope.dest_keys = await jsc3l.message.getMessageKey($scope.dest, false); 
+           $scope.dest_keys = await jsc3l.ajaxReq.getMessageKey($scope.dest, false);
 
            // processing
            $scope.generateSaveQRPiece(-1);

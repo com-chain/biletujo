@@ -76,7 +76,7 @@ var exchangeCtrl = function($scope, $locale, $sce, walletService, $translate) {
         }
         $scope.limitCMm = await jsc3l.bcRead.getCmLimitBelow($scope.selected_account);
         $scope.limitCMp = await jsc3l.bcRead.getCmLimitAbove($scope.selected_account);
-        const keys = await jsc3l.message.getMessageKey($scope.selected_account, false);
+        const keys = await jsc3l.ajaxReq.getMessageKey($scope.selected_account, false);
         globalFuncs.hideLoadingWaiting();
         $scope.to_message_key = keys.public_message_key;
         if ( $scope.to_message_key === undefined) {
