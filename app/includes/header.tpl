@@ -88,7 +88,11 @@
 	    }, false);
   </script> 
   <script type="application/javascript">
-	    cordova.plugins.Keyboard.disableScroll(true);
+    if (cordova.plugins && cordova.plugins.Keyboard) {
+	  cordova.plugins.Keyboard.disableScroll(true)
+    } else {
+      console.log("No cordova keyboard plugin found.")
+    }
   </script>
   
   <!--
