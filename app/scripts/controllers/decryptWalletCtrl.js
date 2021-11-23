@@ -256,7 +256,7 @@ var decryptWalletCtrl = function($scope, $sce, $translate, walletService, contac
                 $scope.setApiNodeModal = new Modal(document.getElementById('setApiNode'));
             }
 
-            $scope.api= jsc3l.customization.getEndpointAddress();
+            $scope.api= jsc3l.connection.endpoint;
             $scope.setApiNodeModal.open();
             return;
         }

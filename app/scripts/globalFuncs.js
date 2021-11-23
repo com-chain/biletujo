@@ -136,7 +136,7 @@ var globalFuncs = function() {}
   /********************************************************/
   globalFuncs.storeOnIpfs = function (crypted_data,callback){
     var xhr = new XMLHttpRequest();
-    xhr.open('POST', jsc3l.customization.getEndpointAddress()+ globalFuncs.ipfsAdd, true); //
+    xhr.open('POST', jsc3l.connection.endpoint+ globalFuncs.ipfsAdd, true); //
     xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
     xhr.onreadystatechange = function (oEvent) {  
     if (xhr.readyState === 4) {  
@@ -161,7 +161,7 @@ var globalFuncs = function() {}
     return new Promise(function (resolve, reject) {
 
     var xhr = new XMLHttpRequest();
-    xhr.open('GET', jsc3l.customization.getEndpointAddress()+ globalFuncs.ipfsCat+'?addr=' +hash, true); //
+    xhr.open('GET', jsc3l.connection.endpoint+ globalFuncs.ipfsCat+'?addr=' +hash, true); //
     xhr.responseType = 'json';
     xhr.onreadystatechange = function (oEvent) {  
     if (xhr.readyState === 4) {  
@@ -189,7 +189,7 @@ var globalFuncs = function() {}
   
   globalFuncs.getChallenge = function (addr,callback){
     var xhr = new XMLHttpRequest();
-    xhr.open('GET', jsc3l.customization.getEndpointAddress()+ globalFuncs.authChallenge+'?addr=' +encodeURIComponent(addr), true); //
+    xhr.open('GET', jsc3l.connection.endpoint+ globalFuncs.authChallenge+'?addr=' +encodeURIComponent(addr), true); //
     xhr.onreadystatechange = function (oEvent) {  
     if (xhr.readyState === 4) {  
         if (xhr.status === 200) { 
@@ -210,7 +210,7 @@ var globalFuncs = function() {}
   
   globalFuncs.sendChallengeResponse = function (addr,signature,callback){
     var xhr = new XMLHttpRequest();
-    xhr.open('GET', jsc3l.customization.getEndpointAddress()+ globalFuncs.authChallenge+'?addr=' +encodeURIComponent(addr)+'&sign='+encodeURIComponent(signature), true); //
+    xhr.open('GET', jsc3l.connection.endpoint+ globalFuncs.authChallenge+'?addr=' +encodeURIComponent(addr)+'&sign='+encodeURIComponent(signature), true); //
     xhr.onreadystatechange = function (oEvent) {  
     if (xhr.readyState === 4) {  
         if (xhr.status === 200) { 
@@ -231,7 +231,7 @@ var globalFuncs = function() {}
   
   globalFuncs.sendLogOff = function (callback){
     var xhr = new XMLHttpRequest();
-    xhr.open('GET', jsc3l.customization.getEndpointAddress()+ globalFuncs.authChallenge+'?addr=' +encodeURIComponent('0x0'), true); //
+    xhr.open('GET', jsc3l.connection.endpoint+ globalFuncs.authChallenge+'?addr=' +encodeURIComponent('0x0'), true); //
     xhr.onreadystatechange = function (oEvent) {  
     if (xhr.readyState === 4) {  
         if (xhr.status === 200) { 
@@ -1387,7 +1387,7 @@ globalFuncs.hasConfig = function(){
      var show=false;
      if (!apiCheck){
          globalFuncs.doHide=false;
-         if (jsc3l.customization.getEndpointAddress()!=null && jsc3l.customization.getEndpointAddress() !='' ){
+         if (jsc3l.connection.endpoint) {
              show=true;
          }
      } else {
