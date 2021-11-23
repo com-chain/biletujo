@@ -280,7 +280,7 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, gl
 
         // TODO: access to ajaxReq to remove ?
         const blk_number = await jsc3l.ajaxReq.currBlock()
-                 const res = await jsc3l.bcTransaction.TransferNant($scope.wallet, $scope.tokenTx.to, $scope.elemanAmmount/100, data);
+                 const res = await jsc3l.bcTransaction.transferNant($scope.wallet, $scope.tokenTx.to, $scope.elemanAmmount/100, data);
                     if (res.isError){
                         globalFuncs.hideLoadingWaiting();  
 		                        $scope.err_message = $sce.trustAsHtml(globalFuncs.getDangerText($translate.instant(res.error)));
@@ -334,7 +334,7 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, gl
             data['parent_hash']=parent_hash;
         }
         
-        const res = await jsc3l.bcTransaction.TransferCM($scope.wallet, $scope.tokenTx.to, $scope.lemanexAmmount/100, data);
+        const res = await jsc3l.bcTransaction.transferCM($scope.wallet, $scope.tokenTx.to, $scope.lemanexAmmount/100, data);
                     if (res.isError){
                         globalFuncs.hideLoadingWaiting();  
                                        $scope.err_message = $sce.trustAsHtml(globalFuncs.getDangerText($translate.instant(res.error)));
@@ -591,7 +591,7 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, gl
 
                       if (cur_tran_type=='nant'){
                             $scope.elemanAmmount=value_cent;
-                            const res = await jsc3l.bcTransaction.TransferOnBehalfNant($scope.wallet,
+                            const res = await jsc3l.bcTransaction.transferOnBehalfNant($scope.wallet,
                                                                 $scope.origine_address, 
                                                                 $scope.tokenTx.to, 
                                                                 $scope.tokenTx.value,  
@@ -599,7 +599,7 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, gl
                            $scope.delegationSendCallBack(res);
                       } else if (cur_tran_type=='cm'){
                              $scope.lemanexAmmount=value_cent;
-                             const res = await jsc3l.bcTransaction.TransferOnBehalfCM($scope.wallet,
+                             const res = await jsc3l.bcTransaction.transferOnBehalfCM($scope.wallet,
                                                                 $scope.origine_address, 
                                                                 $scope.tokenTx.to, 
                                                                 $scope.tokenTx.value,   
@@ -1232,7 +1232,7 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, gl
     
     
     $scope.dissmissRejected = function(address){
-        jsc3l.bcTransaction.DissmissRejectedInfo($scope.wallet,address).then(function(res) {
+        jsc3l.bcTransaction.dismissRejectedInfo($scope.wallet,address).then(function(res) {
         if (res.isError){
                 $scope.transPendingStatus=$sce.trustAsHtml(globalFuncs.getDangerText($translate.instant(res.error)));
         } else {
@@ -1246,7 +1246,7 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, gl
     }
     
     $scope.dissmissAccepted = function(address){
-        jsc3l.bcTransaction.DissmissAcceptedInfo($scope.wallet,address).then(function(res) {
+        jsc3l.bcTransaction.dismissAcceptedInfo($scope.wallet,address).then(function(res) {
          if (res.isError){
                 $scope.transPendingStatus=$sce.trustAsHtml(globalFuncs.getDangerText($translate.instant(res.error)));
          } else {
@@ -1436,7 +1436,7 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, gl
         $scope.sendTransactionModal.close();
         globalFuncs.showLoading($translate.instant("GP_Wait"));
         if ($scope.typeTrans==globalFuncs.currencies.CUR_credit_mut){
-           const res = await jsc3l.bcTransaction.PayRequestCM($scope.wallet, $scope.transaction_to ,  Math.round($scope.transaction_amount), data);
+           const res = await jsc3l.bcTransaction.payRequestCM($scope.wallet, $scope.transaction_to, $scope.transaction_amount, data);
            globalFuncs.hideLoadingWaiting();  
            if (res.isError){
                $scope.tr_err_message=$sce.trustAsHtml(globalFuncs.getDangerText($translate.instant(res.error)));
@@ -1449,7 +1449,7 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, gl
                $scope.openReqConf();
            }
         } else if ($scope.typeTrans==globalFuncs.currencies.CUR_nanti){
-           const res = await jsc3l.bcTransaction.PayRequestNant($scope.wallet, $scope.transaction_to ,  Math.round($scope.transaction_amount), data);
+           const res = await jsc3l.bcTransaction.payRequestNant($scope.wallet, $scope.transaction_to, $scope.transaction_amount, data);
            globalFuncs.hideLoadingWaiting();  
            if (res.isError){
                $scope.tr_err_message=$sce.trustAsHtml(globalFuncs.getDangerText($translate.instant(res.error)));
@@ -1487,7 +1487,7 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, gl
             walletService.setUsed();
             $scope.rejectTransactionModal.close();
             globalFuncs.showLoading($translate.instant("GP_Wait"));
-            const res = await jsc3l.bcTransaction.RejectRequest($scope.wallet, $scope.transaction_to);
+            const res = await jsc3l.bcTransaction.rejectRequest($scope.wallet, $scope.transaction_to);
             globalFuncs.hideLoadingWaiting();  
             if (res.isError){
                 $scope.err_reject_message=$sce.trustAsHtml(globalFuncs.getDangerText($translate.instant(res.error)));

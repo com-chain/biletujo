@@ -229,7 +229,7 @@ var exchangeCtrl = function($scope, $locale, $sce, walletService, $translate) {
              $scope.pop_limitCMm =0;
         }
         
-        const data = await jsc3l.bcTransaction.SetAccountParam($scope.wallet, 
+        const data = await jsc3l.bcTransaction.setAccountParam($scope.wallet,
                                     $scope.selected_account, 
                                     status, 
                                     $scope.pop_acc_type,  
@@ -261,7 +261,7 @@ var exchangeCtrl = function($scope, $locale, $sce, walletService, $translate) {
        null, $scope.to_message_key,
        null, $scope.message_to);
 
-        const rawTx = await jsc3l.bcTransaction.PledgeAccount($scope.wallet, $scope.selected_account, $scope.credit_amount, data);
+        const rawTx = await jsc3l.bcTransaction.pledgeAccount($scope.wallet, $scope.selected_account, $scope.credit_amount, data);
 
         if (rawTx.isError){
             $scope.acc_message = $sce.trustAsHtml(globalFuncs.getDangerText(rawTx.error));
