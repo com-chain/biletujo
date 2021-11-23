@@ -136,7 +136,7 @@ var readonlytransactionsCtrl = function($scope, $locale, $sce, walletService,con
       var memo = memoService.getMemo($scope.memos,transaction.hash);
       if (memo == "") {
         try {
-           memo = jsc3l.message.getTransactionMemo(
+           memo = jsc3l.memo.getTransactionMemo(
             transaction,
             $scope.watched_address.toLowerCase(),
             $scope.current_message_key)

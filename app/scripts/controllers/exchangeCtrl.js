@@ -257,7 +257,7 @@ var exchangeCtrl = function($scope, $locale, $sce, walletService, $translate) {
    }
       
    $scope.confirmCreditAccount = async function(){
-     var data = jsc3l.message.getTxMemoCipheredData(
+     var data = jsc3l.memo.getTxMemoCipheredData(
        null, $scope.to_message_key,
        null, $scope.message_to);
 

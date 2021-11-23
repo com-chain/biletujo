@@ -273,7 +273,7 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, gl
         if ($scope.isShopTx){
             data = $scope.shopTxInfo;
         }
-      data = Object.assign(data, jsc3l.message.getTxMemoCipheredData(
+      data = Object.assign(data, jsc3l.memo.getTxMemoCipheredData(
         $scope.from_message_key, $scope.to_message_key,
         $scope.message_from, $scope.message_to
       ))
@@ -325,7 +325,7 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, gl
         if ($scope.isShopTx){
             data = $scope.shopTxInfo;
         }
-      data = Object.assign(data, jsc3l.message.getTxMemoCipheredData(
+      data = Object.assign(data, jsc3l.memo.getTxMemoCipheredData(
         $scope.from_message_key, $scope.to_message_key,
         $scope.message_from, $scope.message_to
       ))
@@ -584,7 +584,7 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, gl
                       if ($scope.isShopTx){
                             data = $scope.shopTxInfo;
                       }
-                   data = Object.assign(data, jsc3l.message.getTxMemoCipheredData(
+                   data = Object.assign(data, jsc3l.memo.getTxMemoCipheredData(
                      $scope.from_message_key, $scope.to_message_key,
                      $scope.message_from, $scope.message_to
                    ))
@@ -1426,7 +1426,7 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, gl
   }
   
   $scope.sendReqTx = async function(){
-    var data = jsc3l.message.getTxMemoCipheredData(
+    var data = jsc3l.memo.getTxMemoCipheredData(
       $scope.from_message_key, $scope.to_message_key,
       $scope.message_from, $scope.message_to
     )
