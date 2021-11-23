@@ -765,6 +765,7 @@ var balanceCtrl = function($scope, $locale, $sce, walletService,contactservice, 
      // Check the message_key is correctly passed !
 
      var obj_content = {
+       address: $scope.wallet.getAddressString(),
        server: jsc3l.customization.getCurrencyName(),
        destinary: $scope.dest,
        begin: $scope.start_date,
@@ -773,8 +774,8 @@ var balanceCtrl = function($scope, $locale, $sce, walletService,contactservice, 
        viewoldtran: ($scope.oldTran == 1),
      }
 
-     var { signature, qrContent } = message.makeSignedQRWithPubKey(
-       $scope.wallet, obj_content, $scope.dest_keys.public_key
+     var { signature, qrContent } = $scope.wallet.makeSignedQRWithPubKey(
+       obj_content, $scope.dest_keys.public_key
      );
      $scope.qr_cr_content = qrContent;
 
