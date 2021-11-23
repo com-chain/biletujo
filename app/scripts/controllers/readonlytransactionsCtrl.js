@@ -170,7 +170,7 @@ var readonlytransactionsCtrl = function($scope, $locale, $sce, walletService,con
               $scope.tot_out=0;
               
               for (var ind = result.length-1; ind >=0 ; ind--) {
-                  var data = JSON.parse(result[ind]);
+                  var data = result[ind];
                   var tr_date = new Date(data.time*1000);
                   if ($scope.lock_date && tr_date.getTime() <  $scope.lock_date_begin.getTime()) {
                           result.slice(ind,1);
@@ -532,7 +532,7 @@ var readonlytransactionsCtrl = function($scope, $locale, $sce, walletService,con
       } else {
         jsc3l.ajaxReq.getTransList($scope.watched_address,1,0).then(function(result){
             if (result.length==1){
-                var res = JSON.parse(result[0]);
+                var res = result[0];
                 $scope.last_trans_id=res.hash;
                 $scope.last_trans_status=res.status;
             }
@@ -541,7 +541,7 @@ var readonlytransactionsCtrl = function($scope, $locale, $sce, walletService,con
          $scope.check_interval_id = setInterval(function(){
            jsc3l.ajaxReq.getTransList($scope.watched_address,1,0).then(function(result) {
                 if (result.length==1){
-                    var new_tra=JSON.parse(result[0]);
+                    var new_tra=result[0];
                     if ($scope.last_trans_id!=new_tra.hash || $scope.last_trans_status!=new_tra.status){
                         
                          
