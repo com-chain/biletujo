@@ -37,7 +37,7 @@
     "vinyl-source-stream": "^2.0.0"
   },
   "dependencies": {
-    "@com-chain.org/jsc3l": "file:..",
+    "@com-chain/jsc3l-browser": "^0.1.0",
     "fs": "0.0.1-security"
   }
 }

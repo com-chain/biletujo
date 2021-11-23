@@ -7,8 +7,8 @@ var angularTranslateErrorLog = require('angular-translate-handler-log');
 var angularSanitize = require('angular-sanitize');
 var globalFuncs = require('./globalFuncs');
 window.globalFuncs = globalFuncs;
-window.jsc3l = require('@com-chain.org/jsc3l');
-
+var Jsc3l = require('@com-chain/jsc3l-browser').default
+window.jsc3l = new Jsc3l(conf_locale)
 
 window.isApp = function () {
    return document.URL.indexOf( 'http://' ) === -1 && document.URL.indexOf( 'https://' ) === -1;
