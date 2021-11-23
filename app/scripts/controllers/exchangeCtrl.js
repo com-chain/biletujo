@@ -233,8 +233,8 @@ var exchangeCtrl = function($scope, $locale, $sce, walletService, $translate) {
                                     $scope.selected_account, 
                                     status, 
                                     $scope.pop_acc_type,  
-                                    $scope.pop_limitCMm,  
-                                    $scope.pop_limitCMp); 
+                                    $scope.pop_limitCMp,
+                                    $scope.pop_limitCMm);
         if (data.isError){
             $scope.acc_message = $sce.trustAsHtml(globalFuncs.getDangerText(data.error));
             $scope.pop_message = $scope.acc_message;
