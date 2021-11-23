@@ -134,7 +134,7 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, gl
         
         
         var local_message_key = JSON.parse(localStorage.getItem('ComChainWallet')).message_key.priv;
-        $scope.my_message_key = jsc3l.message.messageKeysFromCrypted($scope.wallet, local_message_key).clear_priv;
+        $scope.my_message_key = $scope.wallet.messageKeysFromCrypted(local_message_key);
 	});
     
 	$scope.setBalance = function(readyStatus) {

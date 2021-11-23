@@ -118,7 +118,7 @@ var readonlytransactionsCtrl = function($scope, $locale, $sce, walletService,con
         jsc3l.bcRead.getNantBalance($scope.watched_address).then(function(value){$scope.balanceEL = value;});
         jsc3l.bcRead.getCmBalance($scope.watched_address).then(function(value){$scope.balanceCM = value;});
         
-        $scope.current_message_key = jsc3l.message.messageKeysFromCrypted($scope.wallet, $scope.possible_wallets[$scope.watched_address].messageKey);
+        $scope.current_message_key = $scope.wallet.messageKeysFromCrypted($scope.possible_wallets[$scope.watched_address].messageKey);
         
         $scope.index=0;
         $scope.loadTransactions($scope.tra_number,$scope.index*$scope.tra_number + $scope.tra_offset);
@@ -139,7 +139,7 @@ var readonlytransactionsCtrl = function($scope, $locale, $sce, walletService,con
            memo = jsc3l.message.getTransactionMemo(
             transaction,
             $scope.watched_address.toLowerCase(),
-            $scope.current_message_key.clear_priv)
+            $scope.current_message_key)
         } catch (e) {}
       }
       return memo;
