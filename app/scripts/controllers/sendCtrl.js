@@ -1095,15 +1095,21 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, gl
     }
     
     $scope.refreshPending = function(){
-       globalFuncs.showLoading($translate.instant("GP_Wait"));
        $scope.req_index = 0;
        $scope.app_index = 0;
        $scope.rej_index = 0;
+       if (typeof $scope.req_number !== "undefined") {
+       globalFuncs.showLoading($translate.instant("GP_Wait"));
        $scope.loadPendingRequests($scope.req_number,$scope.req_index*$scope.req_number + $scope.req_offset);
+       }
+       if (typeof $scope.app_number !== "undefined") {
        globalFuncs.showLoading($translate.instant("GP_Wait"));
        $scope.loadApprovedRequests($scope.app_number,$scope.app_index*$scope.app_number + $scope.app_offset);
+       }
+       if (typeof $scope.rej_number !== "undefined") {
        globalFuncs.showLoading($translate.instant("GP_Wait"));
        $scope.loadRejectedRequests($scope.rej_number,$scope.rej_index*$scope.rej_number + $scope.rej_offset);
+       }
        
        setTimeout(function(){  
            if ( $scope.pendingRequest.length>0){
@@ -1299,10 +1305,12 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, gl
     }
     
     $scope.refreshApproval = function(){
-        globalFuncs.showLoading($translate.instant("GP_Wait"));
         $scope.app_index = 0;
-       
+
+        if (typeof $scope.app_number !== "undefined") {
+        globalFuncs.showLoading($translate.instant("GP_Wait"));
         $scope.loadPendingApprovals($scope.app_number,$scope.app_index*$scope.app_number + $scope.app_offset);
+        }
     }
     
       
