@@ -422,7 +422,7 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, gl
        });
        
        if ($scope.mode == "toMe"){
-         jsc3l.message.getReqMessage($scope.wallet, $scope.origine_address, $scope.my_message_key, true).then(function(message) {
+         $scope.wallet.getReqMessage($scope.origine_address, $scope.my_message_key, true).then(function(message) {
            $scope.message_to=message;
          });
        }
@@ -614,7 +614,7 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, gl
                    $scope.refreshFrom().then(async function(){
                        
                       
-                      jsc3l.message.publishReqMessages($scope.wallet, $scope.curr_from_add, $scope.message_to);
+                      $scope.wallet.publishReqMessages($scope.curr_from_add, $scope.message_to);
 
                        
                       $scope.elemanAmmount=0;
