@@ -1,7 +1,7 @@
 'use strict';
 var globalCtrl = function($scope, $locale, $sce, walletService, $translate) {
     // Check the environment
-    $scope.isApp =  jsc3l.customization.isApp();
+    $scope.isApp =  isApp();
     globalFuncs.hideLoadingWaiting();  
     $scope.trans_message = $translate.instant("GP_Wait_tran");
     $scope.validateStatus='';

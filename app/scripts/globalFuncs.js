@@ -371,7 +371,7 @@ globalFuncs.parseAddress = function(text){
 
 globalFuncs.notify = function(title, text){
     
-    if (jsc3l.customization.isApp()){
+    if (isApp()){
                 cordova.plugins.notification.local.schedule({
                     title: title,
                     message: text

@@ -4,7 +4,7 @@ var consultRightCtrl = function($scope, $sce, walletService, contactservice, con
 
     
     // Check the environment
-    $scope.isApp = jsc3l.customization.isApp();
+    $scope.isApp = isApp();
     
     // Create the modal popups
 	$scope.deleteConsultModal = new Modal(document.getElementById('deleteConsultRight'));

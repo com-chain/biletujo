@@ -1,6 +1,6 @@
 'use strict';
 var decryptWalletCtrl = function($scope, $sce, $translate, walletService, contactService, memoService, authenticationService, globalService) {
-    $scope.isApp =  jsc3l.customization.isApp();
+    $scope.isApp =  isApp();
     globalFuncs.hideLoadingWaiting();
     
     

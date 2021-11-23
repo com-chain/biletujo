@@ -10,6 +10,9 @@ window.globalFuncs = globalFuncs;
 window.jsc3l = require('@com-chain.org/jsc3l');
 
 
+window.isApp = function () {
+   return document.URL.indexOf( 'http://' ) === -1 && document.URL.indexOf( 'https://' ) === -1;
+}
 
 var translate = require('./translations/translate.js');
 

@@ -74,7 +74,7 @@ var tabsCtrl = function($scope, $attrs, globalService, contactservice, $translat
     $scope.onDeviceReady = function() {
         $scope.isIos = globalFuncs.isIos();
         
-        if (jsc3l.customization.isApp()){
+        if (isApp()){
             globalFuncs.dowloadAppFileWithNameWithoutMessage('tmp.txt', {});
         }
     }

@@ -21,7 +21,7 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, gl
     
 
 	$scope.showRaw = false;
-    $scope.isApp =  jsc3l.customization.isApp();
+    $scope.isApp =  isApp();
     $scope.display_curr_btn = false; 
     $scope.show_curr_sel = false;
     
@@ -1023,7 +1023,7 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, gl
     }
     
     $scope.addMessagePending = function(item){
-      jsc3l.message.getReqMessage($scope.wallet, item.address, $scope.my_message_key, false).then(function(message) {
+      $scope.wallet.getReqMessage(item.address, $scope.my_message_key, false).then(function(message) {
         item['message'] = message;
         $scope.pendingApproval.unshift(item);
                 });

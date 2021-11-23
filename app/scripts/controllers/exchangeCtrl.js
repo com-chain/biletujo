@@ -1,7 +1,7 @@
 'use strict';
 var exchangeCtrl = function($scope, $locale, $sce, walletService, $translate) {
     // Check the environment
-    $scope.isApp =  jsc3l.customization.isApp();
+    $scope.isApp =  isApp();
     $scope.currentWalletAddress=globalFuncs.getWalletAddress();
     $scope.blobEnc = globalFuncs.getBlob("text/json;charset=UTF-8", localStorage.getItem('ComChainWallet'));
     

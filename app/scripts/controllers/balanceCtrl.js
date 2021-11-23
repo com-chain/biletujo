@@ -1,7 +1,7 @@
 'use strict';
 var balanceCtrl = function($scope, $locale, $sce, walletService,contactservice, consultService, $translate) {
     // Environment variables
-    $scope.isApp =  jsc3l.customization.isApp();
+    $scope.isApp =  isApp();
     $scope.currentWalletAddress=globalFuncs.getWalletAddress();
     $scope.blobEnc = '';
     $scope.CUR='';
