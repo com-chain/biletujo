@@ -278,11 +278,11 @@ globalFuncs.loadWallet = async function(wallet){
     if (server_name==''){
         return false;
     } else {
-        var result = await jsc3l.customization.getConfJSON(server_name);
+        var result = await jsc3l.connection.getConfJSON(server_name);
             if (result) {
                 return result;
             } else {
-                var result = await jsc3l.customization.getConfJSON(server_name);
+                var result = await jsc3l.connection.getConfJSON(server_name);
                 return result;
             }
         

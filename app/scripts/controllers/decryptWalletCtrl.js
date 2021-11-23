@@ -368,7 +368,7 @@ var decryptWalletCtrl = function($scope, $sce, $translate, walletService, contac
             enr_txt = enr_txt.replace(/(\n|\r|\ )/gm, "");
             var enrollmentLetter = JSON.parse(enr_txt);  
             if (enrollmentLetter.servername){
-              var success = await jsc3l.customization.getConfJSON(enrollmentLetter.servername);
+              var success = await jsc3l.connection.getConfJSON(enrollmentLetter.servername);
                     if (success){
                          location.reload();  
                     } else {

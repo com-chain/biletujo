@@ -92,7 +92,7 @@ var walletGenCtrl = function($scope, $globalService, $translate, walletService, 
         try {
             var enrollmentLetter = JSON.parse($scope.token); 
             if (enrollmentLetter.servername){
-                     const success = await jsc3l.customization.getConfJSON(enrollmentLetter.servername);
+                     const success = await jsc3l.connection.getConfJSON(enrollmentLetter.servername);
                      if (success){
                        const data = await jsc3l.wallet.validateEnrollment(enrollmentLetter.id, enrollmentLetter.signature).then(function(data) {
                         globalFuncs.hideLoadingWaiting(); // hide the waiting overlay
