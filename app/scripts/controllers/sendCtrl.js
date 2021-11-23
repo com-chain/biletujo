@@ -624,7 +624,6 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, gl
                       if (cur_tran_type=='cm'){
                              $scope.lemanexAmmount=value_cent;
                              const res = await jsc3l.bcTransaction.askTransferCMFrom($scope.wallet, 
-                                                          $scope.wallet.getAddressString(), 
                                                           $scope.curr_from_add, 
                                                           $scope.tokenTx.value);
                              $scope.delegationSendCallBack(res);
@@ -632,7 +631,6 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, gl
                           
                               $scope.elemanAmmount=value_cent;
                               const res = await jsc3l.bcTransaction.askTransferFrom($scope.wallet, 
-                                                          $scope.wallet.getAddressString(), 
                                                           $scope.curr_from_add, 
                                                           $scope.tokenTx.value);
                               $scope.delegationSendCallBack(res);
