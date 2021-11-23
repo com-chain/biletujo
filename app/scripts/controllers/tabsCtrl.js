@@ -38,7 +38,7 @@ var tabsCtrl = function($scope, $attrs, globalService, contactservice, $translat
            }
            if (success){
                    $scope.ng_ok=true;
-                    jsc3l.customization.configureCurrency();
+                    globalFuncs.updateCss(true);
                     globalFuncs.getCurrencies();
                     
     /*                          if (jsc3l.customization.hasBn()){

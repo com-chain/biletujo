@@ -8,16 +8,7 @@ var blockiesDrtv = function() {
             
              var img_add =img_id==1 ? 'images/lem.png' : 'images/qrclick.png';
              
-            var the_arr = jsc3l.customization.getCssUrl().split('/');
-            the_arr.pop();
-            the_arr.pop();
-            if (img_id==1){
-             img_add = the_arr.join('/')+"/images/lem.png";  
-            } else {
-                img_add = the_arr.join('/')+"/images/qrclick.png";  
-            }
-             
-             element.css({'background-image': 'url(' + img_add +')' });
+             element.css({'background-image': 'url(${jsc3l.customization.getCurrencyAssetBaseUrl()}/' + img_add +')' });
                 
              if(jsc3l.ethFuncs.validateEtherAddress(address)){
                    element.css({'background-image': 'url(' + globalFuncs.getBlockie(address) +')' });

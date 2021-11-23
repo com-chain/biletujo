@@ -104,7 +104,7 @@ var walletGenCtrl = function($scope, $globalService, $translate, walletService, 
                            $scope.enter_token = false;
                            $scope.message_creation = '';
                            // Adapt the UI to the selected server
-                           jsc3l.customization.configureCurrency();
+                           globalFuncs.updateCss(true);
                            globalFuncs.getCurrencies();
                            $globalService.configureNoteTab(jsc3l.customization.hasBn());
                            $scope.CUR=globalFuncs.currencies.CUR;

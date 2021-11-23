@@ -319,11 +319,22 @@ globalFuncs.isValidBNValue= function(value){
   ////////////////////////////////////////////////////////////////////////////
   ////   Custo on the fly 
 
-    globalFuncs.updateCss = function(){
-        // replace the CSS references into the DOM
-        jsc3l.customization.updateCss();
-        globalFuncs.hideLoadingWaiting();
+    globalFuncs.updateCss = function (preventLoadingRemoval) {
+      // replace the CSS references into the DOM
 
+      if (!jsc3l.connection.endpoint) return
+
+      var oldlink = document.getElementsByTagName("link").item(0);
+      var newlink = document.createElement("link");
+      newlink.setAttribute("rel", "stylesheet");
+      newlink.setAttribute("type", "text/css");
+      newlink.setAttribute("href", jsc3l.customization.getCssUrl());
+      document.getElementsByTagName("head").item(0).appendChild(newlink);
+
+
+      if (!preventLoadingRemoval) {
+        globalFuncs.hideLoadingWaiting();
+      }
     }
     
     
@@ -827,10 +838,7 @@ globalFuncs.generateSavePDF = function(title, key, address, callback){
             }
 
             
-           var the_arr = jsc3l.customization.getCssUrl().split('/');
-           the_arr.pop();
-           the_arr.pop();
-           newImg.src = the_arr.join('/')+"/images/lem.png";  
+           newImg.src = jsc3l.customization.getCurrencyLogoUrl()
             
                 
 }
@@ -913,10 +921,7 @@ globalFuncs.generateCrPDF = function(title, on,assigned,validity,address,dest,co
             }
 
             
-            var the_arr = jsc3l.customization.getCssUrl().split('/');
-            the_arr.pop();
-            the_arr.pop();
-            newImg.src = the_arr.join('/')+"/images/lem.png";  
+            newImg.src = jsc3l.customization.getCurrencyLogoUrl()
            
                 
 }
@@ -960,10 +965,7 @@ globalFuncs.generateSaveAdrPDF = function(walletAddress, callback){
             }
 
             
-            var the_arr = jsc3l.customization.getCssUrl().split('/');
-            the_arr.pop();
-            the_arr.pop();
-            newImg.src = the_arr.join('/')+"/images/ici.png";  
+            newImg.src = `${jsc3l.customization.getCurrencyAssetBaseUrl()}/images/ici.png`;
            
 }
 
@@ -1054,10 +1056,7 @@ globalFuncs.generateTagsPDF = function(walletAddress, tags, callback){
             }
 
             
-            var the_arr = jsc3l.customization.getCssUrl().split('/');
-            the_arr.pop();
-            the_arr.pop();
-            newImg.src = the_arr.join('/')+"/images/lem.png";  
+            newImg.src = jsc3l.customization.getCurrencyLogoUrl()
             
 }
 
@@ -1279,10 +1278,7 @@ newImg.onload = function() {
 };
 
 
-   var the_arr = jsc3l.customization.getCssUrl().split('/');
-    the_arr.pop();
-    the_arr.pop();
-    newImg.src = the_arr.join('/')+"/images/etherwallet-logo.png";  
+    newImg.src = `${jsc3l.customization.getCurrencyAssetBaseUrl()}/images/etherwallet-logo.png`;
 
     
 }
