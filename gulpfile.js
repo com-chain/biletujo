@@ -117,6 +117,7 @@ gulp.task('browserify', ['babelify'], () => {
             "regenerator": true
           }]
         ],
+        global: true,
 	    sourceMaps: true,
 	})
     .bundle()
