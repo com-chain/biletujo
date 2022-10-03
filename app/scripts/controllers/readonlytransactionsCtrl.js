@@ -363,7 +363,7 @@ var readonlytransactionsCtrl = function($scope, $locale, $sce, walletService,con
         }
     }
     
-    $scope.ExportTra= function(){
+    $scope.ExportTra= async function(){
         $scope.start_time=Math.round($scope.start_time);
         if ($scope.start_time <0){
             $scope.start_time=0;
@@ -399,10 +399,11 @@ var readonlytransactionsCtrl = function($scope, $locale, $sce, walletService,con
         
        
         
-        jsc3l.ajaxReq.getExportTransList($scope.watched_address,d_start,d_end).then(function(result) {
+        var result = await jsc3l.ajaxReq.getExportTransList($scope.watched_address,d_start,d_end);
+
             var trans=[];
             for (var ind = 0; ind < result.length; ++ind) {
-                  trans[ind]={'id': (ind), 'data':JSON.parse(result[ind])};
+                  trans[ind]={'id': (ind), 'data':result[ind]};
                   trans[ind].data.to_name = contactservice.getContactName($scope.contacts, trans[ind].data.addr_to);
                   trans[ind].data.from_name = contactservice.getContactName($scope.contacts, trans[ind].data.addr_from);
                   trans[ind].data.memo = $scope.getTransactionMessage(trans[ind].data);
@@ -502,7 +503,6 @@ var readonlytransactionsCtrl = function($scope, $locale, $sce, walletService,con
            }
            
            $scope.exportTraModal.close();
-      });
     }
   
     

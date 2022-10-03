@@ -451,15 +451,15 @@ var billingCtrl = function($scope, $locale, $sce, walletService, $translate) {
         var d_end = $scope.end_date.getTime()/1000;
         
         for(var add_index=0; add_index<$scope.addree_list.length; ++add_index){
-            var add = $scope.addree_list[add_index];
-            jsc3l.ajaxReq.getExportTransListWithId(add,d_start,d_end).then(async function(result,caller_add){
+            let add = $scope.addree_list[add_index];
+            jsc3l.ajaxReq.getExportTransList(add,d_start,d_end).then(async function(result){
              
             // get the account types:
 
              
             var add_list = [];
             for (var ind = 0; ind < result.length; ++ind) {
-                   var tran = JSON.parse(result[ind]);
+                   var tran = result[ind];
                    if (tran.addr_to.startsWith('0x') && !add_list.includes(tran.addr_to)){
                        add_list.push(tran.addr_to);
                    }
@@ -470,7 +470,7 @@ var billingCtrl = function($scope, $locale, $sce, walletService, $translate) {
             
             
             await $scope.addAccountListType(add_list, 0)
-                var current_result = {"Address":caller_add, "Code":'', 
+                var current_result = {"Address":add, "Code":'',
                            "InPlNb":0, "InPlTot":0,
                            "InPerNaNb":0, "InPerNaTot": 0,
                            "InProNaNb":0, "InProNaTot": 0,
@@ -481,7 +481,7 @@ var billingCtrl = function($scope, $locale, $sce, walletService, $translate) {
                            "OutPerCmNb":0, "OutPerCmTot":0,
                            "OutProCmNb":0, "OutProCmTot":0}
                                        
-               $scope.addTrans(caller_add, result, current_result, 0, function(final_res){
+               $scope.addTrans(add, result, current_result, 0, function(final_res){
                    $scope.ExportData.push(final_res);
                });
          });
