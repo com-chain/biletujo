@@ -209,9 +209,11 @@ var exchangeCtrl = function($scope, $locale, $sce, walletService, $translate) {
         $scope.pop_limitCMp = document.getElementById('limitP').value;
        
        // check that the CM limit is compatible with the balance 
-       if (parseFloat($scope.pop_limitCMp)<parseFloat($scope.balanceCM) || parseFloat($scope.pop_limitCMm)>parseFloat($scope.balanceCM)){
-           $scope.pop_message=$sce.trustAsHtml(globalFuncs.getWarningText($translate.instant("EXC_lim_not_compatible_with_bal"))); 
-           return;
+       if ($scope.has_credit_mut) {
+           if (parseFloat($scope.pop_limitCMp)<parseFloat($scope.balanceCM) || parseFloat($scope.pop_limitCMm)>parseFloat($scope.balanceCM)){
+               $scope.pop_message=$sce.trustAsHtml(globalFuncs.getWarningText($translate.instant("EXC_lim_not_compatible_with_bal"))); 
+               return;
+           }
        }
         
        // prepare values:
