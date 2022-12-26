@@ -164,26 +164,23 @@ var consultRightCtrl = function($scope, $sce, walletService, contactservice, con
         child = container.lastElementChild; 
     }
     
-     var { signature, qrContent } =  $scope.wallet.makeSignedQR({
-       "server":jsc3l.customization.getCurrencyName(),
+     var qrFragments = $scope.wallet.makeSignedQRFragments({
        "destinary":$scope.dest,
        "begin":$scope.start_date,
        "end":$scope.end_date,
        "viewbalance": ($scope.balanceView == 1),
        "viewoldtran": ($scope.oldTran == 1)
-     });
-     $scope.qr_content = qrContent;
+     }, 4);
+
+     $scope.qr_content = qrFragments.full;
     
-    
-    var full= $scope.qr_content;
-    var chunk_length = Math.ceil(full.length/4);
+    var chunk_length = Math.ceil(qrFragments.full.length/4);
         
     if (piece <0){
         var qrcode = new QRCode(document.getElementById("qrCR_print"), $scope.qr_content);
         document.getElementById("qrCR_print").style.display = "none";
         for (var i=0; i<4;i++) {
-            var string = "FRAG_CR"+signature.s.toString('hex').substring(2,6)+i.toString()+full.substring(chunk_length*i,Math.min(chunk_length*(i+1),full.length));
-            var qrcode = new QRCode(document.getElementById("qrCR_print" + i.toString()),string);
+          var qrcode = new QRCode(document.getElementById("qrCR_print" + i.toString()),qrFragments[i]);
             document.getElementById("qrCR_print" + i.toString()).style.display = "none";
         } 
     } else if (piece == 0) {
@@ -191,8 +188,7 @@ var consultRightCtrl = function($scope, $sce, walletService, contactservice, con
     } else {
         var i = piece -1;
        
-        var string = "FRAG_CR"+signature.s.toString('hex').substring(2,6)+i.toString()+full.substring(chunk_length*i,Math.min(chunk_length*(i+1),full.length));
-        var qrcode = new QRCode(document.getElementById("qrcode_consultRight"),string);
+        var qrcode = new QRCode(document.getElementById("qrcode_consultRight"),qrFragments[i]);
     } 
     
     return $scope.qr_content;
@@ -253,8 +249,7 @@ var consultRightCtrl = function($scope, $sce, walletService, contactservice, con
 $scope.showContent = function(content) {
 
   let txt = (transId) => $sce.trustAsHtml(globalFuncs.getDangerText($translate.instant()))
-  var result = $scope.wallet.checkSignedQRFromString(
-    content, $scope.wallet.getAddressString())
+  var result = $scope.wallet.checkSignedQRFromString(content)
   switch (result) {
   case 'InvalidSignature':
     $scope.openStatus = txt('OPEN_not_right_sign')

@@ -41,7 +41,7 @@ var consultService = function() {
             continue
           }
 
-          let output = $scope.wallet.checkSignedQR(data, signature, address)
+          let output = $scope.qr.checkSignedQR(consult, address)
           if (typeof output === 'string') {  // Then check failed
             continue
           }

@@ -764,30 +764,24 @@ var balanceCtrl = function($scope, $locale, $sce, walletService,contactservice, 
      // TODO: this will probably need to be in JSC3L
      // Check the message_key is correctly passed !
 
-     var obj_content = {
-       address: $scope.wallet.getAddressString(),
+     var qrFragments = $scope.wallet.makeSignedQRFragments({
        server: jsc3l.customization.getCurrencyName(),
        destinary: $scope.dest,
        begin: $scope.start_date,
        end: $scope.end_date,
        viewbalance: ($scope.balanceView == 1),
        viewoldtran: ($scope.oldTran == 1),
-     }
+     }, $scope.CR_frag_number, $scope.dest_keys.public_key);
 
-     var { signature, qrContent } = $scope.wallet.makeSignedQRWithPubKey(
-       obj_content, $scope.dest_keys.public_key
-     );
-     $scope.qr_cr_content = qrContent;
+     $scope.qr_cr_content = qrFragments.full;
 
-    var full= $scope.qr_cr_content;
-    var chunk_length = Math.ceil(full.length/$scope.CR_frag_number);
+    var chunk_length = Math.ceil(qrFragments.full.length/$scope.CR_frag_number);
 
     if (piece <0){
         var qrcode = new QRCode(document.getElementById("qrCR_print"), $scope.qr_cr_content);
         document.getElementById("qrCR_print").style.display = "none";
         for (var i=0; i<$scope.CR_frag_number;i++) {
-            var string = "FRAG_CR"+signature.s.toString('hex').substring(2,6)+i.toString()+full.substring(chunk_length*i,Math.min(chunk_length*(i+1),full.length));
-            var qrcode = new QRCode(document.getElementById("qrCR_print" + i.toString()),string); 
+            var qrcode = new QRCode(document.getElementById("qrCR_print" + i.toString()),qrFragments[i]); 
             document.getElementById("qrCR_print" + i.toString()).style.display = "none";
         } 
     } else if (piece == 0) {
@@ -795,8 +789,7 @@ var balanceCtrl = function($scope, $locale, $sce, walletService,contactservice, 
     } else {
         var i = piece -1;
        
-        var string = "FRAG_CR"+signature.s.toString('hex').substring(2,6)+i.toString()+full.substring(chunk_length*i,Math.min(chunk_length*(i+1),full.length));
-        var qrcode = new QRCode(document.getElementById("qrcode_consultRight"),string);
+        var qrcode = new QRCode(document.getElementById("qrcode_consultRight"),qrFragments[i]);
     }  
  
 }
@@ -852,7 +845,7 @@ var balanceCtrl = function($scope, $locale, $sce, walletService,contactservice, 
 $scope.showContent = function(content) {
     $scope.openStatus = "";
   let txt = (transId) => $sce.trustAsHtml(globalFuncs.getDangerText($translate.instant()))
-  var result = $scope.wallet.checkSignedQRFromString(content, $scope.wallet.getAddressString())
+  var result = $scope.wallet.checkSignedQRFromString(content)
   switch (result) {
   case 'InvalidSignature':
     $scope.openStatus = txt('OPEN_not_right_sign')
