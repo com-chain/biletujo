@@ -10,8 +10,18 @@ window.globalFuncs = globalFuncs;
 var Jsc3l = require('@com-chain/jsc3l-browser').default
 window.jsc3l = new Jsc3l(conf_locale)
 
+
+var m_is_app=false;
+document.addEventListener("deviceready", onDeviceReady, false);
+function onDeviceReady() {
+    m_is_app = device.platform!="browser";
+}
+
+
+
 window.isApp = function () {
-   return document.URL.indexOf( 'http://' ) === -1 && document.URL.indexOf( 'https://' ) === -1;
+   return m_is_app;
+   //return document.URL.indexOf( 'http://' ) === -1 && document.URL.indexOf( 'https://' ) === -1;
 }
 
 var translate = require('./translations/translate.js');
