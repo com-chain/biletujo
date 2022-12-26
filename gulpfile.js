@@ -25,6 +25,7 @@ var babelify = require('babelify');
 
 
 var output_android =  './cordova_dist/';
+var output_ios =  './cordova_dist_ios/';
 var output_exchange_office =  './cordova_exchange_dist/';
 
 // Compile and Minify Less / CSS Files
@@ -65,6 +66,7 @@ gulp.task('copiedJS', function () {
   return gulp
     .src(copiedjsFiles)
       .pipe(gulp.dest(output_android+jsOutputFolder))
+      .pipe(gulp.dest(output_ios+jsOutputFolder))
       .pipe(gulp.dest(output_exchange_office+jsOutputFolder))
       .pipe(notify('Cordova Copied JS Complete'));
 });
@@ -75,6 +77,7 @@ gulp.task('staticJS', function () {
       .pipe(concat(staticjsOutputFile))
       .pipe(uglify())
       .pipe(gulp.dest(output_android+jsOutputFolder))
+      .pipe(gulp.dest(output_ios+jsOutputFolder))
       .pipe(gulp.dest(output_exchange_office+jsOutputFolder))
       .pipe(notify('Cordova StaticJS Complete'));
 });
@@ -86,6 +89,7 @@ gulp.task('minJS',['browserify'],function () {
       .pipe(concat('etherwallet-master-min.js'))
       .pipe(sourcemaps.write('.'))
       .pipe(gulp.dest(output_android+jsOutputFolder))
+      .pipe(gulp.dest(output_ios+jsOutputFolder))
       .pipe(gulp.dest(output_exchange_office+jsOutputFolder))
       .pipe(notify('Cordova MinJS Complete'));
 });
@@ -139,6 +143,7 @@ gulp.task('copy-images', function() {
        .pipe(gulp.dest("./dist/images"))
 
        .pipe(gulp.dest(output_android+imagesOutputFolder))
+      .pipe(gulp.dest(output_ios+imagesOutputFolder))
       .pipe(gulp.dest(output_exchange_office+imagesOutputFolder))
    .pipe(notify({message:'Cordova Images Complete', onLast:true}));
 });
@@ -152,6 +157,7 @@ gulp.task('copy-fonts', function() {
    gulp.src(fontsFolder)
           .pipe(gulp.dest("./dist/fonts"))
    .pipe(gulp.dest(output_android+fontsOutputFolder))
+      .pipe(gulp.dest(output_ios+fontsOutputFolder))
    .pipe(gulp.dest(output_exchange_office+fontsOutputFolder))
    .pipe(notify({message:'Cordova Fonts Complete', onLast:true}));
 });
@@ -164,6 +170,7 @@ gulp.task('copy-conf', function() {
           gulp.src(confFolder) 
           .pipe(gulp.dest("./dist/configs"))
           .pipe(gulp.dest(output_android+confOutputFolder))
+          .pipe(gulp.dest(output_ios+confOutputFolder))
           .pipe(gulp.dest(output_exchange_office+confOutputFolder))
           .pipe(notify({message:'Cordova Conf Complete', onLast:true}));
           });
@@ -173,6 +180,7 @@ gulp.task('css',['less','copy-images'], function () {
           return gulp.src('./dist/css/*.css')
          // .pipe(base64())
           .pipe(gulp.dest(output_android+lessOutputFolder))
+          .pipe(gulp.dest(output_ios+lessOutputFolder))
           .pipe(gulp.dest(output_exchange_office+lessOutputFolder))
 
           });
@@ -196,6 +204,7 @@ gulp.task('buildHTML', ['distHTML'], function () {
 
   gulp.src('./dist/html/index.html')
     .pipe(gulp.dest(output_android +'www/')) 
+    .pipe(gulp.dest(output_ios +'www/')) 
     .pipe(notify({message:'Cordova HTML Pages Complete', onLast:true}));;
     
     gulp.src('./dist/html/exchangeOffice.html')
