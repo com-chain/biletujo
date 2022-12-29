@@ -410,7 +410,8 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, gl
          } 
          if ( $scope.to_message_key .length>0) {
            $scope.cp_mess = $scope.reference.length==0 && !$scope.isShopTx;
-         }   
+         }
+         $scope.$apply();
        });     
        
        $scope.from_message_key = "";
@@ -419,11 +420,13 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, gl
          if ($scope.from_message_key===undefined) {  
            $scope.from_message_key = "";
          }
+         $scope.$apply();
        });
        
        if ($scope.mode == "toMe"){
          $scope.wallet.getReqMessage($scope.origine_address, $scope.my_message_key, true).then(function(message) {
            $scope.message_to=message;
+           $scope.$apply();
          });
        }
        
