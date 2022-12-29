@@ -8,7 +8,13 @@ var blockiesDrtv = function() {
                  element.css({'background-image': 'url(' + globalFuncs.getBlockie(address) +')' });
              } else {
                  const img_add =attrs.img==1 ? 'images/lem.png' : 'images/qrclick.png';
-                 element.css({'background-image': 'url(' + jsc3l.customization.getCurrencyAssetBaseUrl() +'/' + img_add +')' });
+                 var baseUrl
+                 try {
+                   baseUrl = jsc3l.customization.getCurrencyAssetBaseUrl()
+                 } catch(e) {
+                   return
+                 }
+                 element.css({'background-image': 'url(' + baseUrl +'/' + img_add +')' });
              }
         });
     };
