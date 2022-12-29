@@ -94,7 +94,10 @@ var walletGenCtrl = function($scope, $globalService, $translate, walletService, 
             if (enrollmentLetter.servername){
                      const success = await jsc3l.connection.getConfJSON(enrollmentLetter.servername);
                      if (success){
-                       const data = await jsc3l.wallet.validateEnrollment(enrollmentLetter.id, enrollmentLetter.signature).then(function(data) {
+                       const data = await $scope.wallet.validateEnrollmentLetter(
+                         enrollmentLetter.id,
+                         enrollmentLetter.signature,
+                       ).then(function(data) {
                         globalFuncs.hideLoadingWaiting(); // hide the waiting overlay
                         if (data.result=="OK"){
                            $scope.enrollmentLetter = enrollmentLetter; 
@@ -173,7 +176,7 @@ var walletGenCtrl = function($scope, $globalService, $translate, walletService, 
 			$scope.wallet = await jsc3l.wallet.createWallet();
                 try {
                     //Send (public) address to API (enroll the wallet)
-                    const success = await jsc3l.wallet.enrollAddress($scope.wallet, $scope.enrollmentLetter.id, $scope.enrollmentToken);
+                    const success = await $scope.wallet.enrollAddress($scope.enrollmentLetter.id, $scope.enrollmentToken);
                         if (success) {
                             
                             if ($scope.unlock_url != undefined && $scope.unlock_url!="") {
