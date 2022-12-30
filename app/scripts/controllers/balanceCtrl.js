@@ -860,18 +860,21 @@ $scope.showContent = function(content) {
     $scope.openStatus = txt('OPEN_not_right_format')
     return
   default:
-    // result is {signature, data}
-    if (result.data.server !== jsc3l.customization.getCurrencyName()){
-      $scope.openStatus = txt('OPEN_right_not_right_server');
-      return;
+    if (result){
+        parsed_result = JSON.parse(content)
+        // parsed_result is {signature, data}
+        if (parsed_result.data.server !== jsc3l.customization.getCurrencyName()){
+          $scope.openStatus = txt('OPEN_right_not_right_server');
+          return;
+        }
+        // OK we can close the popup
+        $scope.openRightModal.close()
+        // add to the right
+        consultService.addConsult(parsed_result);
+        //reload the grid
+        $scope.consult_rights = consultService.loadConsults($scope.wallet.getAddressString());
+        $scope.loadRights();
     }
-    // OK we can close the popup
-    $scope.openRightModal.close()
-    // add to the right
-    consultService.addConsult(result);
-    //reload the grid
-    $scope.consult_rights = consultService.loadConsults($scope.wallet.getAddressString());
-    $scope.loadRights();
   }
 
 }

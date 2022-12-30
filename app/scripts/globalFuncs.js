@@ -30,11 +30,11 @@ var globalFuncs = function() {}
 
  globalFuncs.payRequestNant = "0x132019f4";
  globalFuncs.payRequestCM = "0x1415707c";
- globalFuncs.cancelRequest = "0xaf98f757";*/
+ globalFuncs.cancelRequest = "0xaf98f757";
  
  
  globalFuncs.setAccountsContracts = "0x14ea14f5";
- globalFuncs.contactsOf = "0xd548bf2c";
+ globalFuncs.contactsOf = "0xd548bf2c";*/
  
  globalFuncs.setAccountsMemos = "0x166cf727";
  globalFuncs.memosOf = "0x39642b96";
@@ -77,40 +77,12 @@ var globalFuncs = function() {}
     }
     
  /*** contract 3***/
- globalFuncs.setContactHash = function(wallet, contact_hash, callback){    
-     var datas = []
-     datas.push(jsc3l.ethFuncs.padLeft('20', 64))
-     datas.push(jsc3l.ethFuncs.padLeft('2e', 64))
-     var result = contact_hash
-     for (var i=contact_hash.length ;i<128;++i){
-         result = result+'0';
-     }
-     datas.push(result)
-         
-     globalFuncs.generateTx(jsc3l.customization.getContract3(),
-                            wallet, 
-                            globalFuncs.setAccountsContracts, 
-                            datas, 
-                            {},
-                            callback);       
+ globalFuncs.setContactHash = function(wallet, contact_hash, callback){  
+     jsc3l.bcTransaction.setContactHash(32,46,contact_hash).then((res)=>callback(res));
  }
  
  globalFuncs.setMemoHash = function(wallet, memo_hash, callback){     
-     var datas = []
-     datas.push(jsc3l.ethFuncs.padLeft('20', 64))
-     datas.push(jsc3l.ethFuncs.padLeft('2e', 64))
-     var result = memo_hash
-     for (var i=memo_hash.length ;i<128;++i){
-         result = result+'0';
-     }
-     datas.push(result)
-         
-     globalFuncs.generateTx(jsc3l.customization.getContract3(),
-                            wallet, 
-                            globalFuncs.setAccountsMemos, 
-                            datas, 
-                            {},
-                            callback);       
+     jsc3l.bcTransaction.setMemoHash(32,46,memo_hash).then((res)=>callback(res));     
  }
  
  globalFuncs.getContactHash = async function(walletAddress,callback){
