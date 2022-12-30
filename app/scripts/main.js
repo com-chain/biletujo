@@ -45,6 +45,15 @@ window.jsc3l = new Jsc3l(conf_locale, [
   },
 ])
 
+// XXXvlab: nasty hack to allow tabsCtrl to load and fetch repo
+// information before storageCtrl loading wallets. Sorry.
+let promise
+window.loadingPromise = new Promise((resolve, reject) => {
+  promise = { resolve, reject }
+})
+window.loadingPromise.resolve = promise.resolve
+window.loadingPromise.reject = promise.reject
+
 
 var m_is_app=false;
 document.addEventListener("deviceready", onDeviceReady, false);

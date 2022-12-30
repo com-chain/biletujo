@@ -35,6 +35,9 @@ var tabsCtrl = function($scope, $attrs, globalService, contactservice, $translat
               } else {
                 success = false;
               }
+             loadingPromise.resolve();
+           } else {
+             loadingPromise.reject();
            }
            if (success){
                    $scope.ng_ok=true;

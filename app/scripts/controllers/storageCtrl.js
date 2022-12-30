@@ -31,7 +31,16 @@ var storageCtrl = function($scope, $sce, walletService, contactservice, $transla
          }
     }
     
+
+  // XXXvlab: loadWallets will require access to
+  // jsc3l.customization.getCurrencyLogoUrl(..)  which require access
+  // to the custoRepo. This will be set only after that
+  // ``acquireEndPoint`` is done. Which is triggered on ``tabsCtrl``.
+  loadingPromise.then(function() {
+    console.log("LOADING WALLETS")
     $scope.loadWallets();
+    $scope.$apply();
+  })
 
    
      
