@@ -22,7 +22,7 @@ var source = require('vinyl-source-stream');
 var buffer = require('vinyl-buffer');
 var realpathify = require('realpathify');
 var babelify = require('babelify');
-
+var print = require('gulp-print').default;
 
 var output_android =  './cordova_dist/';
 var output_ios =  './cordova_dist_ios/';
@@ -97,15 +97,21 @@ gulp.task('minJS',['browserify'],function () {
 gulp.task('babelify', () => {
   return gulp
     .src(AllJsFiles)
+    // .pipe(print(filepath => `babelify src: ${filepath}`))
     .pipe(sourcemaps.init())
 	.pipe(babel({
 	  presets: ['@babel/preset-env'],
-      "plugins": [
+      plugins: [
         ["@babel/plugin-transform-runtime", {
-          "regenerator": true
+          regenerator: true
         }]
       ]
 	}))
+    .on('error', function (err) {
+      console.error(err.message)
+      this.emit('end')
+    })
+    // .pipe(print(filepath => `babelify out: ${filepath}`))
     .pipe(sourcemaps.write('.'))
 	.pipe(gulp.dest('build'))
 });
@@ -124,6 +130,10 @@ gulp.task('browserify', ['babelify'], () => {
         global: true,
 	    sourceMaps: true,
 	})
+    .on('error', function (err) {
+      console.error(err.message)
+      this.emit('end')
+    })
     .bundle()
     .pipe(source(mainjs))
     .pipe(buffer())
