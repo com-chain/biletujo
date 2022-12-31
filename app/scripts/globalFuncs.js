@@ -30,13 +30,13 @@ var globalFuncs = function() {}
 
  globalFuncs.payRequestNant = "0x132019f4";
  globalFuncs.payRequestCM = "0x1415707c";
- globalFuncs.cancelRequest = "0xaf98f757";
+ globalFuncs.cancelRequest = "0xaf98f757";*/
  
  
- globalFuncs.setAccountsContracts = "0x14ea14f5";
- globalFuncs.contactsOf = "0xd548bf2c";*/
+// globalFuncs.setAccountsContracts = "0x14ea14f5";
+ globalFuncs.contactsOf = "0xd548bf2c";
  
- globalFuncs.setAccountsMemos = "0x166cf727";
+ //globalFuncs.setAccountsMemos = "0x166cf727";
  globalFuncs.memosOf = "0x39642b96";
  
  ///////////////////////////////////////////////////////////////////////////

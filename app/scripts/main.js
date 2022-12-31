@@ -22,7 +22,6 @@ window.jsc3l = new Jsc3l(conf_locale, [
     setTaxAccount: 'd0385b5e:accAddress',
     setOwnerAccount: 'f2fde38b:accAddress',
     setContractStatus: '88b8084f:status',
-    setPopo: '88b8084e:amount',
   },
   // Second Contract
   {
@@ -40,7 +39,7 @@ window.jsc3l = new Jsc3l(conf_locale, [
   },
   // Third Contract
   {
-    setContactHash: "0x14ea14f5:posInt sizeInt hashHex",
+    setContactHash: "14ea14f5:posInt sizeInt hashHex",
     setMemoHash: "166cf727:posInt sizeInt hashHex",
   },
 ])
