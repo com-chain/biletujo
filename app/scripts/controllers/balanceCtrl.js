@@ -813,6 +813,9 @@ var balanceCtrl = function($scope, $locale, $sce, walletService,contactservice, 
            // processing
            $scope.generateSaveQRPiece(-1);
            $scope.generateSaveQRPiece(0);
+           $scope.blobCrEnc = globalFuncs.getBlob("text/json;charset=UTF-8", $scope.qr_cr_content);
+           
+           $scope.$apply();
            $scope.dislayQRModal.open();
 
            if (!$scope.isApp) {
@@ -842,9 +845,13 @@ var balanceCtrl = function($scope, $locale, $sce, walletService,contactservice, 
 
 
 
+
 $scope.showContent = function(content) {
     $scope.openStatus = "";
-  let txt = (transId) => $sce.trustAsHtml(globalFuncs.getDangerText($translate.instant()))
+    
+    
+    
+  let txt = (transId) => globalFuncs.getDangerText($translate.instant(transId))
   var result = $scope.wallet.checkSignedQRFromString(content)
   switch (result) {
   case 'InvalidSignature':

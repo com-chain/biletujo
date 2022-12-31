@@ -1375,19 +1375,24 @@ globalFuncs.hasConfig = function(){
       if (globalFuncs.useFingerprint!=null){
           callback(globalFuncs.useFingerprint);
       } else {
-          if (!Fingerprint){
-                globalFuncs.useFingerprint = false;
-                callback(globalFuncs.useFingerprint);
-          } else {
-              Fingerprint.isAvailable(
-                function(res){
-                    globalFuncs.useFingerprint = true;
-                    callback(globalFuncs.useFingerprint);
-                }, 
-                function(mess){
+          try {
+              if (!Fingerprint){
                     globalFuncs.useFingerprint = false;
                     callback(globalFuncs.useFingerprint);
-                });
+              } else {
+                  Fingerprint.isAvailable(
+                    function(res){
+                        globalFuncs.useFingerprint = true;
+                        callback(globalFuncs.useFingerprint);
+                    }, 
+                    function(mess){
+                        globalFuncs.useFingerprint = false;
+                        callback(globalFuncs.useFingerprint);
+                    });
+              }
+           } catch (error) {
+                globalFuncs.useFingerprint = false;
+                callback(globalFuncs.useFingerprint);
           }
       }
   }

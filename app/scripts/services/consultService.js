@@ -41,7 +41,7 @@ var consultService = function() {
             continue
           }
 
-          let output = $scope.qr.checkSignedQR(consult, address)
+          let output = jsc3l.qr.checkSignedQR(consult, address)
           if (typeof output === 'string') {  // Then check failed
             continue
           }
