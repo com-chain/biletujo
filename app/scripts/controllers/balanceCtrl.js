@@ -861,16 +861,16 @@ $scope.showContent = function(content) {
     return
   default:
     if (result){
-        parsed_result = JSON.parse(content)
-        // parsed_result is {signature, data}
-        if (parsed_result.data.server !== jsc3l.customization.getCurrencyName()){
+        const parsed_content = JSON.parse(content)
+        // parsed_content is {signature, data}
+        if (parsed_content.data.server !== jsc3l.customization.getCurrencyName()){
           $scope.openStatus = txt('OPEN_right_not_right_server');
           return;
         }
         // OK we can close the popup
         $scope.openRightModal.close()
         // add to the right
-        consultService.addConsult(parsed_result);
+        consultService.addConsult(parsed_content);
         //reload the grid
         $scope.consult_rights = consultService.loadConsults($scope.wallet.getAddressString());
         $scope.loadRights();
