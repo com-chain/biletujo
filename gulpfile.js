@@ -9,6 +9,7 @@ var autoprefixer = require('gulp-autoprefixer');
 var cssnano = require('gulp-cssnano');
 var notify = require('gulp-notify');
 var rename = require('gulp-rename');
+var gutil = require('gulp-util');
 var concat = require('gulp-concat');
 var clean = require('gulp-clean');
 var uglify = require('gulp-uglify');
@@ -81,7 +82,17 @@ gulp.task('staticJS', function () {
       .pipe(notify('Cordova StaticJS Complete'));
 });
 
-
+gulp.task('minJS',['browserify'],function () {
+  return gulp
+    .src('./dist/js/etherwallet-master.js')
+      .pipe(sourcemaps.init({loadMaps: true}))
+      .pipe(concat('etherwallet-master-min.js'))
+      .pipe(sourcemaps.write('.'))
+      .pipe(gulp.dest(output_android+jsOutputFolder))
+      .pipe(gulp.dest(output_ios+jsOutputFolder))
+      .pipe(gulp.dest(output_exchange_office+jsOutputFolder))
+      .pipe(notify('Cordova MinJS Complete'));
+});
 
 gulp.task('babelify', () => {
   return gulp
@@ -105,7 +116,8 @@ gulp.task('babelify', () => {
 	.pipe(gulp.dest('build'))
 });
 
-gulp.task('browserify', gulp.series('babelify'), () => {
+
+gulp.task('browserify', ['babelify'], () => {
   return browserify(mainjs, { debug: true })
     .plugin(realpathify)
     .transform("babelify", {
@@ -131,26 +143,13 @@ gulp.task('browserify', gulp.series('babelify'), () => {
 	.pipe(gulp.dest('dist/js'))
 });
 
-gulp.task('minJS',gulp.series('browserify'),function () {
-  return gulp
-    .src('./dist/js/etherwallet-master.js')
-      .pipe(sourcemaps.init({loadMaps: true}))
-      .pipe(concat('etherwallet-master-min.js'))
-      .pipe(sourcemaps.write('.'))
-      .pipe(gulp.dest(output_android+jsOutputFolder))
-      .pipe(gulp.dest(output_ios+jsOutputFolder))
-      .pipe(gulp.dest(output_exchange_office+jsOutputFolder))
-      .pipe(notify('Cordova MinJS Complete'));
-});
-
-
 
 // Copy Images
 var imagesFolder = "./app/images/**/*";
 var imagesOutputFolder='www/images';
 
 gulp.task('copy-images', function() {
-   return gulp.src(imagesFolder)
+   gulp.src(imagesFolder)
        .pipe(gulp.dest("./dist/images"))
 
        .pipe(gulp.dest(output_android+imagesOutputFolder))
@@ -165,7 +164,7 @@ var fontsFolder = "./app/fonts/*.*";
 var fontsOutputFolder='www/fonts';
 
 gulp.task('copy-fonts', function() {
-   return gulp.src(fontsFolder)
+   gulp.src(fontsFolder)
           .pipe(gulp.dest("./dist/fonts"))
    .pipe(gulp.dest(output_android+fontsOutputFolder))
       .pipe(gulp.dest(output_ios+fontsOutputFolder))
@@ -178,16 +177,16 @@ var confFolder = "./app/configs/*";
 var confOutputFolder='www/configs';
 
 gulp.task('copy-conf', function() {
-  return gulp.src(confFolder) 
+          gulp.src(confFolder) 
           .pipe(gulp.dest("./dist/configs"))
           .pipe(gulp.dest(output_android+confOutputFolder))
           .pipe(gulp.dest(output_ios+confOutputFolder))
           .pipe(gulp.dest(output_exchange_office+confOutputFolder))
           .pipe(notify({message:'Cordova Conf Complete', onLast:true}));
-});
+          });
 
 
-gulp.task('css', gulp.series('less','copy-images'), function () {
+gulp.task('css',['less','copy-images'], function () {
           return gulp.src('./dist/css/*.css')
          // .pipe(base64())
           .pipe(gulp.dest(output_android+lessOutputFolder))
@@ -211,8 +210,9 @@ gulp.task('distHTML', function () {
     .pipe(gulp.dest('./dist/html/'));
 });
 
-gulp.task('buildHTML', gulp.series('distHTML'), function () {
-  return gulp.src('./dist/html/index.html')
+gulp.task('buildHTML', ['distHTML'], function () {
+
+  gulp.src('./dist/html/index.html')
     .pipe(gulp.dest(output_android +'www/')) 
     .pipe(gulp.dest(output_ios +'www/')) 
     .pipe(notify({message:'Cordova HTML Pages Complete', onLast:true}));;
@@ -221,6 +221,9 @@ gulp.task('buildHTML', gulp.series('distHTML'), function () {
     .pipe(concat('index.html'))
     .pipe(gulp.dest(output_exchange_office+'www/')) 
     .pipe(notify({message:'Cordova Exchange Office HTML Pages Complete', onLast:true}));
+    
+   
+   
 });
 
 
@@ -233,7 +236,7 @@ gulp.task('watchJS', function() {
   ]);
 });
 gulp.task('watchLess', function() {
-  gulp.watch(lessWatchFolder, ['css']);
+    gulp.watch(lessWatchFolder, ['css']);
 });
 gulp.task('watchPAGES', function() {
     gulp.watch(htmlPages, ['buildHTML']);
@@ -243,8 +246,9 @@ gulp.task('watchTPL', function() {
 });
 
 
-gulp.task('build', gulp.series('buildHTML','css', 'staticJS', 'copiedJS', 'browserify',  'minJS','copy-fonts','copy-conf'));
 
-gulp.task('watch', gulp.series('watchJS' , 'watchLess', 'watchPAGES', 'watchTPL'));
+gulp.task('build', ['buildHTML','css', 'staticJS', 'copiedJS', 'browserify',  'minJS','copy-fonts','copy-conf']);
 
-gulp.task('default', gulp.series('build', 'watch'));
+gulp.task('watch', ['watchJS' , 'watchLess', 'watchPAGES', 'watchTPL']);
+
+gulp.task('default', ['build', 'watch']);
