@@ -418,6 +418,7 @@ var balanceCtrl = function($scope, $locale, $sce, walletService,contactservice, 
                    document.getElementById('transDelStatus').innerHTML=$sce.trustAsHtml(globalFuncs.getSuccessText($translate.instant("Deleg_order_edit_send")));
                    $scope.editDelegationModal.close();
                    $scope.confStatus = $translate.instant("Deleg_order_edit_send");
+                   $scope.$apply;
                    $scope.confPopModal.open();
                 }
             }
@@ -829,8 +830,8 @@ var balanceCtrl = function($scope, $locale, $sce, walletService,contactservice, 
                         $translate.instant("PDF_CR_Title"),
                         $translate.instant("PDF_CR_On"),
                         $translate.instant("PDF_CR_Assigned"),
-                        globalFuncs.cleanName($translate.instant("PDF_CR_Validity")) + " " + $scope.start_date.getFullYear()+ "/" + $scope.start_date.getMonth()+"/" + $scope.start_date.getDate() +"-"+
-                        $scope.end_date.getFullYear()+ "/" + $scope.end_date.getMonth()+"/" + $scope.end_date.getDate(), 
+                        globalFuncs.cleanName($translate.instant("PDF_CR_Validity")) + " " + $scope.start_date.getFullYear()+ "/" + ($scope.start_date.getMonth()+1)+"/" + $scope.start_date.getDate() +"-"+
+                        $scope.end_date.getFullYear()+ "/" + ($scope.end_date.getMonth()+1)+"/" + $scope.end_date.getDate(), 
                         $scope.currentWalletAddress,
                         $scope.dest,
                         $scope.qr_cr_content,                       
