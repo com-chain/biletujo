@@ -32,7 +32,8 @@ var globalCtrl = function($scope, $locale, $sce, walletService, $translate) {
         const status = await jsc3l.bcRead.getIsOwner($scope.wallet.getAddressString());
         $scope.is_owner = status==1;
         $scope.owner_account=$scope.wallet.getAddressString();
-        $scope.load(); 
+        await $scope.load(); 
+        $scope.$apply();
     }
     
     $scope.load = async function(){

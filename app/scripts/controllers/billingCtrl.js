@@ -61,6 +61,7 @@ var billingCtrl = function($scope, $locale, $sce, walletService, $translate) {
             const type = await jsc3l.bcRead.getAccountType($scope.wallet.getAddressString());
             const status = await jsc3l.bcRead.getAccountStatus($scope.wallet.getAddressString());
             $scope.is_admin = type==2 && status==1;
+            $scope.$apply();
         });
     
     ///////////////////////////////////
@@ -91,6 +92,7 @@ var billingCtrl = function($scope, $locale, $sce, walletService, $translate) {
                 $scope.addressCode_list=list;
                 $scope.no_acc = addre_list.length ==0;
                 $scope.searchStatus="";
+                $scope.$apply();
             });
         });
     }

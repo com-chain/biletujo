@@ -113,6 +113,7 @@ var exchangeCtrl = function($scope, $locale, $sce, walletService, $translate) {
             
             const curr_astatus = await jsc3l.bcRead.getContractStatus();
             $scope.is_curr_locked = curr_astatus==0;
+            $scope.$apply();
          
         });
     

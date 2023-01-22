@@ -39,6 +39,7 @@ var noteCtrl = function($scope, $locale, $sce, walletService, $translate) {
             $scope.target_amount_option = $scope.value_options[0];
             
             globalFuncs.hideLoadingWaiting();  
+            $scope.$apply();
         });
     
   $scope.openGetList = function() {
