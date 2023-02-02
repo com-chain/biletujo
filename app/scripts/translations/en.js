@@ -3,7 +3,7 @@
 var en = function() {}
 en.code = 'en';
 en.data = {
-Version:'&middot; v2.2.11 &middot;&nbsp;',
+Version:'&middot; v2.4.0 &middot;&nbsp;',
 
 
 CURR_locked: 'WARNING: THIS CURRENCY IS CURRENTLY DISABLED',
@@ -749,7 +749,13 @@ STR_LockCancel: 'Cancel',
 
 /* server Error Messages */
 Account_Locked_Error: 'The other account is not active.',
-Incompatible_Amount:  'Account not compatible.',
+Incompatible_Amount:  'Ammount not compatible.',
+InsufficientDelegatedAmount: 'Ammount not compatible. (Amount bigger than Delegation)',
+InsufficientNantBalance: 'Ammount not compatible. (Not enough on the sender\'s account)',
+ReceiverWouldHitCMLimitMax: 'Ammount not compatible. (Dest. Account would hit the limit)',
+SenderWouldHitCMLimitMin: 'Ammount not compatible. (Source aAccount would hit the limit)',
+UnexpectedTransferAddress: 'No! no!',
+AmountBiggerThanRequested:'Ammount not compatible. (Ammount bigger tahn requested)',
 
   /* Error Messages */
   ERROR_1:              'Please enter valid amount.',

@@ -1,7 +1,7 @@
 'use strict';
 var billingCtrl = function($scope, $locale, $sce, walletService, $translate) {
     // Check the environment
-    $scope.isApp =  jsc3l.customization.isApp();
+    $scope.isApp =  isApp();
     $scope.currentWalletAddress=globalFuncs.getWalletAddress();
     $scope.CUR='';
     $scope.CUR_nanti='';
@@ -61,6 +61,7 @@ var billingCtrl = function($scope, $locale, $sce, walletService, $translate) {
             const type = await jsc3l.bcRead.getAccountType($scope.wallet.getAddressString());
             const status = await jsc3l.bcRead.getAccountStatus($scope.wallet.getAddressString());
             $scope.is_admin = type==2 && status==1;
+            $scope.$apply();
         });
     
     ///////////////////////////////////
@@ -78,10 +79,10 @@ var billingCtrl = function($scope, $locale, $sce, walletService, $translate) {
         $scope.getAddressFromCode_popup.open();
     }
     
-    $scope.searchAddfromCode= async function(){
+    $scope.searchAddfromCode = function(){
         $scope.showCodeSearch = false;
         $scope.searchStatus=$translate.instant("BIL_SearchingCode");
-        const addre_list = await $scope.getAddresses($scope.input_code)
+        $scope.getAddresses($scope.input_code).then(function(addre_list) {
             var loc_addressCode_list=[];
             for (var index=0; index<addre_list.length;index++){
                 loc_addressCode_list.push({"add":addre_list[index],"stat":$translate.instant("EXC_Locked")});
@@ -91,8 +92,9 @@ var billingCtrl = function($scope, $locale, $sce, walletService, $translate) {
                 $scope.addressCode_list=list;
                 $scope.no_acc = addre_list.length ==0;
                 $scope.searchStatus="";
+                $scope.$apply();
             });
-
+        });
     }
     
     $scope.getAccStatus = async function(address_list,index,callback){
@@ -313,15 +315,12 @@ var billingCtrl = function($scope, $locale, $sce, walletService, $translate) {
             callback($scope.account_type[address]);
         }  
     }
-    // TODO: doesn't seem to use it's callback
-    // TODO: consider to move to jsc3l
-    $scope.getCodes = async function(addresses,callback){
-        var caller = $scope.wallet.getAddressString();
+
+    $scope.getCodes = async function(addresses){
         var add= addresses.join(',');
-        
-        var message_hash = jsc3l.ethUtil.hashPersonalMessage(new Buffer(add));
-        var signature = jsc3l.ethUtil.ecsign(message_hash, $scope.wallet.getPrivateKey());
-        var sign = jsc3l.ethUtil.bufferToHex(Buffer.concat([signature.r, signature.s, jsc3l.ethUtil.toBuffer(signature.v)]));
+
+        var caller = $scope.wallet.getAddressString();
+        var sign = $scope.wallet.signMessage(add);
         
         const data = await jsc3l.ajaxReq.getCodesFromAddresses(add, jsc3l.customization.getCurrencyName(),caller, sign)
             for(var add_index=0; add_index<addresses.length; ++add_index){
@@ -333,15 +332,11 @@ var billingCtrl = function($scope, $locale, $sce, walletService, $translate) {
                 }
             }
             $scope.code_completed = true;
-            callback();
     }
     
-    // TODO: consider to move to jsc3l
-     $scope.getAddresses = async function(code, callback){
+     $scope.getAddresses = async function(code){
         var caller = $scope.wallet.getAddressString();
-        var message_hash = jsc3l.ethUtil.hashPersonalMessage(new Buffer(code));
-        var signature = jsc3l.ethUtil.ecsign(message_hash, $scope.wallet.getPrivateKey());
-        var sign = jsc3l.ethUtil.bufferToHex(Buffer.concat([signature.r, signature.s, jsc3l.ethUtil.toBuffer(signature.v)]));
+        var sign = $scope.wallet.signMessage(code);
         
        const  data = await jsc3l.ajaxReq.getAddressesFromCode(code, jsc3l.customization.getCurrencyName(), caller, sign)
             var add_list = [];
@@ -350,7 +345,7 @@ var billingCtrl = function($scope, $locale, $sce, walletService, $translate) {
                   add_list.push(data[ind]);  
                 }
             }
-            callback(add_list);
+        return add_list;
     }
     
     
@@ -367,7 +362,7 @@ var billingCtrl = function($scope, $locale, $sce, walletService, $translate) {
         $scope.exportCurrent = 0;
         $scope.progress_popup.open();
         $scope.code_completed=false;
-        $scope.getCodes($scope.addree_list,$scope.initializeExport);
+        $scope.getCodes($scope.addree_list).then($scope.initializeExport);
 
     }
     
@@ -458,15 +453,15 @@ var billingCtrl = function($scope, $locale, $sce, walletService, $translate) {
         var d_end = $scope.end_date.getTime()/1000;
         
         for(var add_index=0; add_index<$scope.addree_list.length; ++add_index){
-            var add = $scope.addree_list[add_index];
-            jsc3l.ajaxReq.getExportTransListWithId(add,d_start,d_end).then(async function(result,caller_add){
+            let add = $scope.addree_list[add_index];
+            jsc3l.ajaxReq.getExportTransList(add,d_start,d_end).then(async function(result){
              
             // get the account types:
 
              
             var add_list = [];
             for (var ind = 0; ind < result.length; ++ind) {
-                   var tran = JSON.parse(result[ind]);
+                   var tran = result[ind];
                    if (tran.addr_to.startsWith('0x') && !add_list.includes(tran.addr_to)){
                        add_list.push(tran.addr_to);
                    }
@@ -477,7 +472,7 @@ var billingCtrl = function($scope, $locale, $sce, walletService, $translate) {
             
             
             await $scope.addAccountListType(add_list, 0)
-                var current_result = {"Address":caller_add, "Code":'', 
+                var current_result = {"Address":add, "Code":'',
                            "InPlNb":0, "InPlTot":0,
                            "InPerNaNb":0, "InPerNaTot": 0,
                            "InProNaNb":0, "InProNaTot": 0,
@@ -488,7 +483,7 @@ var billingCtrl = function($scope, $locale, $sce, walletService, $translate) {
                            "OutPerCmNb":0, "OutPerCmTot":0,
                            "OutProCmNb":0, "OutProCmTot":0}
                                        
-               $scope.addTrans(caller_add, result, current_result, 0, function(final_res){
+               $scope.addTrans(add, result, current_result, 0, function(final_res){
                    $scope.ExportData.push(final_res);
                });
          });

@@ -1,7 +1,7 @@
 'use strict';
 var readonlytransactionsCtrl = function($scope, $locale, $sce, walletService,contactservice,consultService, memoService, $translate, $filter) {
     // Check the environment
-    $scope.isApp =  jsc3l.customization.isApp();
+    $scope.isApp =  isApp();
     $scope.currentWalletAddress=globalFuncs.getWalletAddress();
     $scope.fingerprint=false;
     
@@ -118,7 +118,7 @@ var readonlytransactionsCtrl = function($scope, $locale, $sce, walletService,con
         jsc3l.bcRead.getNantBalance($scope.watched_address).then(function(value){$scope.balanceEL = value;});
         jsc3l.bcRead.getCmBalance($scope.watched_address).then(function(value){$scope.balanceCM = value;});
         
-        $scope.current_message_key = jsc3l.message.messageKeysFromCrypted($scope.wallet, $scope.possible_wallets[$scope.watched_address].messageKey);
+        $scope.current_message_key = $scope.wallet.messageKeysFromCrypted($scope.possible_wallets[$scope.watched_address].messageKey);
         
         $scope.index=0;
         $scope.loadTransactions($scope.tra_number,$scope.index*$scope.tra_number + $scope.tra_offset);
@@ -132,22 +132,17 @@ var readonlytransactionsCtrl = function($scope, $locale, $sce, walletService,con
     }
     
     
-    $scope.getTransactionMessage = function(transaction_data) {
-        var memo = memoService.getMemo($scope.memos,transaction_data.hash);
+    $scope.getTransactionMessage = function(transaction) {
+      var memo = memoService.getMemo($scope.memos,transaction.hash);
+      if (memo == "") {
         try {
-            var key =$scope.current_message_key.clear_priv;
-            if (memo=="") {
-              if (transaction_data.addr_to == $scope.watched_address.toLowerCase() && transaction_data.message_to != '') {
-                  memo = jsc3l.message.decipherMessage(key, transaction_data.message_to);
-              }
-              
-              if (transaction_data.addr_from == $scope.watched_address.toLowerCase() && transaction_data.message_from != '') {
-                  memo = jsc3l.message.decipherMessage(key, transaction_data.message_from);
-              }
-            }
+           memo = jsc3l.memo.getTransactionMemo(
+            transaction,
+            $scope.watched_address.toLowerCase(),
+            $scope.current_message_key)
         } catch (e) {}
-        
-        return memo;
+      }
+      return memo;
     }
     
     $scope.loadTransactions= function(count,offset){
@@ -175,7 +170,7 @@ var readonlytransactionsCtrl = function($scope, $locale, $sce, walletService,con
               $scope.tot_out=0;
               
               for (var ind = result.length-1; ind >=0 ; ind--) {
-                  var data = JSON.parse(result[ind]);
+                  var data = result[ind];
                   var tr_date = new Date(data.time*1000);
                   if ($scope.lock_date && tr_date.getTime() <  $scope.lock_date_begin.getTime()) {
                           result.slice(ind,1);
@@ -368,7 +363,7 @@ var readonlytransactionsCtrl = function($scope, $locale, $sce, walletService,con
         }
     }
     
-    $scope.ExportTra= function(){
+    $scope.ExportTra= async function(){
         $scope.start_time=Math.round($scope.start_time);
         if ($scope.start_time <0){
             $scope.start_time=0;
@@ -404,10 +399,11 @@ var readonlytransactionsCtrl = function($scope, $locale, $sce, walletService,con
         
        
         
-        jsc3l.ajaxReq.getExportTransList($scope.watched_address,d_start,d_end).then(function(result) {
+        var result = await jsc3l.ajaxReq.getExportTransList($scope.watched_address,d_start,d_end);
+
             var trans=[];
             for (var ind = 0; ind < result.length; ++ind) {
-                  trans[ind]={'id': (ind), 'data':JSON.parse(result[ind])};
+                  trans[ind]={'id': (ind), 'data':result[ind]};
                   trans[ind].data.to_name = contactservice.getContactName($scope.contacts, trans[ind].data.addr_to);
                   trans[ind].data.from_name = contactservice.getContactName($scope.contacts, trans[ind].data.addr_from);
                   trans[ind].data.memo = $scope.getTransactionMessage(trans[ind].data);
@@ -507,7 +503,6 @@ var readonlytransactionsCtrl = function($scope, $locale, $sce, walletService,con
            }
            
            $scope.exportTraModal.close();
-      });
     }
   
     
@@ -537,7 +532,7 @@ var readonlytransactionsCtrl = function($scope, $locale, $sce, walletService,con
       } else {
         jsc3l.ajaxReq.getTransList($scope.watched_address,1,0).then(function(result){
             if (result.length==1){
-                var res = JSON.parse(result[0]);
+                var res = result[0];
                 $scope.last_trans_id=res.hash;
                 $scope.last_trans_status=res.status;
             }
@@ -546,7 +541,7 @@ var readonlytransactionsCtrl = function($scope, $locale, $sce, walletService,con
          $scope.check_interval_id = setInterval(function(){
            jsc3l.ajaxReq.getTransList($scope.watched_address,1,0).then(function(result) {
                 if (result.length==1){
-                    var new_tra=JSON.parse(result[0]);
+                    var new_tra=result[0];
                     if ($scope.last_trans_id!=new_tra.hash || $scope.last_trans_status!=new_tra.status){
                         
                          

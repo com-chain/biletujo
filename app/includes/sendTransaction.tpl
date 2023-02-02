@@ -341,7 +341,7 @@
                               
                           </div>
                       </div>
-                      <p ng-bind-html="err_message"> </p>
+                      <div id="err_message" ></div>
                       <div class="modal-footer text-center">
                           <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="cancelTx()" translate="TRAN_Cancel">Annuler la Payement</button>
                           <button type="button" class="btn btn-primary" ng-click="sendTx()" ng-hide="typeTrans=='no'" translate="TRAN_Confirm">Confirmer le Payement</button>
@@ -617,11 +617,11 @@
                                     <input  class="form-control" type="password" Id="passFieldTR1" ng-change="passwordCheck('passFieldTR1')" placeholder="{{ 'DCRY_Placeholder_psw' | translate }}"   ng-model="trPass"/>
                                     <span ng-show="fingerprint" class="input-group-addon finger" ng-click="fingetrprintUnlock()"></span>
                                  </div>
-                                 <div ng-bind-html="trStatus" ></div>
+                              <div id="trStatus_pay" ></div>
                               </div>
                           </div>
                       </div>
-                      <div ng-bind-html="tr_err_message"> </div>
+                      <div id="tr_err_message" ></div>
                       <div class="modal-footer text-center">
                           <button type="button" class="btn btn-default" data-dismiss="modal" translate="TRAN_Cancel">Annuler la Payement</button>
                           <button type="button" class="btn btn-primary" ng-click="sendReqTx()" ng-hide="typeTrans=='no'" translate="TRAN_Confirm">Confirmer le Payement</button>

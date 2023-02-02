@@ -1,7 +1,7 @@
 'use strict';
 var viewWalletCtrl = function($scope, walletService, contactservice, $translate) {
     // Environment variables
-    $scope.isApp = jsc3l.customization.isApp();
+    $scope.isApp = isApp();
     
     // Controler variables
     //  Data

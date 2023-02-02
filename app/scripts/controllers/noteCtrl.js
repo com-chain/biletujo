@@ -1,7 +1,7 @@
 'use strict';
 var noteCtrl = function($scope, $locale, $sce, walletService, $translate) {
     // Check the environment
-    $scope.isApp =  jsc3l.customization.isApp();
+    $scope.isApp =  isApp();
     $scope.currentWalletAddress=globalFuncs.getWalletAddress();
     $scope.CUR='';
     
@@ -39,6 +39,7 @@ var noteCtrl = function($scope, $locale, $sce, walletService, $translate) {
             $scope.target_amount_option = $scope.value_options[0];
             
             globalFuncs.hideLoadingWaiting();  
+            $scope.$apply();
         });
     
   $scope.openGetList = function() {
@@ -114,7 +115,7 @@ var noteCtrl = function($scope, $locale, $sce, walletService, $translate) {
   
   $scope.lock = async function(address){
         $scope.curr_operation=$translate.instant("NOT_Currently")+$translate.instant("NOT_Locking") + address;
-        const data = await jsc3l.bcTransaction.SetAccountParam($scope.wallet, address, 0, 0, 0, 0);
+        const data = await jsc3l.bcTransaction.setAccountParam($scope.wallet, address, 0, 0, 0, 0);
         if (data.isError){
             alert($translate.instant("NOT_Processing_error") + data.error);
         } else {
@@ -124,7 +125,7 @@ var noteCtrl = function($scope, $locale, $sce, walletService, $translate) {
   
   $scope.adjustAmount = async function(address, amount){
         $scope.curr_operation=$translate.instant("NOT_Currently")+$translate.instant("NOT_Pledging") +  amount + $scope.CUR + $translate.instant("NOT_to")+ address;
-        const data = await jsc3l.bcTransaction.PledgeAccount($scope.wallet, address, amount);
+        const data = await jsc3l.bcTransaction.pledgeAccount($scope.wallet, address, amount);
         if (data.isError){
            alert($translate.instant("NOT_Processing_error") + data.error);
         } else {

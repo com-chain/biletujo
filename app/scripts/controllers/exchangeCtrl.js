@@ -1,7 +1,7 @@
 'use strict';
 var exchangeCtrl = function($scope, $locale, $sce, walletService, $translate) {
     // Check the environment
-    $scope.isApp =  jsc3l.customization.isApp();
+    $scope.isApp =  isApp();
     $scope.currentWalletAddress=globalFuncs.getWalletAddress();
     $scope.blobEnc = globalFuncs.getBlob("text/json;charset=UTF-8", localStorage.getItem('ComChainWallet'));
     
@@ -76,7 +76,7 @@ var exchangeCtrl = function($scope, $locale, $sce, walletService, $translate) {
         }
         $scope.limitCMm = await jsc3l.bcRead.getCmLimitBelow($scope.selected_account);
         $scope.limitCMp = await jsc3l.bcRead.getCmLimitAbove($scope.selected_account);
-        const keys = await jsc3l.message.getMessageKey($scope.selected_account, false);
+        const keys = await jsc3l.ajaxReq.getMessageKey($scope.selected_account, false);
         globalFuncs.hideLoadingWaiting();
         $scope.to_message_key = keys.public_message_key;
         if ( $scope.to_message_key === undefined) {
@@ -113,6 +113,7 @@ var exchangeCtrl = function($scope, $locale, $sce, walletService, $translate) {
             
             const curr_astatus = await jsc3l.bcRead.getContractStatus();
             $scope.is_curr_locked = curr_astatus==0;
+            $scope.$apply();
          
         });
     
@@ -209,9 +210,11 @@ var exchangeCtrl = function($scope, $locale, $sce, walletService, $translate) {
         $scope.pop_limitCMp = document.getElementById('limitP').value;
        
        // check that the CM limit is compatible with the balance 
-       if (parseFloat($scope.pop_limitCMp)<parseFloat($scope.balanceCM) || parseFloat($scope.pop_limitCMm)>parseFloat($scope.balanceCM)){
-           $scope.pop_message=$sce.trustAsHtml(globalFuncs.getWarningText($translate.instant("EXC_lim_not_compatible_with_bal"))); 
-           return;
+       if ($scope.has_credit_mut) {
+           if (parseFloat($scope.pop_limitCMp)<parseFloat($scope.balanceCM) || parseFloat($scope.pop_limitCMm)>parseFloat($scope.balanceCM)){
+               $scope.pop_message=$sce.trustAsHtml(globalFuncs.getWarningText($translate.instant("EXC_lim_not_compatible_with_bal"))); 
+               return;
+           }
        }
         
        // prepare values:
@@ -229,12 +232,12 @@ var exchangeCtrl = function($scope, $locale, $sce, walletService, $translate) {
              $scope.pop_limitCMm =0;
         }
         
-        const data = await jsc3l.bcTransaction.SetAccountParam($scope.wallet, 
+        const data = await jsc3l.bcTransaction.setAccountParam($scope.wallet,
                                     $scope.selected_account, 
                                     status, 
                                     $scope.pop_acc_type,  
-                                    $scope.pop_limitCMm,  
-                                    $scope.pop_limitCMp); 
+                                    $scope.pop_limitCMp,
+                                    $scope.pop_limitCMm);
         if (data.isError){
             $scope.acc_message = $sce.trustAsHtml(globalFuncs.getDangerText(data.error));
             $scope.pop_message = $scope.acc_message;
@@ -257,14 +260,11 @@ var exchangeCtrl = function($scope, $locale, $sce, walletService, $translate) {
    }
       
    $scope.confirmCreditAccount = async function(){
-       
-        var data= {};
+     var data = jsc3l.memo.getTxMemoCipheredData(
+       null, $scope.to_message_key,
+       null, $scope.message_to);
 
-        if ($scope.to_message_key.length>0 && $scope.message_to.length>0) {
-            data['memo_to']= jsc3l.message.cipherMessage($scope.to_message_key.substring(2), $scope.message_to);
-        }
-
-        const rawTx = await jsc3l.bcTransaction.PledgeAccount($scope.wallet, $scope.selected_account, $scope.credit_amount, data);
+        const rawTx = await jsc3l.bcTransaction.pledgeAccount($scope.wallet, $scope.selected_account, $scope.credit_amount, data);
 
         if (rawTx.isError){
             $scope.acc_message = $sce.trustAsHtml(globalFuncs.getDangerText(rawTx.error));

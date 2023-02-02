@@ -4,7 +4,7 @@ var storageCtrl = function($scope, $sce, walletService, contactservice, $transla
     $scope.deleteWalletModal = new Modal(document.getElementById('deleteWallet'));
     $scope.editWallModal = new Modal(document.getElementById('editWall'));
 
-    $scope.isApp =  jsc3l.customization.isApp();
+    $scope.isApp =  isApp();
     globalFuncs.hideLoadingWaiting();
     $scope.private_cmp = JSON.parse(localStorage.getItem('ComChainPrivateComputer')); 
     if (! $scope.private_cmp){
@@ -31,7 +31,16 @@ var storageCtrl = function($scope, $sce, walletService, contactservice, $transla
          }
     }
     
+
+  // XXXvlab: loadWallets will require access to
+  // jsc3l.customization.getCurrencyLogoUrl(..)  which require access
+  // to the custoRepo. This will be set only after that
+  // ``acquireEndPoint`` is done. Which is triggered on ``tabsCtrl``.
+  loadingPromise.then(function() {
+    console.log("LOADING WALLETS")
     $scope.loadWallets();
+    $scope.$apply();
+  })
 
    
      

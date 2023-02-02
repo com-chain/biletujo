@@ -21,7 +21,7 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, gl
     
 
 	$scope.showRaw = false;
-    $scope.isApp =  jsc3l.customization.isApp();
+    $scope.isApp =  isApp();
     $scope.display_curr_btn = false; 
     $scope.show_curr_sel = false;
     
@@ -134,7 +134,7 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, gl
         
         
         var local_message_key = JSON.parse(localStorage.getItem('ComChainWallet')).message_key.priv;
-        $scope.my_message_key = jsc3l.message.messageKeysFromCrypted($scope.wallet, local_message_key).clear_priv;
+        $scope.my_message_key = $scope.wallet.messageKeysFromCrypted(local_message_key);
 	});
     
 	$scope.setBalance = function(readyStatus) {
@@ -145,7 +145,7 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, gl
         jsc3l.bcRead.getCmBalance(wallet_address).then(function(value){$scope.balanceCM =  Math.round(value * 100);}),
 
         jsc3l.bcRead.getAccountType(wallet_address).then(function(value){
-                 $scope.display_curr_btn = jsc3l.customization.hasNant() && jsc3l.customization.hasCM()  && !$scope.isApp  && value!=0; // only available when 2 currency and not a personal account
+                 $scope.display_curr_btn = jsc3l.customization.hasNant() && jsc3l.customization.hasCM()  && value!=0; // only available when 2 currency and not a personal account
         }),
 
         // only available when 2 currency and not a personal account
@@ -273,21 +273,19 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, gl
         if ($scope.isShopTx){
             data = $scope.shopTxInfo;
         }
-        
-        if ($scope.from_message_key.length>0 && $scope.message_from.length>0) {
-            data['memo_from']= jsc3l.message.cipherMessage($scope.from_message_key.substring(2), $scope.message_from);
-        }
-        
-        if ($scope.to_message_key.length>0 && $scope.message_to.length>0) {
-            data['memo_to']= jsc3l.message.cipherMessage($scope.to_message_key.substring(2), $scope.message_to);
-        }
+      data = Object.assign(data, jsc3l.memo.getTxMemoCipheredData(
+        $scope.from_message_key, $scope.to_message_key,
+        $scope.message_from, $scope.message_to
+      ))
+
         // TODO: access to ajaxReq to remove ?
         const blk_number = await jsc3l.ajaxReq.currBlock()
-                 const res = await jsc3l.bcTransaction.TransferNant($scope.wallet, $scope.tokenTx.to, $scope.elemanAmmount/100, data);
+                 const res = await jsc3l.bcTransaction.transferNant($scope.wallet, $scope.tokenTx.to, $scope.elemanAmmount/100, data);
                     if (res.isError){
                         globalFuncs.hideLoadingWaiting();  
-		                        $scope.err_message = $sce.trustAsHtml(globalFuncs.getDangerText($translate.instant(res.error)));
-                        $scope.sendTxModal.open();
+                        
+                        document.getElementById('err_message').innerHTML=$sce.trustAsHtml(globalFuncs.getDangerText($translate.instant(res.error)));
+                        $scope.sendTxModal.open();       
                     } else {
 
                         if ($scope.lemanexAmmount>0){
@@ -296,7 +294,7 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, gl
                              
                         } else {
                             $scope.waitTransaction(res.data);
-                            $scope.err_message = $translate.instant("TRAN_Done");
+                            document.getElementById('err_message').innerHTML = $translate.instant("TRAN_Done");
                             $scope.openConf();
                         }
                       
@@ -328,27 +326,23 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, gl
         if ($scope.isShopTx){
             data = $scope.shopTxInfo;
         }
-        
-        if ($scope.from_message_key.length>0 && $scope.message_from.length>0) {
-            data['memo_from']= jsc3l.message.cipherMessage($scope.from_message_key.substring(2), $scope.message_from);
-        }
-        
-        if ($scope.to_message_key.length>0 && $scope.message_to.length>0) {
-            data['memo_to']= jsc3l.message.cipherMessage($scope.to_message_key.substring(2), $scope.message_to);
-        }
-        
+      data = Object.assign(data, jsc3l.memo.getTxMemoCipheredData(
+        $scope.from_message_key, $scope.to_message_key,
+        $scope.message_from, $scope.message_to
+      ))
+
         if (parent_hash!==undefined){
             data['parent_hash']=parent_hash;
         }
         
-        const res = await jsc3l.bcTransaction.TransferCM($scope.wallet, $scope.tokenTx.to, $scope.lemanexAmmount/100, data);
+        const res = await jsc3l.bcTransaction.transferCM($scope.wallet, $scope.tokenTx.to, $scope.lemanexAmmount/100, data);
                     if (res.isError){
                         globalFuncs.hideLoadingWaiting();  
-                                       $scope.err_message = $sce.trustAsHtml(globalFuncs.getDangerText($translate.instant(res.error)));
-                        $scope.sendTxModal.open();
+                        document.getElementById('err_message').innerHTML = $sce.trustAsHtml(globalFuncs.getDangerText($translate.instant(res.error)));
+                        $scope.sendTxModal.open(); 
                     } else {
                         $scope.waitTransaction(res.data);
-                        $scope.err_message = $translate.instant("TRAN_Done");
+                        document.getElementById('err_message').innerHTML = $translate.instant("TRAN_Done");
                         $scope.openConf();
                     }
     }
@@ -369,14 +363,14 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, gl
        if ($scope.mode == "fromMe"){
            $scope.setBalance(true);
            $scope.typeTrans="no"
-           $scope.err_message='';
+           document.getElementById('err_message').innerHTML ='';
            var value_cent = Math.round($scope.tokenTx.value * 100);
            $scope.splitted = jsc3l.bcTransaction.getSplitting($scope.balanceEL, $scope.balanceCM, $scope.limitCMm, value_cent);
            if ($scope.splitted['possible']){
                 if ($scope.splitted['cm']>0){
                     if ($scope.splitted['nant']>0){
                          $scope.typeTrans=globalFuncs.currencies.CUR_nanti+"/"+globalFuncs.currencies.CUR_credit_mut;
-                         $scope.err_message=$sce.trustAsHtml(globalFuncs.getWarningText($translate.instant('TRAN_SplitedTrans')));
+                         document.getElementById('err_message').innerHTML=$sce.trustAsHtml(globalFuncs.getWarningText($translate.instant('TRAN_SplitedTrans')));
                     } else {
                         $scope.typeTrans=globalFuncs.currencies.CUR_credit_mut;
                     }
@@ -389,16 +383,16 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, gl
                 $scope.val_cm = $scope.splitted['cm']/100.0;
                 $scope.max_val_cm = Math.min(value_cent, $scope.balanceCM - $scope.limitCMm )/100.0;
            } else {
-              $scope.err_message=$sce.trustAsHtml(globalFuncs.getDangerText($translate.instant('TRAN_NotPossible')));
+              document.getElementById('err_message').innerHTML=$sce.trustAsHtml(globalFuncs.getDangerText($translate.instant('TRAN_NotPossible')));
            }
            
            
        } else if ($scope.mode == "fromDeleg"){
-            $scope.err_message='';
+            document.getElementById('err_message').innerHTML='';
             $scope.typeTrans="";
                
        } else if ($scope.mode == "toMe"){
-            $scope.err_message='';
+            document.getElementById('err_message').innerHTML='';
             $scope.typeTrans="toMe"
        }
        
@@ -410,27 +404,30 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, gl
        }
        $scope.cp_mess = false;
        $scope.to_message_key = "";
-       jsc3l.message.getMessageKey($scope.tokenTx.to, false).then(function(keys_to) {
+       jsc3l.ajaxReq.getMessageKey($scope.tokenTx.to, false).then(function(keys_to) {
          $scope.to_message_key = keys_to.public_message_key;
          if ( $scope.to_message_key === undefined) {
            $scope.to_message_key = "";
          } 
          if ( $scope.to_message_key .length>0) {
            $scope.cp_mess = $scope.reference.length==0 && !$scope.isShopTx;
-         }   
+         }
+         $scope.$apply();
        });     
        
        $scope.from_message_key = "";
-       jsc3l.message.getMessageKey($scope.origine_address, false).then(function(keys_from) {
+       jsc3l.ajaxReq.getMessageKey($scope.origine_address, false).then(function(keys_from) {
          $scope.from_message_key = keys_from.public_message_key; 
          if ($scope.from_message_key===undefined) {  
            $scope.from_message_key = "";
          }
+         $scope.$apply();
        });
        
        if ($scope.mode == "toMe"){
-         jsc3l.message.getReqMessage($scope.wallet, $scope.origine_address, $scope.my_message_key, true).then(function(message) {
+         $scope.wallet.getReqMessage($scope.origine_address, $scope.my_message_key, true).then(function(message) {
            $scope.message_to=message;
+           $scope.$apply();
          });
        }
        
@@ -452,10 +449,10 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, gl
         $scope.val_cm = (value_cent - Math.round($scope.val_nant * 100))/100.0;
             
         if ($scope.val_nant>0 && $scope.val_cm>0) {
-            $scope.err_message=$sce.trustAsHtml(globalFuncs.getWarningText($translate.instant('TRAN_SplitedTrans')));
+            document.getElementById('err_message').innerHTML=$sce.trustAsHtml(globalFuncs.getWarningText($translate.instant('TRAN_SplitedTrans')));
             $scope.typeTrans=globalFuncs.currencies.CUR_nanti+"/"+globalFuncs.currencies.CUR_credit_mut;
         } else {
-            $scope.err_message="";
+            document.getElementById('err_message').innerHTML="";
             if ($scope.val_nant>0) {
                 $scope.typeTrans=globalFuncs.currencies.CUR_nanti;
             } else {
@@ -480,10 +477,10 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, gl
         $scope.val_nant = (value_cent - Math.round($scope.val_cm * 100))/100.0;
         
         if ($scope.val_nant>0 && $scope.val_cm>0) {
-            $scope.err_message=$sce.trustAsHtml(globalFuncs.getWarningText($translate.instant('TRAN_SplitedTrans')));
+            document.getElementById('err_message').innerHTML=$sce.trustAsHtml(globalFuncs.getWarningText($translate.instant('TRAN_SplitedTrans')));
             $scope.typeTrans=globalFuncs.currencies.CUR_nanti+"/"+globalFuncs.currencies.CUR_credit_mut;
         } else {
-            $scope.err_message="";
+            document.getElementById('err_message').innerHTML="";
             if ($scope.val_nant>0) {
                 $scope.typeTrans=globalFuncs.currencies.CUR_nanti;
             } else {
@@ -509,10 +506,10 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, gl
     $scope.delegationSendCallBack = function(res){
          if (res.isError){
             globalFuncs.hideLoadingWaiting();  
-			$scope.err_message = $sce.trustAsHtml(globalFuncs.getDangerText($translate.instant(res.error)));
+			document.getElementById('err_message').innerHTML = $sce.trustAsHtml(globalFuncs.getDangerText($translate.instant(res.error)));
             $scope.sendTxModal.open();
          } else {
-            $scope.err_message = $translate.instant("TRAN_Done");
+            document.getElementById('err_message').innerHTML = $translate.instant("TRAN_Done");
             $scope.waitTransaction(res.data);
             $scope.openConf();
          }
@@ -543,6 +540,7 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, gl
 
 	$scope.sendTx = async function() {
         if ($scope.tokenTx.value<$scope.limitWithoutPass || $scope.trPass==walletService.password){
+           document.getElementById('trStatus').innerHTML='';
            walletService.setUsed();
            $scope.sendTxModal.close();
            globalFuncs.showLoading($translate.instant("GP_Wait"));
@@ -591,18 +589,14 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, gl
                       if ($scope.isShopTx){
                             data = $scope.shopTxInfo;
                       }
-                      
-                      if ($scope.from_message_key.length>0 && $scope.message_from.length>0) {
-                        data['memo_from']= jsc3l.message.cipherMessage($scope.from_message_key.substring(2), $scope.message_from);
-                      }
+                   data = Object.assign(data, jsc3l.memo.getTxMemoCipheredData(
+                     $scope.from_message_key, $scope.to_message_key,
+                     $scope.message_from, $scope.message_to
+                   ))
 
-                      if ($scope.to_message_key.length>0 && $scope.message_to.length>0) {
-                        data['memo_to']= jsc3l.message.cipherMessage($scope.to_message_key.substring(2), $scope.message_to);
-                      }
-                      
                       if (cur_tran_type=='nant'){
                             $scope.elemanAmmount=value_cent;
-                            const res = await jsc3l.bcTransaction.TransferOnBehalfNant($scope.wallet,
+                            const res = await jsc3l.bcTransaction.transferOnBehalfNant($scope.wallet,
                                                                 $scope.origine_address, 
                                                                 $scope.tokenTx.to, 
                                                                 $scope.tokenTx.value,  
@@ -610,7 +604,7 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, gl
                            $scope.delegationSendCallBack(res);
                       } else if (cur_tran_type=='cm'){
                              $scope.lemanexAmmount=value_cent;
-                             const res = await jsc3l.bcTransaction.TransferOnBehalfCM($scope.wallet,
+                             const res = await jsc3l.bcTransaction.transferOnBehalfCM($scope.wallet,
                                                                 $scope.origine_address, 
                                                                 $scope.tokenTx.to, 
                                                                 $scope.tokenTx.value,   
@@ -625,7 +619,7 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, gl
                    $scope.refreshFrom().then(async function(){
                        
                       
-                      jsc3l.message.publishReqMessages($scope.wallet, $scope.curr_from_add, $scope.message_to);
+                      $scope.wallet.publishReqMessages($scope.curr_from_add, $scope.message_to);
 
                        
                       $scope.elemanAmmount=0;
@@ -635,7 +629,6 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, gl
                       if (cur_tran_type=='cm'){
                              $scope.lemanexAmmount=value_cent;
                              const res = await jsc3l.bcTransaction.askTransferCMFrom($scope.wallet, 
-                                                          $scope.wallet.getAddressString(), 
                                                           $scope.curr_from_add, 
                                                           $scope.tokenTx.value);
                              $scope.delegationSendCallBack(res);
@@ -643,7 +636,6 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, gl
                           
                               $scope.elemanAmmount=value_cent;
                               const res = await jsc3l.bcTransaction.askTransferFrom($scope.wallet, 
-                                                          $scope.wallet.getAddressString(), 
                                                           $scope.curr_from_add, 
                                                           $scope.tokenTx.value);
                               $scope.delegationSendCallBack(res);
@@ -653,8 +645,8 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, gl
                }  
 		   } catch (e) {
 		        globalFuncs.hideLoadingWaiting();  
-			    $scope.err_message = $sce.trustAsHtml(globalFuncs.getDangerText($translate.instant(e)));
-                $scope.sendTxModal.open();
+			    document.getElementById('err_message').innerHTML = $sce.trustAsHtml(globalFuncs.getDangerText($translate.instant(e)));
+                $scope.sendTxModal.open();	
 		   } 
         } else {
             
@@ -734,7 +726,7 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, gl
         }
         globalFuncs.hideLoadingWaiting();  
         $scope.chooseOrigineModal.open();
-            
+        $scope.$apply();
   
         
     }
@@ -1004,40 +996,36 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, gl
  ///////////////////////////////////////////////
     $scope.loadPendingTransactions = function(){
         globalFuncs.notifyApproval();
+        $scope.pendingApproval = [];
         jsc3l.bcRead.getPendingRequestList($scope.wallet.getAddressString(),0,1).then(async function(list) {
-            $scope.pendingRequest=list;
-        if ( $scope.pendingRequest.length>0){
-             $scope.request_tab=2;
-        }
-        
-        $scope.rejectedRequest = await jsc3l.bcRead.getRejectedRequestList($scope.wallet.getAddressString(),0,1);
-        if ( $scope.rejectedRequest.length>0){
-            $scope.request_tab=1;
-        }
-        $scope.acceptedRequest = await jsc3l.bcRead.getAcceptedRequestList($scope.wallet.getAddressString(),0,1);
-        if ( $scope.acceptedRequest.length>0){
-             $scope.request_tab=0;
-        }
-        });
+                $scope.pendingRequest=list;
+            if ( $scope.pendingRequest.length>0){
+                 $scope.request_tab=2;
+            }
+            
+            $scope.rejectedRequest = await jsc3l.bcRead.getRejectedRequestList($scope.wallet.getAddressString(),0,1);
+            if ( $scope.rejectedRequest.length>0){
+                $scope.request_tab=1;
+            }
+            $scope.acceptedRequest = await jsc3l.bcRead.getAcceptedRequestList($scope.wallet.getAddressString(),0,1);
+            if ( $scope.acceptedRequest.length>0){
+                 $scope.request_tab=0;
+            }
 
-        jsc3l.bcRead.getRequestToApproveList($scope.wallet.getAddressString(),0,1).then(function(list) {
-          $scope.pendingApproval = [];
-          for (var index=0; index<list.length; index++) {
-              try {
-                  $scope.addMessagePending(list[index]);
-              } catch (e){
-                  $scope.pendingApproval.unshift(list[index]); 
-              }
-          }
+            jsc3l.bcRead.getRequestToApproveList($scope.wallet.getAddressString(),0,1).then(function(list) {
+              Promise.all(list.map((elt) => $scope.addMessagePending(elt))).then(() => $scope.$apply())
+            });
         });
-        
     }
     
-    $scope.addMessagePending = function(item){
-      jsc3l.message.getReqMessage($scope.wallet, item.address, $scope.my_message_key, false).then(function(message) {
+    $scope.addMessagePending = async function(item){
+      try {
+        let message = await $scope.wallet.getReqMessage(item.address, $scope.my_message_key, false)
         item['message'] = message;
+      } catch (e) {
+        console.log('`getReqMessage()` in `addMessagePending()` failed. Ignoring.')
+      }
         $scope.pendingApproval.unshift(item);
-                });
     }
     
     
@@ -1106,15 +1094,21 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, gl
     }
     
     $scope.refreshPending = function(){
-       globalFuncs.showLoading($translate.instant("GP_Wait"));
        $scope.req_index = 0;
        $scope.app_index = 0;
        $scope.rej_index = 0;
+       if (typeof $scope.req_number !== "undefined") {
+       globalFuncs.showLoading($translate.instant("GP_Wait"));
        $scope.loadPendingRequests($scope.req_number,$scope.req_index*$scope.req_number + $scope.req_offset);
+       }
+       if (typeof $scope.app_number !== "undefined") {
        globalFuncs.showLoading($translate.instant("GP_Wait"));
        $scope.loadApprovedRequests($scope.app_number,$scope.app_index*$scope.app_number + $scope.app_offset);
+       }
+       if (typeof $scope.rej_number !== "undefined") {
        globalFuncs.showLoading($translate.instant("GP_Wait"));
        $scope.loadRejectedRequests($scope.rej_number,$scope.rej_index*$scope.rej_number + $scope.rej_offset);
+       }
        
        setTimeout(function(){  
            if ( $scope.pendingRequest.length>0){
@@ -1160,7 +1154,7 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, gl
          for(var ind =0;ind<$scope.pendingRequest.length;ind++){
             $scope.pendingRequest[ind].name =  contactservice.getContactName($scope.contacts, $scope.pendingRequest[ind].address); 
          }
-          // $scope.$apply();
+         $scope.$apply();
          $scope.transPendingStatus='';
          globalFuncs.hideLoadingWaiting();  
                                      });
@@ -1194,7 +1188,7 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, gl
          for(var ind =0;ind<$scope.rejectedRequest.length;ind++){
             $scope.rejectedRequest[ind].name =  contactservice.getContactName($scope.contacts, $scope.rejectedRequest[ind].address); 
          }
-          // $scope.$apply();
+         $scope.$apply();
          $scope.transPendingStatus='';
          globalFuncs.hideLoadingWaiting();  
                                      });
@@ -1227,7 +1221,7 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, gl
          for(var ind =0;ind<$scope.acceptedRequest.length;ind++){
             $scope.acceptedRequest[ind].name =  contactservice.getContactName($scope.contacts, $scope.acceptedRequest[ind].address); 
          }
-          // $scope.$apply();
+         $scope.$apply();
          $scope.transPendingStatus='';
          globalFuncs.hideLoadingWaiting();  
          });
@@ -1237,7 +1231,7 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, gl
     
     
     $scope.dissmissRejected = function(address){
-        jsc3l.bcTransaction.DissmissRejectedInfo($scope.wallet,address).then(function(res) {
+        jsc3l.bcTransaction.dismissRejectedInfo($scope.wallet,address).then(function(res) {
         if (res.isError){
                 $scope.transPendingStatus=$sce.trustAsHtml(globalFuncs.getDangerText($translate.instant(res.error)));
         } else {
@@ -1251,7 +1245,7 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, gl
     }
     
     $scope.dissmissAccepted = function(address){
-        jsc3l.bcTransaction.DissmissAcceptedInfo($scope.wallet,address).then(function(res) {
+        jsc3l.bcTransaction.dismissAcceptedInfo($scope.wallet,address).then(function(res) {
          if (res.isError){
                 $scope.transPendingStatus=$sce.trustAsHtml(globalFuncs.getDangerText($translate.instant(res.error)));
          } else {
@@ -1310,14 +1304,16 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, gl
     }
     
     $scope.refreshApproval = function(){
-        globalFuncs.showLoading($translate.instant("GP_Wait"));
         $scope.app_index = 0;
-       
+
+        if (typeof $scope.app_number !== "undefined") {
+        globalFuncs.showLoading($translate.instant("GP_Wait"));
         $scope.loadPendingApprovals($scope.app_number,$scope.app_index*$scope.app_number + $scope.app_offset);
+        }
     }
     
       
-    $scope.loadPendingApproval= function(count,offset){
+    $scope.loadPendingApprovals= function(count,offset){
 
          $scope.noMoreApproval = true;
          if (offset>0){
@@ -1338,20 +1334,15 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, gl
          if (!$scope.noMoreApproval){
               document.getElementById("nextApproval").style.display = 'block';
          }
-         
-       
-         for(var ind =0;ind<list.length;ind++){
-            var item = list[ind];
+
+         Promise.all(list.map((item) => {
             item.name =  contactservice.getContactName($scope.contacts,item.address);
-            try {
-                 
-                $scope.addMessagePending(item);
-            } catch (e){
-                $scope.pendingApproval.unshift(item); 
-            } 
-         }
+            return $scope.addMessagePending(item)
+         })).then(() => {
          $scope.transApprovalStatus='';
          globalFuncs.hideLoadingWaiting();  
+         $scope.$apply()
+         });
                                      });
                               
     }
@@ -1380,8 +1371,8 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, gl
        const limitCMm = await jsc3l.bcRead.getCmLimitBelow($scope.wallet.getAddressString());
        const balanceCM = await jsc3l.bcRead.getCmBalance($scope.wallet.getAddressString());
        $scope.trPass=walletService.getPass();
-       $scope.tr_err_message='';
-       $scope.trStatus='';
+       document.getElementById('tr_err_message').innerHTML='';
+       document.getElementById('trStatus_pay').innerHTML='';
        globalFuncs.hideLoadingWaiting();  
        $scope.transaction_amount =  request.amount;
        $scope.transaction_to = request.address;
@@ -1393,7 +1384,7 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, gl
        } else if (cur_tran_type=='nant'){
             $scope.typeTrans=globalFuncs.currencies.CUR_nanti;
        } else {
-            $scope.tr_err_message=$sce.trustAsHtml(globalFuncs.getDangerText($translate.instant('TRAN_NotPossible'))); 
+            document.getElementById('tr_err_message').innerHTML=$sce.trustAsHtml(globalFuncs.getDangerText($translate.instant('TRAN_NotPossible'))); 
        }
        
 
@@ -1402,7 +1393,9 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, gl
        $scope.message_from = request.message===undefined?"":request.message;
        $scope.cp_mess = false;
        $scope.to_message_key = "";
-       jsc3l.message.getMessageKey($scope.transaction_to, false).then(function(keys_to) {
+       $scope.from_message_key = "";
+       Promise.all([
+       jsc3l.ajaxReq.getMessageKey($scope.transaction_to, false).then(function(keys_to) {
          $scope.to_message_key = keys_to.public_message_key;
          if ( $scope.to_message_key === undefined) {
             $scope.to_message_key = "";
@@ -1410,16 +1403,17 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, gl
          if ($scope.to_message_key.length>0 && request.message=="") {
               $scope.cp_mess = true;
          }  
-       });
+       }),
       
-       $scope.from_message_key = "";
-       jsc3l.message.getMessageKey($scope.wallet.getAddressString(), false).then(function(keys_from) {
+       jsc3l.ajaxReq.getMessageKey($scope.wallet.getAddressString(), false).then(function(keys_from) {
        $scope.from_message_key = keys_from.public_message_key;
        if ($scope.from_message_key===undefined) {
           $scope.from_message_key = "";
        }
+       })]).then(() => {
+         $scope.sendTransactionModal.open();
+         $scope.$apply();
        });
-       $scope.sendTransactionModal.open();              
     }
     
   $scope.messageChanged = function() {
@@ -1429,42 +1423,37 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, gl
   }
   
   $scope.sendReqTx = async function(){
-        var data= {}; 
-        if ($scope.from_message_key.length>0 && $scope.message_from.length>0) {
-            data['memo_from']= jsc3l.message.cipherMessage($scope.from_message_key.substring(2), $scope.message_from);
-        }
+    var data = jsc3l.memo.getTxMemoCipheredData(
+      $scope.from_message_key, $scope.to_message_key,
+      $scope.message_from, $scope.message_to
+    )
 
-        if ($scope.to_message_key.length>0 && $scope.message_to.length>0) {
-            data['memo_to']= jsc3l.message.cipherMessage($scope.to_message_key.substring(2), $scope.message_to);
-        }
-
-      
-      
       if ($scope.trPass==walletService.password){
+        document.getElementById('trStatus_pay').innerHTML='';
         walletService.setUsed();
         $scope.sendTransactionModal.close();
         globalFuncs.showLoading($translate.instant("GP_Wait"));
         if ($scope.typeTrans==globalFuncs.currencies.CUR_credit_mut){
-           const res = await jsc3l.bcTransaction.PayRequestCM($scope.wallet, $scope.transaction_to ,  Math.round($scope.transaction_amount), data);
+           const res = await jsc3l.bcTransaction.payRequestCM($scope.wallet, $scope.transaction_to, $scope.transaction_amount, data);
            globalFuncs.hideLoadingWaiting();  
            if (res.isError){
-               $scope.tr_err_message=$sce.trustAsHtml(globalFuncs.getDangerText($translate.instant(res.error)));
+               document.getElementById('tr_err_message').innerHTML=$sce.trustAsHtml(globalFuncs.getDangerText($translate.instant(res.error)));
                $scope.sendTransactionModal.open();
            } else {
-               $scope.tr_err_message=$translate.instant("TRAN_Done");
+               document.getElementById('tr_err_message').innerHTML=$translate.instant("TRAN_Done");
                $scope.transApprovalStatus=$sce.trustAsHtml(globalFuncs.getSuccessText($translate.instant("TRA_Request_Payed")));
                $scope.trans_message = $translate.instant("TRA_Request_Payed") + " "+ $translate.instant("GP_Wait_tran");
                $scope.waitTransaction(res.data);
                $scope.openReqConf();
            }
         } else if ($scope.typeTrans==globalFuncs.currencies.CUR_nanti){
-           const res = await jsc3l.bcTransaction.PayRequestNant($scope.wallet, $scope.transaction_to ,  Math.round($scope.transaction_amount), data);
+           const res = await jsc3l.bcTransaction.payRequestNant($scope.wallet, $scope.transaction_to, $scope.transaction_amount, data);
            globalFuncs.hideLoadingWaiting();  
            if (res.isError){
-               $scope.tr_err_message=$sce.trustAsHtml(globalFuncs.getDangerText($translate.instant(res.error)));
+               document.getElementById('tr_err_message').innerHTML=$sce.trustAsHtml(globalFuncs.getDangerText($translate.instant(res.error)));
                $scope.sendTransactionModal.open();
            } else {
-               $scope.tr_err_message=$translate.instant("TRAN_Done");
+               document.getElementById('tr_err_message').innerHTML=$translate.instant("TRAN_Done");
                $scope.transApprovalStatus=$sce.trustAsHtml(globalFuncs.getSuccessText($translate.instant("TRA_Request_Payed")));
                $scope.trans_message = $translate.instant("TRA_Request_Payed") + " "+ $translate.instant("GP_Wait_tran");
                $scope.waitTransaction(res.data);
@@ -1472,7 +1461,7 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, gl
            }
         } 
       } else {
-          $scope.trStatus=$sce.trustAsHtml(globalFuncs.getDangerText($translate.instant("TRAN_WrongPass")));
+          document.getElementById('trStatus_pay').innerHTML=$sce.trustAsHtml(globalFuncs.getDangerText($translate.instant("TRAN_WrongPass")));
       }
     }
     
@@ -1496,11 +1485,12 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, gl
             walletService.setUsed();
             $scope.rejectTransactionModal.close();
             globalFuncs.showLoading($translate.instant("GP_Wait"));
-            const res = await jsc3l.bcTransaction.RejectRequest($scope.wallet, $scope.transaction_to);
+            const res = await jsc3l.bcTransaction.rejectRequest($scope.wallet, $scope.transaction_to);
             globalFuncs.hideLoadingWaiting();  
             if (res.isError){
                 $scope.err_reject_message=$sce.trustAsHtml(globalFuncs.getDangerText($translate.instant(res.error)));
                 $scope.rejectTransactionModal.open();
+                $scope.$apply;
             } else {
                 $scope.waitTransaction(res.data);
                 $scope.err_reject_message=$translate.instant("TRAN_Done");

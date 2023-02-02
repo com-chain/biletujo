@@ -239,7 +239,10 @@ var contactService = function() {
          if (local_contacts && local_contacts.length>0){
          // encrypt the list 
           var b64 = window.btoa(unescape(encodeURIComponent(JSON.stringify(local_contacts))));
-          var crypted = wallet.cipher(pass, b64);
+          var kdfparams = JSON.parse(
+             localStorage.getItem('ComChainWallet').toLowerCase()
+           ).crypto.kdfparams
+          var crypted = wallet.cipher(pass, b64, kdfparams);
           // push the list to IPFS and get the hash
            globalFuncs.storeOnIpfs(crypted,function(hash){
                try{

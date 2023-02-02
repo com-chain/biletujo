@@ -3,26 +3,19 @@ var blockiesDrtv = function() {
 	return function(scope, element, attrs){
 	   var watchVar = attrs.watchVar;
         scope.$watch(watchVar, function() {
-            var address = attrs.blockieAddress;
-            var img_id = attrs.img;
-            
-             var img_add =img_id==1 ? 'images/lem.png' : 'images/qrclick.png';
-             
-            var the_arr = jsc3l.customization.getCssUrl().split('/');
-            the_arr.pop();
-            the_arr.pop();
-            if (img_id==1){
-             img_add = the_arr.join('/')+"/images/lem.png";  
-            } else {
-                img_add = the_arr.join('/')+"/images/qrclick.png";  
-            }
-             
-             element.css({'background-image': 'url(' + img_add +')' });
-                
+             const address = attrs.blockieAddress;
              if(jsc3l.ethFuncs.validateEtherAddress(address)){
-                   element.css({'background-image': 'url(' + globalFuncs.getBlockie(address) +')' });
+                 element.css({'background-image': 'url(' + globalFuncs.getBlockie(address) +')' });
+             } else {
+                 const img_add =attrs.img==1 ? 'images/lem.png' : 'images/qrclick.png';
+                 var baseUrl
+                 try {
+                   baseUrl = jsc3l.customization.getCurrencyAssetBaseUrl()
+                 } catch(e) {
+                   return
+                 }
+                 element.css({'background-image': 'url(' + baseUrl +'/' + img_add +')' });
              }
-           
         });
     };
 };

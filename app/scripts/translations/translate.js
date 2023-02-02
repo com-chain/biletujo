@@ -13,8 +13,8 @@ var marked = require('../customMarked');
  }
 
 translate.marked = function(data) {
-    var tData = data;
-	for (var key in tData) if (tData.hasOwnProperty(key)) tData[key] = marked(tData[key]);
+  var tData = data;
+	for (var key in tData) if (tData.hasOwnProperty(key)) tData[key] = marked.marked(tData[key]);
     return tData;
 }
 module.exports = translate;

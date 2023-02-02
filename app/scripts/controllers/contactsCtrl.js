@@ -2,7 +2,7 @@
 var contactesCtrl = function($scope, $sce, walletService, contactservice, globalService, $translate) {
     
     // Check the environment
-    $scope.isApp = jsc3l.customization.isApp();
+    $scope.isApp = isApp();
     
     // Create the modal popups
 	$scope.editNameModal = new Modal(document.getElementById('editName'));

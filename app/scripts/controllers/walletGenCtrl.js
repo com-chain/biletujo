@@ -1,7 +1,7 @@
 'use strict';
 var walletGenCtrl = function($scope, $globalService, $translate, walletService, contactService) {
     // Environment variables
-    $scope.isApp = jsc3l.customization.isApp();
+    $scope.isApp = isApp();
     $scope.trans_message = $translate.instant("GP_Wait");
     $scope.CUR = globalFuncs.currencies.CUR;
     
@@ -92,9 +92,12 @@ var walletGenCtrl = function($scope, $globalService, $translate, walletService, 
         try {
             var enrollmentLetter = JSON.parse($scope.token); 
             if (enrollmentLetter.servername){
-                     const success = await jsc3l.customization.getConfJSON(enrollmentLetter.servername);
+                     const success = await jsc3l.connection.getConfJSON(enrollmentLetter.servername);
                      if (success){
-                       const data = await jsc3l.wallet.validateEnrollment(enrollmentLetter.id, enrollmentLetter.signature).then(function(data) {
+                       const data = await $scope.wallet.validateEnrollmentLetter(
+                         enrollmentLetter.id,
+                         enrollmentLetter.signature,
+                       ).then(function(data) {
                         globalFuncs.hideLoadingWaiting(); // hide the waiting overlay
                         if (data.result=="OK"){
                            $scope.enrollmentLetter = enrollmentLetter; 
@@ -104,7 +107,7 @@ var walletGenCtrl = function($scope, $globalService, $translate, walletService, 
                            $scope.enter_token = false;
                            $scope.message_creation = '';
                            // Adapt the UI to the selected server
-                           jsc3l.customization.configureCurrency();
+                           globalFuncs.updateCss(true);
                            globalFuncs.getCurrencies();
                            $globalService.configureNoteTab(jsc3l.customization.hasBn());
                            $scope.CUR=globalFuncs.currencies.CUR;
@@ -170,19 +173,17 @@ var walletGenCtrl = function($scope, $globalService, $translate, walletService, 
             $scope.isDone = false;
             
             // local wallet generation & encryption with the provided password
-            // TODO: why these 2 assignation in a row ?
-			$scope.wallet = jsc3l.Wallet.generate(false);
 			$scope.wallet = await jsc3l.wallet.createWallet();
                 try {
                     //Send (public) address to API (enroll the wallet)
-                    const success = await jsc3l.wallet.enrollAddress($scope.wallet, $scope.enrollmentLetter.id, $scope.enrollmentToken);
+                    const success = await $scope.wallet.enrollAddress($scope.enrollmentLetter.id, $scope.enrollmentToken);
                         if (success) {
                             
                             if ($scope.unlock_url != undefined && $scope.unlock_url!="") {
                                   jsc3l.ajaxReq.requestUnlock($scope.wallet.getAddressString()).then($scope.unlock_url);
                             }
                             
-                            await globalFuncs.loadWallet(jsc3l.wallet.encryptWallet($scope.wallet, $scope.password));
+                            await globalFuncs.loadWallet($scope.wallet.encryptWallet($scope.password));
                                                 globalFuncs.loadWallets(true);
                                                 
                                                 // Enable next step 
