@@ -4,7 +4,7 @@ var storageCtrl = function($scope, $sce, walletService, contactservice, $transla
     $scope.deleteWalletModal = new Modal(document.getElementById('deleteWallet'));
     $scope.editWallModal = new Modal(document.getElementById('editWall'));
 
-    $scope.isApp =  jsc3l_customization.isApp();
+    $scope.isApp =  isApp();
     globalFuncs.hideLoadingWaiting();
     $scope.private_cmp = JSON.parse(localStorage.getItem('ComChainPrivateComputer')); 
     if (! $scope.private_cmp){
@@ -23,7 +23,7 @@ var storageCtrl = function($scope, $sce, walletService, contactservice, $transla
          if (!$scope.NoWallet){
              for (var id in $scope.wallets){
                $scope.wallets[id].name=contactservice.getContactName($scope.contacts, '0x'+$scope.wallets[id].address);
-               $scope.wallets[id].logo = jsc3l_customization.getCurrencyLogoUrl( $scope.wallets[id].file.server.name);
+               $scope.wallets[id].logo = jsc3l.customization.getCurrencyLogoUrl( $scope.wallets[id].file.server.name);
                $scope.wallets[id].has_logo = $scope.wallets[id].logo !='';
                
             }
@@ -31,7 +31,16 @@ var storageCtrl = function($scope, $sce, walletService, contactservice, $transla
          }
     }
     
+
+  // XXXvlab: loadWallets will require access to
+  // jsc3l.customization.getCurrencyLogoUrl(..)  which require access
+  // to the custoRepo. This will be set only after that
+  // ``acquireEndPoint`` is done. Which is triggered on ``tabsCtrl``.
+  loadingPromise.then(function() {
+    console.log("LOADING WALLETS")
     $scope.loadWallets();
+    $scope.$apply();
+  })
 
    
      
@@ -74,12 +83,13 @@ var storageCtrl = function($scope, $sce, walletService, contactservice, $transla
         localStorage.setItem('ComChainPrivateComputer',JSON.stringify( $scope.private_cmp));
     }
     
-    $scope.openWallet = function(address){
+    $scope.openWallet = async function(address){
       
       for (var id in $scope.wallets){
            if ($scope.wallets[id].address==address){
                 globalFuncs.showLoading($translate.instant("GP_Wait"));
-                globalFuncs.loadWallet($scope.wallets[id].file,function(success){location.reload(); });
+                await globalFuncs.loadWallet($scope.wallets[id].file);
+                location.reload();
                      
           }
        }         

@@ -16,9 +16,16 @@ var uglify = require('gulp-uglify');
 var shell = require('gulp-shell');
 var fileinclude = require('gulp-file-include');
 var babel = require("gulp-babel");
-
+const sourcemaps = require('gulp-sourcemaps');
+const browserify = require('browserify');
+var source = require('vinyl-source-stream');
+var buffer = require('vinyl-buffer');
+var realpathify = require('realpathify');
+var babelify = require('babelify');
+var print = require('gulp-print').default;
 
 var output_android =  './cordova_dist/';
+var output_ios =  './cordova_dist_ios/';
 var output_exchange_office =  './cordova_exchange_dist/';
 
 // Compile and Minify Less / CSS Files
@@ -49,7 +56,7 @@ gulp.task('less', function (cb) {
 // Compile and Minify JS Files
 var jsFiles = "./app/scripts/*.js";
 var AllJsFiles = "./app/scripts/**/*.js";
-var mainjs = "./app/scripts/main.js";
+var mainjs = "./build/main.js";
 var staticjsFiles = "./app/scripts/staticJS/*.js";
 var copiedjsFiles = "./app/scripts/copied/*.js";
 var staticjsOutputFile = 'etherwallet-static.min.js';
@@ -59,6 +66,7 @@ gulp.task('copiedJS', function () {
   return gulp
     .src(copiedjsFiles)
       .pipe(gulp.dest(output_android+jsOutputFolder))
+      .pipe(gulp.dest(output_ios+jsOutputFolder))
       .pipe(gulp.dest(output_exchange_office+jsOutputFolder))
       .pipe(notify('Cordova Copied JS Complete'));
 });
@@ -69,6 +77,7 @@ gulp.task('staticJS', function () {
       .pipe(concat(staticjsOutputFile))
       .pipe(uglify())
       .pipe(gulp.dest(output_android+jsOutputFolder))
+      .pipe(gulp.dest(output_ios+jsOutputFolder))
       .pipe(gulp.dest(output_exchange_office+jsOutputFolder))
       .pipe(notify('Cordova StaticJS Complete'));
 });
@@ -76,18 +85,63 @@ gulp.task('staticJS', function () {
 gulp.task('minJS',['browserify'],function () {
   return gulp
     .src('./dist/js/etherwallet-master.js')
-      .pipe(babel())
+      .pipe(sourcemaps.init({loadMaps: true}))
       .pipe(concat('etherwallet-master-min.js'))
+      .pipe(sourcemaps.write('.'))
       .pipe(gulp.dest(output_android+jsOutputFolder))
+      .pipe(gulp.dest(output_ios+jsOutputFolder))
       .pipe(gulp.dest(output_exchange_office+jsOutputFolder))
       .pipe(notify('Cordova MinJS Complete'));
 });
 
+gulp.task('babelify', () => {
+  return gulp
+    .src(AllJsFiles)
+    // .pipe(print(filepath => `babelify src: ${filepath}`))
+    .pipe(sourcemaps.init())
+	.pipe(babel({
+	  presets: ['@babel/preset-env'],
+      plugins: [
+        ["@babel/plugin-transform-runtime", {
+          regenerator: true
+        }]
+      ]
+	}))
+    .on('error', function (err) {
+      console.error(err.message)
+      this.emit('end')
+    })
+    // .pipe(print(filepath => `babelify out: ${filepath}`))
+    .pipe(sourcemaps.write('.'))
+	.pipe(gulp.dest('build'))
+});
 
-// Browserify
-gulp.task('browserify', shell.task([
-  'browserify '+mainjs+' -o dist/js/etherwallet-master.js'
-]));
+
+gulp.task('browserify', ['babelify'], () => {
+  return browserify(mainjs, { debug: true })
+    .plugin(realpathify)
+    .transform("babelify", {
+	    presets: ['@babel/preset-env'],
+        plugins: [
+          ["@babel/plugin-transform-runtime", {
+            "regenerator": true
+          }]
+        ],
+        global: true,
+	    sourceMaps: true,
+	})
+    .on('error', function (err) {
+      console.error(err.message)
+      this.emit('end')
+    })
+    .bundle()
+    .pipe(source(mainjs))
+    .pipe(buffer())
+    .pipe(sourcemaps.init({loadMaps: true}))
+    .pipe(concat('etherwallet-master.js'))
+    .pipe(sourcemaps.write('.'))
+	.pipe(gulp.dest('dist/js'))
+});
 
 
 // Copy Images
@@ -99,6 +153,7 @@ gulp.task('copy-images', function() {
        .pipe(gulp.dest("./dist/images"))
 
        .pipe(gulp.dest(output_android+imagesOutputFolder))
+      .pipe(gulp.dest(output_ios+imagesOutputFolder))
       .pipe(gulp.dest(output_exchange_office+imagesOutputFolder))
    .pipe(notify({message:'Cordova Images Complete', onLast:true}));
 });
@@ -112,6 +167,7 @@ gulp.task('copy-fonts', function() {
    gulp.src(fontsFolder)
           .pipe(gulp.dest("./dist/fonts"))
    .pipe(gulp.dest(output_android+fontsOutputFolder))
+      .pipe(gulp.dest(output_ios+fontsOutputFolder))
    .pipe(gulp.dest(output_exchange_office+fontsOutputFolder))
    .pipe(notify({message:'Cordova Fonts Complete', onLast:true}));
 });
@@ -124,6 +180,7 @@ gulp.task('copy-conf', function() {
           gulp.src(confFolder) 
           .pipe(gulp.dest("./dist/configs"))
           .pipe(gulp.dest(output_android+confOutputFolder))
+          .pipe(gulp.dest(output_ios+confOutputFolder))
           .pipe(gulp.dest(output_exchange_office+confOutputFolder))
           .pipe(notify({message:'Cordova Conf Complete', onLast:true}));
           });
@@ -133,6 +190,7 @@ gulp.task('css',['less','copy-images'], function () {
           return gulp.src('./dist/css/*.css')
          // .pipe(base64())
           .pipe(gulp.dest(output_android+lessOutputFolder))
+          .pipe(gulp.dest(output_ios+lessOutputFolder))
           .pipe(gulp.dest(output_exchange_office+lessOutputFolder))
 
           });
@@ -142,16 +200,21 @@ gulp.task('css',['less','copy-images'], function () {
 var htmlPages = "./app/layouts/*.html";
 var tplFiles = "./app/includes/*.tpl";
 
-gulp.task('buildHTML', function () {
-    gulp.src(htmlPages)
+
+gulp.task('distHTML', function () {
+    return gulp.src(htmlPages)
       .pipe(fileinclude({
         prefix: '@@',
         basepath: '@file'
       }))
     .pipe(gulp.dest('./dist/html/'));
-    
-    gulp.src('./dist/html/index.html')
+});
+
+gulp.task('buildHTML', ['distHTML'], function () {
+
+  gulp.src('./dist/html/index.html')
     .pipe(gulp.dest(output_android +'www/')) 
+    .pipe(gulp.dest(output_ios +'www/')) 
     .pipe(notify({message:'Cordova HTML Pages Complete', onLast:true}));;
     
     gulp.src('./dist/html/exchangeOffice.html')

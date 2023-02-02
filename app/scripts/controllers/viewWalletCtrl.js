@@ -1,7 +1,7 @@
 'use strict';
 var viewWalletCtrl = function($scope, walletService, contactservice, $translate) {
     // Environment variables
-    $scope.isApp = jsc3l_customization.isApp();
+    $scope.isApp = isApp();
     
     // Controler variables
     //  Data
@@ -33,23 +33,24 @@ var viewWalletCtrl = function($scope, walletService, contactservice, $translate)
 		if (walletService.wallet == null) return;
 		$scope.wallet = walletService.wallet;
         
-        contactservice.loadContacts($scope.wallet, walletService.password, function(contact_list){
+        contactservice.loadContacts($scope.wallet, walletService.password).then(function(contact_list){
             $scope.contacts = contact_list;
+            $scope.getAccName($scope.wallet.getAddressString());
             
         });
         
-        jsc3l_bcRead.getAccountStatus($scope.wallet.getAddressString(), function(status){
-                    $scope.is_locked = status==0;
+        jsc3l.bcRead.getAccountStatus($scope.wallet.getAddressString()).then(function (status) {
+        $scope.is_locked = status==0;
         });
+  
         
-        jsc3l_bcRead.getContractStatus(function(status){
-                    $scope.is_curr_locked = status==0;
+        jsc3l.bcRead.getContractStatus().then(function(status) {
+        $scope.is_curr_locked = status==0;
         });
         
         $scope.currentAddress = $scope.wallet.getAddressString();
         $scope.current_QR_content = $scope.currentAddress;
-        $scope.getAccName($scope.wallet.getAddressString());
-        $scope.hasBnCheck=false; //jsc3l_customization.hasBnCheck();  not ready yet
+        $scope.hasBnCheck=false; //jsc3l.customization.hasBnCheck();  not ready yet
         
         
         
@@ -160,25 +161,20 @@ var viewWalletCtrl = function($scope, walletService, contactservice, $translate)
     }
     
     // Perform the check
-    $scope.do_check = function(){
+    $scope.do_check = async function(){
         $scope.BN_Status=globalFuncs.getWarningText($translate.instant("BN_CheckingProgress"));
-        jsc3l_bcRead.getAccountStatus($scope.bnaddress, function(status){
-            if (status!=0){
-              $scope.BN_Status=globalFuncs.getDangerText($translate.instant("BN_NotValid"));      
+        const status= await jsc3l.bcRead.getAccountStatus($scope.bnaddress);
+        if (status!=0){
+          $scope.BN_Status=globalFuncs.getDangerText($translate.instant("BN_NotValid"));      
+        } else {
+            const valuue = await jsc3l.bcRead.getGlobalBalance($scope.bnaddress);
+            if (globalFuncs.isValidBNValue(value)){
+               $scope.BN_Status=globalFuncs.getSuccessText($translate.instant("BN_Valid")+value+globalFuncs.currencies.CUR);    
             } else {
-                jsc3l_bcRead.getGlobalBalance($scope.bnaddress, function(value){
-                    if (globalFuncs.isValidBNValue(value)){
-                       $scope.BN_Status=globalFuncs.getSuccessText($translate.instant("BN_Valid")+value+globalFuncs.currencies.CUR);    
-                    } else {
-                       $scope.BN_Status=globalFuncs.getDangerText($translate.instant("BN_NotValid"));     
-                    }
-                });   
-            }
-        });
+               $scope.BN_Status=globalFuncs.getDangerText($translate.instant("BN_NotValid"));     
+            }  
+        }
     }
-     
-    
-  
 };
 
 module.exports = viewWalletCtrl;

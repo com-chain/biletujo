@@ -22,11 +22,7 @@ var authenticationService = function() {
 			        var authChallenge = "NA";
 	           }
 	           var address = addr.getAddressString();
-	           var challenge = authChallenge
-	           var msg=ethUtil.toBuffer(challenge);
-	           var msgHash = ethUtil.hashPersonalMessage(msg);
-	           var signature = ethUtil.ecsign(msgHash,addr.getPrivateKey());
-               var sign = ethUtil.bufferToHex(Buffer.concat([ signature.r, signature.s, ethUtil.toBuffer(signature.v) ]))
+               var sign = addr.signMessage(authChallenge)
 	           console.log('Signature: ' + sign);
 	           sendAuthResponse(address,sign);
            });

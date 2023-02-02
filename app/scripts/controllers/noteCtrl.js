@@ -1,7 +1,7 @@
 'use strict';
 var noteCtrl = function($scope, $locale, $sce, walletService, $translate) {
     // Check the environment
-    $scope.isApp =  jsc3l_customization.isApp();
+    $scope.isApp =  isApp();
     $scope.currentWalletAddress=globalFuncs.getWalletAddress();
     $scope.CUR='';
     
@@ -25,23 +25,21 @@ var noteCtrl = function($scope, $locale, $sce, walletService, $translate) {
 		    if (walletService.wallet == null) return null;
 
 		    return walletService.wallet.getAddressString();
-	    }, function() {
+	    }, async function() {
 		    if (walletService.wallet == null) return;
 		    $scope.wallet = walletService.wallet;
-            jsc3l_bcRead.getAccountType($scope.wallet.getAddressString(), function(type){
-              
-               jsc3l_bcRead.getAccountStatus($scope.wallet.getAddressString(), function(status){
-                    $scope.is_admin = type==2 && status==1;
-               });
-            });
+            const type = await jsc3l.bcRead.getAccountType($scope.wallet.getAddressString());
+            const status = await jsc3l.bcRead.getAccountStatus($scope.wallet.getAddressString());
+            $scope.is_admin = type==2 && status==1;
             
             $scope.CUR=globalFuncs.currencies.CUR;
             
-            $scope.value_options = jsc3l_customization.getNoteValues();
+            $scope.value_options = jsc3l.customization.getNoteValues();
             $scope.value_options.unshift(0.00);
             $scope.target_amount_option = $scope.value_options[0];
             
             globalFuncs.hideLoadingWaiting();  
+            $scope.$apply();
         });
     
   $scope.openGetList = function() {
@@ -61,19 +59,15 @@ var noteCtrl = function($scope, $locale, $sce, walletService, $translate) {
 	  }
   }
   
-  $scope.preparInfo = function(address, length){
-        jsc3l_bcRead.getAccountStatus(address, function(status){
-             jsc3l_bcRead.getNantBalance(address, function(value){
-                var status_txt = "NOT_Locked";
-                if (status == 1){
-                    status_txt = "NOT_Unlocked";
-                }
-                var info = {"address":address, "amount":value, "st":status, "status":status_txt};
-                $scope.info_list.push(info);
-                
-              
-             });
-          });
+  $scope.preparInfo = async function(address, length){
+        const status = await jsc3l.bcRead.getAccountStatus(address);
+        const value = await jsc3l.bcRead.getNantBalance(address);
+        var status_txt = "NOT_Locked";
+        if (status == 1){
+            status_txt = "NOT_Unlocked";
+        }
+        var info = {"address":address, "amount":value, "st":status, "status":status_txt};
+        $scope.info_list.push(info);
   }
   
   $scope.prepareList = function(address_list) {
@@ -119,61 +113,56 @@ var noteCtrl = function($scope, $locale, $sce, walletService, $translate) {
  
   }
   
-  $scope.lock = function(address){
-       $scope.curr_operation=$translate.instant("NOT_Currently")+$translate.instant("NOT_Locking") + address;
-       jsc3l_bcTransaction.SetAccountParam($scope.wallet, address, 0, 0, 0, 0, function(data){
-                                         if (data.isError){
-                                            alert($translate.instant("NOT_Processing_error") + data.error);
-                                         } else {
-                                            $scope.waitTransaction(data.data); 
-                                         }
-                                    });
+  $scope.lock = async function(address){
+        $scope.curr_operation=$translate.instant("NOT_Currently")+$translate.instant("NOT_Locking") + address;
+        const data = await jsc3l.bcTransaction.setAccountParam($scope.wallet, address, 0, 0, 0, 0);
+        if (data.isError){
+            alert($translate.instant("NOT_Processing_error") + data.error);
+        } else {
+            $scope.waitTransaction(data.data); 
+        }
   }
   
-  $scope.adjustAmount = function(address, amount){
-       $scope.curr_operation=$translate.instant("NOT_Currently")+$translate.instant("NOT_Pledging") +  amount + $scope.CUR + $translate.instant("NOT_to")+ address;
-       jsc3l_bcTransaction.PledgeAccount($scope.wallet, address, amount, function(data){
-                                         if (data.isError){
-                                             alert($translate.instant("NOT_Processing_error") + data.error);
-                                         } else {
-                                             $scope.waitTransaction(data.data);
-                                         }
-                                   });
+  $scope.adjustAmount = async function(address, amount){
+        $scope.curr_operation=$translate.instant("NOT_Currently")+$translate.instant("NOT_Pledging") +  amount + $scope.CUR + $translate.instant("NOT_to")+ address;
+        const data = await jsc3l.bcTransaction.pledgeAccount($scope.wallet, address, amount);
+        if (data.isError){
+           alert($translate.instant("NOT_Processing_error") + data.error);
+        } else {
+           $scope.waitTransaction(data.data);
+        }
   }
   
   // Processing coordinator
-  $scope.processInfo = function(){
+  $scope.processInfo = async function(){
       $scope.curr_operation='';
       if ($scope.curr_index == $scope.info_list.length){
            $scope.completed();
       } else {
-          var address = $scope.info_list[$scope.curr_index].address;
-          jsc3l_bcRead.getAccountStatus(address, function(status){
-             jsc3l_bcRead.getNantBalance(address, function(value){
-                 $scope.info_list[$scope.curr_index].amount = value;
-                 var status_txt = "NOT_Locked";
-                 if (status == 1){
-                    status_txt = "NOT_Unlocked";
-                 }
-                 $scope.info_list[$scope.curr_index].st = status;
-                 $scope.info_list[$scope.curr_index].status = status_txt;
-                 
-                 if (value == $scope.target_amount){
-                      if (status == 1){ 
-                          // right amount but not locked
-                          $scope.lock(address);
-                      } else {
-                          // right amount and locked: next one
-                          $scope.curr_index += 1;
-                          $scope.processInfo();
-                      }
-                 } else {
-                      // wrong amount
-                      $scope.adjustAmount(address, $scope.target_amount - value);
-                 }
-                 
-             });
-          });  
+         var address = $scope.info_list[$scope.curr_index].address;
+         const status = await jsc3l.bcRead.getAccountStatus(address);
+         const value = await jsc3l.bcRead.getNantBalance(address);
+         $scope.info_list[$scope.curr_index].amount = value;
+         var status_txt = "NOT_Locked";
+         if (status == 1){
+            status_txt = "NOT_Unlocked";
+         }
+         $scope.info_list[$scope.curr_index].st = status;
+         $scope.info_list[$scope.curr_index].status = status_txt;
+         
+         if (value == $scope.target_amount){
+              if (status == 1){ 
+                  // right amount but not locked
+                  $scope.lock(address);
+              } else {
+                  // right amount and locked: next one
+                  $scope.curr_index += 1;
+                  $scope.processInfo();
+              }
+         } else {
+              // wrong amount
+              $scope.adjustAmount(address, $scope.target_amount - value);
+         }
       }
   }
 
@@ -200,12 +189,11 @@ var noteCtrl = function($scope, $locale, $sce, walletService, $translate) {
           $scope.interval_id=null;
       }
       
-      $scope.interval_id = setInterval(function(){
-          ajaxReq.getBlock(transaction_ash, function(block_json){
+      $scope.interval_id = setInterval(async function(){
+          const block_json = await jsc3l.ajaxReq.getBlock(transaction_ash)
               if (block_json.blockNumber && block_json.blockNumber.startsWith('0x')){
                  $scope.recievedTransaction();
               }
-          });
       },5000);  
   }  
 

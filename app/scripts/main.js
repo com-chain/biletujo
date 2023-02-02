@@ -1,54 +1,72 @@
 'use strict';
 var IS_CX = false;
 if (typeof chrome != 'undefined') IS_CX = chrome.windows === undefined ? false : true;
-require("babel-polyfill");
 var angular = require('angular');
 var angularTranslate = require('angular-translate');
 var angularTranslateErrorLog = require('angular-translate-handler-log');
 var angularSanitize = require('angular-sanitize');
-var BigNumber = require('bignumber.js');
-window.BigNumber = BigNumber;
-var marked = require('./customMarked');
-window.marked = marked;
-var ethUtil = require('ethereumjs-util');
-ethUtil.crypto = require('crypto');
-ethUtil.Tx = require('ethereumjs-tx');
-ethUtil.scrypt = require('scryptsy');
-ethUtil.uuid = require('uuid');
-ethUtil.EC = require('elliptic').ec;
-window.ethUtil = ethUtil;
-var Wallet = require('./myetherwallet');
-window.Wallet = Wallet;
-var Token = require('./tokens');
-window.Token = Token;
-
-var jsc3l_config = require('./JSC3L/jsc3l_config');
-window.jsc3l_config = jsc3l_config;
-var jsc3l_connection = require('./JSC3L/jsc3l_connection');
-window.jsc3l_connection = jsc3l_connection;
-var jsc3l_customization = require('./JSC3L/jsc3l_customization');
-window.jsc3l_customization = jsc3l_customization;
-var jsc3l_bcRead = require('./JSC3L/jsc3l_bcRead');
-window.jsc3l_bcRead = jsc3l_bcRead;
-var jsc3l_message = require('./JSC3L/jsc3l_message');
-window.jsc3l_message = jsc3l_message;
-var jsc3l_wallet = require('./JSC3L/jsc3l_wallet');
-window.jsc3l_wallet = jsc3l_wallet;
-var jsc3l_bcTransaction = require('./JSC3L/jsc3l_bcTransaction');
-window.jsc3l_bcTransaction = jsc3l_bcTransaction;
-
-
-
 var globalFuncs = require('./globalFuncs');
 window.globalFuncs = globalFuncs;
-var uiFuncs = require('./JSC3L/uiFuncs');
-window.uiFuncs = uiFuncs;
-var etherUnits = require('./JSC3L/etherUnits');
-window.etherUnits = etherUnits;
-var ajaxReq = require('./JSC3L/ajaxReq');
-window.ajaxReq = ajaxReq;
-var ethFuncs = require('./JSC3L/ethFuncs');
-window.ethFuncs = ethFuncs;
+var Jsc3l = require('@com-chain/jsc3l-browser').default
+
+
+window.jsc3l = new Jsc3l(conf_locale, [
+  // First Contract
+  {
+    setAccountParam: '848b2592:accAddress accStatus accType limitPlus limitMinus',
+    pledgeAccount: '6c343eef:accAddress amount *',
+    setAllowance: 'd4e12f2e:spenderAddress amount',
+    setDelegation: '75741c79:spenderAddress limit',
+    setTaxAmount: 'f6f1897d:amount',
+    setTaxLegAmount: 'fafaf4c0:amount',
+    setTaxAccount: 'd0385b5e:accAddress',
+    setOwnerAccount: 'f2fde38b:accAddress',
+    setContractStatus: '88b8084f:status',
+  },
+  // Second Contract
+  {
+    transferNant: 'a5f7c148:toAddress amount *',
+    transferCM: '60ca9c4c:toAddress amount *',
+    transferOnBehalfNant: '1b6b1ee5:fromAddress toAddress amount D',
+    transferOnBehalfCM: '74c421fe:fromAddress toAddress amount D',
+    askTransferFrom: '58258353:fromAddress amount',
+    askTransferCMFrom: '2ef9ade2:fromAddress amount',
+    payRequestNant: '132019f4:toAddress amount *',
+    payRequestCM: '1415707c:toAddress amount *',
+    rejectRequest: 'af98f757:toAddress',
+    dismissAcceptedInfo: 'ccf93c7a:accAddress',
+    dismissRejectedInfo: '88759215:accAddress',
+  },
+  // Third Contract
+  {
+    setContactHash: "14ea14f5:posInt sizeInt hashHex",
+    setMemoHash: "166cf727:posInt sizeInt hashHex",
+  },
+])
+
+// XXXvlab: nasty hack to allow tabsCtrl to load and fetch repo
+// information before storageCtrl loading wallets. Sorry.
+let promise
+window.loadingPromise = new Promise((resolve, reject) => {
+  promise = { resolve, reject }
+})
+window.loadingPromise.resolve = promise.resolve
+window.loadingPromise.reject = promise.reject
+
+
+var m_is_app=false;
+document.addEventListener("deviceready", onDeviceReady, false);
+function onDeviceReady() {
+    m_is_app = device.platform!="browser";
+}
+
+
+
+window.isApp = function () {
+   return m_is_app;
+   //return document.URL.indexOf( 'http://' ) === -1 && document.URL.indexOf( 'https://' ) === -1;
+}
+
 var translate = require('./translations/translate.js');
 
 
@@ -100,7 +118,6 @@ app.factory('contactService', contactService);
 app.factory('memoService', memoService);
 app.factory('consultService', consultService);
 app.factory('authenticationService', authenticationService);
-app.factory('messageService', jsc3l_message);
 
 
 app.directive('blockieAddress', blockiesDrtv);
@@ -113,17 +130,17 @@ app.directive('waitingDrtv', waitingDrtv);
 
 app.controller('tabsCtrl', ['$scope','$attrs','globalService','contactService', '$translate','$compile', 'authenticationService',tabsCtrl]);
 app.controller('viewCtrl', ['$scope', 'globalService', '$translate', viewCtrl]);
-app.controller('walletGenCtrl', ['$scope', 'globalService','$translate', 'walletService','contactService','messageService', walletGenCtrl]);
-app.controller('decryptWalletCtrl', ['$scope', '$sce', '$translate', 'walletService', 'contactService', 'memoService', 'authenticationService','messageService','globalService', decryptWalletCtrl]);
+app.controller('walletGenCtrl', ['$scope', 'globalService','$translate', 'walletService','contactService', walletGenCtrl]);
+app.controller('decryptWalletCtrl', ['$scope', '$sce', '$translate', 'walletService', 'contactService', 'memoService', 'authenticationService','globalService', decryptWalletCtrl]);
 app.controller('viewWalletCtrl', ['$scope', 'walletService','contactService', '$translate', viewWalletCtrl]);
-app.controller('sendCtrl', ['$scope','$locale', '$sce', 'walletService','contactService','messageService','globalService', '$translate', sendCtrl]);
-app.controller('balanceCtrl', ['$scope','$locale', '$sce', 'walletService','contactService','consultService','messageService', '$translate', balanceCtrl]);
+app.controller('sendCtrl', ['$scope','$locale', '$sce', 'walletService','contactService','globalService', '$translate', sendCtrl]);
+app.controller('balanceCtrl', ['$scope','$locale', '$sce', 'walletService','contactService','consultService', '$translate', balanceCtrl]);
 app.controller('billingCtrl', ['$scope','$locale', '$sce', 'walletService', '$translate', billingCtrl]);
 app.controller('noteCtrl', ['$scope','$locale', '$sce', 'walletService', '$translate', noteCtrl]);
-app.controller('exchangeCtrl', ['$scope','$locale', '$sce', 'walletService','messageService', '$translate', exchangeCtrl]);
+app.controller('exchangeCtrl', ['$scope','$locale', '$sce', 'walletService', '$translate', exchangeCtrl]);
 app.controller('globalCtrl', ['$scope','$locale', '$sce', 'walletService', '$translate', globalCtrl]);
 app.controller('contactsCtrl', ['$scope', '$sce', 'walletService','contactService','globalService', '$translate', contactsCtrl]);
 app.controller('storageCtrl', ['$scope', '$sce', 'walletService','contactService', '$translate', storageCtrl]);
 
-app.controller('readonlytransactionsCtrl', ['$scope','$locale', '$sce', 'walletService','contactService', 'consultService','memoService','messageService', '$translate','$filter', readonlytransactionsCtrl]);
+app.controller('readonlytransactionsCtrl', ['$scope','$locale', '$sce', 'walletService','contactService', 'consultService','memoService', '$translate','$filter', readonlytransactionsCtrl]);
 

@@ -1,7 +1,7 @@
 'use strict';
-var readonlytransactionsCtrl = function($scope, $locale, $sce, walletService,contactservice,consultService, memoService, messageService, $translate, $filter) {
+var readonlytransactionsCtrl = function($scope, $locale, $sce, walletService,contactservice,consultService, memoService, $translate, $filter) {
     // Check the environment
-    $scope.isApp =  jsc3l_customization.isApp();
+    $scope.isApp =  isApp();
     $scope.currentWalletAddress=globalFuncs.getWalletAddress();
     $scope.fingerprint=false;
     
@@ -83,7 +83,7 @@ var readonlytransactionsCtrl = function($scope, $locale, $sce, walletService,con
         $scope.currentWalletAddress = globalFuncs.getWalletAddress();
         $scope.watched_address = $scope.currentWalletAddress;
         
-        contactservice.loadContacts($scope.wallet, walletService.password, function(contact_list){
+        contactservice.loadContacts($scope.wallet, walletService.password).then(function(contact_list){
             $scope.contacts = contact_list;
         });
         
@@ -92,8 +92,8 @@ var readonlytransactionsCtrl = function($scope, $locale, $sce, walletService,con
         $scope.CUR=globalFuncs.currencies.CUR;
         $scope.CUR_nanti=globalFuncs.currencies.CUR_nanti;
         $scope.CUR_credit_mut=globalFuncs.currencies.CUR_credit_mut;
-        $scope.has_nant=jsc3l_customization.hasNant();
-        $scope.has_credit_mut=jsc3l_customization.hasCM();
+        $scope.has_nant=jsc3l.customization.hasNant();
+        $scope.has_credit_mut=jsc3l.customization.hasCM();
         
         $scope.possible_wallets = consultService.loadRightFor($scope.currentWalletAddress);
         
@@ -114,11 +114,11 @@ var readonlytransactionsCtrl = function($scope, $locale, $sce, walletService,con
             $scope.show_bal=true;
             $scope.lock_date = false;
         }
+
+        jsc3l.bcRead.getNantBalance($scope.watched_address).then(function(value){$scope.balanceEL = value;});
+        jsc3l.bcRead.getCmBalance($scope.watched_address).then(function(value){$scope.balanceCM = value;});
         
-        jsc3l_bcRead.getNantBalance($scope.watched_address, function(value){$scope.balanceEL = value;});
-        jsc3l_bcRead.getCmBalance($scope.watched_address, function(value){$scope.balanceCM = value;});
-        
-        $scope.current_message_key = messageService.messageKeysFromCrypted($scope.wallet, $scope.possible_wallets[$scope.watched_address].messageKey);
+        $scope.current_message_key = $scope.wallet.messageKeysFromCrypted($scope.possible_wallets[$scope.watched_address].messageKey);
         
         $scope.index=0;
         $scope.loadTransactions($scope.tra_number,$scope.index*$scope.tra_number + $scope.tra_offset);
@@ -132,22 +132,17 @@ var readonlytransactionsCtrl = function($scope, $locale, $sce, walletService,con
     }
     
     
-    $scope.getTransactionMessage = function(transaction_data) {
-        var memo = memoService.getMemo($scope.memos,transaction_data.hash);
+    $scope.getTransactionMessage = function(transaction) {
+      var memo = memoService.getMemo($scope.memos,transaction.hash);
+      if (memo == "") {
         try {
-            var key =$scope.current_message_key.clear_priv;
-            if (memo=="") {
-              if (transaction_data.addr_to == $scope.watched_address.toLowerCase() && transaction_data.message_to != '') {
-                  memo = messageService.decipherMessage(key, transaction_data.message_to);
-              }
-              
-              if (transaction_data.addr_from == $scope.watched_address.toLowerCase() && transaction_data.message_from != '') {
-                  memo = messageService.decipherMessage(key, transaction_data.message_from);
-              }
-            }
+           memo = jsc3l.memo.getTransactionMemo(
+            transaction,
+            $scope.watched_address.toLowerCase(),
+            $scope.current_message_key)
         } catch (e) {}
-        
-        return memo;
+      }
+      return memo;
     }
     
     $scope.loadTransactions= function(count,offset){
@@ -168,14 +163,14 @@ var readonlytransactionsCtrl = function($scope, $locale, $sce, walletService,con
           document.getElementById("addTransactions").style.display = 'none';
         
         
-          ajaxReq.getTransList($scope.watched_address,count,offset,function(result){
+      jsc3l.ajaxReq.getTransList($scope.watched_address,count,offset).then(function(result) {
               $scope.transactions= null;
               $scope.transactions= {};
               $scope.tot_in=0;
               $scope.tot_out=0;
               
               for (var ind = result.length-1; ind >=0 ; ind--) {
-                  var data = JSON.parse(result[ind]);
+                  var data = result[ind];
                   var tr_date = new Date(data.time*1000);
                   if ($scope.lock_date && tr_date.getTime() <  $scope.lock_date_begin.getTime()) {
                           result.slice(ind,1);
@@ -213,11 +208,11 @@ var readonlytransactionsCtrl = function($scope, $locale, $sce, walletService,con
                   $scope.showNone = false;
               }
               
-              globalFuncs.hideLoadingWaiting();  
-          })  
+        globalFuncs.hideLoadingWaiting();
+        $scope.$apply();
+      });
       
         
-
     }
     
 
@@ -355,10 +350,11 @@ var readonlytransactionsCtrl = function($scope, $locale, $sce, walletService,con
             
         } else {
             if (add_b) {
-               jsc3l_bcRead.getHistoricalGlobalBalance(walletAddress, list[index].data.block, function(value){
-                    list[index].data.balance = value;
-                    $scope.addBalance(walletAddress,list,add_b, index+1);
+               jsc3l.bcRead.getHistoricalGlobalBalance(walletAddress, list[index].data.block).then(function(value) {
+                list[index].data.balance = value;
+                $scope.addBalance(walletAddress,list,add_b, index+1);
                 });
+           
             } else {
                  list[index].data.balance = '';
                  $scope.addBalance(walletAddress,list,add_b, index+1);
@@ -367,7 +363,7 @@ var readonlytransactionsCtrl = function($scope, $locale, $sce, walletService,con
         }
     }
     
-    $scope.ExportTra=function(){
+    $scope.ExportTra= async function(){
         $scope.start_time=Math.round($scope.start_time);
         if ($scope.start_time <0){
             $scope.start_time=0;
@@ -403,10 +399,11 @@ var readonlytransactionsCtrl = function($scope, $locale, $sce, walletService,con
         
        
         
-        ajaxReq.getExportTransList($scope.watched_address,d_start,d_end, function(result){
+        var result = await jsc3l.ajaxReq.getExportTransList($scope.watched_address,d_start,d_end);
+
             var trans=[];
             for (var ind = 0; ind < result.length; ++ind) {
-                  trans[ind]={'id': (ind), 'data':JSON.parse(result[ind])};
+                  trans[ind]={'id': (ind), 'data':result[ind]};
                   trans[ind].data.to_name = contactservice.getContactName($scope.contacts, trans[ind].data.addr_to);
                   trans[ind].data.from_name = contactservice.getContactName($scope.contacts, trans[ind].data.addr_from);
                   trans[ind].data.memo = $scope.getTransactionMessage(trans[ind].data);
@@ -506,8 +503,6 @@ var readonlytransactionsCtrl = function($scope, $locale, $sce, walletService,con
            }
            
            $scope.exportTraModal.close();
-            
-        });
     }
   
     
@@ -535,18 +530,18 @@ var readonlytransactionsCtrl = function($scope, $locale, $sce, walletService,con
             clearInterval($scope.check_interval_id);
           }
       } else {
-         ajaxReq.getTransList($scope.watched_address,1,0,function(result){
+        jsc3l.ajaxReq.getTransList($scope.watched_address,1,0).then(function(result){
             if (result.length==1){
-                var res = JSON.parse(result[0]);
+                var res = result[0];
                 $scope.last_trans_id=res.hash;
                 $scope.last_trans_status=res.status;
             }
          });
          
          $scope.check_interval_id = setInterval(function(){
-            ajaxReq.getTransList($scope.watched_address,1,0,function(result){
+           jsc3l.ajaxReq.getTransList($scope.watched_address,1,0).then(function(result) {
                 if (result.length==1){
-                    var new_tra=JSON.parse(result[0]);
+                    var new_tra=result[0];
                     if ($scope.last_trans_id!=new_tra.hash || $scope.last_trans_status!=new_tra.status){
                         
                          
@@ -569,8 +564,7 @@ var readonlytransactionsCtrl = function($scope, $locale, $sce, walletService,con
                     }
                    
                 }
-            });
-            
+           });
          },15000);  
       }
       
@@ -585,7 +579,7 @@ var readonlytransactionsCtrl = function($scope, $locale, $sce, walletService,con
               throw "notValid";
           }
           
-          ajaxReq.getTransCheck(tran_hash.transactionHash,function(result){
+          jsc3l.ajaxReq.getTransCheck(tran_hash.transactionHash).then(function(result) {
              
               if (result.error){
                   if (result.msg.length>0){
@@ -615,8 +609,7 @@ var readonlytransactionsCtrl = function($scope, $locale, $sce, walletService,con
               
               $scope.verifyModal.open();
               
-          });
-          
+        });
           
       } catch(e){
           alert($translate.instant("TRA_NotValidCode").replace("\n",""));

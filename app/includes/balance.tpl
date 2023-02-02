@@ -877,7 +877,8 @@
                           </div> 
                           <div> &nbsp;</div>
                           <div id="qrcode_consultRight" ></div><br/>
-                          <div><input  class="form-control" type="text" readonly="readonly" value="{{qr_cr_content}}" style="max-width: 256px;" /></div>
+                          <div  style="display:none;"><input  class="form-control" type="text" readonly="readonly" value="{{qr_cr_content}}" style="max-width: 256px;" /></div>
+                          <a type="button" class="btn btn-primary bellowmargin file_btn ng-scope" ng-if="!isApp" Id="dwonloadBtn"  href="{{blobCrEnc}}" download="CONSULT_{{wallet.getAddressString()}}_for_{{dest}}.dat"  style="min-height:33px; float: unset;"> </a>
                           </div>
                       </div>
                       <div class="modal-footer text-center">

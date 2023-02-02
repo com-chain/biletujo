@@ -35,34 +35,23 @@ var consultService = function() {
       
       var result = {};
       for (var consult of consult_list) {
-           try {
-       
-                // extract the signature
-                var v = consult.signature.v;
-                var r = consult.signature.r; 
-                var s = consult.signature.s; 
+        try {
+          let { signature, data } = consult;
+          if ((new Date(data.begin)).getTime() >= (new Date()).getTime()) {
+            continue
+          }
 
-                // get the hash
-                var str_content = JSON.stringify(consult.data);
-                var hash = ethUtil.sha3(str_content);
-                
-                // check the signature
-                var public_sign_key = ethUtil.ecrecover(hash, v, r, s);
-                var rec_address = ethUtil.bufferToHex(ethUtil.publicToAddress(public_sign_key));
-                
-                if (rec_address == consult.data.address && 
-                    consult.data.destinary == address && 
-                    (new Date(consult.data.end)).getTime() > (new Date()).getTime()  &&
-                    (new Date(consult.data.begin)).getTime() < (new Date()).getTime()) {   
-                
-                       result[consult.data.address] = {"begin":new Date(consult.data.begin), 
-                                                       "viewbalance":consult.data.viewbalance, 
-                                                       "viewoldtran": consult.data.viewoldtran,
-                                                       "messageKey": consult.data.message_key};
-                }
-        
-    
-          } catch (e) {}
+          let output = jsc3l.qr.checkSignedQR(consult, address)
+          if (typeof output === 'string') {  // Then check failed
+            continue
+          }
+          result[data.address] = {
+            "begin": new Date(data.begin),
+            "viewbalance": data.viewbalance,
+            "viewoldtran": data.viewoldtran,
+            "messageKey": data.message_key
+          }
+        } catch (e) {}
       }
       
       return result;

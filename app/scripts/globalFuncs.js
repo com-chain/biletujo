@@ -33,10 +33,10 @@ var globalFuncs = function() {}
  globalFuncs.cancelRequest = "0xaf98f757";*/
  
  
- globalFuncs.setAccountsContracts = "0x14ea14f5";
+// globalFuncs.setAccountsContracts = "0x14ea14f5";
  globalFuncs.contactsOf = "0xd548bf2c";
  
- globalFuncs.setAccountsMemos = "0x166cf727";
+ //globalFuncs.setAccountsMemos = "0x166cf727";
  globalFuncs.memosOf = "0x39642b96";
  
  ///////////////////////////////////////////////////////////////////////////
@@ -68,147 +68,39 @@ var globalFuncs = function() {}
     globalFuncs.encodeNumber=function(number){
          var valueHex;
          if (number<0){
-            valueHex = ethFuncs.padLeft(new BigNumber(16).pow(64).plus(number).toString(16), 64);
+            valueHex = jsc3l.ethFuncs.padLeft(new BigNumber(16).pow(64).plus(number).toString(16), 64);
          } else{
-            valueHex = ethFuncs.padLeft(new BigNumber(number).toString(16), 64);
+            valueHex = jsc3l.ethFuncs.padLeft(new BigNumber(number).toString(16), 64);
          }
          
          return valueHex;
     }
- 
-   
-    globalFuncs.generateTx = function(contract, wallet, fuct_address, values, additional_post_data, callback){
-        globalFuncs.nonce=globalFuncs.nonce+10;
-        if (globalFuncs.nonce>10000){
-            globalFuncs.nonce=10;
-        }
-        var  tx = {
-		    gasLimit: 500000,
-		    data: '',
-		    to: contract,
-		    unit: "ether",
-		    value: 0,
-		    nonce: globalFuncs.nonce,
-		    gasPrice: null,
-		    donate: false
-       }
-        
-        var concatenated_variable='';
-        for (var index = 0; index < values.length; ++index) {
-            var valueHex = values[index];
-            concatenated_variable=concatenated_variable+valueHex;
-        }
-        
-        tx.data = fuct_address + concatenated_variable;
-        tx.from =wallet.getAddressString();
-        tx.key = wallet.getPrivateKeyString(); 
-        uiFuncs.generateTx(tx, function(rawTx){
-            if (!rawTx.isError){
-             uiFuncs.sendTx(rawTx.signedTx, additional_post_data, function(res){
-                 callback(res);    
-             });
-            } else { 
-                callback(rawTx);
-            }
-		});
-    }  
-    
-     globalFuncs.generateTxDelta = function(contract, wallet, fuct_address, values, additional_post_data, callback){
-        globalFuncs.nonce=globalFuncs.nonce+10;
-        if (globalFuncs.nonce>10000){
-            globalFuncs.nonce=10;
-        }
-        
-        var  tx = {
-		    gasLimit: 500000,
-		    data: '',
-		    to: contract,
-		    unit: "ether",
-		    value: 0,
-		    nonce: globalFuncs.nonce,
-		    gasPrice: null,
-		    donate: false
-       }
-        
-        var concatenated_variable='';
-        for (var index = 0; index < values.length; ++index) {
-            var valueHex = values[index];
-            concatenated_variable=concatenated_variable+valueHex;
-        }
-        
-        tx.data = fuct_address + concatenated_variable;
-        tx.from =wallet.getAddressString();
-        tx.key = wallet.getPrivateKeyString(); 
-        uiFuncs.generateTxDelta(tx, function(rawTx){
-            if (!rawTx.isError){
-             uiFuncs.sendTx(rawTx.signedTx, additional_post_data, function(res){
-                 callback(res);    
-             });
-            } else { 
-                callback(rawTx);
-            }
-		});
-    }  
     
  /*** contract 3***/
- globalFuncs.setContactHash = function(wallet, contact_hash, callback){    
-     var datas = []
-     datas.push(ethFuncs.padLeft('20', 64))
-     datas.push(ethFuncs.padLeft('2e', 64))
-     var result = contact_hash
-     for (var i=contact_hash.length ;i<128;++i){
-         result = result+'0';
-     }
-     datas.push(result)
-         
-     globalFuncs.generateTx(jsc3l_customization.getContract3(),
-                            wallet, 
-                            globalFuncs.setAccountsContracts, 
-                            datas, 
-                            {},
-                            callback);       
+ globalFuncs.setContactHash = function(wallet, contact_hash, callback){  
+     jsc3l.bcTransaction.setContactHash(wallet, 32,46,contact_hash).then((res)=>callback(res));
  }
  
  globalFuncs.setMemoHash = function(wallet, memo_hash, callback){     
-     var datas = []
-     datas.push(ethFuncs.padLeft('20', 64))
-     datas.push(ethFuncs.padLeft('2e', 64))
-     var result = memo_hash
-     for (var i=memo_hash.length ;i<128;++i){
-         result = result+'0';
-     }
-     datas.push(result)
-         
-     globalFuncs.generateTx(jsc3l_customization.getContract3(),
-                            wallet, 
-                            globalFuncs.setAccountsMemos, 
-                            datas, 
-                            {},
-                            callback);       
+     jsc3l.bcTransaction.setMemoHash(wallet, 32,46,memo_hash).then((res)=>callback(res));     
  }
  
- globalFuncs.getContactHash = function(walletAddress,callback){
-        var userInfo = ethFuncs.getDataObj(jsc3l_customization.getContract3(),  globalFuncs.contactsOf, [ethFuncs.getNakedAddress(walletAddress)]);
-		ajaxReq.getEthCall(userInfo, function(data) {
-            if (!data.error) {
-                var length_str = data.data.substring(66,130);
+ globalFuncs.getContactHash = async function(walletAddress,callback){
+        var userInfo = jsc3l.ethFuncs.getDataObj(jsc3l.customization.getContract3(),  globalFuncs.contactsOf, [jsc3l.ethFuncs.getNakedAddress(walletAddress)]);
+        const data = await jsc3l.ajaxReq.getEthCall(userInfo)
+                var length_str = data.substring(66,130);
                 var length = 2*globalFuncs.getNumber(length_str,1);
-                var hash = data.data.substring(130,130+length);
-			    callback(hash);  
-		    }
-		});        
+                var hash = data.substring(130,130+length);
+			    return hash;
   }
   
-  globalFuncs.getMemoHash = function(walletAddress,callback){
-        var userInfo = ethFuncs.getDataObj(jsc3l_customization.getContract3(),  globalFuncs.memosOf, [ethFuncs.getNakedAddress(walletAddress)]);
-		ajaxReq.getEthCall(userInfo, function(data) {
-            if (!data.error) {
-			    var length_str = data.data.substring(66,130);
+  globalFuncs.getMemoHash = async function(walletAddress,callback){
+        var userInfo = jsc3l.ethFuncs.getDataObj(jsc3l.customization.getContract3(),  globalFuncs.memosOf, [jsc3l.ethFuncs.getNakedAddress(walletAddress)]);
+	    const data = await jsc3l.ajaxReq.getEthCall(userInfo)
+			    var length_str = data.substring(66,130);
                 var length = 2*globalFuncs.getNumber(length_str,1);
-                var hash = data.data.substring(130,130+length);
-			    callback(hash);  
-		    }
-		});        
+                var hash = data.substring(130,130+length);
+			    return hash;
   }
   
  
@@ -216,7 +108,7 @@ var globalFuncs = function() {}
   /********************************************************/
   globalFuncs.storeOnIpfs = function (crypted_data,callback){
     var xhr = new XMLHttpRequest();
-    xhr.open('POST', jsc3l_customization.getEndpointAddress()+ globalFuncs.ipfsAdd, true); //
+    xhr.open('POST', jsc3l.connection.endpoint+ globalFuncs.ipfsAdd, true); //
     xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
     xhr.onreadystatechange = function (oEvent) {  
     if (xhr.readyState === 4) {  
@@ -237,9 +129,11 @@ var globalFuncs = function() {}
     xhr.send(urlEncodedDataPairs);
   }
   
-  globalFuncs.readFromIpfs = function (hash,callback){
+  globalFuncs.readFromIpfs = async function (hash) {
+    return new Promise(function (resolve, reject) {
+
     var xhr = new XMLHttpRequest();
-    xhr.open('GET', jsc3l_customization.getEndpointAddress()+ globalFuncs.ipfsCat+'?addr=' +hash, true); //
+    xhr.open('GET', jsc3l.connection.endpoint+ globalFuncs.ipfsCat+'?addr=' +hash, true); //
     xhr.responseType = 'json';
     xhr.onreadystatechange = function (oEvent) {  
     if (xhr.readyState === 4) {  
@@ -249,24 +143,25 @@ var globalFuncs = function() {}
              if(typeof to_push !='object'){
                 to_push = JSON.parse(xhr.response);
              }  
-             callback(to_push);
+             resolve(to_push);
           } catch(e){
-            callback(null);  
+            resolve(null);  
           }  
         } else {  
-           callback(null);
+           resolve(null);
         }  
         }  
     }; 
 
     xhr.send();
+    });
   }
   
    /*******************************************************/
   
   globalFuncs.getChallenge = function (addr,callback){
     var xhr = new XMLHttpRequest();
-    xhr.open('GET', jsc3l_customization.getEndpointAddress()+ globalFuncs.authChallenge+'?addr=' +encodeURIComponent(addr), true); //
+    xhr.open('GET', jsc3l.connection.endpoint+ globalFuncs.authChallenge+'?addr=' +encodeURIComponent(addr), true); //
     xhr.onreadystatechange = function (oEvent) {  
     if (xhr.readyState === 4) {  
         if (xhr.status === 200) { 
@@ -287,7 +182,7 @@ var globalFuncs = function() {}
   
   globalFuncs.sendChallengeResponse = function (addr,signature,callback){
     var xhr = new XMLHttpRequest();
-    xhr.open('GET', jsc3l_customization.getEndpointAddress()+ globalFuncs.authChallenge+'?addr=' +encodeURIComponent(addr)+'&sign='+encodeURIComponent(signature), true); //
+    xhr.open('GET', jsc3l.connection.endpoint+ globalFuncs.authChallenge+'?addr=' +encodeURIComponent(addr)+'&sign='+encodeURIComponent(signature), true); //
     xhr.onreadystatechange = function (oEvent) {  
     if (xhr.readyState === 4) {  
         if (xhr.status === 200) { 
@@ -308,7 +203,7 @@ var globalFuncs = function() {}
   
   globalFuncs.sendLogOff = function (callback){
     var xhr = new XMLHttpRequest();
-    xhr.open('GET', jsc3l_customization.getEndpointAddress()+ globalFuncs.authChallenge+'?addr=' +encodeURIComponent('0x0'), true); //
+    xhr.open('GET', jsc3l.connection.endpoint+ globalFuncs.authChallenge+'?addr=' +encodeURIComponent('0x0'), true); //
     xhr.onreadystatechange = function (oEvent) {  
     if (xhr.readyState === 4) {  
         if (xhr.status === 200) { 
@@ -332,12 +227,12 @@ var globalFuncs = function() {}
   
 
 
-globalFuncs.loadWallet = function(wallet,callback){
+globalFuncs.loadWallet = async function(wallet){
     localStorage.removeItem("ComChainContacts");
     localStorage.removeItem("ComChainContactsInfo");
     localStorage.removeItem("ComChainMemos");
     if (!wallet.server || !wallet.server.name){
-        var new_name = jsc3l_customization.getCurencyName();
+        var new_name = jsc3l.customization.getCurrencyName();
         
         if (new_name==''){    /*Fall back to avoid alreay created Monnaie-Leman account to provide the server name*/   
            new_name = "Monnaie-Leman"; 
@@ -353,15 +248,15 @@ globalFuncs.loadWallet = function(wallet,callback){
         server_name = wallet.server.name;
     }
     if (server_name==''){
-        callback(false);
+        return false;
     } else {
-        jsc3l_customization.getConfJSON(server_name,function(success){
-            if (success){
-                callback(success);
+        var result = await jsc3l.connection.getConfJSON(server_name);
+            if (result) {
+                return result;
             } else {
-                 jsc3l_customization.getConfJSON(server_name, callback);
+                var result = await jsc3l.connection.getConfJSON(server_name);
+                return result;
             }
-        });
         
     }
 }
@@ -380,7 +275,7 @@ globalFuncs.removeWallet = function(){
 /// Note checking 
 
 globalFuncs.isValidBNValue= function(value){
-    var notes = jsc3l_customization.getNoteValues();
+    var notes = jsc3l.customization.getNoteValues();
     if (notes && notes.length>0){
        for (var index in notes){
           if( Math.round(100*Number(value))== Math.round(100*Number(notes[index]))){
@@ -396,17 +291,28 @@ globalFuncs.isValidBNValue= function(value){
   ////////////////////////////////////////////////////////////////////////////
   ////   Custo on the fly 
 
-    globalFuncs.updateCss = function(){
-        // replace the CSS references into the DOM
-        jsc3l_customization.updateCss();
-        globalFuncs.hideLoadingWaiting();
+    globalFuncs.updateCss = function (preventLoadingRemoval) {
+      // replace the CSS references into the DOM
 
+      if (!jsc3l.connection.endpoint) return
+
+      var oldlink = document.getElementsByTagName("link").item(0);
+      var newlink = document.createElement("link");
+      newlink.setAttribute("rel", "stylesheet");
+      newlink.setAttribute("type", "text/css");
+      newlink.setAttribute("href", jsc3l.customization.getCssUrl());
+      document.getElementsByTagName("head").item(0).appendChild(newlink);
+
+
+      if (!preventLoadingRemoval) {
+        globalFuncs.hideLoadingWaiting();
+      }
     }
     
     
     globalFuncs.currencies=conf_locale.server.currencies;
     globalFuncs.getCurrencies = function(){
-        globalFuncs.currencies=jsc3l_customization.getCurrencies();    
+        globalFuncs.currencies=jsc3l.customization.getCurrencies();    
     }
 
 
@@ -448,7 +354,7 @@ globalFuncs.parseAddress = function(text){
 
 globalFuncs.notify = function(title, text){
     
-    if (jsc3l_customization.isApp()){
+    if (isApp()){
                 cordova.plugins.notification.local.schedule({
                     title: title,
                     message: text
@@ -485,7 +391,7 @@ globalFuncs.notifyApproval = function(){
    /* if (document.getElementsByClassName('trans')[0]){
             if (JSON.parse(localStorage.getItem('ComChainWallet'))){
                 var addresss = JSON.parse(localStorage.getItem('ComChainWallet')).address;
-                globalFuncs.getInfo(jsc3l_customization.getContract1(), globalFuncs.requestCount,addresss,function(count){
+                globalFuncs.getInfo(jsc3l.customization.getContract1(), globalFuncs.requestCount,addresss,function(count){
                     if (count>0){
                         document.getElementsByClassName('trans')[0].className = "trans alrt";
                     } else {
@@ -904,10 +810,7 @@ globalFuncs.generateSavePDF = function(title, key, address, callback){
             }
 
             
-           var the_arr = jsc3l_customization.getCssUrl().split('/');
-           the_arr.pop();
-           the_arr.pop();
-           newImg.src = the_arr.join('/')+"/images/lem.png";  
+           newImg.src = jsc3l.customization.getCurrencyLogoUrl()
             
                 
 }
@@ -990,10 +893,7 @@ globalFuncs.generateCrPDF = function(title, on,assigned,validity,address,dest,co
             }
 
             
-            var the_arr = jsc3l_customization.getCssUrl().split('/');
-            the_arr.pop();
-            the_arr.pop();
-            newImg.src = the_arr.join('/')+"/images/lem.png";  
+            newImg.src = jsc3l.customization.getCurrencyLogoUrl()
            
                 
 }
@@ -1037,10 +937,7 @@ globalFuncs.generateSaveAdrPDF = function(walletAddress, callback){
             }
 
             
-            var the_arr = jsc3l_customization.getCssUrl().split('/');
-            the_arr.pop();
-            the_arr.pop();
-            newImg.src = the_arr.join('/')+"/images/ici.png";  
+            newImg.src = `${jsc3l.customization.getCurrencyAssetBaseUrl()}/images/ici.png`;
            
 }
 
@@ -1131,10 +1028,7 @@ globalFuncs.generateTagsPDF = function(walletAddress, tags, callback){
             }
 
             
-            var the_arr = jsc3l_customization.getCssUrl().split('/');
-            the_arr.pop();
-            the_arr.pop();
-            newImg.src = the_arr.join('/')+"/images/lem.png";  
+            newImg.src = jsc3l.customization.getCurrencyLogoUrl()
             
 }
 
@@ -1356,10 +1250,7 @@ newImg.onload = function() {
 };
 
 
-   var the_arr = jsc3l_customization.getCssUrl().split('/');
-    the_arr.pop();
-    the_arr.pop();
-    newImg.src = the_arr.join('/')+"/images/etherwallet-logo.png";  
+    newImg.src = `${jsc3l.customization.getCurrencyAssetBaseUrl()}/images/etherwallet-logo.png`;
 
     
 }
@@ -1464,7 +1355,7 @@ globalFuncs.hasConfig = function(){
      var show=false;
      if (!apiCheck){
          globalFuncs.doHide=false;
-         if (jsc3l_customization.getEndpointAddress()!=null && jsc3l_customization.getEndpointAddress() !='' ){
+         if (jsc3l.connection.endpoint) {
              show=true;
          }
      } else {
@@ -1484,19 +1375,24 @@ globalFuncs.hasConfig = function(){
       if (globalFuncs.useFingerprint!=null){
           callback(globalFuncs.useFingerprint);
       } else {
-          if (!Fingerprint){
-                globalFuncs.useFingerprint = false;
-                callback(globalFuncs.useFingerprint);
-          } else {
-              Fingerprint.isAvailable(
-                function(res){
-                    globalFuncs.useFingerprint = true;
-                    callback(globalFuncs.useFingerprint);
-                }, 
-                function(mess){
+          try {
+              if (!Fingerprint){
                     globalFuncs.useFingerprint = false;
                     callback(globalFuncs.useFingerprint);
-                });
+              } else {
+                  Fingerprint.isAvailable(
+                    function(res){
+                        globalFuncs.useFingerprint = true;
+                        callback(globalFuncs.useFingerprint);
+                    }, 
+                    function(mess){
+                        globalFuncs.useFingerprint = false;
+                        callback(globalFuncs.useFingerprint);
+                    });
+              }
+           } catch (error) {
+                globalFuncs.useFingerprint = false;
+                callback(globalFuncs.useFingerprint);
           }
       }
   }

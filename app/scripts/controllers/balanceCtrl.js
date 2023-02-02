@@ -1,7 +1,7 @@
 'use strict';
-var balanceCtrl = function($scope, $locale, $sce, walletService,contactservice, consultService, messageService, $translate) {
+var balanceCtrl = function($scope, $locale, $sce, walletService,contactservice, consultService, $translate) {
     // Environment variables
-    $scope.isApp =  jsc3l_customization.isApp();
+    $scope.isApp =  isApp();
     $scope.currentWalletAddress=globalFuncs.getWalletAddress();
     $scope.blobEnc = '';
     $scope.CUR='';
@@ -89,8 +89,8 @@ var balanceCtrl = function($scope, $locale, $sce, walletService,contactservice, 
 		if (walletService.wallet == null) return;
 		$scope.wallet = walletService.wallet;
         $scope.wallet.message_key = JSON.parse(localStorage.getItem('ComChainWallet')).message_key;
-        contactservice.loadContacts($scope.wallet, walletService.password, function(contact_list){
-            var filtered_list = contactservice.filterContactForCurr(contact_list, jsc3l_customization.getCurencyName());
+        contactservice.loadContacts($scope.wallet, walletService.password).then(function(contact_list){
+            var filtered_list = contactservice.filterContactForCurr(contact_list, jsc3l.customization.getCurrencyName());
             
             var my_name =  contactservice.getContactName(filtered_list, $scope.wallet.getAddressString());
             if (my_name!=''){
@@ -102,9 +102,10 @@ var balanceCtrl = function($scope, $locale, $sce, walletService,contactservice, 
         });
         
        
-        jsc3l_bcRead.getAccountStatus($scope.wallet.getAddressString(), function(status){
-           $scope.is_locked = status==0;
+        jsc3l.bcRead.getAccountStatus($scope.wallet.getAddressString()).then(function(status) {
+        $scope.is_locked = status==0;
         });
+
         
         
                 
@@ -112,10 +113,10 @@ var balanceCtrl = function($scope, $locale, $sce, walletService,contactservice, 
         $scope.CUR=globalFuncs.currencies.CUR;
         $scope.CUR_nanti=globalFuncs.currencies.CUR_nanti;
         $scope.CUR_credit_mut=globalFuncs.currencies.CUR_credit_mut;
-        $scope.has_nant=jsc3l_customization.hasNant();
-        $scope.has_credit_mut=jsc3l_customization.hasCM();
-        $scope.has_deleg=jsc3l_customization.hasDeleg();
-        $scope.has_autor=jsc3l_customization.hasAutor();
+        $scope.has_nant=jsc3l.customization.hasNant();
+        $scope.has_credit_mut=jsc3l.customization.hasCM();
+        $scope.has_deleg=jsc3l.customization.hasDeleg();
+        $scope.has_autor=jsc3l.customization.hasAutor();
         $scope.qr_content = localStorage.getItem('ComChainWallet');
         var qrcode = new QRCode(document.getElementById("qrcode_print_2"),$scope.qr_content);
         setTimeout(function(){ document.getElementById("qrcode_print_2").getElementsByTagName('img')[0].style.display="inline";},100); 
@@ -127,12 +128,17 @@ var balanceCtrl = function($scope, $locale, $sce, walletService,contactservice, 
         
 	});
     
-	$scope.setBalance = function() {
-        jsc3l_bcRead.getGlobalBalance($scope.currentWalletAddress, function(value){$scope.token.balance = value;});
-        jsc3l_bcRead.getNantBalance($scope.currentWalletAddress, function(value){$scope.token.balanceEL = value;});
-        jsc3l_bcRead.getCmBalance($scope.currentWalletAddress, function(value){$scope.token.balanceCM = value;});
-        jsc3l_bcRead.getCmLimitBelow($scope.currentWalletAddress, function(value){$scope.token.limitCMm = value;});
-        jsc3l_bcRead.getCmLimitAbove($scope.currentWalletAddress, function(value){$scope.token.limitCMp = value; globalFuncs.hideLoadingWaiting();});  
+  $scope.setBalance = function() {
+    Promise.all([
+      jsc3l.bcRead.getGlobalBalance($scope.currentWalletAddress).then(function(value){$scope.token.balance = value;}),
+      jsc3l.bcRead.getNantBalance($scope.currentWalletAddress).then(function(value){$scope.token.balanceEL = value;}),
+      jsc3l.bcRead.getCmBalance($scope.currentWalletAddress).then(function(value){$scope.token.balanceCM = value;}),
+      jsc3l.bcRead.getCmLimitBelow($scope.currentWalletAddress).then(function(value){$scope.token.limitCMm = value;}),
+      jsc3l.bcRead.getCmLimitAbove($scope.currentWalletAddress).then(function(value){$scope.token.limitCMp = value;}),
+    ]).then(function() {
+      $scope.$apply();
+      globalFuncs.hideLoadingWaiting();
+    });
 	}
     
     $scope.setBalance();
@@ -146,7 +152,7 @@ var balanceCtrl = function($scope, $locale, $sce, walletService,contactservice, 
     
     $scope.refreshBal=function(){
         globalFuncs.showLoading($translate.instant("GP_Wait"));
-        $scope.setBalance();
+      $scope.setBalance();
     }
 
     $scope.dowloadAppFile = function(){
@@ -216,46 +222,47 @@ var balanceCtrl = function($scope, $locale, $sce, walletService,contactservice, 
     }
     
     
-      $scope.loadDelegations= function(count,offset){
+      $scope.loadDelegations = function(count,offset){
 
-         $scope.noDelegation = true;
-         $scope.noMoreDelegation = true;
-         if (offset>0){
-              document.getElementById("prevDeleg").style.display = 'block';
-              $scope.noDelegation = false;
-          } else {
-               document.getElementById("prevDeleg").style.display = 'none';
-          
-          }
-          
-          document.getElementById("nextDeleg").style.display = 'none';
-        
-          
-          jsc3l_bcRead.getDelegationList($scope.wallet.getAddressString(),offset,offset+count-1 ,
-                                     function(list){
-                                         $scope.delegations = list;
-                                         $scope.noDelegation = $scope.delegations.length==0 && offset==0;
-                                         $scope.noMoreDelegation = !$scope.noDelegation && $scope.delegations.length<count;
-                                         
-                                         if (!$scope.noMoreDelegation && !$scope.noDelegation){
-                                              document.getElementById("nextDeleg").style.display = 'block';
-                                         }
-                                         
-                                       
-                                         for(var ind =0;ind<$scope.delegations.length;ind++){
-                                            $scope.delegations[ind].name =  contactservice.getContactName($scope.contacts, $scope.delegations[ind].address); 
-                                         }
-                                          // $scope.$apply();
-                                         document.getElementById('transDelStatus').innerHTML='';
-                                         document.getElementById('delStatus').innerHTML='';
-                                         globalFuncs.hideLoadingWaiting();
-                                     });
+        $scope.noDelegation = true;
+        $scope.noMoreDelegation = true;
+        if (offset>0){
+            document.getElementById("prevDeleg").style.display = 'block';
+            $scope.noDelegation = false;
+        } else {
+             document.getElementById("prevDeleg").style.display = 'none';
+
+        }
+
+        document.getElementById("nextDeleg").style.display = 'none';
+
+
+        jsc3l.bcRead.getDelegationList($scope.wallet.getAddressString(),offset,offset+count-1).then(
+                                   function(list){
+        $scope.delegations = list;
+        $scope.noDelegation = $scope.delegations.length==0 && offset==0;
+        $scope.noMoreDelegation = !$scope.noDelegation && $scope.delegations.length<count;
+
+        if (!$scope.noMoreDelegation && !$scope.noDelegation){
+            document.getElementById("nextDeleg").style.display = 'block';
+        }
+
+
+        for(var ind =0;ind<$scope.delegations.length;ind++){
+            $scope.delegations[ind].name =  contactservice.getContactName($scope.contacts, $scope.delegations[ind].address); 
+        }
+        $scope.$apply();
+        document.getElementById('transDelStatus').innerHTML='';
+        document.getElementById('delStatus').innerHTML='';
+        globalFuncs.hideLoadingWaiting();
+        });
+                                 
         
     }
     
     
     $scope.passwordCheck = function(control){
-        var number = jsc3l_customization.passwordAutocomplete();
+        var number = jsc3l.customization.passwordAutocomplete();
         var curr_length = $scope.trPass.length;
         if (curr_length>=number && walletService.password.startsWith($scope.trPass)){
             // autocomplete (bypass angular for timinig reason with the set selection range)
@@ -306,21 +313,19 @@ var balanceCtrl = function($scope, $locale, $sce, walletService,contactservice, 
             } else if (isNaN($scope.currDelLimit)  || $scope.currDelLimit<=0){
                  document.getElementById('delStatus').innerHTML=$sce.trustAsHtml(globalFuncs.getDangerText($translate.instant("DELEG_InvalidDelegationLimit")));
             } else {
-              jsc3l_bcTransaction.setDelegation($scope.wallet, $scope.curraddress,$scope.currDelLimit,function(res){
-                   if (res.isError){
-                        globalFuncs.hideLoadingWaiting();
-				        document.getElementById('delStatus').innerHTML= $sce.trustAsHtml(globalFuncs.getDangerText(res.error));
-                    } else {
-                       $scope.waitTransaction(res.data);
-                       document.getElementById('transDelStatus').innerHTML=$sce.trustAsHtml(globalFuncs.getSuccessText($translate.instant("Deleg_order_create_send")));
-                       $scope.addDelegationModal.close();
-                       $scope.confStatus = $translate.instant("Deleg_order_create_send");
-                       
-                       $scope.trans_message = $translate.instant("Deleg_order_create_send")+ " " +$translate.instant("GP_Wait_tran");
-                       //$scope.confPopModal.open();
-                 }
+              jsc3l.bcTransaction.setDelegation($scope.wallet, $scope.curraddress,$scope.currDelLimit).then(function(res) {
+               if (res.isError){
+                    globalFuncs.hideLoadingWaiting();
+			        document.getElementById('delStatus').innerHTML= $sce.trustAsHtml(globalFuncs.getDangerText(res.error));
+                } else {
+                   $scope.waitTransaction(res.data);
+                   document.getElementById('transDelStatus').innerHTML=$sce.trustAsHtml(globalFuncs.getSuccessText($translate.instant("Deleg_order_create_send")));
+                   $scope.addDelegationModal.close();
+                   $scope.confStatus = $translate.instant("Deleg_order_create_send");
                    
-              }); 
+                   $scope.trans_message = $translate.instant("Deleg_order_create_send")+ " " +$translate.instant("GP_Wait_tran");
+                }
+              });
             }
         } else {
               document.getElementById('delStatus').innerHTML=$sce.trustAsHtml(globalFuncs.getDangerText($translate.instant("WIEW_WrongPass")));
@@ -397,25 +402,25 @@ var balanceCtrl = function($scope, $locale, $sce, walletService,contactservice, 
     
 
     
-    $scope.saveEditDeleg = function(){
+    $scope.saveEditDeleg = async function(){
         if ($scope.trPass==walletService.password){
             walletService.setUsed();
           
             if (isNaN($scope.currDelLimit)  || $scope.currDelLimit<=0){
                  document.getElementById('delEditStatus').innerHTML=$sce.trustAsHtml(globalFuncs.getDangerText($translate.instant("DELEG_InvalidDelegationLimit")));
             } else {
-              jsc3l_bcTransaction.setDelegation($scope.wallet, $scope.curraddress,$scope.currDelLimit,function(res){
-                    if (res.isError){
-                        globalFuncs.hideLoadingWaiting();
-				        document.getElementById('delEditStatus').innerHTML= $sce.trustAsHtml(globalFuncs.getDangerText(res.error));
-                    } else {
-                       $scope.waitTransaction(res.data);
-                       document.getElementById('transDelStatus').innerHTML=$sce.trustAsHtml(globalFuncs.getSuccessText($translate.instant("Deleg_order_edit_send")));
-                       $scope.editDelegationModal.close();
-                       $scope.confStatus = $translate.instant("Deleg_order_edit_send");
-                       $scope.confPopModal.open();
-                    }
-              }); 
+                const res = await jsc3l.bcTransaction.setDelegation($scope.wallet, $scope.curraddress,$scope.currDelLimit);
+                if (res.isError){
+                    globalFuncs.hideLoadingWaiting();
+		            document.getElementById('delEditStatus').innerHTML= $sce.trustAsHtml(globalFuncs.getDangerText(res.error));
+                } else {
+                   $scope.waitTransaction(res.data);
+                   document.getElementById('transDelStatus').innerHTML=$sce.trustAsHtml(globalFuncs.getSuccessText($translate.instant("Deleg_order_edit_send")));
+                   $scope.editDelegationModal.close();
+                   $scope.confStatus = $translate.instant("Deleg_order_edit_send");
+                   $scope.$apply;
+                   $scope.confPopModal.open();
+                }
             }
         } else {
               document.getElementById('delEditStatus').innerHTML=$sce.trustAsHtml(globalFuncs.getDangerText($translate.instant("WIEW_WrongPass")));
@@ -432,24 +437,21 @@ var balanceCtrl = function($scope, $locale, $sce, walletService,contactservice, 
     }
     
     
-     $scope.saveDeleteDeleg = function(){
+     $scope.saveDeleteDeleg = async function(){
         if ($scope.trPass==walletService.password){
-              walletService.setUsed();
-              jsc3l_bcTransaction.setDelegation($scope.wallet, $scope.curraddress,-1,function(res){
-                    if (res.isError){
-                        globalFuncs.hideLoadingWaiting();
-				        document.getElementById('delDeleteStatus').innerHTML= $sce.trustAsHtml(globalFuncs.getDangerText(res.error));
-                    } else {
-                       $scope.waitTransaction(res.data);
-                       document.getElementById('transDelStatus').innerHTML=$sce.trustAsHtml(globalFuncs.getSuccessText($translate.instant("Deleg_order_delete_send")));
-                       $scope.deleteDelegationModal.close();
-                       $scope.confStatus = $translate.instant("Deleg_order_delete_send");
-                       $scope.trans_message = $translate.instant("Deleg_order_delete_send")+ " " +$translate.instant("GP_Wait_tran");
-                       //$scope.confPopModal.open();
-                    }
-
-              }); 
-            
+            walletService.setUsed();
+            const res = await jsc3l.bcTransaction.setDelegation($scope.wallet, $scope.curraddress,-1);
+            if (res.isError){
+                globalFuncs.hideLoadingWaiting();
+                document.getElementById('delDeleteStatus').innerHTML= $sce.trustAsHtml(globalFuncs.getDangerText(res.error));
+            } else {
+               $scope.waitTransaction(res.data);
+               document.getElementById('transDelStatus').innerHTML=$sce.trustAsHtml(globalFuncs.getSuccessText($translate.instant("Deleg_order_delete_send")));
+               $scope.deleteDelegationModal.close();
+               $scope.confStatus = $translate.instant("Deleg_order_delete_send");
+               $scope.trans_message = $translate.instant("Deleg_order_delete_send")+ " " +$translate.instant("GP_Wait_tran");
+              
+            }
         } else {
               document.getElementById('delDeleteStatus').innerHTML=$sce.trustAsHtml(globalFuncs.getDangerText($translate.instant("WIEW_WrongPass")));
         }
@@ -495,7 +497,7 @@ var balanceCtrl = function($scope, $locale, $sce, walletService,contactservice, 
     }
     
       
-    $scope.loadAllowances= function(count,offset){
+    $scope.loadAllowances= async function(count,offset){
 
          $scope.noAllowance = true;
          $scope.noMoreAllowance = true;
@@ -510,26 +512,24 @@ var balanceCtrl = function($scope, $locale, $sce, walletService,contactservice, 
           document.getElementById("nextAllow").style.display = 'none';
         
           
-         jsc3l_bcRead.getAllowanceList($scope.wallet.getAddressString(),offset,offset+count-1 ,
-                                     function(list){
-                                         $scope.allowances = list;
-                                         $scope.noAllowance = $scope.allowances.length==0 && offset==0;
-                                         $scope.noMoreAllowance = !$scope.noAllowance && $scope.allowances.length<count;
-                                         
-                                         if (!$scope.noMoreAllowance && !$scope.noAllowance){
-                                              document.getElementById("nextAllow").style.display = 'block';
-                                         }
-                                         
-                                       
-                                         for(var ind =0;ind<$scope.allowances.length;ind++){
-                                            $scope.allowances[ind].name =  contactservice.getContactName($scope.contacts, $scope.allowances[ind].address); 
-                                         }
-                                          // $scope.$apply();
-                                         document.getElementById('transAllowStatus').innerHTML='';
-                                         document.getElementById('allowStatus').innerHTML='';
-                                         globalFuncs.hideLoadingWaiting();
-                                     });
-        
+         const list = await jsc3l.bcRead.getAllowanceList($scope.wallet.getAddressString(),offset,offset+count-1);
+         $scope.allowances = list;
+         $scope.noAllowance = $scope.allowances.length==0 && offset==0;
+         $scope.noMoreAllowance = !$scope.noAllowance && $scope.allowances.length<count;
+         
+         if (!$scope.noMoreAllowance && !$scope.noAllowance){
+              document.getElementById("nextAllow").style.display = 'block';
+         }
+         
+       
+         for(var ind =0;ind<$scope.allowances.length;ind++){
+            $scope.allowances[ind].name =  contactservice.getContactName($scope.contacts, $scope.allowances[ind].address); 
+         }
+         $scope.$apply();
+         document.getElementById('transAllowStatus').innerHTML='';
+         document.getElementById('allowStatus').innerHTML='';
+         globalFuncs.hideLoadingWaiting();
+                                   
     }
     
     
@@ -557,7 +557,7 @@ var balanceCtrl = function($scope, $locale, $sce, walletService,contactservice, 
     }
     
     
-    $scope.saveNewAllow = function(){
+    $scope.saveNewAllow = async function(){
       if ($scope.trPass==walletService.password){
            walletService.setUsed();
            
@@ -566,21 +566,19 @@ var balanceCtrl = function($scope, $locale, $sce, walletService,contactservice, 
             }  else if (isNaN($scope.currAllowAmount)  || $scope.currAllowAmount<=0){
                  document.getElementById('allowStatus').innerHTML=$sce.trustAsHtml(globalFuncs.getDangerText($translate.instant("ALLOW_InvalidAmount")));
             } else {
-              jsc3l_bcTransaction.setAllowance($scope.wallet, $scope.curraddress,$scope.currAllowAmount,function(res){
-                    if (res.isError){
-                        globalFuncs.hideLoadingWaiting();
-				        document.getElementById('allowStatus').innerHTML= $sce.trustAsHtml(globalFuncs.getDangerText(res.error));
-                    } else {
-                       $scope.waitTransaction(res.data);
-                       document.getElementById('transAllowStatus').innerHTML=$sce.trustAsHtml(globalFuncs.getSuccessText($translate.instant("ALLOW_order_create_send")));
-                       
-                       $scope.addAllowanceModal.close();
-                       $scope.confStatus = $translate.instant("ALLOW_order_create_send");
-                       
-                       $scope.trans_message = $translate.instant("ALLOW_order_create_send")+ " " +$translate.instant("GP_Wait_tran");
-                       //$scope.confPopModal.open();
-                    } 
-              }); 
+                const res = await jsc3l.bcTransaction.setAllowance($scope.wallet, $scope.curraddress,$scope.currAllowAmount);
+                if (res.isError){
+                    globalFuncs.hideLoadingWaiting();
+		            document.getElementById('allowStatus').innerHTML= $sce.trustAsHtml(globalFuncs.getDangerText(res.error));
+                } else {
+                   $scope.waitTransaction(res.data);
+                   document.getElementById('transAllowStatus').innerHTML=$sce.trustAsHtml(globalFuncs.getSuccessText($translate.instant("ALLOW_order_create_send")));
+                   
+                   $scope.addAllowanceModal.close();
+                   $scope.confStatus = $translate.instant("ALLOW_order_create_send");
+                   
+                   $scope.trans_message = $translate.instant("ALLOW_order_create_send")+ " " +$translate.instant("GP_Wait_tran");
+                } 
             }
         } else {
               document.getElementById('allowStatus').innerHTML=$sce.trustAsHtml(globalFuncs.getDangerText($translate.instant("WIEW_WrongPass")));
@@ -600,27 +598,26 @@ var balanceCtrl = function($scope, $locale, $sce, walletService,contactservice, 
     
 
     
-    $scope.saveEditAllowance = function(){
+    $scope.saveEditAllowance = async function(){
         if ($scope.trPass==walletService.password){
             walletService.setUsed();
           
             if (isNaN($scope.currAllowAmount)  || $scope.currAllowAmount<=0){
                  document.getElementById('allowEditStatus').innerHTML=$sce.trustAsHtml(globalFuncs.getDangerText($translate.instant("ALLOW_InvalidAmount")));
             } else {
-              jsc3l_bcTransaction.setAllowance($scope.wallet, $scope.curraddress,$scope.currAllowAmount,function(res){
-                    if (res.isError){
-                        globalFuncs.hideLoadingWaiting();
-				        document.getElementById('allowEditStatus').innerHTML= $sce.trustAsHtml(globalFuncs.getDangerText(res.error));
-                    } else {
-                       $scope.waitTransaction(res.data);
-                       document.getElementById('transAllowStatus').innerHTML=$sce.trustAsHtml(globalFuncs.getSuccessText($translate.instant("ALLOW_order_edit_send")));
-                       $scope.editAllowanceModal.close();
-                       $scope.confStatus = $translate.instant("ALLOW_order_edit_send");
-                       
-                       $scope.trans_message = $translate.instant("ALLOW_order_edit_send")+ " " +$translate.instant("GP_Wait_tran");
-                      // $scope.confPopModal.open();
-                    } 
-              }); 
+                const res = await jsc3l.bcTransaction.setAllowance($scope.wallet, $scope.curraddress,$scope.currAllowAmount);
+                if (res.isError){
+                    globalFuncs.hideLoadingWaiting();
+		            document.getElementById('allowEditStatus').innerHTML= $sce.trustAsHtml(globalFuncs.getDangerText(res.error));
+                } else {
+                   $scope.waitTransaction(res.data);
+                   document.getElementById('transAllowStatus').innerHTML=$sce.trustAsHtml(globalFuncs.getSuccessText($translate.instant("ALLOW_order_edit_send")));
+                   $scope.editAllowanceModal.close();
+                   $scope.confStatus = $translate.instant("ALLOW_order_edit_send");
+                   
+                   $scope.trans_message = $translate.instant("ALLOW_order_edit_send")+ " " +$translate.instant("GP_Wait_tran");
+                } 
+          
             }
         } else {
               document.getElementById('allowEditStatus').innerHTML=$sce.trustAsHtml(globalFuncs.getDangerText($translate.instant("WIEW_WrongPass")));
@@ -637,24 +634,20 @@ var balanceCtrl = function($scope, $locale, $sce, walletService,contactservice, 
     }
     
 
-     $scope.saveDeleteAllowance = function(){
+     $scope.saveDeleteAllowance = async function(){
         if ($scope.trPass==walletService.password){
-            walletService.setUsed();
-               jsc3l_bcTransaction.setAllowance($scope.wallet, $scope.curraddress,-1,function(res){
-                   if (res.isError){
-                        globalFuncs.hideLoadingWaiting();
-				        document.getElementById('allowDeleteStatus').innerHTML= $sce.trustAsHtml(globalFuncs.getDangerText(res.error));
-                    } else {
-                       $scope.waitTransaction(res.data);
-                       document.getElementById('transAllowStatus').innerHTML=$sce.trustAsHtml(globalFuncs.getSuccessText($translate.instant("ALLOW_order_delete_send")));
-                       $scope.deleteAllowanceModal.close();
-                       $scope.confStatus = $translate.instant("ALLOW_order_delete_send");
-                       $scope.trans_message = $translate.instant("ALLOW_order_delete_send")+ " " +$translate.instant("GP_Wait_tran");
-                       
-                       //$scope.confPopModal.open();
-                    }  
-              }); 
-            
+           walletService.setUsed();
+           const res = await jsc3l.bcTransaction.setAllowance($scope.wallet, $scope.curraddress,-1);
+           if (res.isError){
+                globalFuncs.hideLoadingWaiting();
+		        document.getElementById('allowDeleteStatus').innerHTML= $sce.trustAsHtml(globalFuncs.getDangerText(res.error));
+            } else {
+               $scope.waitTransaction(res.data);
+               document.getElementById('transAllowStatus').innerHTML=$sce.trustAsHtml(globalFuncs.getSuccessText($translate.instant("ALLOW_order_delete_send")));
+               $scope.deleteAllowanceModal.close();
+               $scope.confStatus = $translate.instant("ALLOW_order_delete_send");
+               $scope.trans_message = $translate.instant("ALLOW_order_delete_send")+ " " +$translate.instant("GP_Wait_tran");
+            }  
         } else {
               document.getElementById('allowDeleteStatus').innerHTML=$sce.trustAsHtml(globalFuncs.getDangerText($translate.instant("WIEW_WrongPass")));
         }
@@ -700,13 +693,13 @@ var balanceCtrl = function($scope, $locale, $sce, walletService,contactservice, 
 
       globalFuncs.showWaiting($scope.trans_message);
       
-      $scope.interval_id = setInterval(function(){
-          ajaxReq.getBlock(transaction_ash, function(block_json){
+      $scope.interval_id = setInterval(async function(){
+
+          const block_json = await jsc3l.ajaxReq.getBlock(transaction_ash)
               // CHANGE BEHAVIOR: HIDE DIRECTLY THE WEELS
               // if (block_json.blockNumber && block_json.blockNumber.startsWith('0x')){
                  $scope.recievedTransaction();
               //}
-          });
       },5000);  
   }  
   
@@ -768,45 +761,28 @@ var balanceCtrl = function($scope, $locale, $sce, walletService,contactservice, 
         container.removeChild(child); 
         child = container.lastElementChild; 
     }
-    
-    var mess_keys = messageService.messageKeysFromWallet($scope.wallet);
-    
-    var obj_content = {"address":$scope.wallet.getAddressString(), 
-              "server":jsc3l_customization.getCurencyName(), 
-              "destinary":$scope.dest,
-              "begin":$scope.start_date.getFullYear()+ "/" + ($scope.start_date.getMonth()+1)+"/" + $scope.start_date.getDate(), 
-              "end":$scope.end_date.getFullYear()+ "/" + ($scope.end_date.getMonth()+1)+"/" + $scope.end_date.getDate(), 
-              "viewbalance": ($scope.balanceView == 1),
-              "viewoldtran": ($scope.oldTran == 1)
-    };
-    
-   
-    if ($scope.dest_keys.public_key !== undefined) {
-        var crypted_m_key = messageService.cipherMessage($scope.dest_keys.public_key, mess_keys.clear_priv);
-        obj_content.message_key = crypted_m_key;
-    }
-    
-    
-    var str_content = JSON.stringify(obj_content);
-    var hash = ethUtil.sha3(str_content);
-    var signature = ethUtil.ecsign(hash, $scope.wallet.privKey);
-    var output = {"data":obj_content, "signature":{ "v":signature.v,
-    "r":'0x' + signature.r.toString('hex'),
-    "s":'0x' + signature.s.toString('hex')}};
-    $scope.qr_cr_content =  JSON.stringify(output);
-    
-    
-    
-    
-    var full= $scope.qr_cr_content;
-    var chunk_length = Math.ceil(full.length/$scope.CR_frag_number);
-        
+
+     // TODO: this will probably need to be in JSC3L
+     // Check the message_key is correctly passed !
+
+     var qrFragments = $scope.wallet.makeSignedQRFragments({
+       server: jsc3l.customization.getCurrencyName(),
+       destinary: $scope.dest,
+       begin: $scope.start_date,
+       end: $scope.end_date,
+       viewbalance: ($scope.balanceView == 1),
+       viewoldtran: ($scope.oldTran == 1),
+     }, $scope.CR_frag_number, $scope.dest_keys.public_key);
+
+     $scope.qr_cr_content = qrFragments.full;
+
+    var chunk_length = Math.ceil(qrFragments.full.length/$scope.CR_frag_number);
+
     if (piece <0){
         var qrcode = new QRCode(document.getElementById("qrCR_print"), $scope.qr_cr_content);
         document.getElementById("qrCR_print").style.display = "none";
         for (var i=0; i<$scope.CR_frag_number;i++) {
-            var string = "FRAG_CR"+signature.s.toString('hex').substring(2,6)+i.toString()+full.substring(chunk_length*i,Math.min(chunk_length*(i+1),full.length));
-            var qrcode = new QRCode(document.getElementById("qrCR_print" + i.toString()),string); 
+            var qrcode = new QRCode(document.getElementById("qrCR_print" + i.toString()),qrFragments[i]); 
             document.getElementById("qrCR_print" + i.toString()).style.display = "none";
         } 
     } else if (piece == 0) {
@@ -814,8 +790,7 @@ var balanceCtrl = function($scope, $locale, $sce, walletService,contactservice, 
     } else {
         var i = piece -1;
        
-        var string = "FRAG_CR"+signature.s.toString('hex').substring(2,6)+i.toString()+full.substring(chunk_length*i,Math.min(chunk_length*(i+1),full.length));
-        var qrcode = new QRCode(document.getElementById("qrcode_consultRight"),string);
+        var qrcode = new QRCode(document.getElementById("qrcode_consultRight"),qrFragments[i]);
     }  
  
 }
@@ -827,101 +802,91 @@ var balanceCtrl = function($scope, $locale, $sce, walletService,contactservice, 
     }
     
     
-    $scope.createConsultRight = function() {
+    $scope.createConsultRight = async function() {
        if ($scope.start_date.getTime()>=$scope.end_date.getTime()) {
            document.getElementById('createStatus').innerHTML = $sce.trustAsHtml(globalFuncs.getDangerText($translate.instant("CRI_wrongDates"))); 
        } else if ($scope.trPass==walletService.password){
            walletService.setUsed();       
            $scope.createRightModal.close();
            $scope.trPass="";
-           messageService.getMessageKey($scope.dest, false, function(dest_keys) {
-               $scope.dest_keys = dest_keys;
-               // processing
-               $scope.generateSaveQRPiece(-1);
-               $scope.generateSaveQRPiece(0);
-               $scope.dislayQRModal.open();
+           $scope.dest_keys = await jsc3l.ajaxReq.getMessageKey($scope.dest, false);
 
-               if (!$scope.isApp) {
-                   // export .dat file
-                   $scope.blobCrEnc = globalFuncs.getBlob("text/json;charset=UTF-8", $scope.qr_cr_content);
-                   document.getElementById('dwonloadBtn').click();
-                       
-                   // export pdf 
-                   setTimeout(function(){ 
-                         globalFuncs.generateCrPDF(
-                            $translate.instant("PDF_CR_Title"),
-                            $translate.instant("PDF_CR_On"),
-                            $translate.instant("PDF_CR_Assigned"),
-                            globalFuncs.cleanName($translate.instant("PDF_CR_Validity")) + " " + $scope.start_date.getFullYear()+ "/" + $scope.start_date.getMonth()+"/" + $scope.start_date.getDate() +"-"+
-                            $scope.end_date.getFullYear()+ "/" + $scope.end_date.getMonth()+"/" + $scope.end_date.getDate(), 
-                            $scope.currentWalletAddress,
-                            $scope.dest,
-                            $scope.qr_cr_content,                       
-                            $scope.callback_consult);
-                     },100); 
-               }
-          
-          });
+           // processing
+           $scope.generateSaveQRPiece(-1);
+           $scope.generateSaveQRPiece(0);
+           $scope.blobCrEnc = globalFuncs.getBlob("text/json;charset=UTF-8", $scope.qr_cr_content);
            
-           
-           
+           $scope.$apply();
+           $scope.dislayQRModal.open();
+
+           if (!$scope.isApp) {
+               // export .dat file
+               $scope.blobCrEnc = globalFuncs.getBlob("text/json;charset=UTF-8", $scope.qr_cr_content);
+               document.getElementById('dwonloadBtn').click();
+                   
+               // export pdf 
+               setTimeout(function(){ 
+                     globalFuncs.generateCrPDF(
+                        $translate.instant("PDF_CR_Title"),
+                        $translate.instant("PDF_CR_On"),
+                        $translate.instant("PDF_CR_Assigned"),
+                        globalFuncs.cleanName($translate.instant("PDF_CR_Validity")) + " " + $scope.start_date.getFullYear()+ "/" + ($scope.start_date.getMonth()+1)+"/" + $scope.start_date.getDate() +"-"+
+                        $scope.end_date.getFullYear()+ "/" + ($scope.end_date.getMonth()+1)+"/" + $scope.end_date.getDate(), 
+                        $scope.currentWalletAddress,
+                        $scope.dest,
+                        $scope.qr_cr_content,                       
+                        $scope.callback_consult);
+                 },100); 
+           }
        } else {
            document.getElementById('createStatus').innerHTML = $sce.trustAsHtml(globalFuncs.getDangerText($translate.instant("TRAN_WrongPass")));
 
        }
     };
 
-    
+
+
 
 $scope.showContent = function(content) {
     $scope.openStatus = "";
-    try {
-        // decode the Json
-        var obj = JSON.parse(content);
-        // extract the signature
-        var v = obj.signature.v;
-        var r = obj.signature.r; 
-        var s = obj.signature.s; 
-
-        // get the hash
-        var str_content = JSON.stringify(obj.data);
-        var hash = ethUtil.sha3(str_content);
-        
-        // check the signature
-        var public_sign_key = ethUtil.ecrecover(hash, v, r, s);
-        var rec_address = ethUtil.bufferToHex(ethUtil.publicToAddress(public_sign_key));
-        if (rec_address != obj.data.address) {
-            $scope.openStatus = $sce.trustAsHtml(globalFuncs.getDangerText($translate.instant('OPEN_not_right_sign')));    
-        } else {
-           // check the validity 
-           if (obj.data.destinary!=$scope.wallet.getAddressString()){
-               $scope.openStatus = $sce.trustAsHtml(globalFuncs.getDangerText($translate.instant('OPEN_right_not_for_you'))); 
-           } else if (obj.data.server!=jsc3l_customization.getCurencyName()){
-               $scope.openStatus = $sce.trustAsHtml(globalFuncs.getDangerText($translate.instant('OPEN_right_not_right_server'))); 
-           } else if ((new Date(obj.data.end)).getTime()< (new Date()).getTime()){   
-                $scope.openStatus = $sce.trustAsHtml(globalFuncs.getDangerText($translate.instant('OPEN_too_old_right'))); 
-           } else {    
-               // OK we can close the popup
-               $scope.openRightModal.close();  
-               // add to the right
-               consultService.addConsult(obj);
-               //reload the grid
-               $scope.consult_rights = consultService.loadConsults($scope.wallet.getAddressString()); 
-               $scope.loadRights();
-           }
+    
+    
+    
+  let txt = (transId) => globalFuncs.getDangerText($translate.instant(transId))
+  var result = $scope.wallet.checkSignedQRFromString(content)
+  switch (result) {
+  case 'InvalidSignature':
+    $scope.openStatus = txt('OPEN_not_right_sign')
+    return
+  case 'NotForYou':
+    $scope.openStatus = txt('OPEN_right_not_for_you')
+    return
+  case 'Expired':
+    $scope.openStatus = txt('OPEN_too_old_right')
+    return
+  case 'InvalidFormat':
+    $scope.openStatus = txt('OPEN_not_right_format')
+    return
+  default:
+    if (result){
+        const parsed_content = JSON.parse(content)
+        // parsed_content is {signature, data}
+        if (parsed_content.data.server !== jsc3l.customization.getCurrencyName()){
+          $scope.openStatus = txt('OPEN_right_not_right_server');
+          return;
         }
-        
-    
-    } catch (e) {
-         $scope.openStatus = $sce.trustAsHtml(globalFuncs.getDangerText($translate.instant('OPEN_not_right_format'))); 
+        // OK we can close the popup
+        $scope.openRightModal.close()
+        // add to the right
+        consultService.addConsult(parsed_content);
+        //reload the grid
+        $scope.consult_rights = consultService.loadConsults($scope.wallet.getAddressString());
+        $scope.loadRights();
     }
-    
-  
-    
-    
-}  
-    
-    
+  }
+
+}
+
 $scope.importRightPop = function() {
     $scope.cancelFragment();
     $scope.openRightModal.open();

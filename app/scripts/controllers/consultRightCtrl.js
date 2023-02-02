@@ -4,7 +4,7 @@ var consultRightCtrl = function($scope, $sce, walletService, contactservice, con
 
     
     // Check the environment
-    $scope.isApp = jsc3l_customization.isApp();
+    $scope.isApp = isApp();
     
     // Create the modal popups
 	$scope.deleteConsultModal = new Modal(document.getElementById('deleteConsultRight'));
@@ -37,7 +37,7 @@ var consultRightCtrl = function($scope, $sce, walletService, contactservice, con
 		if (walletService.wallet == null) return;
 		$scope.wallet = walletService.wallet;
         $scope.currentAddress = $scope.wallet.getAddressString();
-        contactservice.loadContacts($scope.wallet, walletService.password, function(contact_list){
+        contactservice.loadContacts($scope.wallet, walletService.password).then(function(contact_list){
             $scope.contacts = contact_list; 
             $scope.getAccName($scope.wallet.getAddressString());
             
@@ -137,7 +137,7 @@ var consultRightCtrl = function($scope, $sce, walletService, contactservice, con
    } 
 
    $scope.passwordCheck = function(control){
-        var number = jsc3l_customization.passwordAutocomplete();
+        var number = jsc3l.customization.passwordAutocomplete();
         var curr_length = $scope.trPass.length;
         if (curr_length>=number && walletService.password.startsWith($scope.trPass)){
             // autocomplete (bypass angular for timinig reason with the set selection range)
@@ -164,36 +164,23 @@ var consultRightCtrl = function($scope, $sce, walletService, contactservice, con
         child = container.lastElementChild; 
     }
     
-    
-    var obj_content = {"address":$scope.currentAddress, 
-              "server":jsc3l_customization.getCurencyName(), 
-              "destinary":$scope.dest,
-              "begin":$scope.start_date.getFullYear()+ "/" + $scope.start_date.getMonth()+"/" + $scope.start_date.getDate(), 
-              "end":$scope.end_date.getFullYear()+ "/" + $scope.end_date.getMonth()+"/" + $scope.end_date.getDate(), 
-              "viewbalance": ($scope.balanceView == 1),
-              "viewoldtran": ($scope.oldTran == 1)
-    };
+     var qrFragments = $scope.wallet.makeSignedQRFragments({
+       "destinary":$scope.dest,
+       "begin":$scope.start_date,
+       "end":$scope.end_date,
+       "viewbalance": ($scope.balanceView == 1),
+       "viewoldtran": ($scope.oldTran == 1)
+     }, 4);
 
-    var str_content = JSON.stringify(obj_content);
-    var hash = ethUtil.sha3(str_content);
-    var signature = ethUtil.ecsign(hash, $scope.wallet.privKey);
-    var output = {"data":obj_content, "signature":{ "v":signature.v,
-    "r":'0x' + signature.r.toString('hex'),
-    "s":'0x' + signature.s.toString('hex')}};
-    $scope.qr_content =  JSON.stringify(output);
+     $scope.qr_content = qrFragments.full;
     
-    
-    
-    
-    var full= $scope.qr_content;
-    var chunk_length = Math.ceil(full.length/4);
+    var chunk_length = Math.ceil(qrFragments.full.length/4);
         
     if (piece <0){
         var qrcode = new QRCode(document.getElementById("qrCR_print"), $scope.qr_content);
         document.getElementById("qrCR_print").style.display = "none";
         for (var i=0; i<4;i++) {
-            var string = "FRAG_CR"+signature.s.toString('hex').substring(2,6)+i.toString()+full.substring(chunk_length*i,Math.min(chunk_length*(i+1),full.length));
-            var qrcode = new QRCode(document.getElementById("qrCR_print" + i.toString()),string);
+          var qrcode = new QRCode(document.getElementById("qrCR_print" + i.toString()),qrFragments[i]);
             document.getElementById("qrCR_print" + i.toString()).style.display = "none";
         } 
     } else if (piece == 0) {
@@ -201,8 +188,7 @@ var consultRightCtrl = function($scope, $sce, walletService, contactservice, con
     } else {
         var i = piece -1;
        
-        var string = "FRAG_CR"+signature.s.toString('hex').substring(2,6)+i.toString()+full.substring(chunk_length*i,Math.min(chunk_length*(i+1),full.length));
-        var qrcode = new QRCode(document.getElementById("qrcode_consultRight"),string);
+        var qrcode = new QRCode(document.getElementById("qrcode_consultRight"),qrFragments[i]);
     } 
     
     return $scope.qr_content;
@@ -262,51 +248,35 @@ var consultRightCtrl = function($scope, $sce, walletService, contactservice, con
 
 $scope.showContent = function(content) {
 
-    try {
-        // decode the Json
-        var obj = JSON.parse(content);
-        // extract the signature
-        var v = obj.signature.v;
-        var r = obj.signature.r; 
-        var s = obj.signature.s; 
+  let txt = (transId) => $sce.trustAsHtml(globalFuncs.getDangerText($translate.instant()))
+  var result = $scope.wallet.checkSignedQRFromString(content)
+  switch (result) {
+  case 'InvalidSignature':
+    $scope.openStatus = txt('OPEN_not_right_sign')
+    return
+  case 'NotForYou':
+    $scope.openStatus = txt('OPEN_right_not_for_you')
+    return
+  case 'Expired':
+    $scope.openStatus = txt('OPEN_too_old_right')
+    return
+  case 'InvalidFormat':
+    $scope.openStatus = txt('OPEN_not_right_format')
+    return
+  default:
+    // result is {signature, data}
 
-        // get the hash
-        var str_content = JSON.stringify(obj.data);
-        var hash = ethUtil.sha3(str_content);
-        
-        // check the signature
-        var public_sign_key = ethUtil.ecrecover(hash, v, r, s);
-        var rec_address = ethUtil.bufferToHex(ethUtil.publicToAddress(public_sign_key));
-        if (rec_address != obj.data.address) {
-            $scope.openStatus = $sce.trustAsHtml(globalFuncs.getDangerText($translate.instant('OPEN_not_right_sign')));    
-        } else {
-           // check the validity 
-           if (obj.data.destinary!=$scope.currentAddress){
-               $scope.openStatus = $sce.trustAsHtml(globalFuncs.getDangerText($translate.instant('OPEN_right_not_for_you'))); 
-           } else if ((new Date(obj.data.end)).getTime()< (new Date()).getTime()){   
-                $scope.openStatus = $sce.trustAsHtml(globalFuncs.getDangerText($translate.instant('OPEN_too_old_right'))); 
-           } else {    
-               // OK we can close the popup
-               $scope.openRightModal.close();  
-               // add to the right
-               consultService.addConsult(obj);
-               //reload the grid
-               $scope.consult_rights = consultService.loadConsults($scope.currentAddress); 
-               $scope.loadRights();
-           }
-        }
-        
-    
-    } catch (e) {
-         $scope.openStatus = $sce.trustAsHtml(globalFuncs.getDangerText($translate.instant('OPEN_not_right_format'))); 
-    }
-    
-  
-    
-    
-}  
-    
-    
+    // OK we can close the popup
+    $scope.openRightModal.close()
+    // add to the right
+    consultService.addConsult(result);
+    //reload the grid
+    $scope.consult_rights = consultService.loadConsults($scope.currentAddress);
+    $scope.loadRights();
+  }
+}
+
+
 $scope.importRightPop = function() {
     $scope.cancelFragment();
     $scope.openRightModal.open();

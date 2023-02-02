@@ -6,7 +6,7 @@ var fr = function() {}
 fr.code = 'fr';
 fr.data = {
 /****************************************/
-Version:'&middot; v2.2.11 &middot;&nbsp;',
+Version:'&middot; v2.4.0 &middot;&nbsp;',
 /****************************************/
 CURR_locked: 'ATTENTION: LES TRANSFERTS DANS CETTE MONNAIE SONT ACTUELLEMENT BLOQUÉS',
 GP_Wait: 'En attente du serveur... Si ce message persiste vérifiez votre connexion puis cliquez ici',
@@ -576,9 +576,9 @@ TRA_From: ' de ',
 TRA_Paid: 'Versé ',
 TRA_To: ' à ',
 TRA_Ammount: 'Montant/date',
-TRA_add: '>',
-TRA_prev: '<',
-TRA_next: '>',
+TRA_add: '&gt;',
+TRA_prev: '&lt;',
+TRA_next: '&gt;',
 TRA_check: '&#x2714;',
 TRA_NoTrans: 'Aucune transaction associée à ce compte.',
 TRA_NoMore: 'Aucune autre transaction.',
@@ -744,6 +744,13 @@ STR_LockCancel: 'Annuler',
 /* server Error Messages */
 Account_Locked_Error: 'L\'autre compte n\'est pas un compte actif.',
 Incompatible_Amount:  'Les montants ne sont pas compatibles.',
+InsufficientDelegatedAmount: 'Les montants ne sont pas compatibles. (Montant suppérieur à la délégation)',
+InsufficientNantBalance: 'Les montants ne sont pas compatibles. (Avoir insuffisant)',
+ReceiverWouldHitCMLimitMax: 'Les montants ne sont pas compatibles. (Le compte destinataire dépasserait sa limite maximum)',
+SenderWouldHitCMLimitMin: 'Les montants ne sont pas compatibles. (Le compte source dépasserait sa limite)',
+UnexpectedTransferAddress: 'Non! non!',
+AmountBiggerThanRequested:'Les montants ne sont pas compatibles. (Montant suppérieur à la demande)',
+
 
 /* Error Messages */
 ERROR_1: 'Veuillez entrer un montant valide.',

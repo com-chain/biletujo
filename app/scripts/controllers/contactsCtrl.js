@@ -2,7 +2,7 @@
 var contactesCtrl = function($scope, $sce, walletService, contactservice, globalService, $translate) {
     
     // Check the environment
-    $scope.isApp = jsc3l_customization.isApp();
+    $scope.isApp = isApp();
     
     // Create the modal popups
 	$scope.editNameModal = new Modal(document.getElementById('editName'));
@@ -36,10 +36,10 @@ var contactesCtrl = function($scope, $sce, walletService, contactservice, global
 		if (walletService.wallet == null) return;
 		$scope.wallet = walletService.wallet;
         
-        contactservice.loadContacts($scope.wallet, walletService.password, function(contact_list){
+        contactservice.loadContacts($scope.wallet, walletService.password).then(function(contact_list){
             $scope.contacts = contact_list; 
             $scope.loadContacts();
-            //$scope.$apply();
+            $scope.$apply();
         });
         
         globalFuncs.notifyApproval(); // Refresh the Payment notification
@@ -53,8 +53,8 @@ var contactesCtrl = function($scope, $sce, walletService, contactservice, global
 
       for (var id in $scope.contacts){
           try{
-              $scope.contacts[id].logo = jsc3l_customization.getCurrencyLogoUrl( $scope.contacts[id].servername);
-              $scope.contacts[id].has_logo = $scope.contacts[id].logo !='' && $scope.contacts[id].servername!=jsc3l_customization.getCurencyName();
+              $scope.contacts[id].logo = jsc3l.customization.getCurrencyLogoUrl( $scope.contacts[id].servername);
+              $scope.contacts[id].has_logo = $scope.contacts[id].logo !='' && $scope.contacts[id].servername!=jsc3l.customization.getCurrencyName();
           } catch(e){}
       }
       

@@ -1,6 +1,6 @@
 'use strict';
-var decryptWalletCtrl = function($scope, $sce, $translate, walletService, contactService, memoService, authenticationService, messageService, globalService) {
-    $scope.isApp =  jsc3l_customization.isApp();
+var decryptWalletCtrl = function($scope, $sce, $translate, walletService, contactService, memoService, authenticationService, globalService) {
+    $scope.isApp =  isApp();
     globalFuncs.hideLoadingWaiting();
     
     
@@ -137,10 +137,11 @@ var decryptWalletCtrl = function($scope, $sce, $translate, walletService, contac
 		}
 	};
     
-    $scope.openFile = function(){              
+
+    $scope.openFile = async function () {
        globalFuncs.showLoading($translate.instant("GP_Wait"));
        $scope.fileContent = $scope.fileContent.replace(/(\n|\r|\ )/gm, "");
-       globalFuncs.loadWallet(JSON.parse($scope.fileContent),function(success){
+       var success = await globalFuncs.loadWallet(JSON.parse($scope.fileContent));
            if (success){
 
                globalFuncs.loadWallets(true);
@@ -151,22 +152,19 @@ var decryptWalletCtrl = function($scope, $sce, $translate, walletService, contac
            } else { 
              globalFuncs.hideLoadingWaiting();
            }
-       });
        
     }
     
-    $scope.setAPINode = function(){
-          jsc3l_connection.testNode($scope.api,function(success){
-            if (success){
-                // store the node 
-                localStorage.setItem('ComChainAPI', $scope.api);
-                alert('API node set to ' + $scope.api);
-                $scope.setApiNodeModal.close();
-            }else{
-                alert('Provided API node not valid / available');
-            }
-        });
-
+    $scope.setAPINode = async function(){
+        const success = await jsc3l.connection.testNode($scope.api);
+        if (success){
+            // store the node 
+            localStorage.setItem('ComChainAPI', $scope.api);
+            alert('API node set to ' + $scope.api);
+            $scope.setApiNodeModal.close();
+        }else{
+            alert('Provided API node not valid / available');
+        }
     }
     
     $scope.pickWallFile = function(name,index){
@@ -251,14 +249,14 @@ var decryptWalletCtrl = function($scope, $sce, $translate, walletService, contac
         location.reload();
     }
     
-	$scope.decryptWallet = function() {
+	$scope.decryptWallet = async function() {
         if (document.getElementById('passwdField').value=="SetApiNode"){
             document.getElementById('passwdField').value='';
              if (document.getElementById('setApiNode')){
                 $scope.setApiNodeModal = new Modal(document.getElementById('setApiNode'));
             }
 
-            $scope.api= jsc3l_customization.getEndpointAddress();
+            $scope.api= jsc3l.connection.endpoint;
             $scope.setApiNodeModal.open();
             return;
         }
@@ -269,7 +267,7 @@ var decryptWalletCtrl = function($scope, $sce, $translate, walletService, contac
 		try {
             // toujours dans le cas d'un file dans le storage local
 			$scope.fileContent = localStorage.getItem('ComChainWallet');
-		    $scope.wallet = Wallet.getWalletFromPrivKeyFile($scope.fileContent, document.getElementById('passwdField').value);
+		    $scope.wallet = jsc3l.wallet.getWalletFromPrivKeyFile($scope.fileContent, document.getElementById('passwdField').value);
             var parsed =  JSON.parse($scope.fileContent);
             if (parsed.message_key !== undefined) {
                  $scope.wallet.message_key = parsed.message_key;
@@ -278,15 +276,15 @@ var decryptWalletCtrl = function($scope, $sce, $translate, walletService, contac
             walletService.password = $scope.filePassword;
             walletService.wallet = $scope.wallet;
             
-            messageService.ensureWalletMessageKey($scope.wallet, $translate.instant('WALL_missing_message_key'),  function(complete_wall) {
-                $scope.wallet = complete_wall;
-                walletService.wallet = complete_wall;
-                
-                localStorage.setItem('ComChainWallet',JSON.stringify(jsc3l_wallet.encryptWallet($scope.wallet, $scope.filePassword)));
+          $scope.wallet.ensureWalletMessageKey().then(function(complete_wall) {
+            if (typeof complete_wall === 'string') {
+               // TODO: need to remove alerts
+              alert($translate.instant('WALL_missing_message_key'));
+            }
+            localStorage.setItem('ComChainWallet',JSON.stringify($scope.wallet.encryptWallet($scope.filePassword)));
 
-                globalFuncs.loadWallets(true);
-            });
-            
+            globalFuncs.loadWallets(true);
+          });
             walletService.setUsed();
             walletService.next_ok=true;
             
@@ -318,7 +316,7 @@ var decryptWalletCtrl = function($scope, $sce, $translate, walletService, contac
 		    try {
                 // toujours dans le cas d'un file dans le storage local
 			    $scope.fileContent = localStorage.getItem('ComChainWallet');
-		        $scope.wallet = Wallet.getWalletFromPrivKeyFile($scope.fileContent, $scope.filePassword);
+		        $scope.wallet = jsc3l.wallet.getWalletFromPrivKeyFile($scope.fileContent, $scope.filePassword);
                 walletService.password = $scope.filePassword;
 			
                 walletService.wallet = $scope.wallet;
@@ -364,20 +362,19 @@ var decryptWalletCtrl = function($scope, $sce, $translate, walletService, contac
 	    );
     };
     
-      $scope.validateToken =function(){
+      $scope.validateToken = async function(){
         var enr_txt=document.getElementById("enr_tk2").value;
         try {
             enr_txt = enr_txt.replace(/(\n|\r|\ )/gm, "");
             var enrollmentLetter = JSON.parse(enr_txt);  
             if (enrollmentLetter.servername){
-                jsc3l_customization.getConfJSON(enrollmentLetter.servername,function(success){
+              var success = await jsc3l.connection.getConfJSON(enrollmentLetter.servername);
                     if (success){
                          location.reload();  
                     } else {
                          $scope.message_creation=globalFuncs.getDangerText($translate.instant("GEN_No_server"));
                          $scope.$apply();      
                     }
-                })
             } else {
                 $scope.message_creation=globalFuncs.getDangerText($translate.instant("GEN_No_config"));
             }

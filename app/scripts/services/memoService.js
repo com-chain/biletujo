@@ -97,12 +97,12 @@ var memoService = function() {
         return str;
     }  
     
-     function loadIpfsMemos(wallet,pass){
+     async function loadIpfsMemos(wallet,pass){
        // get the hash storing the crypted data
-       globalFuncs.getMemoHash(wallet.getAddressString(), function(hash){
+       var hash = await globalFuncs.getMemoHash(wallet.getAddressString());
            // get the crypted data
            var str_hash = hexa_to_ascii(hash);
-           globalFuncs.readFromIpfs(str_hash,function(crypted_list){
+           var crypted_list = await globalFuncs.readFromIpfs(str_hash);
                if (crypted_list && crypted_list.data){
                    try{
                        // decrypte
@@ -118,8 +118,6 @@ var memoService = function() {
                    } catch(e){}
                }
               
-           })
-       });
     }
     
     
@@ -138,7 +136,10 @@ var memoService = function() {
          if (local_memos && local_memos.length>0){
          // encrypt the list 
           var b64 = window.btoa(unescape(encodeURIComponent(JSON.stringify(local_memos))));
-          var crypted = wallet.cipher(pass, b64);
+          var kdfparams = JSON.parse(
+             localStorage.getItem('ComChainWallet').toLowerCase()
+           ).crypto.kdfparams
+          var crypted = wallet.cipher(pass, b64, kdfparams);
           // push the list to IPFS and get the hash
            globalFuncs.storeOnIpfs(crypted,function(hash){
                try{
