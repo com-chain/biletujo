@@ -94,10 +94,11 @@ var walletGenCtrl = function($scope, $globalService, $translate, walletService, 
             if (enrollmentLetter.servername){
                      const success = await jsc3l.connection.getConfJSON(enrollmentLetter.servername);
                      if (success){
-                       const data = await $scope.wallet.validateEnrollmentLetter(
-                         enrollmentLetter.id,
-                         enrollmentLetter.signature,
-                       ).then(function(data) {
+                       const data = await jsc3l.ajaxReq.enrollPost({
+                         id: enrollmentLetter.id,
+                         currency: enrollmentLetter.servername,
+                         signature: enrollmentLetter.signature,
+                       });
                         globalFuncs.hideLoadingWaiting(); // hide the waiting overlay
                         if (data.result=="OK"){
                            $scope.enrollmentLetter = enrollmentLetter; 
@@ -121,7 +122,7 @@ var walletGenCtrl = function($scope, $globalService, $translate, walletService, 
                        }  else {
                            $scope.message_creation=globalFuncs.getDangerText($translate.instant("GEN_Token_validation_KO"));
                        }
-                       });
+
                     }  else {
                          globalFuncs.hideLoadingWaiting(); // hide the waiting overlay
                          $scope.message_creation=globalFuncs.getDangerText($translate.instant("GEN_No_server"));
@@ -136,6 +137,7 @@ var walletGenCtrl = function($scope, $globalService, $translate, walletService, 
         } catch (e) {
             globalFuncs.hideLoadingWaiting();
             $scope.message_creation=globalFuncs.getDangerText($translate.instant("GEN_Token_validation_error"));
+            console.log("Exception catched:", e)
         }  
         
     }
