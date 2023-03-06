@@ -182,7 +182,7 @@ var walletGenCtrl = function($scope, $globalService, $translate, walletService, 
                         if (success) {
                             
                             if ($scope.unlock_url != undefined && $scope.unlock_url!="") {
-                                  jsc3l.ajaxReq.requestUnlock($scope.wallet.getAddressString()).then($scope.unlock_url);
+                                  jsc3l.ajaxReq.requestUnlock($scope.wallet.getAddressString(), $scope.unlock_url);
                             }
                             
                             await globalFuncs.loadWallet($scope.wallet.encryptWallet($scope.password));
