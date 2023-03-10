@@ -201,7 +201,7 @@ var exchangeCtrl = function($scope, $locale, $sce, walletService, $translate) {
     $scope.confirmUpdate = async function(){
        $scope.pop_message=''; 
        // check that the CM balance is compatible with the new type
-       if ($scope.pop_acc_type==1 && $scope.balanceCM<0){
+       if ($scope.pop_acc_type==0 && $scope.balanceCM<0){
             $scope.pop_message=$sce.trustAsHtml(globalFuncs.getWarningText($translate.instant("EXC_New_type_not_compatible_with_bal"))); 
             return;
        } 
