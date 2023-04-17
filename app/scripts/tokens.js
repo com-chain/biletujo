@@ -36,22 +36,4 @@ Token.prototype.setBalance = function() {
 			parentObj.balanceBN = new BigNumber(data).toString();
     });
 }
-Token.prototype.getData = function(toAdd, value) {
-	try {
-		if (!jsc3l.ethFuncs.validateEtherAddress(toAdd)) throw 'ERROR_6';
-		else if (!globalFuncs.isNumeric(value) || parseFloat(value) < 0) throw 'ERROR_8';
-		var value = jsc3l.ethFuncs.padLeft(new BigNumber(value).times(new BigNumber(10).pow(this.getDecimal())).toString(16), 64);
-		var toAdd = jsc3l.ethFuncs.padLeft(jsc3l.ethFuncs.getNakedAddress(toAdd), 64);
-		var data = Token.transferHex + toAdd + value;
-		return {
-			isError: false,
-			data: data
-		};
-	} catch (e) {
-		return {
-			isError: true,
-			error: e
-		};
-	}
-}
 module.exports = Token;
