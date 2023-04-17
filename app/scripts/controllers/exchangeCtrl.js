@@ -84,10 +84,10 @@ var exchangeCtrl = function($scope, $locale, $sce, walletService, $translate) {
         }  
 	}
     
-    $scope.refresh = function() {
+    $scope.refresh = async function() {
          globalFuncs.showLoading($translate.instant("GP_Wait"));
          $scope.acc_message ="";
-         $scope.setBalance();
+         await $scope.setBalance();
     }
     
     $scope.is_admin=false;
@@ -118,11 +118,11 @@ var exchangeCtrl = function($scope, $locale, $sce, walletService, $translate) {
         });
     
       
-    $scope.helloToAddress = function(text){
+    $scope.helloToAddress = async function(text){
       var add_obj = globalFuncs.parseAddress(text); 
       if (add_obj.address){
            $scope.selected_account=add_obj.address;
-           $scope.checkSelectedAccount();
+           await $scope.checkSelectedAccount();
       } else {
           alert($translate.instant("EXC_unknow_address"));
       }
@@ -132,8 +132,8 @@ var exchangeCtrl = function($scope, $locale, $sce, walletService, $translate) {
     
     $scope.startScanToAddress = function(){
         cordova.plugins.barcodeScanner.scan(
-		function (result) {
-			$scope.helloToAddress(result.text);
+		async function (result) {
+			await $scope.helloToAddress(result.text);
 		}, 
 		function (error) {
 			alert("Scanning failed: " + error);
@@ -141,7 +141,7 @@ var exchangeCtrl = function($scope, $locale, $sce, walletService, $translate) {
 	    );
     };
     
-    $scope.checkSelectedAccount = function(){
+    $scope.checkSelectedAccount = async function(){
         if ($scope.selected_account.length==42){
             globalFuncs.showLoading($translate.instant("GP_Wait"));
             $scope.acc_message ="";
@@ -149,7 +149,7 @@ var exchangeCtrl = function($scope, $locale, $sce, walletService, $translate) {
             $scope.valid_acc = true;
            
             $scope.credit_amount=null;
-            $scope.setBalance();
+            await $scope.setBalance();
             
         } else{
              $scope.acc_message = $sce.trustAsHtml(globalFuncs.getDangerText($translate.instant("EXC_unknow_address"))); 
@@ -231,23 +231,26 @@ var exchangeCtrl = function($scope, $locale, $sce, walletService, $translate) {
              $scope.pop_limitCMp =0;
              $scope.pop_limitCMm =0;
         }
-        
-        const data = await jsc3l.bcTransaction.setAccountParam($scope.wallet,
+
+      let data
+      try {
+        data = await jsc3l.bcTransaction.setAccountParam($scope.wallet,
                                     $scope.selected_account, 
                                     status, 
                                     $scope.pop_acc_type,  
                                     $scope.pop_limitCMp,
-                                    $scope.pop_limitCMm);
-        if (data.isError){
-            $scope.acc_message = $sce.trustAsHtml(globalFuncs.getDangerText(data.error));
+                                                         $scope.pop_limitCMm);
+      } catch(e) {
+            $scope.acc_message = $sce.trustAsHtml(globalFuncs.getDangerText(e.message));
             $scope.pop_message = $scope.acc_message;
-        } else {
+            console.error("Failed ``setAccountParam`` with exception", e);
+
+        return;
+      }
             $scope.acc_message = $sce.trustAsHtml(globalFuncs.getSuccessText($translate.instant("EXC_Account_updated")));
             $scope.trans_message = $translate.instant("EXC_Account_updated");
             $scope.updatePop.close();
-            $scope.waitTransaction(data.data); 
-        }
-        
+            await $scope.waitTransaction(data); 
     }
     
    
@@ -263,15 +266,19 @@ var exchangeCtrl = function($scope, $locale, $sce, walletService, $translate) {
      var data = jsc3l.memo.getTxMemoCipheredData(
        null, $scope.to_message_key,
        null, $scope.message_to);
+       let rawTx
+     try {
+       rawTx = await jsc3l.bcTransaction.pledgeAccount($scope.wallet, $scope.selected_account, $scope.credit_amount, data);
+     } catch(e) {
 
-        const rawTx = await jsc3l.bcTransaction.pledgeAccount($scope.wallet, $scope.selected_account, $scope.credit_amount, data);
+       $scope.acc_message = $sce.trustAsHtml(globalFuncs.getDangerText(e.message));
+       console.error("Failed ``pledgeAccount`` with exception", e);
 
-        if (rawTx.isError){
-            $scope.acc_message = $sce.trustAsHtml(globalFuncs.getDangerText(rawTx.error));
-        } else {
+     }
+     if (rawTx) {
             $scope.acc_message = $sce.trustAsHtml(globalFuncs.getSuccessText($translate.instant("EXC_Account_credited_with")+$scope.credit_amount+globalFuncs.currencies.CUR));
             $scope.trans_message = $translate.instant("EXC_Account_credited_with")+$scope.credit_amount+globalFuncs.currencies.CUR;
-            $scope.waitTransaction(rawTx.data); 
+            await $scope.waitTransaction(rawTx); 
         }
         
         $scope.balance = await jsc3l.bcRead.getGlobalBalance($scope.selected_account);
@@ -287,13 +294,13 @@ var exchangeCtrl = function($scope, $locale, $sce, walletService, $translate) {
 
   $scope.interval_id=null;
   
-  $scope.recievedTransaction = function(){
+  $scope.recievedTransaction = async function(){
         clearInterval($scope.interval_id);
-        $scope.refresh();
+        await $scope.refresh();
         $scope.$apply();
   }
   
-  $scope.waitTransaction = function(transaction_ash){
+  $scope.waitTransaction = async function(transaction_ash){
       if ($scope.interval_id){
           clearInterval($scope.interval_id);
           $scope.interval_id=null;
@@ -306,7 +313,7 @@ var exchangeCtrl = function($scope, $locale, $sce, walletService, $translate) {
               // CHANGE BEHAVIOR: HIDE DIRECTLY THE WEELS
               //if (block_json.blockNumber && block_json.blockNumber.startsWith('0x')){
               
-                 $scope.recievedTransaction();
+               await $scope.recievedTransaction();
               //}
       },5000);  
   }  

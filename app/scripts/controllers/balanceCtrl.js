@@ -303,7 +303,7 @@ var balanceCtrl = function($scope, $locale, $sce, walletService,contactservice, 
         });
    }  
     
-    $scope.saveNewDeleg = function(){
+    $scope.saveNewDeleg = async function(){
         if ($scope.trPass==walletService.password){
             walletService.setUsed();
           
@@ -313,19 +313,21 @@ var balanceCtrl = function($scope, $locale, $sce, walletService,contactservice, 
             } else if (isNaN($scope.currDelLimit)  || $scope.currDelLimit<=0){
                  document.getElementById('delStatus').innerHTML=$sce.trustAsHtml(globalFuncs.getDangerText($translate.instant("DELEG_InvalidDelegationLimit")));
             } else {
-              jsc3l.bcTransaction.setDelegation($scope.wallet, $scope.curraddress,$scope.currDelLimit).then(function(res) {
-               if (res.isError){
+              let res
+              try {
+                res = jsc3l.bcTransaction.setDelegation($scope.wallet, $scope.curraddress,$scope.currDelLimit)
+              } catch(e) {
                     globalFuncs.hideLoadingWaiting();
-			        document.getElementById('delStatus').innerHTML= $sce.trustAsHtml(globalFuncs.getDangerText(res.error));
-                } else {
-                   $scope.waitTransaction(res.data);
+			        document.getElementById('delStatus').innerHTML= $sce.trustAsHtml(globalFuncs.getDangerText(e.message));
+                console.error("Failed ``setDelegation`` with exception", e);
+                return;
+              }
+                   await $scope.waitTransaction(res);
                    document.getElementById('transDelStatus').innerHTML=$sce.trustAsHtml(globalFuncs.getSuccessText($translate.instant("Deleg_order_create_send")));
                    $scope.addDelegationModal.close();
                    $scope.confStatus = $translate.instant("Deleg_order_create_send");
                    
                    $scope.trans_message = $translate.instant("Deleg_order_create_send")+ " " +$translate.instant("GP_Wait_tran");
-                }
-              });
             }
         } else {
               document.getElementById('delStatus').innerHTML=$sce.trustAsHtml(globalFuncs.getDangerText($translate.instant("WIEW_WrongPass")));
@@ -409,18 +411,21 @@ var balanceCtrl = function($scope, $locale, $sce, walletService,contactservice, 
             if (isNaN($scope.currDelLimit)  || $scope.currDelLimit<=0){
                  document.getElementById('delEditStatus').innerHTML=$sce.trustAsHtml(globalFuncs.getDangerText($translate.instant("DELEG_InvalidDelegationLimit")));
             } else {
-                const res = await jsc3l.bcTransaction.setDelegation($scope.wallet, $scope.curraddress,$scope.currDelLimit);
-                if (res.isError){
+              let res
+              try {
+                res = await jsc3l.bcTransaction.setDelegation($scope.wallet, $scope.curraddress,$scope.currDelLimit);
+              } catch(e) {
                     globalFuncs.hideLoadingWaiting();
-		            document.getElementById('delEditStatus').innerHTML= $sce.trustAsHtml(globalFuncs.getDangerText(res.error));
-                } else {
-                   $scope.waitTransaction(res.data);
+		            document.getElementById('delEditStatus').innerHTML= $sce.trustAsHtml(globalFuncs.getDangerText(e.message));
+                console.error("Failed ``setDelegation`` with exception", e);
+                return;
+              }
+                   await $scope.waitTransaction(res);
                    document.getElementById('transDelStatus').innerHTML=$sce.trustAsHtml(globalFuncs.getSuccessText($translate.instant("Deleg_order_edit_send")));
                    $scope.editDelegationModal.close();
                    $scope.confStatus = $translate.instant("Deleg_order_edit_send");
                    $scope.$apply;
                    $scope.confPopModal.open();
-                }
             }
         } else {
               document.getElementById('delEditStatus').innerHTML=$sce.trustAsHtml(globalFuncs.getDangerText($translate.instant("WIEW_WrongPass")));
@@ -439,19 +444,22 @@ var balanceCtrl = function($scope, $locale, $sce, walletService,contactservice, 
     
      $scope.saveDeleteDeleg = async function(){
         if ($scope.trPass==walletService.password){
-            walletService.setUsed();
-            const res = await jsc3l.bcTransaction.setDelegation($scope.wallet, $scope.curraddress,-1);
-            if (res.isError){
+          walletService.setUsed();
+          let res
+          try {
+            res = await jsc3l.bcTransaction.setDelegation($scope.wallet, $scope.curraddress,-1);
+          } catch(e) {
                 globalFuncs.hideLoadingWaiting();
-                document.getElementById('delDeleteStatus').innerHTML= $sce.trustAsHtml(globalFuncs.getDangerText(res.error));
-            } else {
-               $scope.waitTransaction(res.data);
+            document.getElementById('delDeleteStatus').innerHTML= $sce.trustAsHtml(globalFuncs.getDangerText(e.message));
+            console.error("Failed ``setDelegation`` with exception", e);
+
+            return;
+          }
+               await $scope.waitTransaction(res);
                document.getElementById('transDelStatus').innerHTML=$sce.trustAsHtml(globalFuncs.getSuccessText($translate.instant("Deleg_order_delete_send")));
                $scope.deleteDelegationModal.close();
                $scope.confStatus = $translate.instant("Deleg_order_delete_send");
                $scope.trans_message = $translate.instant("Deleg_order_delete_send")+ " " +$translate.instant("GP_Wait_tran");
-              
-            }
         } else {
               document.getElementById('delDeleteStatus').innerHTML=$sce.trustAsHtml(globalFuncs.getDangerText($translate.instant("WIEW_WrongPass")));
         }
@@ -566,19 +574,23 @@ var balanceCtrl = function($scope, $locale, $sce, walletService,contactservice, 
             }  else if (isNaN($scope.currAllowAmount)  || $scope.currAllowAmount<=0){
                  document.getElementById('allowStatus').innerHTML=$sce.trustAsHtml(globalFuncs.getDangerText($translate.instant("ALLOW_InvalidAmount")));
             } else {
-                const res = await jsc3l.bcTransaction.setAllowance($scope.wallet, $scope.curraddress,$scope.currAllowAmount);
-                if (res.isError){
+              let res
+              try {
+                res = await jsc3l.bcTransaction.setAllowance($scope.wallet, $scope.curraddress,$scope.currAllowAmount);
+              } catch(e) {
                     globalFuncs.hideLoadingWaiting();
-		            document.getElementById('allowStatus').innerHTML= $sce.trustAsHtml(globalFuncs.getDangerText(res.error));
-                } else {
-                   $scope.waitTransaction(res.data);
+		        document.getElementById('allowStatus').innerHTML= $sce.trustAsHtml(globalFuncs.getDangerText(e.message));
+                console.error("Failed ``setAllowance`` with exception", e);
+
+                return;
+              }
+                   await $scope.waitTransaction(res);
                    document.getElementById('transAllowStatus').innerHTML=$sce.trustAsHtml(globalFuncs.getSuccessText($translate.instant("ALLOW_order_create_send")));
                    
                    $scope.addAllowanceModal.close();
                    $scope.confStatus = $translate.instant("ALLOW_order_create_send");
                    
                    $scope.trans_message = $translate.instant("ALLOW_order_create_send")+ " " +$translate.instant("GP_Wait_tran");
-                } 
             }
         } else {
               document.getElementById('allowStatus').innerHTML=$sce.trustAsHtml(globalFuncs.getDangerText($translate.instant("WIEW_WrongPass")));
@@ -605,19 +617,22 @@ var balanceCtrl = function($scope, $locale, $sce, walletService,contactservice, 
             if (isNaN($scope.currAllowAmount)  || $scope.currAllowAmount<=0){
                  document.getElementById('allowEditStatus').innerHTML=$sce.trustAsHtml(globalFuncs.getDangerText($translate.instant("ALLOW_InvalidAmount")));
             } else {
-                const res = await jsc3l.bcTransaction.setAllowance($scope.wallet, $scope.curraddress,$scope.currAllowAmount);
-                if (res.isError){
+              let res
+              try {
+                res = await jsc3l.bcTransaction.setAllowance($scope.wallet, $scope.curraddress,$scope.currAllowAmount);
+              } catch(e) {
                     globalFuncs.hideLoadingWaiting();
-		            document.getElementById('allowEditStatus').innerHTML= $sce.trustAsHtml(globalFuncs.getDangerText(res.error));
-                } else {
-                   $scope.waitTransaction(res.data);
+		        document.getElementById('allowEditStatus').innerHTML= $sce.trustAsHtml(globalFuncs.getDangerText(e.message));
+                console.error("Failed ``setAllowance`` with exception", e);
+
+                return;
+                }
+                   await $scope.waitTransaction(res);
                    document.getElementById('transAllowStatus').innerHTML=$sce.trustAsHtml(globalFuncs.getSuccessText($translate.instant("ALLOW_order_edit_send")));
                    $scope.editAllowanceModal.close();
                    $scope.confStatus = $translate.instant("ALLOW_order_edit_send");
                    
                    $scope.trans_message = $translate.instant("ALLOW_order_edit_send")+ " " +$translate.instant("GP_Wait_tran");
-                } 
-          
             }
         } else {
               document.getElementById('allowEditStatus').innerHTML=$sce.trustAsHtml(globalFuncs.getDangerText($translate.instant("WIEW_WrongPass")));
@@ -636,18 +651,22 @@ var balanceCtrl = function($scope, $locale, $sce, walletService,contactservice, 
 
      $scope.saveDeleteAllowance = async function(){
         if ($scope.trPass==walletService.password){
-           walletService.setUsed();
-           const res = await jsc3l.bcTransaction.setAllowance($scope.wallet, $scope.curraddress,-1);
-           if (res.isError){
-                globalFuncs.hideLoadingWaiting();
-		        document.getElementById('allowDeleteStatus').innerHTML= $sce.trustAsHtml(globalFuncs.getDangerText(res.error));
-            } else {
-               $scope.waitTransaction(res.data);
+          walletService.setUsed();
+          let res
+          try {
+            res = await jsc3l.bcTransaction.setAllowance($scope.wallet, $scope.curraddress,-1);
+          } catch(e) {
+            globalFuncs.hideLoadingWaiting();
+		    document.getElementById('allowDeleteStatus').innerHTML= $sce.trustAsHtml(globalFuncs.getDangerText(e.message));
+            console.error("Failed ``setAllowance`` with exception", e);
+
+            return
+          }
+               await $scope.waitTransaction(res);
                document.getElementById('transAllowStatus').innerHTML=$sce.trustAsHtml(globalFuncs.getSuccessText($translate.instant("ALLOW_order_delete_send")));
                $scope.deleteAllowanceModal.close();
                $scope.confStatus = $translate.instant("ALLOW_order_delete_send");
                $scope.trans_message = $translate.instant("ALLOW_order_delete_send")+ " " +$translate.instant("GP_Wait_tran");
-            }  
         } else {
               document.getElementById('allowDeleteStatus').innerHTML=$sce.trustAsHtml(globalFuncs.getDangerText($translate.instant("WIEW_WrongPass")));
         }
@@ -678,13 +697,13 @@ var balanceCtrl = function($scope, $locale, $sce, walletService,contactservice, 
   $scope.interval_id=null;
   
   
-  $scope.recievedTransaction = function(){
+  $scope.recievedTransaction = async function(){
         clearInterval($scope.interval_id);
-        $scope.refresh();
+        await $scope.refresh();
         $scope.$apply();
   }
   
-  $scope.waitTransaction = function(transaction_ash){
+  $scope.waitTransaction = async function(transaction_ash){
       if ($scope.interval_id){
           clearInterval($scope.interval_id);
           $scope.interval_id=null;
@@ -698,9 +717,9 @@ var balanceCtrl = function($scope, $locale, $sce, walletService,contactservice, 
           const block_json = await jsc3l.ajaxReq.getBlock(transaction_ash)
               // CHANGE BEHAVIOR: HIDE DIRECTLY THE WEELS
               // if (block_json.blockNumber && block_json.blockNumber.startsWith('0x')){
-                 $scope.recievedTransaction();
+                 await $scope.recievedTransaction();
               //}
-      },5000);  
+      },5000);
   }  
   
   

@@ -114,23 +114,30 @@ var noteCtrl = function($scope, $locale, $sce, walletService, $translate) {
   }
   
   $scope.lock = async function(address){
-        $scope.curr_operation=$translate.instant("NOT_Currently")+$translate.instant("NOT_Locking") + address;
-        const data = await jsc3l.bcTransaction.setAccountParam($scope.wallet, address, 0, 0, 0, 0);
-        if (data.isError){
-            alert($translate.instant("NOT_Processing_error") + data.error);
-        } else {
-            $scope.waitTransaction(data.data); 
-        }
+    $scope.curr_operation=$translate.instant("NOT_Currently")+$translate.instant("NOT_Locking") + address;
+    let data
+    try {
+      data = await jsc3l.bcTransaction.setAccountParam($scope.wallet, address, 0, 0, 0, 0);
+    } catch(e) {
+      alert($translate.instant("NOT_Processing_error") + e.message);
+      console.error("Failed ``setAccountParam`` with exception", e);
+
+      return
+    }
+    await $scope.waitTransaction(data); 
   }
   
-  $scope.adjustAmount = async function(address, amount){
+    $scope.adjustAmount = async function(address, amount){
         $scope.curr_operation=$translate.instant("NOT_Currently")+$translate.instant("NOT_Pledging") +  amount + $scope.CUR + $translate.instant("NOT_to")+ address;
-        const data = await jsc3l.bcTransaction.pledgeAccount($scope.wallet, address, amount);
-        if (data.isError){
-           alert($translate.instant("NOT_Processing_error") + data.error);
-        } else {
-           $scope.waitTransaction(data.data);
+        let data
+        try {
+            data = await jsc3l.bcTransaction.pledgeAccount($scope.wallet, address, amount);
+        } catch(e) {
+            alert($translate.instant("NOT_Processing_error") + e.message);
+            console.error("Failed ``pledgeAccount`` with exception", e);
+            return;
         }
+        await $scope.waitTransaction(data);
   }
   
   // Processing coordinator
@@ -175,15 +182,15 @@ var noteCtrl = function($scope, $locale, $sce, walletService, $translate) {
   
   $scope.interval_id=null;
   
-  $scope.recievedTransaction = function(){
+  $scope.recievedTransaction = async function(){
         clearInterval($scope.interval_id);
         $scope.done += 1;
-        $scope.processInfo();
-        $scope.refresh();
+        await $scope.processInfo();
+        await $scope.refresh();
         $scope.$apply();
   }
   
-  $scope.waitTransaction = function(transaction_ash){
+  $scope.waitTransaction = async function(transaction_ash){
       if ($scope.interval_id){
           clearInterval($scope.interval_id);
           $scope.interval_id=null;
@@ -192,7 +199,7 @@ var noteCtrl = function($scope, $locale, $sce, walletService, $translate) {
       $scope.interval_id = setInterval(async function(){
           const block_json = await jsc3l.ajaxReq.getBlock(transaction_ash)
               if (block_json.blockNumber && block_json.blockNumber.startsWith('0x')){
-                 $scope.recievedTransaction();
+                 await $scope.recievedTransaction();
               }
       },5000);  
   }  
