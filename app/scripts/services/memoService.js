@@ -141,16 +141,17 @@ var memoService = function() {
            ).crypto.kdfparams
           var crypted = wallet.cipher(pass, b64, kdfparams);
           // push the list to IPFS and get the hash
-           globalFuncs.storeOnIpfs(crypted,function(hash){
+           globalFuncs.storeOnIpfs(crypted,async function(hash){
                try{
                    var json_obj = JSON.parse(hash);
                     if (json_obj.hash){
                        // push the hash to the blockchain
                        var hex_hash  = ascii_to_hexa(json_obj.hash);
-                       globalFuncs.setMemoHash(wallet,hex_hash,function(){});
+                       await globalFuncs.setMemoHash(wallet,hex_hash);
                     }
-               } catch (e){}
-              
+               } catch (e){
+                 console.log("Ignored exception: ", e)
+               }
            });
          } 
     }

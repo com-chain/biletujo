@@ -77,12 +77,12 @@ var globalFuncs = function() {}
     }
     
  /*** contract 3***/
- globalFuncs.setContactHash = function(wallet, contact_hash, callback){  
-     jsc3l.bcTransaction.setContactHash(wallet, 32,46,contact_hash).then((res)=>callback(res));
+ globalFuncs.setContactHash = function(wallet, contact_hash) {
+   return jsc3l.bcTransaction.setContactHash(wallet, 32,46,contact_hash);
  }
  
- globalFuncs.setMemoHash = function(wallet, memo_hash, callback){     
-     jsc3l.bcTransaction.setMemoHash(wallet, 32,46,memo_hash).then((res)=>callback(res));     
+ globalFuncs.setMemoHash = function(wallet, memo_hash) {
+   return jsc3l.bcTransaction.setMemoHash(wallet, 32,46,memo_hash);
  }
  
  globalFuncs.getContactHash = async function(walletAddress,callback){
