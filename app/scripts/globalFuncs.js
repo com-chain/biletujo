@@ -87,7 +87,13 @@ var globalFuncs = function() {}
  
  globalFuncs.getContactHash = async function(walletAddress,callback){
         var userInfo = jsc3l.ethFuncs.getDataObj(jsc3l.customization.getContract3(),  globalFuncs.contactsOf, [jsc3l.ethFuncs.getNakedAddress(walletAddress)]);
-        const data = await jsc3l.ajaxReq.getEthCall(userInfo)
+                let data
+                try {
+                  data = await jsc3l.ajaxReq.getEthCall(userInfo)
+                } catch(err) {
+                  console.log("Ignored Exception", err)
+                  return
+                }
                 var length_str = data.substring(66,130);
                 var length = 2*globalFuncs.getNumber(length_str,1);
                 var hash = data.substring(130,130+length);
@@ -96,7 +102,12 @@ var globalFuncs = function() {}
   
   globalFuncs.getMemoHash = async function(walletAddress,callback){
         var userInfo = jsc3l.ethFuncs.getDataObj(jsc3l.customization.getContract3(),  globalFuncs.memosOf, [jsc3l.ethFuncs.getNakedAddress(walletAddress)]);
-	    const data = await jsc3l.ajaxReq.getEthCall(userInfo)
+                try {
+              	  data = await jsc3l.ajaxReq.getEthCall(userInfo)
+                } catch(err) {
+                  console.log("Ignored Exception", err)
+                  return
+                }
 			    var length_str = data.substring(66,130);
                 var length = 2*globalFuncs.getNumber(length_str,1);
                 var hash = data.substring(130,130+length);
