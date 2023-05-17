@@ -346,6 +346,7 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, gl
             document.getElementById('err_message').innerHTML = $sce.trustAsHtml(globalFuncs.getDangerText($translate.instant(e.message)));
             console.error("Failed ``transferCM`` with exception", e);
             $scope.sendTxModal.open();
+            return
         }
         await $scope.waitTransaction(res);
         document.getElementById('err_message').innerHTML = $translate.instant("TRAN_Done");
