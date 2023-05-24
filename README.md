@@ -66,6 +66,7 @@ To run the browser version of the app, you should:
 
 ```sh
 cd cordova_dist
+npm install  ## only once
 npx cordova run browser
 ```
 
