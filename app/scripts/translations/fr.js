@@ -6,7 +6,7 @@ var fr = function() {}
 fr.code = 'fr';
 fr.data = {
 /****************************************/
-Version:'&middot; v2.4.3 &middot;&nbsp;',
+Version:'&middot; v2.4.4 &middot;&nbsp;',
 /****************************************/
 CURR_locked: 'ATTENTION: LES TRANSFERTS DANS CETTE MONNAIE SONT ACTUELLEMENT BLOQUÉS',
 GP_Wait: 'En attente du serveur... Si ce message persiste vérifiez votre connexion puis cliquez ici',
