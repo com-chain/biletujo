@@ -287,7 +287,7 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, gl
         } catch(e) {
             globalFuncs.hideLoadingWaiting();  
 
-            document.getElementById('err_message').innerHTML=$sce.trustAsHtml(globalFuncs.getDangerText($translate.instant(e.msg)));
+            document.getElementById('err_message').innerHTML=$sce.trustAsHtml(globalFuncs.getDangerText($translate.instant(e.message)));
             console.error("Failed ``transferNant`` with exception", e);
             $scope.sendTxModal.open();
             return;
@@ -343,7 +343,7 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, gl
             res = await jsc3l.bcTransaction.transferCM($scope.wallet, $scope.tokenTx.to, $scope.lemanexAmmount/100, data);
         } catch(e) {
             globalFuncs.hideLoadingWaiting();
-            document.getElementById('err_message').innerHTML = $sce.trustAsHtml(globalFuncs.getDangerText($translate.instant(e.msg)));
+            document.getElementById('err_message').innerHTML = $sce.trustAsHtml(globalFuncs.getDangerText($translate.instant(e.message)));
             console.error("Failed ``transferCM`` with exception", e);
             $scope.sendTxModal.open();
             return
@@ -1231,7 +1231,7 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, gl
         try {
             res = await jsc3l.bcTransaction.dismissRejectedInfo($scope.wallet,address)
         } catch(e) {
-            $scope.transPendingStatus=$sce.trustAsHtml(globalFuncs.getDangerText($translate.instant(e.msg)));
+            $scope.transPendingStatus=$sce.trustAsHtml(globalFuncs.getDangerText($translate.instant(e.message)));
             console.error("Failed ``dismissRejectedInfo`` with exception", e);
             return;
         }
@@ -1247,7 +1247,7 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, gl
         try {
             res = await jsc3l.bcTransaction.dismissAcceptedInfo($scope.wallet,address)
         } catch(e) {
-            $scope.transPendingStatus=$sce.trustAsHtml(globalFuncs.getDangerText($translate.instant(e.msg)));
+            $scope.transPendingStatus=$sce.trustAsHtml(globalFuncs.getDangerText($translate.instant(e.message)));
             console.error("Failed ``dismissAcceptedInfo`` with exception", e);
             return;
          }
@@ -1438,7 +1438,7 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, gl
               try {
                   res = await jsc3l.bcTransaction.payRequestCM($scope.wallet, $scope.transaction_to, $scope.transaction_amount, data);
               } catch(e) {
-                  document.getElementById('tr_err_message').innerHTML=$sce.trustAsHtml(globalFuncs.getDangerText($translate.instant(e.msg)));
+                  document.getElementById('tr_err_message').innerHTML=$sce.trustAsHtml(globalFuncs.getDangerText($translate.instant(e.message)));
                   console.error("Failed ``payRequestCM`` with exception", e);
                   $scope.sendTransactionModal.open();
                   return
@@ -1499,7 +1499,7 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, gl
            try {
                res = await jsc3l.bcTransaction.rejectRequest($scope.wallet, $scope.transaction_to);
            } catch(e) {
-               $scope.err_reject_message=$sce.trustAsHtml(globalFuncs.getDangerText($translate.instant(e.msg)));
+               $scope.err_reject_message=$sce.trustAsHtml(globalFuncs.getDangerText($translate.instant(e.message)));
                console.error("Failed ``rejectRequest`` with exception", e);
                $scope.rejectTransactionModal.open();
                $scope.$apply();
