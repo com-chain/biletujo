@@ -3,7 +3,7 @@
 var en = function() {}
 en.code = 'en';
 en.data = {
-Version:'&middot; v2.4.3 &middot;&nbsp;',
+Version:'&middot; v2.5.0 &middot;&nbsp;',
 
 
 CURR_locked: 'WARNING: THIS CURRENCY IS CURRENTLY DISABLED',
@@ -35,9 +35,16 @@ FILE_selectedFile: 'Selected file',
 FILE_open: 'Select',
 FILE_NoFile:'No file available',
 
+HELP_Creator:'Biletujo is developed by ',
+HELP_Creator_2:' for ',
+HELP_PC:'Our Confidentiality Policy (CP):',
+HELP_PC_2:'CP &nbsp;&#8631;',
+HELP_CGU:'Terms Of Service (TOS) :',
+HELP_CGU_2:'TOS &nbsp;&#8631;',
 
 HELP_1: 'Wallet Management Help',
 HELP_2: 'Wallet Content Help',
+HELP_3: 'Online Help&nbsp;&#8631;',
 
 PDF_Private_title: 'Your Wallet',
 PDF_Private_private: 'Private key',

@@ -11,10 +11,7 @@
   "license": "Apache-2.0",
   "dependencies": {
     "cordova": "^11.0.0",
-    "cordova-android": "^7.1.4",
-    "cordova-browser": "^5.0.4",
     "cordova-plugin-app-event": "^1.2.1",
-    "cordova-plugin-badge": "^0.8.8",
     "cordova-plugin-compat": "^1.2.0",
     "cordova-plugin-console": "^1.1.0",
     "cordova-plugin-device": "^2.0.2",
@@ -22,17 +19,10 @@
     "cordova-plugin-fingerprint-aio": "^1.6.0",
     "cordova-plugin-inappbrowser": "^3.0.0",
     "cordova-plugin-ionic-keyboard": "^2.1.3",
-    "cordova-plugin-local-notification": "^0.9.0-beta.2",
-    "cordova-plugin-urlhandler": "^0.7.2",
-    "cordova-plugin-whitelist": "^1.3.3",
-    "phonegap-plugin-barcodescanner": "^8.0.1"
+    "cordova-plugin-urlhandler": "^0.7.2"
   },
   "cordova": {
     "plugins": {
-      "cordova-plugin-whitelist": {},
-      "phonegap-plugin-barcodescanner": {
-        "ANDROID_SUPPORT_V4_VERSION": "27.+"
-      },
       "cordova-plugin-file": {},
       "cordova-plugin-fingerprint-aio": {},
       "cordova-plugin-inappbrowser": {},
@@ -44,11 +34,23 @@
       "cordova-plugin-console": {},
       "cordova-plugin-device": {},
       "cordova-plugin-compat": {},
-      "cordova-plugin-local-notification": {}
+      "@moodlehq/cordova-plugin-local-notification": {
+        "ANDROID_SUPPORT_V4_VERSION": "26.+"
+      },
+      "phonegap-plugin-barcodescanner": {
+        "ANDROID_SUPPORT_V4_VERSION": "27.+"
+      }
     },
     "platforms": [
       "android",
       "browser"
     ]
+  },
+  "devDependencies": {
+    "@moodlehq/cordova-plugin-local-notification": "^0.9.0-moodle.12",
+    "cordova-android": "^12.0.1",
+    "cordova-browser": "^7.0.0",
+    "cordova-plugin-badge": "^0.8.9",
+    "phonegap-plugin-barcodescanner": "^8.1.0"
   }
 }

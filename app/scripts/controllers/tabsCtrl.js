@@ -215,10 +215,10 @@ var tabsCtrl = function($scope, $attrs, globalService, contactservice, $translat
 			if ($scope.tabNames[key].id == id) {
                 if ($scope.tabNames[key].url=='close'){
                     $scope.openLockPopup();
-                } else if ($scope.tabNames[key].url=='aide'){
+                } /*else if ($scope.tabNames[key].url=='aide'){
                     window.open( jsc3l.customization.getHelpUrl().replace('LANG',$scope.gelLanguageCode()), "_system");
-                } else{
-                    if ($scope.activeTab!=id){ 
+                }*/ else{
+                    if ($scope.activeTab!=id && $scope.tabNames[key].url!='aide'){ 
                         globalFuncs.showLoading($translate.instant("GP_Wait"));
                     }
                     location.hash = $scope.tabNames[key].url;

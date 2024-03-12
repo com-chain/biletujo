@@ -1,6 +1,20 @@
 cordova.define('cordova/plugin_list', function(require, exports, module) {
 module.exports = [
     {
+        "file": "plugins/cordova-plugin-device/www/device.js",
+        "id": "cordova-plugin-device.device",
+        "pluginId": "cordova-plugin-device",
+        "clobbers": [
+            "device"
+        ]
+    },
+    {
+        "file": "plugins/cordova-plugin-device/src/browser/DeviceProxy.js",
+        "id": "cordova-plugin-device.DeviceProxy",
+        "pluginId": "cordova-plugin-device",
+        "runs": true
+    },
+    {
         "file": "plugins/cordova-plugin-file/www/DirectoryEntry.js",
         "id": "cordova-plugin-file.DirectoryEntry",
         "pluginId": "cordova-plugin-file",
@@ -180,20 +194,6 @@ module.exports = [
         ]
     },
     {
-        "file": "plugins/phonegap-plugin-barcodescanner/www/barcodescanner.js",
-        "id": "phonegap-plugin-barcodescanner.BarcodeScanner",
-        "pluginId": "phonegap-plugin-barcodescanner",
-        "clobbers": [
-            "cordova.plugins.barcodeScanner"
-        ]
-    },
-    {
-        "file": "plugins/phonegap-plugin-barcodescanner/src/browser/BarcodeScannerProxy.js",
-        "id": "phonegap-plugin-barcodescanner.BarcodeScannerProxy",
-        "pluginId": "phonegap-plugin-barcodescanner",
-        "runs": true
-    },
-    {
         "file": "plugins/cordova-plugin-fingerprint-aio/www/Fingerprint.js",
         "id": "cordova-plugin-fingerprint-aio.Fingerprint",
         "pluginId": "cordova-plugin-fingerprint-aio",
@@ -214,20 +214,6 @@ module.exports = [
         "file": "plugins/cordova-plugin-inappbrowser/src/browser/InAppBrowserProxy.js",
         "id": "cordova-plugin-inappbrowser.InAppBrowserProxy",
         "pluginId": "cordova-plugin-inappbrowser",
-        "runs": true
-    },
-    {
-        "file": "plugins/cordova-plugin-device/www/device.js",
-        "id": "cordova-plugin-device.device",
-        "pluginId": "cordova-plugin-device",
-        "clobbers": [
-            "device"
-        ]
-    },
-    {
-        "file": "plugins/cordova-plugin-device/src/browser/DeviceProxy.js",
-        "id": "cordova-plugin-device.DeviceProxy",
-        "pluginId": "cordova-plugin-device",
         "runs": true
     },
     {
@@ -253,48 +239,43 @@ module.exports = [
         "runs": true
     },
     {
-        "file": "plugins/cordova-plugin-local-notification/www/local-notification.js",
-        "id": "cordova-plugin-local-notification.LocalNotification",
-        "pluginId": "cordova-plugin-local-notification",
+        "file": "plugins/@moodlehq/cordova-plugin-local-notification/www/local-notification.js",
+        "id": "@moodlehq/cordova-plugin-local-notification.LocalNotification",
+        "pluginId": "@moodlehq/cordova-plugin-local-notification",
         "clobbers": [
             "cordova.plugins.notification.local"
         ]
     },
     {
-        "file": "plugins/cordova-plugin-local-notification/www/local-notification-core.js",
-        "id": "cordova-plugin-local-notification.LocalNotification.Core",
-        "pluginId": "cordova-plugin-local-notification",
+        "file": "plugins/phonegap-plugin-barcodescanner/www/barcodescanner.js",
+        "id": "phonegap-plugin-barcodescanner.BarcodeScanner",
+        "pluginId": "phonegap-plugin-barcodescanner",
         "clobbers": [
-            "cordova.plugins.notification.local.core",
-            "plugin.notification.local.core"
+            "cordova.plugins.barcodeScanner"
         ]
     },
     {
-        "file": "plugins/cordova-plugin-local-notification/www/local-notification-util.js",
-        "id": "cordova-plugin-local-notification.LocalNotification.Util",
-        "pluginId": "cordova-plugin-local-notification",
-        "merges": [
-            "cordova.plugins.notification.local.core",
-            "plugin.notification.local.core"
-        ]
+        "file": "plugins/phonegap-plugin-barcodescanner/src/browser/BarcodeScannerProxy.js",
+        "id": "phonegap-plugin-barcodescanner.BarcodeScannerProxy",
+        "pluginId": "phonegap-plugin-barcodescanner",
+        "runs": true
     }
 ];
 module.exports.metadata = 
 // TOP OF METADATA
 {
+    "cordova-plugin-app-event": "1.2.1",
+    "cordova-plugin-compat": "1.2.0",
+    "cordova-plugin-console": "1.1.0",
+    "cordova-plugin-device": "2.0.2",
     "cordova-plugin-file": "6.0.1",
-    "cordova-plugin-whitelist": "1.3.3",
-    "phonegap-plugin-barcodescanner": "8.0.1",
     "cordova-plugin-fingerprint-aio": "1.6.0",
     "cordova-plugin-inappbrowser": "3.0.0",
     "cordova-plugin-ionic-keyboard": "2.1.3",
     "cordova-plugin-urlhandler": "0.7.0",
-    "cordova-plugin-app-event": "1.2.1",
-    "cordova-plugin-console": "1.1.0",
-    "cordova-plugin-device": "2.0.2",
-    "cordova-plugin-compat": "1.2.0",
-    "cordova-plugin-badge": "0.8.8",
-    "cordova-plugin-local-notification": "0.9.0-beta.2"
+    "cordova-plugin-badge": "0.8.9",
+    "@moodlehq/cordova-plugin-local-notification": "0.9.0-moodle.12",
+    "phonegap-plugin-barcodescanner": "8.1.0"
 }
 // BOTTOM OF METADATA
 });

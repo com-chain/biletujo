@@ -1,0 +1,55 @@
+{
+  "name": "@moodlehq/cordova-plugin-local-notification",
+  "version": "0.9.0-moodle.12",
+  "description": "Moodle's fork of Cordova Local Notifications Plugin",
+  "cordova": {
+    "id": "@moodlehq/cordova-plugin-local-notification",
+    "platforms": [
+      "android",
+      "ios",
+      "windows"
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/moodlemobile/cordova-plugin-local-notification.git"
+  },
+  "keywords": [
+    "appplant",
+    "notification",
+    "local notification",
+    "user notification",
+    "ecosystem:cordova",
+    "cordova-ios",
+    "cordova-android",
+    "cordova-windows"
+  ],
+  "engines": [
+    {
+      "name": "cordova",
+      "version": ">=3.6.0"
+    },
+    {
+      "name": "cordova-android",
+      "version": ">=6.0.0"
+    },
+    {
+      "name": "cordova-windows",
+      "version": ">=4.2.0"
+    },
+    {
+      "name": "android-sdk",
+      "version": ">=26"
+    },
+    {
+      "name": "apple-ios",
+      "version": ">=10.0.0"
+    }
+  ],
+  "author": "Sebastián Katzer",
+  "license": "Apache 2.0",
+  "bugs": {
+    "url": "https://github.com/moodlemobile/cordova-plugin-local-notification/issues"
+  },
+  "homepage": "https://github.com/moodlemobile/cordova-plugin-local-notification#readme"
+}

@@ -82,7 +82,7 @@ gulp.task('staticJS', function () {
       .pipe(notify('Cordova StaticJS Complete'));
 });
 
-gulp.task('minJS',['browserify'],function () {
+gulp.task('minJS',function () {
   return gulp
     .src('./dist/js/etherwallet-master.js')
       .pipe(sourcemaps.init({loadMaps: true}))
@@ -117,7 +117,7 @@ gulp.task('babelify', () => {
 });
 
 
-gulp.task('browserify', ['babelify'], () => {
+gulp.task('browserify', () => {
   return browserify(mainjs, { debug: true })
     .plugin(realpathify)
     .transform("babelify", {
@@ -149,7 +149,7 @@ var imagesFolder = "./app/images/**/*";
 var imagesOutputFolder='www/images';
 
 gulp.task('copy-images', function() {
-   gulp.src(imagesFolder)
+  return gulp.src(imagesFolder)
        .pipe(gulp.dest("./dist/images"))
 
        .pipe(gulp.dest(output_android+imagesOutputFolder))
@@ -164,7 +164,7 @@ var fontsFolder = "./app/fonts/*.*";
 var fontsOutputFolder='www/fonts';
 
 gulp.task('copy-fonts', function() {
-   gulp.src(fontsFolder)
+  return  gulp.src(fontsFolder)
           .pipe(gulp.dest("./dist/fonts"))
    .pipe(gulp.dest(output_android+fontsOutputFolder))
       .pipe(gulp.dest(output_ios+fontsOutputFolder))
@@ -177,7 +177,7 @@ var confFolder = "./app/configs/*";
 var confOutputFolder='www/configs';
 
 gulp.task('copy-conf', function() {
-          gulp.src(confFolder) 
+       return   gulp.src(confFolder) 
           .pipe(gulp.dest("./dist/configs"))
           .pipe(gulp.dest(output_android+confOutputFolder))
           .pipe(gulp.dest(output_ios+confOutputFolder))
@@ -186,12 +186,13 @@ gulp.task('copy-conf', function() {
           });
 
 
-gulp.task('css',['less','copy-images'], function () {
+gulp.task('css', function () {
           return gulp.src('./dist/css/*.css')
          // .pipe(base64())
           .pipe(gulp.dest(output_android+lessOutputFolder))
           .pipe(gulp.dest(output_ios+lessOutputFolder))
           .pipe(gulp.dest(output_exchange_office+lessOutputFolder))
+          .pipe(notify({message:'Cordova css Complete', onLast:true}));
 
           });
 
@@ -210,18 +211,18 @@ gulp.task('distHTML', function () {
     .pipe(gulp.dest('./dist/html/'));
 });
 
-gulp.task('buildHTML', ['distHTML'], function () {
+gulp.task('buildHTML', function () {
 
   gulp.src('./dist/html/index.html')
     .pipe(gulp.dest(output_android +'www/')) 
     .pipe(gulp.dest(output_ios +'www/')) 
     .pipe(notify({message:'Cordova HTML Pages Complete', onLast:true}));;
     
-    gulp.src('./dist/html/exchangeOffice.html')
+ return  gulp.src('./dist/html/exchangeOffice.html')
     .pipe(concat('index.html'))
     .pipe(gulp.dest(output_exchange_office+'www/')) 
-    .pipe(notify({message:'Cordova Exchange Office HTML Pages Complete', onLast:true}));
-    
+    .pipe(notify({message:'Cordova Exchange Office HTML Pages Complete', onLast:true}))
+    .pipe(print(function() { return 'buildHTML completed'; }));
    
    
 });
@@ -229,26 +230,26 @@ gulp.task('buildHTML', ['distHTML'], function () {
 
 
 // Watch Tasks
-gulp.task('watchJS', function() {
-  gulp.watch([jsFiles, AllJsFiles],[
+gulp.task('watchJS',async  function() {
+  gulp.watch([jsFiles, AllJsFiles],gulp.series(
     'browserify',
     'minJS',
-  ]);
+  ));
 });
-gulp.task('watchLess', function() {
-    gulp.watch(lessWatchFolder, ['css']);
+gulp.task('watchLess', async function() {
+    gulp.watch(lessWatchFolder,  gulp.series('css'));
 });
-gulp.task('watchPAGES', function() {
-    gulp.watch(htmlPages, ['buildHTML']);
+gulp.task('watchPAGES', async function() {
+    gulp.watch(htmlPages,  gulp.series('buildHTML'));
 });
-gulp.task('watchTPL', function() {
-    gulp.watch(tplFiles, ['buildHTML']);
+gulp.task('watchTPL',async  function() {
+    gulp.watch(tplFiles,  gulp.series('buildHTML'));
 });
 
 
 
-gulp.task('build', ['buildHTML','css', 'staticJS', 'copiedJS', 'browserify',  'minJS','copy-fonts','copy-conf']);
+gulp.task('build', gulp.series('distHTML','buildHTML','less','copy-images','css', 'staticJS', 'copiedJS', 'babelify','browserify',  'minJS','copy-fonts','copy-conf'));
 
-gulp.task('watch', ['watchJS' , 'watchLess', 'watchPAGES', 'watchTPL']);
+gulp.task('watch', gulp.series('watchJS' , 'watchLess', 'watchPAGES', 'watchTPL'));
 
-gulp.task('default', ['build', 'watch']);
+gulp.task('default', gulp.series('build'));

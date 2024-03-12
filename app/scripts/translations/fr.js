@@ -6,7 +6,7 @@ var fr = function() {}
 fr.code = 'fr';
 fr.data = {
 /****************************************/
-Version:'&middot; v2.4.3 &middot;&nbsp;',
+Version:'&middot; v2.5.0 &middot;&nbsp;',
 /****************************************/
 CURR_locked: 'ATTENTION: LES TRANSFERTS DANS CETTE MONNAIE SONT ACTUELLEMENT BLOQUÉS',
 GP_Wait: 'En attente du serveur... Si ce message persiste vérifiez votre connexion puis cliquez ici',
@@ -37,9 +37,17 @@ FILE_selectedFile: 'Fichier sélectionné',
 FILE_open: 'Choisir',
 FILE_NoFile:'Aucun fichier disponible',
 
+HELP_Creator:'Biletujo est développé par ',
+HELP_Creator_2:' pour le compte de ',
+HELP_PC:'Notre politique de confidentialité (PC) :',
+HELP_PC_2:'PC &nbsp;&#8631;',
+HELP_CGU:'Nos Conditions Générales d\'Utilisation(CGU) :',
+HELP_CGU_2:'CGU &nbsp;&#8631;',
+
 
 HELP_1: 'Aide Gestion des comptes',
 HELP_2: 'Aide Contenu du compte',
+HELP_3: 'Aide en ligne&nbsp;&#8631;',
 
 PDF_Private_title: 'Votre Compte',
 PDF_Private_private: 'Clef Privée',

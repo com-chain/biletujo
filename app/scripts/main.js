@@ -88,6 +88,7 @@ var billingCtrl = require('./controllers/billingCtrl');
 var noteCtrl = require('./controllers/noteCtrl');
 var globalCtrl = require('./controllers/globalCtrl');
 var consultRightCtrl = require('./controllers/consultRightCtrl');
+var helpCtrl = require('./controllers/helpCtrl');
 
 var globalService = require('./services/globalService');
 var walletService = require('./services/walletService');
@@ -141,6 +142,7 @@ app.controller('exchangeCtrl', ['$scope','$locale', '$sce', 'walletService', '$t
 app.controller('globalCtrl', ['$scope','$locale', '$sce', 'walletService', '$translate', globalCtrl]);
 app.controller('contactsCtrl', ['$scope', '$sce', 'walletService','contactService','globalService', '$translate', contactsCtrl]);
 app.controller('storageCtrl', ['$scope', '$sce', 'walletService','contactService', '$translate', storageCtrl]);
+app.controller('helpCtrl', ['$scope', '$sce', '$translate', helpCtrl]);
 
 app.controller('readonlytransactionsCtrl', ['$scope','$locale', '$sce', 'walletService','contactService', 'consultService','memoService', '$translate','$filter', readonlytransactionsCtrl]);
 

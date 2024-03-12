@@ -7,39 +7,37 @@
     "files": {}
   },
   "installed_plugins": {
-    "cordova-plugin-whitelist": {
-      "PACKAGE_NAME": "io.cordova.hellocordova"
+    "cordova-plugin-app-event": {
+      "PACKAGE_NAME": "org.comchain.wallet"
     },
-    "phonegap-plugin-barcodescanner": {
-      "ANDROID_SUPPORT_V4_VERSION": "27.+",
-      "PACKAGE_NAME": "io.cordova.hellocordova"
+    "cordova-plugin-console": {
+      "PACKAGE_NAME": "org.comchain.wallet"
+    },
+    "cordova-plugin-device": {
+      "PACKAGE_NAME": "org.comchain.wallet"
     },
     "cordova-plugin-file": {
-      "PACKAGE_NAME": "io.cordova.hellocordova"
+      "PACKAGE_NAME": "org.comchain.wallet"
     },
     "cordova-plugin-fingerprint-aio": {
-      "PACKAGE_NAME": "io.cordova.hellocordova"
+      "PACKAGE_NAME": "org.comchain.wallet"
     },
     "cordova-plugin-inappbrowser": {
-      "PACKAGE_NAME": "io.cordova.hellocordova"
+      "PACKAGE_NAME": "org.comchain.wallet"
     },
     "cordova-plugin-ionic-keyboard": {
-      "PACKAGE_NAME": "io.cordova.hellocordova"
+      "PACKAGE_NAME": "org.comchain.wallet"
     },
     "cordova-plugin-urlhandler": {
       "URL_SCHEME": "comchain",
-      "PACKAGE_NAME": "io.cordova.hellocordova"
+      "PACKAGE_NAME": "org.comchain.wallet"
     },
-    "cordova-plugin-app-event": {
-      "PACKAGE_NAME": "io.cordova.hellocordova"
+    "@moodlehq/cordova-plugin-local-notification": {
+      "ANDROID_SUPPORT_V4_VERSION": "26.+",
+      "PACKAGE_NAME": "org.comchain.wallet"
     },
-    "cordova-plugin-console": {
-      "PACKAGE_NAME": "io.cordova.hellocordova"
-    },
-    "cordova-plugin-device": {
-      "PACKAGE_NAME": "io.cordova.hellocordova"
-    },
-    "cordova-plugin-local-notification": {
+    "phonegap-plugin-barcodescanner": {
+      "ANDROID_SUPPORT_V4_VERSION": "27.+",
       "PACKAGE_NAME": "org.comchain.wallet"
     }
   },
