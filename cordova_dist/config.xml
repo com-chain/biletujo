@@ -7,6 +7,26 @@
     <author email="it@monnaie-leman.org" href="http://com-chain.org">
         Biletujo
     </author>
+     <platform name="android">
+        <!--
+            ldpi    : 36x36 px
+            mdpi    : 48x48 px
+            hdpi    : 72x72 px
+            xhdpi   : 96x96 px
+            xxhdpi  : 144x144 px
+            xxxhdpi : 192x192 px
+        -->
+        <icon src="res/icon/android/ldpi.png" density="ldpi" />
+        <icon src="res/icon/android/mdpi.png" density="mdpi" />
+        <icon src="res/icon/android/hdpi.png" density="hdpi" />
+        <icon src="res/icon/android/xhdpi.png" density="xhdpi" />
+        <icon src="res/icon/android/xxhdpi.png" density="xxhdpi" />
+        <icon src="res/icon/android/xxxhdpi.png" density="xxxhdpi" />
+    </platform>
+
+    <platform name="android">
+       <preference name="AndroidWindowSplashScreenAnimatedIcon" value="res/screen/android/splashandroid.xml" />
+    </platform>
     <content src="index.html" />
     <access origin="*" />
     <allow-intent href="http://*/*" />
