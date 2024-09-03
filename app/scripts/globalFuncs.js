@@ -65,17 +65,6 @@ var globalFuncs = function() {}
     
 
     
-    globalFuncs.encodeNumber=function(number){
-         var valueHex;
-         if (number<0){
-            valueHex = jsc3l.ethFuncs.padLeft(new BigNumber(16).pow(64).plus(number).toString(16), 64);
-         } else{
-            valueHex = jsc3l.ethFuncs.padLeft(new BigNumber(number).toString(16), 64);
-         }
-         
-         return valueHex;
-    }
-    
  /*** contract 3***/
  globalFuncs.setContactHash = function(wallet, contact_hash) {
    return jsc3l.bcTransaction.setContactHash(wallet, 32,46,contact_hash);
