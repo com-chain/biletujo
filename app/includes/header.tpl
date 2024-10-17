@@ -120,7 +120,7 @@
        <div class="row" >
         <div  style="width:49%; display:inline-block;">
           @@if (site === 'readOnly' ) {<div  class="header_readonly"> </div> } 
-          <div  class="header_logo"> </div> 
+          <div  class="header_logo" ng-click="toHelp()"> </div> 
         </div>
         <div  style="width:49%;display:inline-block;margin-top:3px;">
         

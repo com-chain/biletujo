@@ -229,6 +229,14 @@ var tabsCtrl = function($scope, $attrs, globalService, contactservice, $translat
 	}
     
     
+    $scope.toHelp = function() {
+        for (var key in $scope.tabNames) {
+            if ($scope.tabNames[key].url=='aide') {
+                location.hash = $scope.tabNames[key].url;
+                $scope.activeTab = globalService.currentTab = $scope.tabNames[key].id;
+            }
+        }
+    }
     
     
 	$scope.setLanguageVal = function (id, varName, pos) {
