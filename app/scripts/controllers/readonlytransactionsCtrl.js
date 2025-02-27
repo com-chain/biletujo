@@ -350,7 +350,7 @@ var readonlytransactionsCtrl = function($scope, $locale, $sce, walletService,con
             
         } else {
             if (add_b) {
-               jsc3l.bcRead.getHistoricalGlobalBalance(walletAddress, list[index].data.block).then(function(value) {
+               jsc3l.bcRead.getGlobalBalance(walletAddress, list[index].data.block).then(function(value) {
                 list[index].data.balance = value;
                 $scope.addBalance(walletAddress,list,add_b, index+1);
                 });

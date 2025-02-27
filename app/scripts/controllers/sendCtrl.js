@@ -295,7 +295,7 @@ var sendCtrl = function($scope, $locale, $sce, walletService, contactservice, gl
             
         if ($scope.lemanexAmmount>0){
             $scope.executingSplittedTrans.open();
-            $scope.splitedSecondPart(blk_number,0, res.data);
+            $scope.splitedSecondPart(blk_number,0, res);
             
         } else {
             await $scope.waitTransaction(res);
